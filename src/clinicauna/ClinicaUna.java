@@ -23,7 +23,7 @@ public class ClinicaUna extends Application {
     public void start(Stage stage) throws Exception {
         
         stage.setTitle("Clinica UNA");
-        stage.getIcons().add(new Image("/clinicauna/resources/pharmacyWhite32.png"));
+        stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         
         FlowController.getInstance().InitializeFlow(stage, null);
         FlowController.getInstance().goMain();
