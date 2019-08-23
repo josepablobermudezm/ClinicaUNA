@@ -58,10 +58,6 @@ public class InicioController extends Controller  {
         try {
             omg1 = new Image("/clinicauna/resources/background2.jpg");
             omg.setImage(omg1);
-            /*double a = borderPane.getHeight();
-            double b = borderPane.getWidth();
-            omg.setFitHeight(a);
-            omg.setFitWidth(b);*/
         } catch (Exception e) {
         }
         

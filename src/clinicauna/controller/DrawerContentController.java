@@ -27,8 +27,6 @@ public class DrawerContentController extends Controller {
     private ImageView image;
     static public File filePath2;
     @FXML
-    private JFXButton btnEmpleados;
-    @FXML
     private JFXButton btnPuestos;
     @FXML
     private JFXButton btnRoles;
@@ -50,6 +48,8 @@ public class DrawerContentController extends Controller {
     private ImageView img5;
     @FXML
     private ImageView img6;
+    @FXML
+    private JFXButton btnUsuarios;
 
     @FXML
     private void exit(ActionEvent event) {
@@ -104,12 +104,6 @@ public class DrawerContentController extends Controller {
         } catch (Exception e) {
         }*/
     }  
-    @FXML
-    private void btnEmpleados(ActionEvent event) {
-             /*AppContext.getInstance().set("Vista", "Empleados");
-             FlowController.getInstance().goView("Cargando");*/
-             
-    }
 
     @FXML
     private void btnPuestos(ActionEvent event) {
@@ -133,6 +127,11 @@ public class DrawerContentController extends Controller {
     private void btnHorarios(ActionEvent event) {
        /*AppContext.getInstance().set("Vista", "Horarios");
        FlowController.getInstance().goView("Cargando");*/
+    }
+
+    @FXML
+    private void Usuarios(ActionEvent event) {
+       FlowController.getInstance().goView("Usuarios");
     }
 
 }
