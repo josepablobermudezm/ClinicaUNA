@@ -50,7 +50,7 @@ public class InicioController extends Controller  {
     private BorderPane Panel = new BorderPane();
     @FXML
     private AnchorPane an;
-
+    /**/
     @Override
     public void initialize() {
         AppContext.getInstance().set("Border", borderPane);       
