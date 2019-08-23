@@ -5,7 +5,7 @@
     -jfx-focus-color: -fx-secondary;
 }
 .label{
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 .root{
     -fx-background-color: #021639;
@@ -15,7 +15,9 @@
     -jfx-button-type: RAISED;/*raised and flat*/
     -fx-text-fill: WHITE;
     -jfx-rippler-fill: RED;
+    
 }
+
 .custom-jfx-radio-button-white{
     -fx-text-fill: white;
     -jfx-selected-color: #6622CC;
@@ -94,13 +96,12 @@
 	-fx-background-radius: 2em;
 
 }
-/* The increment and decrement button CSS class of scrollbar */
 .table-view .increment-button ,.table-view .decrement-button {
     -fx-background-color:#5E5E5E;
     -fx-border-color: #5E5E5E;
 }
 .jfx-hamburger StackPane {
-	-fx-background-color: WHITE;
+	-fx-background-color: #06388f;
 }
 .text-field{
     -fx-prompt-text-fill: black;

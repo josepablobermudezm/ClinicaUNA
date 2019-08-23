@@ -27,27 +27,17 @@ public class DrawerContentController extends Controller {
     private ImageView image;
     static public File filePath2;
     @FXML
-    private JFXButton btnPuestos;
-    @FXML
-    private JFXButton btnRoles;
-    @FXML
-    private JFXButton btnAsignacionRoles;
-    @FXML
-    private JFXButton btnHorarios;
-    @FXML
     private JFXButton btnExit;
     @FXML
-    private ImageView img1;
+    private JFXButton btnPacientes;
     @FXML
-    private ImageView img2;
+    private JFXButton btnMedicos;
     @FXML
-    private ImageView img3;
+    private JFXButton btnAgenda;
     @FXML
-    private ImageView img4;
+    private JFXButton btnExpediente;
     @FXML
-    private ImageView img5;
-    @FXML
-    private ImageView img6;
+    private JFXButton btnReportes;
     @FXML
     private JFXButton btnUsuarios;
 
@@ -104,34 +94,36 @@ public class DrawerContentController extends Controller {
         } catch (Exception e) {
         }*/
     }  
-
     @FXML
-    private void btnPuestos(ActionEvent event) {
-      /*AppContext.getInstance().set("Vista", "Puestos");
-      FlowController.getInstance().goView("Cargando");*/
+    private void Usuarios(ActionEvent event) {
+        AppContext.getInstance().set("Vista", "Usuarios");
+        FlowController.getInstance().goView("Cargando");
     }
 
     @FXML
-    private void btnRoles(ActionEvent event) {
-        /*AppContext.getInstance().set("Vista", "Roles");
-        FlowController.getInstance().goView("Cargando");*/
+    private void btnPacientes(ActionEvent event) {
+        AppContext.getInstance().set("Vista", "Pacientes");
+        FlowController.getInstance().goView("Cargando");
     }
 
     @FXML
-    private void btnAsignacionRoles(ActionEvent event) {
-        /*AppContext.getInstance().set("Vista", "AsignacionRoles");
-        FlowController.getInstance().goView("Cargando");*/
+    private void btnMedicos(ActionEvent event) {
+        AppContext.getInstance().set("Vista", "Medicos");
+        FlowController.getInstance().goView("Cargando");
     }
 
     @FXML
-    private void btnHorarios(ActionEvent event) {
+    private void btnAgenda(ActionEvent event) {
        /*AppContext.getInstance().set("Vista", "Horarios");
        FlowController.getInstance().goView("Cargando");*/
     }
 
     @FXML
-    private void Usuarios(ActionEvent event) {
-       FlowController.getInstance().goView("Usuarios");
+    private void btnExpediente(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnReportes(ActionEvent event) {
     }
 
 }
