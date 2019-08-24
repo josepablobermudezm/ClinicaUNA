@@ -5,9 +5,11 @@
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -106,8 +108,14 @@
                </rowConstraints>
                <children>
                   <Label text="Genero:" GridPane.columnIndex="1" />
-                  <JFXRadioButton text="Hombres" GridPane.columnIndex="2" />
-                  <JFXRadioButton text="Mujer" GridPane.columnIndex="3" />
+                  <JFXRadioButton style="-fx-cursor: Hand;" text="Hombres" GridPane.columnIndex="2">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="genero" />
+                     </toggleGroup></JFXRadioButton>
+                  <JFXRadioButton text="Mujer" toggleGroup="$genero" GridPane.columnIndex="3">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXRadioButton>
                   <JFXDatePicker prefHeight="29.0" prefWidth="250.0" GridPane.columnIndex="5" />
                </children>
             </GridPane>

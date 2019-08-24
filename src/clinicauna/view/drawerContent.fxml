@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -13,13 +14,37 @@
             <VBox prefHeight="800.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  <JFXButton fx:id="btnUsuarios" onAction="#Usuarios" prefHeight="92.0" prefWidth="200.0" text="Usuarios" />
-                  <JFXButton fx:id="btnMedicos" onAction="#btnMedicos" prefHeight="92.0" prefWidth="200.0" text="Médicos" />
-                  <JFXButton fx:id="btnPacientes" onAction="#btnPacientes" prefHeight="92.0" prefWidth="200.0" text="Pacientes" />
-                  <JFXButton fx:id="btnAgenda" onAction="#btnAgenda" prefHeight="92.0" prefWidth="200.0" text="Agenda" />
-                  <JFXButton fx:id="btnExpediente" onAction="#btnExpediente" prefHeight="92.0" prefWidth="200.0" text="Expediente Médico" />
-                  <JFXButton fx:id="btnReportes" onAction="#btnReportes" prefHeight="92.0" prefWidth="200.0" text="Reportes" />
-                  <JFXButton fx:id="btnExit" onAction="#exit" prefHeight="97.0" prefWidth="200.0" text="Exit" />
+                  <JFXButton fx:id="btnUsuarios" onAction="#Usuarios" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Usuarios" />
+                  <JFXButton fx:id="btnMedicos" onAction="#btnMedicos" prefHeight="92.0" prefWidth="200.0" text="Médicos">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="btnPacientes" onAction="#btnPacientes" prefHeight="92.0" prefWidth="200.0" text="Pacientes">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="btnAgenda" onAction="#btnAgenda" prefHeight="92.0" prefWidth="200.0" text="Agenda">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="btnExpediente" onAction="#btnExpediente" prefHeight="92.0" prefWidth="200.0" text="Expediente Médico">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="btnReportes" onAction="#btnReportes" prefHeight="92.0" prefWidth="200.0" text="Reportes">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="btnExit" onAction="#exit" prefHeight="97.0" prefWidth="200.0" text="Exit">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
                </children>
             </VBox>
          </children>

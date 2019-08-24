@@ -22,8 +22,6 @@ import javafx.util.Duration;
 public class CargandoController extends Controller {
 
     @FXML
-    private Label Titulo;
-    @FXML
     private JFXProgressBar progressBar;
     private double progreso;
     private final Timeline timeProgress = new Timeline(new KeyFrame(Duration.ZERO, event -> correrBar()), new KeyFrame(Duration.seconds(0.017)));

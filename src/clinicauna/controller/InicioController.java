@@ -42,8 +42,6 @@ public class InicioController extends Controller  {
     @FXML
     private Label Titulo;
     @FXML
-    private AnchorPane anchorp1;
-    @FXML
     private JFXHamburger hamburger;
     @FXML
     private ImageView omg;

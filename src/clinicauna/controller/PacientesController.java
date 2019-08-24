@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -34,16 +35,6 @@ public class PacientesController extends Controller  {
     @FXML
     private TableView<?> table;
     @FXML
-    private TableColumn<?, String> COL_NOMBRE_USUARIO;
-    @FXML
-    private TableColumn<?, String> COL_CEDULA_USUARIO;
-    @FXML
-    private TableColumn<?, String> COL_CORREO_USUARIO;
-    @FXML
-    private TableColumn<?, String> COL_TIPO_USUARIO;
-    @FXML
-    private TableColumn<?, String> COL_IDIOMA_USUARIO;
-    @FXML
     private JFXTextField txtNombre;
     @FXML
     private JFXTextField txtCedula;
@@ -56,15 +47,21 @@ public class PacientesController extends Controller  {
     @FXML
     private JFXButton btnAgregar1;
     @FXML
-    private JFXTextField txtFiltroEmpleado;
+    private JFXTextField txtFiltroEmpleado1;
     @FXML
-    private JFXButton btnBuscar;
+    private JFXButton btnBuscar1;
     @FXML
-    private JFXComboBox<?> ComboTipoUsuario;
+    private TableColumn<?, ?> COL_NOMBRE_PACIENTE;
     @FXML
-    private JFXComboBox<?> ComboIdioma;
+    private TableColumn<?, ?> COL_CEDULA_PACIENTE;
     @FXML
-    private JFXComboBox<?> ComboEstado;  
+    private TableColumn<?, ?> COL_CORREO_PACIENTE;  
+    @FXML
+    private TableColumn<?, ?> COL_USUARIO_PACIENTE;
+    @FXML
+    private TableColumn<?, ?> COL_NACIMIENTO_USUARIO;
+    @FXML
+    private ToggleGroup genero;
 
     
     
