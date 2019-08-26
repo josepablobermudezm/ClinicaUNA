@@ -72,7 +72,7 @@ public class PacientesController extends Controller  {
         try {
             omg1 = new Image("/clinicauna/resources/background.jpg");
             omg.setImage(omg1);
-            
+            omg.setOpacity(0.6);
         } catch (Exception e) {}
 
     }

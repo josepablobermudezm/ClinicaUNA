@@ -1,6 +1,6 @@
 
 #Titulo{
-    -fx-text-fill: gray;
+    -fx-text-fill: white;
     -fx-font-size : 35pt;
     -jfx-focus-color: -fx-secondary;
 }
@@ -24,29 +24,29 @@
 }
 
 .table-view{
-   -fx-background-color: #444444;
+   -fx-background-color: #042a6b;
 }
 
 .table-view:focused{
-    -fx-background-color:#444444;
+    -fx-background-color:#042a6b;
 }
 
 
 .table-view .column-header-background{
-    -fx-background-color: #444444;
+    -fx-background-color: #042a6b;
 }
 
 .table-view .column-header-background .label{
-    -fx-background-color: #444444;
+    -fx-background-color: #042a6b;
     -fx-text-fill:white;
 }
 
 .table-view .column-header {
-    -fx-background-color: #444444;
+    -fx-background-color: #042a6b;
 }
 
 .table-view .table-cell{
-    -fx-text-fill: #444444;
+    -fx-text-fill: #042a6b;
 }
 
 .table-cell {     
@@ -54,10 +54,10 @@
     -fx-opacity: 0.6;
 }
 .table-cell:hover {
-    -fx-background-color: #30ffa5;
+    -fx-background-color: #042a6b;
 }
 .table-view:row-selection .table-row-cell:filled:hover { 
-    -fx-background-color: #6622CC
+    -fx-background-color: #042a6b;
 }
 /*cuando está seleccionada*/
 .table-view:row-selection .table-row-cell:filled:selected { 
@@ -65,14 +65,14 @@
 }
 /*el hover cuando está seleccionada*/
 .table-view:row-selection .table-row-cell:filled:selected:hover { 
-    -fx-background-color: #6622CC
+    -fx-background-color: #042a6b
 } 
 /*celda*/
 .table-view .cell{
    -fx-cell-size: 40;
   -fx-alignment: center-left;
-  -fx-background-color: #404042;
-  -fx-border-color: #404042;
+  -fx-background-color: #042a6b;
+  -fx-border-color: #042a6b;
   -fx-text-fill: white;
   -fx-alignment: CENTER_LEFT;
    
@@ -80,25 +80,25 @@
 /*celda selecionada*/
 .table-row-cell:selected {
    -fx-background-color: whitesmoke; 
-   -fx-text-background-color:  #6622CC;
+   -fx-text-background-color:  #042a6b;
 }
 /*fondo de la barra*/
 .table-view .scroll-bar:horizontal .track,
 .table-view .scroll-bar:vertical .track{
-	-fx-background-color: #2a2a2a;
-	-fx-border-color:#2a2a2a
+	-fx-background-color: #042a6b;
+	-fx-border-color:#042a6b;
 }
 /*barra del tableview*/
 .table-view .scroll-bar:horizontal .thumb,
 .table-view .scroll-bar:vertical .thumb {
-    -fx-background-color:#2a2a2a;
+    -fx-background-color:#042a6b;
 	-fx-background-insets: 2, 0, 0;
 	-fx-background-radius: 2em;
 
 }
 .table-view .increment-button ,.table-view .decrement-button {
-    -fx-background-color:#5E5E5E;
-    -fx-border-color: #5E5E5E;
+    -fx-background-color:#042a6b;
+    -fx-border-color: #042a6b;
 }
 .jfx-hamburger StackPane {
 	-fx-background-color: #06388f;
