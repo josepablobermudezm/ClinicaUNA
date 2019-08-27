@@ -5,7 +5,10 @@
  */
 package clinicauna.controller;
 
+import clinicauna.util.FlowController;
+import clinicauna.util.Mensaje;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -30,7 +34,7 @@ import unaplanilla2.util.Respuesta;*/
  *
  * @author Carlos
  */
-public class LogIng2Controller extends Controller implements Initializable {
+public class LogIng2Controller extends Controller {
 
     @FXML
     private AnchorPane root;
@@ -39,49 +43,55 @@ public class LogIng2Controller extends Controller implements Initializable {
     @FXML
     private JFXTextField txtUsuario;
     @FXML
-    private JFXTextField txtClave;
+    private JFXPasswordField txtClave;
     @FXML
     private JFXButton btnSalir;
     @FXML
     private JFXButton btnIngresar;
+    @FXML
+    private ImageView omg;
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        imvFondo.fitHeightProperty().bind(root.heightProperty());//  para que la imagen tenga el tamaño de toda la vista
-        imvFondo.fitWidthProperty().bind(root.widthProperty());
-    }    
-
-    @Override
     public void initialize() {
+        
+        /*Image omg1;
+        try {
+            omg1 = new Image("/clinicauna/resources/e.png");
+            omg.setImage(omg1);
+        } catch (Exception e) {
+        }*/
         
     }
     
     @FXML
     private void ingresar(ActionEvent event) {
-       /* try {
+       try {
 
             if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar.getScene().getWindow(), "Es necesario digitar un usuario para ingresar al sistema.");
             } else if (txtClave.getText() == null || txtClave.getText().isEmpty()) {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar.getScene().getWindow(), "Es necesario digitar la clave para ingresar al sistema.");
             } else {
-                EmpleadoService empleadoService = new EmpleadoService();
+                FlowController.getInstance().goMain();
+                this.stage.close();
+                /*EmpleadoService empleadoService = new EmpleadoService();
                 Respuesta respuesta = empleadoService.getUsuario(txtUsuario.getText(), txtClave.getText());
-                respuesta.getEstado();
-                if (respuesta.getEstado()) {
+                respuesta.getEstado();*/
+                /*if (respuesta.getEstado()) {
                     AppContext.getInstance().set("Usuario", (EmpleadoDto)respuesta.getResultado("Empleado"));
                     FlowController.getInstance().goMain();
                         ((Stage) btnIngresar.getScene().getWindow()).close();
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Ingreso", getStage(), respuesta.getMensaje());
-                }
+                }*/
             }
         } catch (Exception ex) {
             Logger.getLogger(LogIng2Controller.class.getName()).log(Level.SEVERE, "Error ingresando.", ex);
-        }*/
+        }
+        
     }
     
     @FXML

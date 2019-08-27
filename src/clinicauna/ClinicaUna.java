@@ -5,6 +5,7 @@
  */
 package clinicauna;
 
+import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +27,9 @@ public class ClinicaUna extends Application {
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         
         FlowController.getInstance().InitializeFlow(stage, null);
-        FlowController.getInstance().goMain();
+        /*FlowController.getInstance().goMain();*/
+        
+         FlowController.getInstance().goViewInWindow("LogIn");
     }
 
     /**
