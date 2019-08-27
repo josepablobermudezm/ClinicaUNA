@@ -1,6 +1,6 @@
 
 #Titulo{
-    -fx-text-fill: white;
+    -fx-text-fill: gray;
     -fx-font-size : 35pt;
     -jfx-focus-color: -fx-secondary;
 }
@@ -8,7 +8,7 @@
     -fx-text-fill: black;
 }
 .root{
-    -fx-background-color: #021639;
+    -fx-background-color: white;
 }
 .button{
     -fx-background-color:#042a6b;

@@ -70,9 +70,9 @@ public class PacientesController extends Controller  {
         
         Image omg1;
         try {
-            omg1 = new Image("/clinicauna/resources/background.jpg");
+            /*omg1 = new Image("/clinicauna/resources/background.jpg");
             omg.setImage(omg1);
-            omg.setOpacity(0.6);
+            omg.setOpacity(0.6);*/
         } catch (Exception e) {}
 
     }
