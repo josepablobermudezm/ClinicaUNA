@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import clinicauna.util.FlowController;
+import clinicauna.util.generadorContrasennas;
 
 /**
  * FXML Controller class
