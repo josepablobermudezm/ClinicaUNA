@@ -40,9 +40,9 @@ public class AppContext {
             Properties appProperties = new Properties();
             appProperties.load(configFile);
             configFile.close();
-            /*if (appProperties.getProperty("propiedades.resturl") != null) {
+            if (appProperties.getProperty("propiedades.resturl") != null) {
                 this.set("resturl",appProperties.getProperty("propiedades.resturl"));
-            }*/
+            }
         } catch (IOException io) {
             //System.out.println("Archivo de configuración no encontrado.");
         }
