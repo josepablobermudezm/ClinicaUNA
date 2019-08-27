@@ -50,6 +50,10 @@ public class DrawerContentController extends Controller {
    
     @Override
     public void initialize() { 
+        
+        
+        //btnUsuarios.setDisable(true);
+        
         Image img;
         try {
             img = new Image("/clinicauna/resources/user.jpg");

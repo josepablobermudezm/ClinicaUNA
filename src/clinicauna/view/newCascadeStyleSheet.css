@@ -9,7 +9,12 @@
 }
 .root{
     -fx-background-color: white;
-}
+}/*s
+.button:disabled{
+    -fx-background-color: #E0E0E2;
+   -fx-border-color: #94BBDA;
+   -fx-text-fill: #000000;
+}*/
 .button{
     -fx-background-color:#042a6b;
     -jfx-button-type: RAISED;/*raised and flat*/
