@@ -7,6 +7,7 @@ package clinicauna.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,8 +30,6 @@ import javafx.scene.input.MouseEvent;
 public class PacientesController extends Controller  {
 
     @FXML
-    private ImageView omg;
-    @FXML
     private Label Titulo;
     @FXML
     private TableView<?> table;
@@ -47,21 +46,27 @@ public class PacientesController extends Controller  {
     @FXML
     private JFXButton btnAgregar1;
     @FXML
-    private JFXTextField txtFiltroEmpleado1;
-    @FXML
-    private JFXButton btnBuscar1;
-    @FXML
-    private TableColumn<?, ?> COL_NOMBRE_PACIENTE;
-    @FXML
-    private TableColumn<?, ?> COL_CEDULA_PACIENTE;
-    @FXML
-    private TableColumn<?, ?> COL_CORREO_PACIENTE;  
-    @FXML
-    private TableColumn<?, ?> COL_USUARIO_PACIENTE;
-    @FXML
-    private TableColumn<?, ?> COL_NACIMIENTO_USUARIO;
-    @FXML
     private ToggleGroup genero;
+    @FXML
+    private JFXTextField txtFiltroEmpleado;
+    @FXML
+    private JFXButton btnBuscar;
+    @FXML
+    private TableColumn<?, ?> COL_CODIGO_MEDICOS;
+    @FXML
+    private TableColumn<?, ?> COL_FOLIO_MEDICOS;  
+    @FXML
+    private TableColumn<?, ?> COL_CARNE_MEDICOS;
+    @FXML
+    private TableColumn<?, ?> COL_ESTADO_MEDICOS;
+    @FXML
+    private TableColumn<?, ?> COL_INICIO_MEDICOS;
+    @FXML
+    private TableColumn<?, ?> COL_INICIO_MEDICOS1;
+    @FXML
+    private JFXTextField txtApellido;
+    @FXML
+    private JFXDatePicker FechaDeNacimiento;
 
     
     

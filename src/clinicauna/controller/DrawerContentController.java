@@ -114,16 +114,22 @@ public class DrawerContentController extends Controller {
 
     @FXML
     private void btnAgenda(ActionEvent event) {
-       /*AppContext.getInstance().set("Vista", "Horarios");
-       FlowController.getInstance().goView("Cargando");*/
+       AppContext.getInstance().set("Vista","Agenda");
+       FlowController.getInstance().goView("Cargando");
     }
 
     @FXML
     private void btnExpediente(ActionEvent event) {
+        AppContext.getInstance().set("Vista","ExpedienteMedico");
+        FlowController.getInstance().goView("Cargando");
+        
     }
 
     @FXML
     private void btnReportes(ActionEvent event) {
+        AppContext.getInstance().set("Vista","Reportes");
+        FlowController.getInstance().goView("Cargando");
+        
     }
 
 }

@@ -48,7 +48,7 @@
                   <JFXButton fx:id="btnBuscar" onAction="#Filtrar" style="-fx-cursor: hand;" text="Buscar" GridPane.columnIndex="3" />
                </children>
             </GridPane>
-            <GridPane layoutX="10.0" layoutY="220.0" prefHeight="280.0" prefWidth="1030.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="220.0">
+            <GridPane layoutY="220.0" prefHeight="280.0" prefWidth="1030.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="220.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="41.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="1002.0" minWidth="10.0" prefWidth="958.0" />
@@ -111,7 +111,7 @@
                   <JFXComboBox fx:id="ComboEstado" prefHeight="31.0" prefWidth="250.0" promptText="Estado" GridPane.columnIndex="5" />
                </children>
             </GridPane>
-            <GridPane layoutX="-7.0" layoutY="666.0" prefHeight="62.0" prefWidth="1033.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="666.0">
+            <GridPane layoutY="666.0" prefHeight="62.0" prefWidth="1033.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="666.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="0.0" prefWidth="8.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="0.0" prefWidth="24.0" />
