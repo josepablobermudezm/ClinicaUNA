@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -46,9 +47,13 @@ public class InicioController extends Controller  {
     @FXML
     private ImageView omg;
     private BorderPane Panel = new BorderPane();
-    @FXML
     private AnchorPane an;
     /**/
+    @FXML
+    private StackPane st;
+    
+    
+    
     @Override
     public void initialize() {
         AppContext.getInstance().set("Border", borderPane);       
@@ -94,4 +99,8 @@ public class InicioController extends Controller  {
             
         });
     }
+    public void initialize(URL url, ResourceBundle rb) {
+        omg.fitHeightProperty().bind(st.heightProperty());//  para que la imagen tenga el tamaño de toda la vista
+        omg.fitWidthProperty().bind(st.widthProperty());
+    } 
 }

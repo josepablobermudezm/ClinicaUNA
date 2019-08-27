@@ -34,103 +34,116 @@
                   <JFXButton fx:id="btnAgregar1" onAction="#agregar" style="-fx-cursor: hand;" text="Agregar" />
                </children>
             </HBox>
-            <GridPane layoutY="120.0" prefHeight="62.0" prefWidth="1030.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="112.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="394.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="102.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="713.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+            <HBox layoutY="120.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <JFXTextField fx:id="txtFiltroEmpleado1" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Filtro por ID" GridPane.columnIndex="1" />
-                  <JFXButton fx:id="btnBuscar1" onAction="#Filtrar" style="-fx-cursor: hand;" text="Buscar" GridPane.columnIndex="3" />
+                  <JFXTextField fx:id="txtFiltroEmpleado1" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Filtro por ID">
+                     <HBox.margin>
+                        <Insets left="35.0" right="35.0" />
+                     </HBox.margin>
+                  </JFXTextField>
+                  <JFXButton fx:id="btnBuscar1" onAction="#Filtrar" style="-fx-cursor: hand;" text="Buscar" />
                </children>
-            </GridPane>
-            <GridPane layoutY="210.0" prefHeight="280.0" prefWidth="1030.0" AnchorPane.leftAnchor="0.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="41.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1002.0" minWidth="10.0" prefWidth="958.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="994.0" minWidth="0.0" prefWidth="44.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+            </HBox>
+            <HBox layoutY="210.0" AnchorPane.leftAnchor="0.0">
                <children>
-                  <TableView fx:id="table" onMouseReleased="#DatosEmpleado" prefHeight="280.0" prefWidth="950.0" GridPane.columnIndex="1">
-                     <columns>
-                        <TableColumn fx:id="COL_NOMBRE_PACIENTE" prefWidth="190.0" text="Nombre Completo" />
-                        <TableColumn fx:id="COL_CEDULA_PACIENTE" prefWidth="190.0" text="Cedula" />
-                        <TableColumn fx:id="COL_CORREO_PACIENTE" prefWidth="190.0" text="Correo" />
-                        <TableColumn fx:id="COL_USUARIO_PACIENTE" prefWidth="190.0" text="Genero" />
-                        <TableColumn fx:id="COL_NACIMIENTO_USUARIO" prefWidth="196.0" text="Fecha de Nacimiento" />
-                     </columns>
-                  </TableView>
+                  <GridPane prefHeight="280.0" prefWidth="1030.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="41.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1002.0" minWidth="10.0" prefWidth="958.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="994.0" minWidth="0.0" prefWidth="44.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <TableView fx:id="table" onMouseReleased="#DatosEmpleado" prefHeight="280.0" prefWidth="950.0" GridPane.columnIndex="1">
+                           <columns>
+                              <TableColumn fx:id="COL_NOMBRE_PACIENTE" prefWidth="190.0" text="Nombre Completo" />
+                              <TableColumn fx:id="COL_CEDULA_PACIENTE" prefWidth="190.0" text="Cedula" />
+                              <TableColumn fx:id="COL_CORREO_PACIENTE" prefWidth="190.0" text="Correo" />
+                              <TableColumn fx:id="COL_USUARIO_PACIENTE" prefWidth="190.0" text="Genero" />
+                              <TableColumn fx:id="COL_NACIMIENTO_USUARIO" prefWidth="196.0" text="Fecha de Nacimiento" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </GridPane>
                </children>
-            </GridPane>
-            <GridPane layoutY="500.0" prefHeight="62.0" prefWidth="1033.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="30.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="86.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="251.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="60.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="254.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="71.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+            </HBox>
+            <HBox layoutY="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <JFXTextField fx:id="txtNombre" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Nombre  Completo" GridPane.columnIndex="1" />
-                  <JFXTextField fx:id="txtCedula" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Cedula" GridPane.columnIndex="3" />
-                  <JFXTextField fx:id="txtCorreo" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Correo" GridPane.columnIndex="5" />
+                  <GridPane prefHeight="62.0" prefWidth="1033.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="30.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="86.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="251.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="60.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="254.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="71.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <JFXTextField fx:id="txtNombre" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Nombre  Completo" GridPane.columnIndex="1" />
+                        <JFXTextField fx:id="txtCedula" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Cedula" GridPane.columnIndex="3" />
+                        <JFXTextField fx:id="txtCorreo" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Correo" GridPane.columnIndex="5" />
+                     </children>
+                  </GridPane>
                </children>
-            </GridPane>
-            <GridPane layoutX="11.0" layoutY="588.0" prefHeight="62.0" prefWidth="1033.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="4.0" prefWidth="34.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="77.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="116.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="97.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="61.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="257.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="54.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="293.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="53.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+            </HBox>
+            <HBox layoutY="588.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <Label text="Genero:" GridPane.columnIndex="1" />
-                  <JFXRadioButton style="-fx-cursor: Hand;" text="Hombres" GridPane.columnIndex="2">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="genero" />
-                     </toggleGroup></JFXRadioButton>
-                  <JFXRadioButton text="Mujer" toggleGroup="$genero" GridPane.columnIndex="3">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor></JFXRadioButton>
-                  <JFXDatePicker prefHeight="29.0" prefWidth="250.0" GridPane.columnIndex="5" />
+                  <GridPane prefHeight="62.0" prefWidth="1033.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="4.0" prefWidth="34.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="77.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="116.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="97.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="61.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="257.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="54.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="293.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="53.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label text="Genero:" GridPane.columnIndex="1" />
+                        <JFXRadioButton style="-fx-cursor: Hand;" text="Hombres" GridPane.columnIndex="2">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="genero" />
+                           </toggleGroup>
+                        </JFXRadioButton>
+                        <JFXRadioButton text="Mujer" toggleGroup="$genero" GridPane.columnIndex="3">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXRadioButton>
+                        <JFXDatePicker prefHeight="29.0" prefWidth="250.0" GridPane.columnIndex="5" />
+                     </children>
+                  </GridPane>
                </children>
-            </GridPane>
-            <GridPane prefHeight="62.0" prefWidth="1030.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="769.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+            </HBox>
+            <HBox layoutY="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label fx:id="Titulo" text="Mantenimiento de Pacientes" GridPane.columnIndex="1" />
+                  <GridPane prefHeight="62.0" prefWidth="1030.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="769.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label fx:id="Titulo" text="Mantenimiento de Pacientes" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
                </children>
-            </GridPane>
+            </HBox>
          </children>
       </AnchorPane>
    </center>
