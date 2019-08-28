@@ -9,7 +9,8 @@
 }
 .root{
     -fx-background-color: white;
-}/*s
+}
+/*s
 .button:disabled{
     -fx-background-color: #E0E0E2;
    -fx-border-color: #94BBDA;
@@ -20,9 +21,19 @@
     -jfx-button-type: RAISED;/*raised and flat*/
     -fx-text-fill: WHITE;
     -jfx-rippler-fill: RED;
-    
 }
-
+#btnIngresar1{
+    -fx-background-color: #083d99;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: RED;
+}
+#btnSalir1{
+    -fx-background-color: #083d99;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: RED;
+}
 .custom-jfx-radio-button-white{
     -fx-text-fill: white;
     -jfx-selected-color: #6622CC;
@@ -114,6 +125,20 @@
     -jfx-unfocus-color: #042a6b;
     /*-jfx-label-float: true;*/
     -fx-text-fill: black;
+}
+#txtUsuario1{
+    -fx-prompt-text-fill: white;
+    -jfx-focus-color: white;
+    -jfx-unfocus-color: white;
+    /*-jfx-label-float: true;*/
+    -fx-text-fill: white;
+}
+#txtClave1{
+    -fx-prompt-text-fill: white;
+    -jfx-focus-color: white;
+    -jfx-unfocus-color: white;
+    /*-jfx-label-float: true;*/
+    -fx-text-fill: white;
 }
 .button:hover {
     -fx-background-color: #06388f;
