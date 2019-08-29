@@ -28,11 +28,13 @@ public class UsuarioService {
             parametros.put("clave", clave);
             Request request = new Request("UsuarioController/usuario", "/{usuario}/{clave}", parametros);
             request.get();
+            
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-
+            
             UsuarioDto Usuario = (UsuarioDto) request.readEntity(UsuarioDto.class);
+            
             return new Respuesta(true, "", "", "Usuario", Usuario);
 
         } catch (Exception ex) {
@@ -101,18 +103,22 @@ public class UsuarioService {
     }
 
     public Respuesta guardarUsuario(UsuarioDto Usuario) {
-        /*try {
+        try {
+            
+            Request request = new Request("UsuarioController/guardar");
+            request.post(Usuario);
+            
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-
             
-            return new Respuesta(true, "", "", "Usuario", UsuarioDto);
+            Usuario = (UsuarioDto) request.readEntity(UsuarioDto.class);
+            
+            return new Respuesta(true, "", "", "Usuario", Usuario);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error guardando el Usuario.", ex);
             return new Respuesta(false, "Error guardando el Usuario.", "guardarUsuario " + ex.getMessage());
-        }*/
-        return null;
+        }
     }
 
     public Respuesta eliminarUsuario(Long id) {

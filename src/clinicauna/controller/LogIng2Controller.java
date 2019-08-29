@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 /**
  * FXML Controller class
  *
@@ -35,7 +36,7 @@ public class LogIng2Controller extends Controller {
     private AnchorPane root;
     @FXML
     private ImageView imvFondo;
-    
+
     @FXML
     private ImageView omg;
     @FXML
@@ -58,15 +59,16 @@ public class LogIng2Controller extends Controller {
      */
     @Override
     public void initialize() {
-        
+
         Image imgFondo;
-        try{
-        
+        try {
+
             imgFondo = new Image("/clinicauna/resources/e.jpg");
             imvFondo.setImage(imgFondo);
-            
-        }catch(Exception e){}
-        
+
+        } catch (Exception e) {
+        }
+
         Image omg1;
         try {
             omg1 = new Image("/clinicauna/resources/key (1).png");
@@ -81,7 +83,7 @@ public class LogIng2Controller extends Controller {
             imguser.setImage(omg2);
         } catch (Exception e) {
         }
-        
+
     }
 
     @FXML

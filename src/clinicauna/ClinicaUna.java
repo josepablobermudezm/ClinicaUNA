@@ -8,9 +8,7 @@ package clinicauna;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -30,6 +28,7 @@ public class ClinicaUna extends Application {
         /*FlowController.getInstance().goMain();*/
         
          FlowController.getInstance().goViewInWindow("LogIn");
+         
     }
 
     /**
