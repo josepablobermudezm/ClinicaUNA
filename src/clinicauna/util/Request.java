@@ -22,6 +22,9 @@ import javax.ws.rs.core.Response;
  *
  * @author ccarranza
  */
+
+// Comunicarse con el web Service
+
 public class Request {
 
     private Client client;
@@ -29,7 +32,8 @@ public class Request {
     private WebTarget webTarget;
     private Response response;
 
-    public Request() {
+
+    public Request() { // define el cliente
         this.client = ClientBuilder.newClient();
     }
 
@@ -41,7 +45,8 @@ public class Request {
     public Request(String target, String parametros, Map<String, Object> valores) {
         this.client = ClientBuilder.newClient();
         this.webTarget = client.target(AppContext.getInstance().get("resturl") + target).path(parametros).resolveTemplates(valores);
-            this.builder = webTarget.request(MediaType.APPLICATION_JSON);
+
+        this.builder = webTarget.request(MediaType.APPLICATION_JSON);
         MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         headers.add("Content-Type", "application/json; charset=UTF-8");
         builder.headers(headers);

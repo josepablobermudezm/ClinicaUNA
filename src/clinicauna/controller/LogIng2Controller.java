@@ -25,14 +25,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-/*import unaplanilla2.model.UsuarioDto;
+import unaplanilla2.model.UsuarioDto;
 import unaplanilla2.service.UsuarioService;
 import unaplanilla2.util.AppContext;
 import unaplanilla2.util.FlowController;
 import unaplanilla2.util.Mensaje;
-import unaplanilla2.util.Respuesta;*/
+import unaplanilla2.util.Respuesta;
 
 /**
  * FXML Controller class
@@ -45,39 +45,63 @@ public class LogIng2Controller extends Controller {
     private AnchorPane root;
     @FXML
     private ImageView imvFondo;
-    @FXML
-    private JFXTextField txtUsuario;
-    @FXML
-    private JFXPasswordField txtClave;
-    @FXML
-    private JFXButton btnSalir;
-    @FXML
-    private JFXButton btnIngresar;
+    
     @FXML
     private ImageView omg;
+    @FXML
+    private ImageView imguser;
+    @FXML
+    private ImageView imgPassword;
+    @FXML
+    private VBox VboxLOG;
+    @FXML
+    private JFXTextField txtUsuario1;
+    @FXML
+    private JFXPasswordField txtClave1;
+    @FXML
+    private JFXButton btnSalir1;
+    @FXML
+    private JFXButton btnIngresar1;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize() {
-
-        /*Image omg1;
+        
+        Image imgFondo;
+        try{
+        
+            imgFondo = new Image("/clinicauna/resources/e.jpg");
+            imvFondo.setImage(imgFondo);
+            
+        }catch(Exception e){}
+        
+        Image omg1;
         try {
-            omg1 = new Image("/clinicauna/resources/e.png");
-            omg.setImage(omg1);
+            omg1 = new Image("/clinicauna/resources/key (1).png");
+            imgPassword.setImage(omg1);
         } catch (Exception e) {
-        }*/
+
+        }
+
+        Image omg2;
+        try {
+            omg2 = new Image("/clinicauna/resources/user (3).png");
+            imguser.setImage(omg2);
+        } catch (Exception e) {
+        }
+        
     }
 
     @FXML
     private void ingresar(ActionEvent event) {
         try {
 
-            if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar.getScene().getWindow(), "Es necesario digitar un usuario para ingresar al sistema.");
-            } else if (txtClave.getText() == null || txtClave.getText().isEmpty()) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar.getScene().getWindow(), "Es necesario digitar la clave para ingresar al sistema.");
+            if (txtUsuario1.getText() == null || txtUsuario1.getText().isEmpty()) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar un usuario para ingresar al sistema.");
+            } else if (txtClave1.getText() == null || txtClave1.getText().isEmpty()) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar la clave para ingresar al sistema.");
             } else {
 
                 UsuarioService UsuarioService = new UsuarioService();
