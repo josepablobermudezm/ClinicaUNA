@@ -14,26 +14,16 @@ import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import unaplanilla2.model.UsuarioDto;
-import unaplanilla2.service.UsuarioService;
-import unaplanilla2.util.AppContext;
-import unaplanilla2.util.FlowController;
-import unaplanilla2.util.Mensaje;
-import unaplanilla2.util.Respuesta;
-
 /**
  * FXML Controller class
  *
@@ -105,7 +95,7 @@ public class LogIng2Controller extends Controller {
             } else {
 
                 UsuarioService UsuarioService = new UsuarioService();
-                Respuesta respuesta = UsuarioService.getUsuario(txtUsuario.getText(), txtClave.getText());
+                Respuesta respuesta = UsuarioService.getUsuario(txtUsuario1.getText(), txtClave1.getText());
                 if (respuesta.getEstado()) {
                     AppContext.getInstance().set("Usuario", (UsuarioDto) respuesta.getResultado("Usuario"));
                     FlowController.getInstance().goMain();
@@ -122,7 +112,7 @@ public class LogIng2Controller extends Controller {
 
     @FXML
     private void salir(ActionEvent event) {
-        ((Stage) btnSalir.getScene().getWindow()).close();
+        this.getStage().close();
     }
 
 }
