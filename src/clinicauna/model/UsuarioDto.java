@@ -32,6 +32,8 @@ public class UsuarioDto {
     @XmlTransient
     private String correo;
     @XmlTransient
+    private String nombreUsuario;
+    @XmlTransient
     private String contrasennaTemp;
     @XmlTransient
     private String contrasenna;
@@ -43,7 +45,7 @@ public class UsuarioDto {
     public UsuarioDto() {
     }
 
-    public UsuarioDto(Long ID, String nombre, String pApellido, String estado, String sApellido, String cedula, String correo, String contrasennaTemp, String contrasenna, String tipoUsuario, String idioma) {
+    public UsuarioDto(Long ID, String nombre, String pApellido, String estado, String sApellido, String cedula, String correo, String nombreUsuario, String contrasennaTemp, String contrasenna, String tipoUsuario, String idioma) {
         this.ID = ID;
         this.nombre = nombre;
         this.pApellido = pApellido;
@@ -51,11 +53,14 @@ public class UsuarioDto {
         this.sApellido = sApellido;
         this.cedula = cedula;
         this.correo = correo;
+        this.nombreUsuario = nombreUsuario;
         this.contrasennaTemp = contrasennaTemp;
         this.contrasenna = contrasenna;
         this.tipoUsuario = tipoUsuario;
         this.idioma = idioma;
     }
+
+   
 
     public Long getID() {
         return ID;
@@ -143,5 +148,14 @@ public class UsuarioDto {
     public void setIdioma(String idioma) {
         this.idioma = idioma;
     }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+    
     
 }
