@@ -20,7 +20,7 @@ import javax.ws.rs.core.GenericType;
  */
 public class MedicoService {
     
-    public Respuesta getMedico(String usuario, String clave) {
+    /*public Respuesta getMedico(String usuario, String clave) {
         try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("usuario", usuario);
@@ -38,7 +38,7 @@ public class MedicoService {
             Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error obteniendo el usuario [" + usuario + "]", ex);
             return new Respuesta(false, "Error obteniendo el medico.", "getMedico " + ex.getMessage());
         }
-    }
+    }*/
 
     public Respuesta getMedico(Long id) {
         try {
@@ -80,7 +80,7 @@ public class MedicoService {
         }
     }
 
-    public Respuesta getUsuarios() {
+    public Respuesta getMedicos() {
         try {
             Request request = new Request("UsuarioController/Usuarios");
             request.get();
@@ -114,10 +114,10 @@ public class MedicoService {
     }
 
     public Respuesta eliminarMedico(Long id) {
-        /*try {
+        try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
-            Request request = new Request("MedicoController/Medico","/{id}",parametros);
+            Request request = new Request("MedicoController/eliminar","/{id}",parametros);
             request.delete();
 
             if (request.isError()) {
@@ -128,7 +128,5 @@ public class MedicoService {
             Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error eliminando el Medico.", ex);
             return new Respuesta(false, "Error eliminando el Medico.", "eliminarMedico " + ex.getMessage());
         }
-    }*/
-        return null;
     }
 }

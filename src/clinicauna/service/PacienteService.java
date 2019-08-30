@@ -115,10 +115,10 @@ public class PacienteService {
     }
 
     public Respuesta eliminarPaciente(Long id) {
-        /*try {
+        try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
-            Request request = new Request("PacienteController/Paciente","/{id}",parametros);
+            Request request = new Request("PacienteController/eliminar","/{id}",parametros);
             request.delete();
 
             if (request.isError()) {
@@ -129,7 +129,5 @@ public class PacienteService {
             Logger.getLogger(PacienteService.class.getName()).log(Level.SEVERE, "Error eliminando el Paciente.", ex);
             return new Respuesta(false, "Error eliminando el Paciente.", "eliminarPaciente " + ex.getMessage());
         }
-    }*/
-        return null;
     }
 }

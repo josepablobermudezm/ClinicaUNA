@@ -5,6 +5,8 @@
  */
 package clinicauna.controller;
 
+import clinicauna.service.MedicoService;
+import clinicauna.service.UsuarioService;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -81,6 +83,10 @@ public class MedicosController extends Controller  {
             omg.setImage(omg1);
             omg.setOpacity(0.6);*/
         } catch (Exception e) {}
+        /*
+        UsuarioService usuario = new UsuarioService();
+        usuario.eliminarUsuario(new Long(2));*/
+        
 
     }
     

@@ -122,10 +122,10 @@ public class UsuarioService {
     }
 
     public Respuesta eliminarUsuario(Long id) {
-        /*try {
+        try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
-            Request request = new Request("UsuarioController/Usuario","/{id}",parametros);
+            Request request = new Request("UsuarioController/eliminar","/{id}",parametros);
             request.delete();
 
             if (request.isError()) {
@@ -136,7 +136,5 @@ public class UsuarioService {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error eliminando el Usuario.", ex);
             return new Respuesta(false, "Error eliminando el Usuario.", "eliminarUsuario " + ex.getMessage());
         }
-    }*/
-        return null;
     }
 }

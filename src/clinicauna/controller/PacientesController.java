@@ -5,6 +5,8 @@
  */
 package clinicauna.controller;
 
+import clinicauna.service.PacienteService;
+import clinicauna.service.UsuarioService;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -79,7 +81,10 @@ public class PacientesController extends Controller  {
             omg.setImage(omg1);
             omg.setOpacity(0.6);*/
         } catch (Exception e) {}
-
+        
+        PacienteService paciente = new PacienteService();
+        paciente.eliminarPaciente(new Long(1));
+        
     }
     
     @FXML
