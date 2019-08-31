@@ -12,6 +12,7 @@ import clinicauna.service.PacienteService;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
+import clinicauna.util.generadorContrasennas;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -19,6 +20,7 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
@@ -120,17 +122,67 @@ public class PacientesController extends Controller  {
         //FechaDeNacimiento.getValue().
     }
     
-    @FXML
-    private void DatosEmpleado(MouseEvent event) {
-    }
 
     
     @FXML
     private void editar(ActionEvent event) {
+        
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                if (registroCorrecto()) {
+                    Long id = pacienteDto.getID();
+                    String nombre = txtNombre.getText();
+                    String papellido = txtPApellido.getText();
+                    String sapellido = txtSApellido.getText();
+                    String correo = txtCorreo.getText();
+                    String cedula = txtCedula.getText();
+                    String genero1 = (btnHombre.isSelected())?"M":"F";
+                    LocalDate fecha = FechaDeNacimiento.getValue();
+                    //Integer version = table.getSelectionModel().getSelectedItem().getVersion() + 1;
+
+                    pacienteDto = new PacienteDto(id,nombre, papellido, sapellido,cedula, correo, genero1, fecha);
+                    try {
+                        resp = pacienteService.guardarPaciente(pacienteDto);
+                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        limpiarValores();
+                        pacientes = (ArrayList) pacienteService.getPacientes().getResultado("Pacientes");
+                        table.getItems().clear();
+                        items = FXCollections.observableArrayList(pacientes);
+                        table.setItems(items);
+                    } catch (Exception e) {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                    }
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                            + "verifica que todos los datos esten llenos.");
+                }
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a editar");
+            }
+        }
+        
     }
 
     @FXML
     private void eliminar(ActionEvent event) {
+        
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                pacienteService.eliminarPaciente(table.getSelectionModel().getSelectedItem().getID());
+                ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), "Datos Eliminados correctamente");
+
+                Respuesta respuesta = pacienteService.getPacientes();
+                items.clear();
+                pacientes = (ArrayList) respuesta.getResultado("Pacientes");
+                items = FXCollections.observableArrayList(pacientes);
+                table.setItems(items);
+                limpiarValores();
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
+            }
+        }
+        
+        
     }
 
     @FXML
@@ -148,13 +200,9 @@ public class PacientesController extends Controller  {
             String sapellido = txtSApellido.getText();
             String correo = txtCorreo.getText();
             String cedula = txtCedula.getText();
-            String genero1 = null;
-            if (btnHombre.isSelected()) {
-                genero1 = "H";
-            } else if (btnMujer.isSelected()) {
-                genero1 = "M";
-            }
+            String genero1 = (btnHombre.isSelected())?"M":"F";
             LocalDate fecha = FechaDeNacimiento.getValue();
+            //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
             
             pacienteDto = new PacienteDto(null,nombre, papellido, sapellido,cedula, correo, genero1, fecha);
             try {
@@ -162,6 +210,7 @@ public class PacientesController extends Controller  {
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                 limpiarValores();
                 pacientes = (ArrayList) pacienteService.getPacientes().getResultado("Pacientes");
+                
                 table.getItems().clear();
                 items = FXCollections.observableArrayList(pacientes);
                 table.setItems(items);
@@ -199,6 +248,27 @@ public class PacientesController extends Controller  {
         txtNombre.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
         txtSApellido.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
         txtPApellido.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
+    }
+
+    @FXML
+    private void DatosPaciente(MouseEvent event) {
+        
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                pacienteDto = table.getSelectionModel().getSelectedItem();
+                txtNombre.setText(pacienteDto.getNombre());
+                txtPApellido.setText(pacienteDto.getpApellido());
+                txtSApellido.setText(pacienteDto.getsApellido());
+                txtCedula.setText(pacienteDto.getCedula());
+                txtCorreo.setText(pacienteDto.getCorreo());
+                if(pacienteDto.getGenero().equals("M")){
+                    btnHombre.setSelected(true);
+                }else{
+                    btnMujer.setSelected(true);
+                }
+                FechaDeNacimiento.setValue(pacienteDto.getFechaNacimiento());
+            }
+        }
     }
     
 }

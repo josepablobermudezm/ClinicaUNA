@@ -47,7 +47,7 @@ public class MedicosController extends Controller  {
     @FXML
     private Label Titulo;
     @FXML
-    private TableView<?> table;
+    private TableView<MedicoDto> table;
     @FXML
     private JFXButton btnEditar1;
     @FXML
@@ -96,7 +96,7 @@ public class MedicosController extends Controller  {
     @Override
     public void initialize() {
 
-        /*medicoService = new MedicoService();
+        medicoService = new MedicoService();
         ms = new Mensaje();
         resp = medicoService.getMedicos();
         medicos = ((ArrayList<MedicoDto>) resp.getResultado("Medicos"));
@@ -105,12 +105,12 @@ public class MedicosController extends Controller  {
         COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getFolio()));
         COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCarne()));
         COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
-        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada().toString():"NULO"));
-        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada().toString():"NULO"));
+        //COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada().toString():"NULO"));
+        //COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada().toString():"NULO"));
         COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty(value.getValue().getEspacios()));
         
         items = FXCollections.observableArrayList(medicos);
-        table.setItems(items);*/
+        table.setItems(items);
         
     }
     
@@ -125,6 +125,23 @@ public class MedicosController extends Controller  {
 
     @FXML
     private void eliminar(ActionEvent event) {
+        
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                medicoService.eliminarMedico(table.getSelectionModel().getSelectedItem().getID());
+                ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), "Datos Eliminados correctamente");
+
+                Respuesta respuesta = medicoService.getMedicos();
+                items.clear();
+                medicos = (ArrayList) respuesta.getResultado("Medicos");
+                items = FXCollections.observableArrayList(medicos);
+                table.setItems(items);
+                limpiarValores();
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
+            }
+        }
+        
     }
 
     @FXML
@@ -153,6 +170,7 @@ public class MedicosController extends Controller  {
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                 limpiarValores();
                 medicos = (ArrayList) medicoService.getMedicos().getResultado("Medicos");
+                
                 table.getItems().clear();
                 items = FXCollections.observableArrayList(medicos);
                 table.setItems(items);
