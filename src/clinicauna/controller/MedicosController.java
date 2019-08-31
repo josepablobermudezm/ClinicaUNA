@@ -5,17 +5,28 @@
  */
 package clinicauna.controller;
 
+import clinicauna.ClinicaUna;
+import clinicauna.model.MedicoDto;
+import clinicauna.model.PacienteDto;
 import clinicauna.service.MedicoService;
-import clinicauna.service.UsuarioService;
+import clinicauna.util.Mensaje;
+import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -47,21 +58,21 @@ public class MedicosController extends Controller  {
     @FXML
     private JFXButton btnBuscar;
     @FXML
-    private JFXComboBox<?> ComboEstado;
+    private JFXComboBox<MedicoDto> ComboEstado;
     @FXML
-    private TableColumn<?, String> COL_CODIGO_MEDICOS;
+    private TableColumn<MedicoDto, String> COL_CODIGO_MEDICOS;
     @FXML
-    private TableColumn<?, String> COL_FOLIO_MEDICOS;
+    private TableColumn<MedicoDto, String> COL_FOLIO_MEDICOS;
     @FXML
-    private TableColumn<?, String> COL_CARNE_MEDICOS;
+    private TableColumn<MedicoDto, String> COL_CARNE_MEDICOS;
     @FXML
-    private TableColumn<?, String> COL_ESTADO_MEDICOS;
+    private TableColumn<MedicoDto, String> COL_ESTADO_MEDICOS;
     @FXML
-    private TableColumn<?, String> COL_INICIO_MEDICOS;
+    private TableColumn<MedicoDto, String> COL_INICIO_MEDICOS;
     @FXML
-    private TableColumn<?, String> COL_FINAL_MEDICOS;
+    private TableColumn<MedicoDto, String> COL_FINAL_MEDICOS;
     @FXML
-    private TableColumn<?, String> COL_ESPACIOS_MEDICOS;
+    private TableColumn<MedicoDto, Number> COL_ESPACIOS_MEDICOS;
     @FXML
     private JFXTextField txtCodigo;
     @FXML
@@ -72,22 +83,31 @@ public class MedicosController extends Controller  {
     private JFXTimePicker timePickerfinal;
     @FXML
     private JFXTimePicker timePickerInicio;
-
-    
+    private Respuesta resp;
+    private Mensaje ms;
+    private MedicoService medicoService;
+    private ArrayList<MedicoDto> medicos;
+    private ObservableList items;
+   
     @Override
     public void initialize() {
-
-        Image omg1;
-        try {
-            /*omg1 = new Image("/clinicauna/resources/background.jpg");
-            omg.setImage(omg1);
-            omg.setOpacity(0.6);*/
-        } catch (Exception e) {}
-        /*
-        UsuarioService usuario = new UsuarioService();
-        usuario.eliminarUsuario(new Long(2));*/
+        //timePickerInicio.getV
+        medicoService = new MedicoService();
+        ms = new Mensaje();
+        resp = medicoService.getMedicos();
+        medicos = ((ArrayList<MedicoDto>) resp.getResultado("Medicos"));
         
-
+        COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCodigo()));
+        COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getFolio()));
+        COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCarne()));
+        COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
+        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada().toString():"NULO"));
+        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada().toString():"NULO"));
+        COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty(value.getValue().getEspacios()));
+        
+        items = FXCollections.observableArrayList(medicos);
+        table.setItems(items);
+        
     }
     
     
@@ -109,11 +129,47 @@ public class MedicosController extends Controller  {
 
     @FXML
     private void agregar(ActionEvent event) {
+        /*
+        if (registroCorrecto()) {
+        
+            String nombre = txtNombre.getText();
+            String papellido = txtPApellido.getText();
+            String sapellido = txtSApellido.getText();
+            String correo = txtCorreo.getText();
+            String cedula = txtCedula.getText();
+            String genero1 = null;
+            if (btnHombre.isSelected()) {
+                genero1 = "H";
+            } else if (btnMujer.isSelected()) {
+                genero1 = "M";
+            }
+            LocalDate fecha = FechaDeNacimiento.getValue();
+            
+            pacienteDto = new PacienteDto(null,nombre, papellido, sapellido,cedula, correo, genero1, fecha);
+            try {
+                resp = pacienteService.guardarPaciente(pacienteDto);
+                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                limpiarValores();
+                pacientes = (ArrayList) pacienteService.getPacientes().getResultado("Pacientes");
+                table.getItems().clear();
+                items = FXCollections.observableArrayList(pacientes);
+                table.setItems(items);
+            } catch (Exception e) {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+            }
+        }
+        */
+        
     }
-
+/*
+    boolean registroCorrecto() {
+        return !txtNombre.getText().isEmpty() && !txtCedula.getText().isEmpty()
+               && !txtPApellido.getText().isEmpty() && !txtSApellido.getText().isEmpty()
+               && !FechaDeNacimiento.getValue().equals(null)
+               && !txtCorreo.getText().isEmpty() && (btnHombre.isSelected() || btnMujer.isSelected());
+    }*/
+    
     @FXML
     private void Filtrar(ActionEvent event) {
     }
-
-    
 }

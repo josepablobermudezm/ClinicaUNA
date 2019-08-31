@@ -86,7 +86,7 @@ public class UsuarioService {
 
     public Respuesta getUsuarios() {
         try {
-            Request request = new Request("UsuarioController/Usuarios");
+            Request request = new Request("UsuarioController/usuarios");
             request.get();
 
             if (request.isError()) {

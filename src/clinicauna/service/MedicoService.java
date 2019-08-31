@@ -79,10 +79,10 @@ public class MedicoService {
             return new Respuesta(false, "Error obteniendo Medicos.", "getMedicos " + ex.getMessage());
         }
     }
-
+    
     public Respuesta getMedicos() {
         try {
-            Request request = new Request("UsuarioController/Usuarios");
+            Request request = new Request("MedicoController/medicos");
             request.get();
 
             if (request.isError()) {

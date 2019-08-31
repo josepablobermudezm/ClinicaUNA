@@ -8,6 +8,7 @@ package clinicauna.service;
 import clinicauna.model.PacienteDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,9 +82,9 @@ public class PacienteService {
         }
     }
 
-    public Respuesta getUsuarios() {
+    public Respuesta getPacientes() {
         try {
-            Request request = new Request("UsuarioController/Usuarios");
+            Request request = new Request("PacienteController/pacientes");
             request.get();
 
             if (request.isError()) {
@@ -100,18 +101,22 @@ public class PacienteService {
     }
 
     public Respuesta guardarPaciente(PacienteDto Paciente) {
-        /*try {
+        try {
+            
+            Request request = new Request("PacienteController/guardar");
+            request.post(Paciente);
+            
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-
             
-            return new Respuesta(true, "", "", "Paciente", PacienteDto);
+            Paciente = (PacienteDto) request.readEntity(PacienteDto.class);
+            
+            return new Respuesta(true, "", "", "Usuario", Paciente);
         } catch (Exception ex) {
-            Logger.getLogger(PacienteService.class.getName()).log(Level.SEVERE, "Error guardando el Paciente.", ex);
+            Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error guardando el Paciente.", ex);
             return new Respuesta(false, "Error guardando el Paciente.", "guardarPaciente " + ex.getMessage());
-        }*/
-        return null;
+        }
     }
 
     public Respuesta eliminarPaciente(Long id) {

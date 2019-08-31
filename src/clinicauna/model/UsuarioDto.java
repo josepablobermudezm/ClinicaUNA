@@ -45,7 +45,7 @@ public class UsuarioDto {
     public UsuarioDto() {
     }
 
-    public UsuarioDto(Long ID, String nombre, String pApellido, String estado, String sApellido, String cedula, String correo, String nombreUsuario, String contrasennaTemp, String contrasenna, String tipoUsuario, String idioma) {
+    public UsuarioDto(Long ID, String nombre, String pApellido, String sApellido,String estado, String cedula, String correo, String nombreUsuario, String contrasennaTemp, String contrasenna, String tipoUsuario, String idioma) {
         this.ID = ID;
         this.nombre = nombre;
         this.pApellido = pApellido;

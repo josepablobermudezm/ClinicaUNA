@@ -8,8 +8,10 @@ package clinicauna;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
@@ -34,6 +36,23 @@ public class ClinicaUna extends Application {
     /**
      * @param args the command line arguments
      */
+    
+     public final static EventHandler<KeyEvent> aceptaCaracteres = (KeyEvent event) -> {
+        if (Character.isDigit(event.getCharacter().charAt(0))) {
+            event.consume();
+        }
+    };
+
+    public final static EventHandler<KeyEvent> aceptaNumeros = (KeyEvent event) -> {
+        if (!Character.isDigit(event.getCharacter().charAt(0))) {
+            event.consume();
+        }
+    };
+
+    public final static EventHandler<KeyEvent> noEscribir = (KeyEvent event) -> {
+        event.consume();
+    };
+    
     public static void main(String[] args) {
         launch(args);
     }

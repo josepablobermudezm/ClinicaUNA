@@ -5,11 +5,13 @@
  */
 package clinicauna.model;
 
+import clinicauna.util.LocalDateAdapter;
 import java.time.LocalDate;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
@@ -104,11 +106,11 @@ public class PacienteDto {
     public void setGenero(String genero) {
         this.genero = genero;
     }
-
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
-
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
