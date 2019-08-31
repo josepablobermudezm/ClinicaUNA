@@ -7,7 +7,6 @@ package clinicauna.controller;
 
 import clinicauna.ClinicaUna;
 import clinicauna.model.MedicoDto;
-import clinicauna.model.PacienteDto;
 import clinicauna.service.MedicoService;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -97,7 +96,7 @@ public class MedicosController extends Controller  {
     @Override
     public void initialize() {
 
-        medicoService = new MedicoService();
+        /*medicoService = new MedicoService();
         ms = new Mensaje();
         resp = medicoService.getMedicos();
         medicos = ((ArrayList<MedicoDto>) resp.getResultado("Medicos"));
@@ -111,7 +110,7 @@ public class MedicosController extends Controller  {
         COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty(value.getValue().getEspacios()));
         
         items = FXCollections.observableArrayList(medicos);
-        table.setItems(items);
+        table.setItems(items);*/
         
     }
     
@@ -143,9 +142,12 @@ public class MedicosController extends Controller  {
             Integer espacio = Integer.parseInt(txtEspacio.getText());
             LocalTime inicio = timePickerInicio.getValue();
             LocalTime final1 = timePickerfinal.getValue();
-            String estado = ComboEstado.getValue().toString();
+            //String estado = ComboEstado.getValue().toString();
             
-            //medicoDto = new MedicoDto(null,codigo, folio, carne,estado, inicio, final1, espacio);
+            LocalDateTime inicio1 = LocalDateTime.of(LocalDate.now(),inicio);
+            LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
+            
+            medicoDto = new MedicoDto(null,codigo, folio, carne,/*estado*/"A", inicio1, final2, espacio);
             try {
                 resp = medicoService.guardarMedico(medicoDto);
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
