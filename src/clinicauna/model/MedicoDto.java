@@ -35,16 +35,16 @@ public class MedicoDto {
     @XmlTransient
     private String Estado;
     @XmlTransient
-    private LocalDate InicioJornada;
+    private LocalDateTime InicioJornada;
     @XmlTransient
-    private LocalDate FinJornada;
+    private LocalDateTime FinJornada;
     @XmlTransient
     private Integer espacios;
 
     public MedicoDto() {
     }
 
-    public MedicoDto(Long ID, String Codigo, String Folio, String carne, String Estado, LocalDate InicioJornada, LocalDate FinJornada, Integer espacios) {
+    public MedicoDto(Long ID, String Codigo, String Folio, String carne, String Estado, LocalDateTime InicioJornada, LocalDateTime FinJornada, Integer espacios) {
         this.ID = ID;
         this.Codigo = Codigo;
         this.Folio = Folio;
@@ -102,20 +102,20 @@ public class MedicoDto {
     public void setEstado(String Estado) {
         this.Estado = Estado;
     }
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    public LocalDate getInicioJornada() {
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+    public LocalDateTime getInicioJornada() {
         return InicioJornada;
     }
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    public void setInicioJornada(LocalDate InicioJornada) {
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+    public void setInicioJornada(LocalDateTime InicioJornada) {
         this.InicioJornada = InicioJornada;
     }
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    public LocalDate getFinJornada() {
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+    public LocalDateTime getFinJornada() {
         return FinJornada;
     }
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    public void setFinJornada(LocalDate FinJornada) {
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+    public void setFinJornada(LocalDateTime FinJornada) {
         this.FinJornada = FinJornada;
     }
     
