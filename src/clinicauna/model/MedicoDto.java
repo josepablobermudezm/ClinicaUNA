@@ -5,11 +5,8 @@
  */
 package clinicauna.model;
 
-import clinicauna.util.LocalDateAdapter;
 import clinicauna.util.LocalDateTimeAdapter;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
