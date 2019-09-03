@@ -8,6 +8,7 @@ package clinicauna.service;
 import clinicauna.model.MedicoDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,18 +100,22 @@ public class MedicoService {
     }
 
     public Respuesta guardarMedico(MedicoDto Medico) {
-        /*try {
+        try {
+            
+            Request request = new Request("MedicoController/guardar");
+            request.post(Medico);
+            
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-
             
-            return new Respuesta(true, "", "", "Medico", MedicoDto);
+            Medico = (MedicoDto) request.readEntity(MedicoDto.class);
+            
+            return new Respuesta(true, "", "", "Medico", Medico);
         } catch (Exception ex) {
             Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error guardando el Medico.", ex);
             return new Respuesta(false, "Error guardando el Medico.", "guardarMedico " + ex.getMessage());
-        }*/
-        return null;
+        }
     }
 
     public Respuesta eliminarMedico(Long id) {

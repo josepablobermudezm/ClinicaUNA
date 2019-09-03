@@ -125,7 +125,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXTextField prefHeight="29.0" prefWidth="250.0" promptText="Horas Libres" GridPane.columnIndex="2" />
+                  <JFXTextField fx:id="txtEspacio" prefHeight="29.0" prefWidth="250.0" promptText="Espacio por Hora" GridPane.columnIndex="2" />
                   <HBox prefHeight="72.0" prefWidth="443.0" spacing="20.0" GridPane.columnIndex="4">
                      <padding>
                         <Insets left="20.0" right="20.0" top="40.0" />

@@ -88,7 +88,7 @@
                         <Label text="Género:" GridPane.columnIndex="3" />
                         <JFXRadioButton fx:id="btnMujer" text="Mujer" GridPane.columnIndex="3">
                            <GridPane.margin>
-                              <Insets left="130.0" />
+                              <Insets left="150.0" />
                            </GridPane.margin>
                            <toggleGroup>
                               <ToggleGroup fx:id="genero" />
@@ -140,7 +140,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TableView fx:id="table" onMouseReleased="#DatosEmpleado" prefHeight="280.0" prefWidth="950.0" GridPane.columnIndex="1">
+                  <TableView fx:id="table" onMouseReleased="#DatosPaciente" prefHeight="280.0" prefWidth="950.0" GridPane.columnIndex="1">
                      <columns>
                         <TableColumn fx:id="COL_NOMBRE_PAC" prefWidth="135.7" text="Nombre" />
                         <TableColumn fx:id="COL_PAPELLIDO_PAC" prefWidth="135.7" text="Primer Apellidos" />
