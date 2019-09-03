@@ -194,6 +194,7 @@ public class PacientesController extends Controller  {
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
+        
     }
 
     @FXML
@@ -235,7 +236,7 @@ public class PacientesController extends Controller  {
     boolean registroCorrecto() {
         return !txtNombre.getText().isEmpty() && !txtCedula.getText().isEmpty()
                && !txtPApellido.getText().isEmpty() && !txtSApellido.getText().isEmpty()
-               && !FechaDeNacimiento.getValue().equals(null)
+               && !FechaDeNacimiento.getValue().toString().isEmpty()
                && !txtCorreo.getText().isEmpty() && (btnHombre.isSelected() || btnMujer.isSelected());
     }
     

@@ -60,7 +60,6 @@ public class MedicosController extends Controller  {
     private JFXTextField txtFiltroEmpleado;
     @FXML
     private JFXButton btnBuscar;
-    @FXML
     private JFXComboBox<MedicoDto> ComboEstado;
     @FXML
     private TableColumn<MedicoDto, String> COL_CODIGO_MEDICOS;
@@ -94,6 +93,8 @@ public class MedicosController extends Controller  {
     @FXML
     private JFXTextField txtEspacio;
     private MedicoDto medicoDto;
+    @FXML
+    private JFXTextField txtNombreUsuario;
    
     @Override
     public void initialize() {
@@ -103,20 +104,16 @@ public class MedicosController extends Controller  {
         resp = medicoService.getMedicos();
         medicos = ((ArrayList<MedicoDto>) resp.getResultado("Medicos"));
         
-        COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCodigo()));
+        COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCodigo()!=null)?value.getValue().getFolio():"Sin Asignar"));
         COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFolio()!=null)?value.getValue().getFolio():"Sin Asignar"));
         COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCarne()!=null)?value.getValue().getCarne():"Sin Asignar"));
         COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
-        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada().toString():"NULO"));
-        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada().toString():"NULO"));
+        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada():"NULO"));
+        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada():"NULO"));
         COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty((value.getValue().getEspacios()!=null)?value.getValue().getEspacios():0));
         
         items = FXCollections.observableArrayList(medicos);
         table.setItems(items);
-        
-        
-        
-        
     }
     
     
@@ -126,6 +123,40 @@ public class MedicosController extends Controller  {
 
     @FXML
     private void editar(ActionEvent event) {
+        
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                if (registroCorrecto()) {
+                    Long id = medicoDto.getID();
+                    String usuario = medicoDto.getUs().getNombreUsuario();
+                    String folio = txtFolio.getText();
+                    String carne = txtCarne.getText();
+                    String codigo = txtCodigo.getText();
+                    String inicio = timePickerInicio.getValue().toString();
+                    String final1 = timePickerfinal.getValue().toString();
+                    Integer espacios = Integer.parseInt(txtEspacio.getText());
+                    UsuarioDto usuariodto = medicoDto.getUs();
+
+                    medicoDto = new MedicoDto(id, usuariodto, codigo, folio,carne, "I", inicio, final1, espacios);
+                    try {
+                        resp = medicoService.guardarMedico(medicoDto);
+                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        limpiarValores();
+                        medicos = (ArrayList) medicoService.getMedicos().getResultado("Medicos");
+                        table.getItems().clear();
+                        items = FXCollections.observableArrayList(medicos);
+                        table.setItems(items);
+                    } catch (Exception e) {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                    }
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                            + "verifica que todos los datos esten llenos.");
+                }
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a editar");
+            }
+        }
     }
 
     @FXML
@@ -151,59 +182,24 @@ public class MedicosController extends Controller  {
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
+        
     }
 
-    /*private void agregar(ActionEvent event) {
-        
-        if (registroCorrecto()) {
-        
-            String codigo = txtCodigo.getText();
-            String folio = txtFolio.getText();
-            String carne = txtCarne.getText();
-            Integer espacio = Integer.parseInt(txtEspacio.getText());
-            LocalTime inicio = timePickerInicio.getValue();
-            LocalTime final1 = timePickerfinal.getValue();
-            String inicioJornada = inicio.toString();
-            String finJornada = final1.toString();
-            //String estado = ComboEstado.getValue().toString();
-            
-            //LocalDateTime inicio1 = LocalDateTime.of(LocalDate.now(),inicio);
-            //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
-            UsuarioDto usuario = null;
-            medicoDto = new MedicoDto(null,usuario,null, null, null,/*estado"I", null, null, null);
-            try {
-                resp = medicoService.guardarMedico(medicoDto);
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
-                limpiarValores();
-                medicos = (ArrayList) medicoService.getMedicos().getResultado("Medicos");
-                
-                table.getItems().clear();
-                items = FXCollections.observableArrayList(medicos);
-                table.setItems(items);
-            } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el medico...");
-            }
-        }
-        
-        
-    }*/
-
     void limpiarValores() {
+        txtNombreUsuario.clear();
         txtCarne.clear();
         txtCodigo.clear();
         txtEspacio.clear();
         txtFolio.clear();
         timePickerInicio.setValue(null);
         timePickerfinal.setValue(null);
-        ComboEstado.getSelectionModel().clearSelection();
         table.getSelectionModel().clearSelection();
     }
     
     boolean registroCorrecto() {
-        return !txtCarne.getText().isEmpty() && !txtCodigo.getText().isEmpty()
+        return !txtNombreUsuario.getText().isEmpty() && !txtCarne.getText().isEmpty() && !txtCodigo.getText().isEmpty()
                && !txtFolio.getText().isEmpty() && !txtEspacio.getText().isEmpty()
-               && !timePickerInicio.getValue().equals(null) && !timePickerfinal.getValue().equals(null)
-               && ComboEstado.getSelectionModel().isEmpty();
+               && !timePickerInicio.getValue().toString().isEmpty() && !timePickerfinal.getValue().toString().isEmpty();
     }
     
     @FXML
@@ -212,5 +208,49 @@ public class MedicosController extends Controller  {
     
     private void typeKeys() {
         txtEspacio.setOnKeyTyped(ClinicaUna.aceptaNumeros);
+    }
+    
+    @FXML
+    private void DatosMedico(MouseEvent event) {
+        
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                medicoDto = table.getSelectionModel().getSelectedItem();
+                txtNombreUsuario.setText(medicoDto.getUs().getNombreUsuario());
+                if(medicoDto.getCarne()!= null){
+                    txtCodigo.setText(medicoDto.getCodigo());
+                }else{
+                    txtCodigo.setText("Vacío");
+                }
+                if(medicoDto.getCarne()!= null){
+                    txtCarne.setText(medicoDto.getCarne());
+                }else{
+                    txtCarne.setText("Vacío");
+                }
+                if(medicoDto.getEspacios()!= null){
+                    txtEspacio.setText(String.valueOf(medicoDto.getEspacios()));
+                }else{
+                    txtEspacio.setText("0");
+                }
+                if(medicoDto.getFolio() != null){
+                    txtFolio.setText(medicoDto.getFolio());
+                }else{
+                    txtFolio.setText("Vacío");
+                }
+                if(medicoDto.getInicioJornada() != null){
+                    LocalTime localTimeObj = LocalTime.parse(medicoDto.getInicioJornada());
+                    timePickerInicio.setValue(localTimeObj);
+                }else{
+                    //00:00
+                    timePickerInicio.setValue(LocalTime.MIDNIGHT);
+                }
+                if(medicoDto.getFinJornada() != null){
+                    LocalTime localTimeObj1 = LocalTime.parse(medicoDto.getFinJornada());
+                    timePickerfinal.setValue(localTimeObj1);
+                }else{
+                    timePickerfinal.setValue(LocalTime.MIDNIGHT);
+                }
+            }
+        }
     }
 }

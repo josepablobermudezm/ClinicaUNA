@@ -57,7 +57,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TableView fx:id="table" onMouseReleased="#DatosEmpleado" prefHeight="280.0" prefWidth="950.0" GridPane.columnIndex="1">
+                  <TableView fx:id="table" onMouseReleased="#DatosMedico" prefHeight="280.0" prefWidth="950.0" GridPane.columnIndex="1">
                      <columns>
                         <TableColumn fx:id="COL_CODIGO_MEDICOS" prefWidth="135.0" text="Código" />
                         <TableColumn fx:id="COL_FOLIO_MEDICOS" prefWidth="135.0" text="Folio" />
