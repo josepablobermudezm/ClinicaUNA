@@ -20,12 +20,12 @@ import javax.ws.rs.core.GenericType;
  */
 public class MedicoService {
     
-    /*public Respuesta getMedico(String usuario, String clave) {
+    public Respuesta getMedico(String Medico, String clave) {
         try {
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("usuario", usuario);
+            parametros.put("Medico", Medico);
             parametros.put("clave", clave);
-            Request request = new Request("MedicoController/usuario", "/{usuario}/{clave}", parametros);
+            Request request = new Request("MedicoController/Medico", "/{Medico}/{clave}", parametros);
             request.get();
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
@@ -35,10 +35,10 @@ public class MedicoService {
             return new Respuesta(true, "", "", "Medico", medico);
 
         } catch (Exception ex) {
-            Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error obteniendo el usuario [" + usuario + "]", ex);
+            Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error obteniendo el Medico [" + Medico + "]", ex);
             return new Respuesta(false, "Error obteniendo el medico.", "getMedico " + ex.getMessage());
         }
-    }*/
+    }
 
     public Respuesta getMedico(Long id) {
         try {
@@ -54,7 +54,7 @@ public class MedicoService {
             MedicoDto medico = (MedicoDto) request.readEntity(MedicoDto.class);
             return new Respuesta(true, "", "", "Medico", medico);
         } catch (Exception ex) {
-            Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error obteniendo el Usuario [" + id + "]", ex);
+            Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error obteniendo el Medico [" + id + "]", ex);
             return new Respuesta(false, "Error obteniendo el Medico.", "getMedico " + ex.getMessage());
         }
     }
@@ -75,7 +75,7 @@ public class MedicoService {
             });
             return new Respuesta(true, "", "", "Medicos", Medicos);
         } catch (Exception ex) {
-            Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error obteniendo Usuarios.", ex);
+            Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error obteniendo Medicos.", ex);
             return new Respuesta(false, "Error obteniendo Medicos.", "getMedicos " + ex.getMessage());
         }
     }
