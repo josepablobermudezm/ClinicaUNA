@@ -213,7 +213,7 @@ public class MedicosController extends Controller {
     private void Filtrar(ActionEvent event) {
     }
 
-    private void typeKeys() {
+    private void typeKeys() { 
         txtEspacio.setOnKeyTyped(ClinicaUna.aceptaNumeros);
     }
 
