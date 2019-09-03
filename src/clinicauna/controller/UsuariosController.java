@@ -127,7 +127,7 @@ public class UsuariosController extends Controller {
         medicoService = new MedicoService();
         resp1 = medicoService.getMedicos();
         medicos = ((ArrayList<MedicoDto>) resp1.getResultado("Medicos"));
-        
+
         COL_NOMBRE_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre()));
         COL_CEDULA_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCedula()));
         COL_CORREO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCorreo()));
@@ -227,13 +227,12 @@ public class UsuariosController extends Controller {
             String temp = generadorContrasennas.getInstance().getPassword();
 
             usuarioDto = new UsuarioDto(null, nombre, papellido, sapellido, "I", cedula, correo, nombreusuario, temp, null, tipoUsuario, idioma);
-            if(tipoUsuario.equals("M")){
-                medicoDto = new MedicoDto(null, usuarioDto, null, null, null,/*estado*/ "I", null, null, null);
-            }
+
             try {
                 resp = usuarioService.guardarUsuario(usuarioDto);
                 usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
                 if (tipoUsuario.equals("M")) {
+                    medicoDto = new MedicoDto(null, usuarioDto, null, null, null, "I", null, null, null);
                     resp1 = medicoService.guardarMedico(medicoDto);
                     medicoDto = (MedicoDto) resp1.getResultado("Medico");
                 }
