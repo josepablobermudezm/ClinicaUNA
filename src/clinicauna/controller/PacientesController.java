@@ -19,8 +19,11 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
@@ -138,6 +141,10 @@ public class PacientesController extends Controller  {
                     String cedula = txtCedula.getText();
                     String genero1 = (btnHombre.isSelected())?"M":"F";
                     LocalDate fecha = FechaDeNacimiento.getValue();
+                    
+                    
+                    //System.out.println(dateTime);
+                    
                     //Integer version = table.getSelectionModel().getSelectedItem().getVersion() + 1;
 
                     pacienteDto = new PacienteDto(id,nombre, papellido, sapellido,cedula, correo, genero1, fecha);

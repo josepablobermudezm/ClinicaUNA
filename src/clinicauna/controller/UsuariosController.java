@@ -6,7 +6,9 @@
 package clinicauna.controller;
 
 import clinicauna.ClinicaUna;
+import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
+import clinicauna.service.MedicoService;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -40,7 +42,7 @@ import javafx.scene.input.MouseEvent;
  *
  * @author Jose Pablo Bermudez
  */
-public class UsuariosController extends Controller  {
+public class UsuariosController extends Controller {
 
     @FXML
     private Label Titulo;
@@ -88,6 +90,7 @@ public class UsuariosController extends Controller  {
     @FXML
     private JFXTextField txtNombreUsuario;
     private Respuesta resp;
+    private Respuesta resp1;
     private UsuarioService usuarioService;
     private Mensaje ms;
     private ArrayList<UsuarioDto> usuarios;
@@ -108,15 +111,22 @@ public class UsuariosController extends Controller  {
     private JFXRadioButton btnRecepcionista;
     @FXML
     private JFXRadioButton btnMedico;
-    
+    private MedicoDto medicoDto;
+    private MedicoService medicoService;
+    private ArrayList<MedicoDto> medicos;
+
     @Override
     public void initialize() {
-        
+
         typeKeys();
         usuarioService = new UsuarioService();
         ms = new Mensaje();
         resp = usuarioService.getUsuarios();
         usuarios = ((ArrayList<UsuarioDto>) resp.getResultado("Usuarios"));
+
+        medicoService = new MedicoService();
+        resp1 = medicoService.getMedicos();
+        medicos = ((ArrayList<MedicoDto>) resp.getResultado("Medicos"));
         
         COL_NOMBRE_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre()));
         COL_CEDULA_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCedula()));
@@ -126,20 +136,19 @@ public class UsuariosController extends Controller  {
         COL_ESTADO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
         COL_PAPELLIDO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getpApellido()));
         COL_SAPELLIDO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getsApellido()));
-        
+
         items = FXCollections.observableArrayList(usuarios);
         table.setItems(items);
-        
+
         //ObservableList<String> idioma = FXCollections.observableArrayList("Ingles","Español");
         //ObservableList<String> tipo = FXCollections.observableArrayList("Administrador","Medico","Recepcionista");
         //ComboIdioma.setItems(idioma);
-       //ComboTipoUsuario.setItems(tipo);
+        //ComboTipoUsuario.setItems(tipo);
     }
-
 
     @FXML
     private void editar(ActionEvent event) {
-        
+
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 if (registroCorrecto()) {
@@ -149,13 +158,13 @@ public class UsuariosController extends Controller  {
                     String sapellido = txtSApellido.getText();
                     String correo = txtCorreo.getText();
                     String cedula = txtCedula.getText();
-                    String tipoUsuario = (btnAdministrador.isSelected())?"A":(btnMedico.isSelected())?"M":"R";
-                    String idioma = (btnEspanol.isSelected())?"E":"I";
+                    String tipoUsuario = (btnAdministrador.isSelected()) ? "A" : (btnMedico.isSelected()) ? "M" : "R";
+                    String idioma = (btnEspanol.isSelected()) ? "E" : "I";
                     String nombreusuario = txtNombreUsuario.getText();
                     String temp = generadorContrasennas.getInstance().getPassword();
                     //Integer version = table.getSelectionModel().getSelectedItem().getVersion() + 1;
 
-                    usuarioDto = new UsuarioDto(id,nombre, papellido, sapellido,"I",cedula, correo,nombreusuario, temp,null, tipoUsuario, idioma );
+                    usuarioDto = new UsuarioDto(id, nombre, papellido, sapellido, "I", cedula, correo, nombreusuario, temp, null, tipoUsuario, idioma);
                     try {
                         resp = usuarioService.guardarUsuario(usuarioDto);
                         ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
@@ -175,13 +184,12 @@ public class UsuariosController extends Controller  {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a editar");
             }
         }
-        
-        
+
     }
 
     @FXML
     private void eliminar(ActionEvent event) {
-        
+
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 usuarioService.eliminarUsuario(table.getSelectionModel().getSelectedItem().getID());
@@ -205,35 +213,44 @@ public class UsuariosController extends Controller  {
 
     @FXML
     private void agregar(ActionEvent event) {
-        
+
         if (registroCorrecto()) {
-        
+
             String nombre = txtNombre.getText();
             String papellido = txtPApellido.getText();
             String sapellido = txtSApellido.getText();
             String correo = txtCorreo.getText();
             String cedula = txtCedula.getText();
-            String tipoUsuario = (btnAdministrador.isSelected())?"A":(btnMedico.isSelected())?"M":"R";
-            String idioma = (btnEspanol.isSelected())?"E":"I";
+            String tipoUsuario = (btnAdministrador.isSelected()) ? "A" : (btnMedico.isSelected()) ? "M" : "R";
+            String idioma = (btnEspanol.isSelected()) ? "E" : "I";
             String nombreusuario = txtNombreUsuario.getText();
             String temp = generadorContrasennas.getInstance().getPassword();
-            
-            usuarioDto = new UsuarioDto(null,nombre, papellido, sapellido,"I",cedula, correo,nombreusuario, temp,null, tipoUsuario, idioma );
+
+            usuarioDto = new UsuarioDto(null, nombre, papellido, sapellido, "I", cedula, correo, nombreusuario, temp, null, tipoUsuario, idioma);
+
             try {
                 resp = usuarioService.guardarUsuario(usuarioDto);
+                usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
+                if (btnMedico.isSelected()) {
+                    medicoDto = new MedicoDto(null, usuarioDto, null, null, null,/*estado*/ "I", null, null, null);
+                    medicoService.guardarMedico(medicoDto);
+                }
+
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                 limpiarValores();
                 usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
+
                 table.getItems().clear();
                 items = FXCollections.observableArrayList(usuarios);
                 table.setItems(items);
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el usuario...");
             }
+
         }
-        
+
     }
-    
+
     void limpiarValores() {
         txtNombre.clear();
         txtPApellido.clear();
@@ -248,21 +265,21 @@ public class UsuariosController extends Controller  {
         btnEspanol.setSelected(false);
         btnIngles.setSelected(false);
     }
-    
+
     private void typeKeys() {
         txtNombre.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
         txtPApellido.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
         txtSApellido.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
         txtFiltroUsuario.setOnKeyTyped(ClinicaUna.aceptaNumeros);
     }
-    
+
     boolean registroCorrecto() {
         return !txtNombre.getText().isEmpty() && !txtCedula.getText().isEmpty()
-               && !txtPApellido.getText().isEmpty() && !txtSApellido.getText().isEmpty()
-               && !txtNombreUsuario.getText().isEmpty()
-               && !txtCorreo.getText().isEmpty() && (btnIngles.isSelected() || btnEspanol.isSelected()) && (btnAdministrador.isSelected() || btnRecepcionista.isSelected() || btnMedico.isSelected());
+                && !txtPApellido.getText().isEmpty() && !txtSApellido.getText().isEmpty()
+                && !txtNombreUsuario.getText().isEmpty()
+                && !txtCorreo.getText().isEmpty() && (btnIngles.isSelected() || btnEspanol.isSelected()) && (btnAdministrador.isSelected() || btnRecepcionista.isSelected() || btnMedico.isSelected());
     }
-    
+
     @FXML
     private void DatosUsuario(MouseEvent event) {
         if (table.getSelectionModel() != null) {
@@ -274,16 +291,16 @@ public class UsuariosController extends Controller  {
                 txtNombreUsuario.setText(usuarioDto.getNombreUsuario());
                 txtCorreo.setText(usuarioDto.getCorreo());
                 txtCedula.setText(usuarioDto.getCedula());
-                if(usuarioDto.getIdioma().equals("E")){
+                if (usuarioDto.getIdioma().equals("E")) {
                     btnEspanol.setSelected(true);
-                }else{
+                } else {
                     btnIngles.setSelected(true);
                 }
-                if(usuarioDto.getTipoUsuario().equals("A")){
+                if (usuarioDto.getTipoUsuario().equals("A")) {
                     btnAdministrador.setSelected(true);
-                }else if(usuarioDto.getTipoUsuario().equals("M")){
+                } else if (usuarioDto.getTipoUsuario().equals("M")) {
                     btnMedico.setSelected(true);
-                }else{
+                } else {
                     btnRecepcionista.setSelected(true);
                 }
             }
@@ -293,5 +310,5 @@ public class UsuariosController extends Controller  {
     @FXML
     private void Filtrar(ActionEvent event) {
     }
-    
+
 }

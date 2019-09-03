@@ -7,6 +7,7 @@ package clinicauna.controller;
 
 import clinicauna.ClinicaUna;
 import clinicauna.model.MedicoDto;
+import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -15,9 +16,12 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -52,8 +56,6 @@ public class MedicosController extends Controller  {
     private JFXButton btnEditar1;
     @FXML
     private JFXButton btnEliminar1;
-    @FXML
-    private JFXButton btnAgregar1;
     @FXML
     private JFXTextField txtFiltroEmpleado;
     @FXML
@@ -105,12 +107,15 @@ public class MedicosController extends Controller  {
         COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getFolio()));
         COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCarne()));
         COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
-        //COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada().toString():"NULO"));
-        //COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada().toString():"NULO"));
+        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada().toString():"NULO"));
+        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada().toString():"NULO"));
         COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty(value.getValue().getEspacios()));
         
         items = FXCollections.observableArrayList(medicos);
         table.setItems(items);
+        
+        
+        
         
     }
     
@@ -148,8 +153,7 @@ public class MedicosController extends Controller  {
     private void limpiarRegistro(ActionEvent event) {
     }
 
-    @FXML
-    private void agregar(ActionEvent event) {
+    /*private void agregar(ActionEvent event) {
         
         if (registroCorrecto()) {
         
@@ -159,12 +163,14 @@ public class MedicosController extends Controller  {
             Integer espacio = Integer.parseInt(txtEspacio.getText());
             LocalTime inicio = timePickerInicio.getValue();
             LocalTime final1 = timePickerfinal.getValue();
+            String inicioJornada = inicio.toString();
+            String finJornada = final1.toString();
             //String estado = ComboEstado.getValue().toString();
             
-            LocalDateTime inicio1 = LocalDateTime.of(LocalDate.now(),inicio);
-            LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
-            
-            medicoDto = new MedicoDto(null,codigo, folio, carne,/*estado*/"A", inicio1, final2, espacio);
+            //LocalDateTime inicio1 = LocalDateTime.of(LocalDate.now(),inicio);
+            //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
+            UsuarioDto usuario = null;
+            medicoDto = new MedicoDto(null,usuario,null, null, null,/*estado"I", null, null, null);
             try {
                 resp = medicoService.guardarMedico(medicoDto);
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
@@ -180,7 +186,7 @@ public class MedicosController extends Controller  {
         }
         
         
-    }
+    }*/
 
     void limpiarValores() {
         txtCarne.clear();

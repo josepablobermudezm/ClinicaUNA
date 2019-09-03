@@ -7,6 +7,7 @@ package clinicauna.model;
 
 import clinicauna.util.LocalDateTimeAdapter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,16 +33,18 @@ public class MedicoDto {
     @XmlTransient
     private String Estado;
     @XmlTransient
-    private LocalDateTime InicioJornada;
+    private String InicioJornada;
     @XmlTransient
-    private LocalDateTime FinJornada;
+    private String FinJornada;
     @XmlTransient
     private Integer espacios;
+    @XmlTransient
+    private UsuarioDto us;
 
     public MedicoDto() {
     }
 
-    public MedicoDto(Long ID, String Codigo, String Folio, String carne, String Estado, LocalDateTime InicioJornada, LocalDateTime FinJornada, Integer espacios) {
+    public MedicoDto(Long ID,UsuarioDto us ,String Codigo, String Folio, String carne, String Estado, String InicioJornada, String FinJornada, Integer espacios) {
         this.ID = ID;
         this.Codigo = Codigo;
         this.Folio = Folio;
@@ -50,6 +53,15 @@ public class MedicoDto {
         this.InicioJornada = InicioJornada;
         this.FinJornada = FinJornada;
         this.espacios = espacios;
+        this.us = us;
+    }
+
+    public UsuarioDto getUs() {
+        return us;
+    }
+
+    public void setUs(UsuarioDto us) {
+        this.us = us;
     }
 
     public Integer getEspacios() {
@@ -99,20 +111,16 @@ public class MedicoDto {
     public void setEstado(String Estado) {
         this.Estado = Estado;
     }
-    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
-    public LocalDateTime getInicioJornada() {
+    public String getInicioJornada() {
         return InicioJornada;
     }
-    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
-    public void setInicioJornada(LocalDateTime InicioJornada) {
+    public void setInicioJornada(String InicioJornada) {
         this.InicioJornada = InicioJornada;
     }
-    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
-    public LocalDateTime getFinJornada() {
+    public String getFinJornada() {
         return FinJornada;
     }
-    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
-    public void setFinJornada(LocalDateTime FinJornada) {
+    public void setFinJornada(String FinJornada) {
         this.FinJornada = FinJornada;
     }
     

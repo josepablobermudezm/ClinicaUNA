@@ -8,7 +8,6 @@ package clinicauna.service;
 import clinicauna.model.PacienteDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

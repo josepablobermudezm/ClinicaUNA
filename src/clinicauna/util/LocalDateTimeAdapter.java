@@ -44,8 +44,14 @@ public class LocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
             if (dateTime == null) {
                 return null;
             }
+            
             Instant instant = dateTime.atZone(ZoneId.systemDefault()).toInstant();
-            return DateTimeFormatter.ISO_INSTANT.format(instant);
+            
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+            //dateTime.format(formatter);
+
+            return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(instant);
+            //return dateTime.format(formatter);
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, "Error al serializar la fecha [" + dateTime + "].", ex);
             throw ex;

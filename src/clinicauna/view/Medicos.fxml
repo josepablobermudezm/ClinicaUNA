@@ -134,7 +134,6 @@
                         <JFXButton fx:id="btnEditar1" onAction="#editar" style="-fx-cursor: hand;" text="Editar" />
                         <JFXButton fx:id="btnEliminar1" onAction="#eliminar" style="-fx-cursor: hand;" text="Eliminar" />
                         <JFXButton onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
-                        <JFXButton fx:id="btnAgregar1" onAction="#agregar" style="-fx-cursor: hand;" text="Agregar" />
                      </children>
                   </HBox>
                </children>
