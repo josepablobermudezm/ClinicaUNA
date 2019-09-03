@@ -61,7 +61,7 @@
                      </rowConstraints>
                      <children>
                         <ImageView fx:id="imgPassword" fitHeight="39.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <JFXPasswordField fx:id="txtClave1" labelFloat="true" prefHeight="36.0" prefWidth="387.0" promptText="Password" GridPane.columnIndex="2" />
+                        <JFXPasswordField fx:id="txtClave1" labelFloat="true" onKeyPressed="#iniciar" prefHeight="36.0" prefWidth="387.0" promptText="Password" GridPane.columnIndex="2" />
                      </children>
                   </GridPane>
                   <GridPane>

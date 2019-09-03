@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -115,6 +116,34 @@ public class LogIng2Controller extends Controller {
     @FXML
     private void salir(ActionEvent event) {
         this.getStage().close();
+    }
+
+    @FXML
+    private void iniciar(KeyEvent event) {
+        if(event.getCode()== event.getCode().ENTER){
+            try {
+
+            if (txtUsuario1.getText() == null || txtUsuario1.getText().isEmpty()) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar un usuario para ingresar al sistema.");
+            } else if (txtClave1.getText() == null || txtClave1.getText().isEmpty()) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar la clave para ingresar al sistema.");
+            } else {
+
+                UsuarioService UsuarioService = new UsuarioService();
+                Respuesta respuesta = UsuarioService.getUsuario(txtUsuario1.getText(), txtClave1.getText());
+                if (respuesta.getEstado()) {
+                    AppContext.getInstance().set("Usuario", (UsuarioDto) respuesta.getResultado("Usuario"));
+                    FlowController.getInstance().goMain();
+                    this.getStage().close();
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Ingreso", getStage(), respuesta.getMensaje());
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(LogIng2Controller.class.getName()).log(Level.SEVERE, "Error ingresando.", ex);
+        }
+        }
+        
     }
 
 }
