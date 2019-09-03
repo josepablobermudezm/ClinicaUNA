@@ -104,12 +104,12 @@ public class MedicosController extends Controller  {
         medicos = ((ArrayList<MedicoDto>) resp.getResultado("Medicos"));
         
         COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCodigo()));
-        COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getFolio()));
-        COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCarne()));
+        COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFolio()!=null)?value.getValue().getFolio():"Sin Asignar"));
+        COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCarne()!=null)?value.getValue().getCarne():"Sin Asignar"));
         COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
         COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada().toString():"NULO"));
         COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada().toString():"NULO"));
-        COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty(value.getValue().getEspacios()));
+        COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty((value.getValue().getEspacios()!=null)?value.getValue().getEspacios():0));
         
         items = FXCollections.observableArrayList(medicos);
         table.setItems(items);
