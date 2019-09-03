@@ -61,6 +61,7 @@ public class LogIng2Controller extends Controller {
     @Override
     public void initialize() {
         btnSalir1.setCursor(Cursor.HAND);
+        btnIngresar1.setCursor(Cursor.HAND);
         Image imgFondo;
         try {
             imgFondo = new Image("/clinicauna/resources/e.jpg");
