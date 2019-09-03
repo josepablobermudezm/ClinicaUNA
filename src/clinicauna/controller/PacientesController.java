@@ -32,6 +32,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -105,6 +106,10 @@ public class PacientesController extends Controller  {
     
     @Override
     public void initialize() {
+        btnAgregar1.setCursor(Cursor.HAND);
+        btnBuscar.setCursor(Cursor.HAND);
+        btnEditar1.setCursor(Cursor.HAND);
+        btnEliminar1.setCursor(Cursor.HAND);
         
         typeKeys();
         pacienteService = new PacienteService();

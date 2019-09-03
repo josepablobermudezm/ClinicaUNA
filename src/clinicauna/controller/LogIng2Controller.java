@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -54,19 +55,16 @@ public class LogIng2Controller extends Controller {
     private JFXButton btnSalir1;
     @FXML
     private JFXButton btnIngresar1;
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize() {
-
+        btnSalir1.setCursor(Cursor.HAND);
         Image imgFondo;
         try {
-
             imgFondo = new Image("/clinicauna/resources/e.jpg");
             imvFondo.setImage(imgFondo);
-
         } catch (Exception e) {
         }
 
