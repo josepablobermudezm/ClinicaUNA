@@ -55,6 +55,7 @@ public class LogIng2Controller extends Controller {
     private JFXButton btnSalir1;
     @FXML
     private JFXButton btnIngresar1;
+
     /**
      * Initializes the controller class.
      */
@@ -99,9 +100,17 @@ public class LogIng2Controller extends Controller {
                 UsuarioService UsuarioService = new UsuarioService();
                 Respuesta respuesta = UsuarioService.getUsuario(txtUsuario1.getText(), txtClave1.getText());
                 if (respuesta.getEstado()) {
-                    AppContext.getInstance().set("Usuario", (UsuarioDto) respuesta.getResultado("Usuario"));
-                    FlowController.getInstance().goMain();
-                    this.getStage().close();
+                    String contrasena = txtClave1.getText();
+                    UsuarioDto usuario = (UsuarioDto) respuesta.getResultado("Usuario");
+                    AppContext.getInstance().set("Usuario", usuario);
+                    if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
+                        FlowController.getInstance().goViewInWindowModal("cambiarContrasenna", this.getStage(), false);
+                    } else if (usuario.getEstado().equals("A")) {
+                        FlowController.getInstance().goMain();
+                        this.getStage().close();
+                    } else if (usuario.getEstado().equals("I")) {
+                        new Mensaje().showModal(Alert.AlertType.WARNING, "Ingreso", this.getStage(), "El usuario no esta activo, debes activarlo previamente en el correo que ha sido enviado.");
+                    }
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Ingreso", getStage(), respuesta.getMensaje());
                 }
@@ -119,30 +128,38 @@ public class LogIng2Controller extends Controller {
 
     @FXML
     private void iniciar(KeyEvent event) {
-        if(event.getCode()== event.getCode().ENTER){
+        if (event.getCode() == event.getCode().ENTER) {
             try {
 
-            if (txtUsuario1.getText() == null || txtUsuario1.getText().isEmpty()) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar un usuario para ingresar al sistema.");
-            } else if (txtClave1.getText() == null || txtClave1.getText().isEmpty()) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar la clave para ingresar al sistema.");
-            } else {
-
-                UsuarioService UsuarioService = new UsuarioService();
-                Respuesta respuesta = UsuarioService.getUsuario(txtUsuario1.getText(), txtClave1.getText());
-                if (respuesta.getEstado()) {
-                    AppContext.getInstance().set("Usuario", (UsuarioDto) respuesta.getResultado("Usuario"));
-                    FlowController.getInstance().goMain();
-                    this.getStage().close();
+                if (txtUsuario1.getText() == null || txtUsuario1.getText().isEmpty()) {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar un usuario para ingresar al sistema.");
+                } else if (txtClave1.getText() == null || txtClave1.getText().isEmpty()) {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar la clave para ingresar al sistema.");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Ingreso", getStage(), respuesta.getMensaje());
+
+                    UsuarioService UsuarioService = new UsuarioService();
+                    Respuesta respuesta = UsuarioService.getUsuario(txtUsuario1.getText(), txtClave1.getText());
+                    if (respuesta.getEstado()) {
+                        String contrasena = txtClave1.getText();
+                        UsuarioDto usuario = (UsuarioDto) respuesta.getResultado("Usuario");
+                        AppContext.getInstance().set("Usuario", usuario);
+                        if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
+                            FlowController.getInstance().goViewInWindowModal("cambiarContrasenna", this.getStage(), false);
+                        } else if (usuario.getEstado().equals("A")) {
+                            FlowController.getInstance().goMain();
+                            this.getStage().close();
+                        } else if (usuario.getEstado().equals("I")) {
+                            new Mensaje().showModal(Alert.AlertType.WARNING, "Ingreso", this.getStage(), "El usuario no esta activo, debes activarlo previamente en el correo que ha sido enviado.");
+                        }
+                    } else {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Ingreso", getStage(), respuesta.getMensaje());
+                    }
                 }
+            } catch (Exception ex) {
+                Logger.getLogger(LogIng2Controller.class.getName()).log(Level.SEVERE, "Error ingresando.", ex);
             }
-        } catch (Exception ex) {
-            Logger.getLogger(LogIng2Controller.class.getName()).log(Level.SEVERE, "Error ingresando.", ex);
         }
-        }
-        
+
     }
 
 }
