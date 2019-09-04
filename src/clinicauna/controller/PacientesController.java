@@ -146,13 +146,12 @@ public class PacientesController extends Controller  {
                     String cedula = txtCedula.getText();
                     String genero1 = (btnHombre.isSelected())?"M":"F";
                     LocalDate fecha = FechaDeNacimiento.getValue();
-                    
-                    
+                    Long version = pacienteDto.getPacVersion()+ 1;
                     //System.out.println(dateTime);
                     
                     //Integer version = table.getSelectionModel().getSelectedItem().getVersion() + 1;
 
-                    pacienteDto = new PacienteDto(id,nombre, papellido, sapellido,cedula, correo, genero1, fecha);
+                    pacienteDto = new PacienteDto(id,nombre, papellido, sapellido,cedula, correo, genero1, fecha,version);
                     try {
                         resp = pacienteService.guardarPaciente(pacienteDto);
                         ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
@@ -216,8 +215,8 @@ public class PacientesController extends Controller  {
             String genero1 = (btnHombre.isSelected())?"M":"F";
             LocalDate fecha = FechaDeNacimiento.getValue();
             //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
-            
-            pacienteDto = new PacienteDto(null,nombre, papellido, sapellido,cedula, correo, genero1, fecha);
+            Long version = new Long(1);
+            pacienteDto = new PacienteDto(null,nombre, papellido, sapellido,cedula, correo, genero1, fecha,version);
             try {
                 resp = pacienteService.guardarPaciente(pacienteDto);
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());

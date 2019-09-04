@@ -136,10 +136,10 @@ public class MedicosController extends Controller {
                     LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicio1);
                     LocalDateTime final12 = LocalDateTime.of(LocalDate.now(), final1);
                     UsuarioDto usuariodto = medicoDto.getUs();
-                    
+                    Long version = medicoDto.getMedVersion()+1  ;
                     String inicioJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
                     String finJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(final12);
-                    medicoDto = new MedicoDto(id, usuariodto, codigo, folio, carne, "I", inicioJornada, finJornada, espacios);
+                    medicoDto = new MedicoDto(id, codigo, folio, carne, "I", inicioJornada, finJornada, espacios,usuariodto,version);
                     try {
                         resp = medicoService.guardarMedico(medicoDto);
                         ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());

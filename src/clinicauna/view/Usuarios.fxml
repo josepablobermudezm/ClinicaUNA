@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -87,8 +88,8 @@
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="30.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="86.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="251.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="44.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="303.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="60.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="254.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="71.0" />
@@ -107,8 +108,8 @@
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="30.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="86.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="251.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="44.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="303.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="60.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="254.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="71.0" />
@@ -125,50 +126,58 @@
             </GridPane>
             <GridPane layoutX="3.0" layoutY="593.0" prefHeight="62.0" prefWidth="1033.0">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="20.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="267.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="78.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="572.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="71.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="33.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="240.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="67.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="249.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="338.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="109.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXRadioButton fx:id="btnEspanol" text="Español" style="-fx-cursor: Hand;" GridPane.columnIndex="1">
+                  <JFXRadioButton fx:id="btnEspanol" style="-fx-cursor: Hand;" text="Español" GridPane.columnIndex="3">
                      <GridPane.margin>
-                        <Insets left="75.0" />
+                        <Insets left="50.0" />
                      </GridPane.margin>
                      <toggleGroup>
                         <ToggleGroup fx:id="idiomagroup" />
                      </toggleGroup>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnIngles" text="Ingles" style="-fx-cursor: Hand;" toggleGroup="$idiomagroup" GridPane.columnIndex="1">
+                  <JFXRadioButton fx:id="btnIngles" style="-fx-cursor: Hand;" text="Ingles" toggleGroup="$idiomagroup" GridPane.columnIndex="3">
                      <GridPane.margin>
-                        <Insets left="180.0" />
+                        <Insets left="145.0" />
                      </GridPane.margin>
                   </JFXRadioButton>
-                  <Label text="Idioma:" GridPane.columnIndex="1" />
-                  <Label text="Tipo de Usuario:" GridPane.columnIndex="3" />
-                  <JFXRadioButton fx:id="btnAdministrador" text="Administrador" style="-fx-cursor: Hand;" GridPane.columnIndex="3">
+                  <Label text="Idioma:" GridPane.columnIndex="3">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                      <GridPane.margin>
-                        <Insets left="150.0" />
+                        <Insets />
+                     </GridPane.margin></Label>
+                  <Label text="Tipo:" GridPane.columnIndex="4" />
+                  <JFXRadioButton fx:id="btnAdministrador" style="-fx-cursor: Hand;" text="Administrador" GridPane.columnIndex="4">
+                     <GridPane.margin>
+                        <Insets left="30.0" />
                      </GridPane.margin>
                      <toggleGroup>
                         <ToggleGroup fx:id="puesto" />
                      </toggleGroup>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnRecepcionista" text="Recepcionista" style="-fx-cursor: Hand;" toggleGroup="$puesto" GridPane.columnIndex="3">
+                  <JFXRadioButton fx:id="btnRecepcionista" style="-fx-cursor: Hand;" text="Recepcionista" toggleGroup="$puesto" GridPane.columnIndex="4">
                      <GridPane.margin>
-                        <Insets left="300.0" />
+                        <Insets left="160.0" />
                      </GridPane.margin>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnMedico" text="Médico" style="-fx-cursor: Hand;" toggleGroup="$puesto" GridPane.columnIndex="3">
+                  <JFXRadioButton fx:id="btnMedico" style="-fx-cursor: Hand;" text="Médico" toggleGroup="$puesto" GridPane.columnIndex="4">
                      <GridPane.margin>
-                        <Insets left="450.0" />
+                        <Insets left="290.0" />
                      </GridPane.margin>
                   </JFXRadioButton>
+                  <JFXPasswordField fx:id="txtClave" promptText="Contraseña" GridPane.columnIndex="1" />
                </children>
             </GridPane>
          </children>

@@ -16,6 +16,7 @@ import clinicauna.util.Respuesta;
 import clinicauna.util.generadorContrasennas;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -115,7 +116,10 @@ public class UsuariosController extends Controller {
     private JFXRadioButton btnMedico;
     private MedicoDto medicoDto;
     private MedicoService medicoService;
+    @FXML
+    private JFXPasswordField txtClave;
     private ArrayList<MedicoDto> medicos;
+
 
     @Override
     public void initialize() {
@@ -170,9 +174,10 @@ public class UsuariosController extends Controller {
                     String temp = generadorContrasennas.getInstance().getPassword();
                     Long version = usuarioDto.getUsVersion() + 1;
                     String estado = usuarioDto.getEstado();
+                    String clave = usuarioDto.getContrasenna();
                     //Integer version = table.getSelectionModel().getSelectedItem().getVersion() + 1;
 
-                    usuarioDto = new UsuarioDto(id, nombre, papellido, estado, sapellido, cedula, correo, nombreusuario, temp, null, tipoUsuario, idioma, version);
+                    usuarioDto = new UsuarioDto(id, nombre, papellido, estado, sapellido, cedula, correo, nombreusuario, temp, clave, tipoUsuario, idioma, version);
                     try {
                         resp = usuarioService.guardarUsuario(usuarioDto);
                         ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
@@ -234,15 +239,15 @@ public class UsuariosController extends Controller {
             String nombreusuario = txtNombreUsuario.getText();
             String temp = generadorContrasennas.getInstance().getPassword();
             Long version = new Long(1);
-            usuarioDto = new UsuarioDto(null, nombre, papellido, "I", sapellido,
-                    cedula, correo, nombreusuario, temp, null, tipoUsuario, idioma, version);
-
+            String clave = txtClave.getText();
+            usuarioDto = new UsuarioDto(null, nombre, papellido, "I", sapellido,cedula, correo, nombreusuario, temp, clave, tipoUsuario, idioma, version);
             try {
                 resp = usuarioService.guardarUsuario(usuarioDto);
                 usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
 
                 if (tipoUsuario.equals("M")) {
-                    medicoDto = new MedicoDto(null, usuarioDto, null, null, null, "I", null, null, null);
+                    Long version1 = new Long(1);
+                    medicoDto = new MedicoDto(null, null, null, null, "I", null, null, null,usuarioDto, version1 );
                     resp1 = medicoService.guardarMedico(medicoDto);
                     medicoDto = (MedicoDto) resp1.getResultado("Medico");
                 }
@@ -278,6 +283,7 @@ public class UsuariosController extends Controller {
         btnRecepcionista.setSelected(false);
         btnEspanol.setSelected(false);
         btnIngles.setSelected(false);
+        txtClave.clear();
     }
 
     private void typeKeys() {
@@ -305,6 +311,7 @@ public class UsuariosController extends Controller {
                 txtNombreUsuario.setText(usuarioDto.getNombreUsuario());
                 txtCorreo.setText(usuarioDto.getCorreo());
                 txtCedula.setText(usuarioDto.getCedula());
+                txtClave.setText(usuarioDto.getContrasenna());
                 if (usuarioDto.getIdioma().equals("E")) {
                     btnEspanol.setSelected(true);
                 } else {
