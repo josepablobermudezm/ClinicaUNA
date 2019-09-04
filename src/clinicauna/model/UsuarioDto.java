@@ -41,11 +41,12 @@ public class UsuarioDto {
     private String tipoUsuario;
     @XmlTransient
     private String idioma;
-    
+    @XmlTransient
+    private Long usVersion;
     public UsuarioDto() {
     }
 
-    public UsuarioDto(Long ID, String nombre, String pApellido, String sApellido,String estado, String cedula, String correo, String nombreUsuario, String contrasennaTemp, String contrasenna, String tipoUsuario, String idioma) {
+    public UsuarioDto(Long ID, String nombre, String pApellido, String estado, String sApellido, String cedula, String correo, String nombreUsuario, String contrasennaTemp, String contrasenna, String tipoUsuario, String idioma, Long usVersion) {
         this.ID = ID;
         this.nombre = nombre;
         this.pApellido = pApellido;
@@ -58,7 +59,10 @@ public class UsuarioDto {
         this.contrasenna = contrasenna;
         this.tipoUsuario = tipoUsuario;
         this.idioma = idioma;
+        this.usVersion = usVersion;
     }
+
+    
 
    
 
@@ -155,6 +159,14 @@ public class UsuarioDto {
 
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
+    }
+
+    public Long getUsVersion() {
+        return usVersion;
+    }
+
+    public void setUsVersion(Long usVersion) {
+        this.usVersion = usVersion;
     }
     
     

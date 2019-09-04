@@ -6,8 +6,10 @@
 package clinicauna.service;
 
 import clinicauna.model.UsuarioDto;
+import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,7 @@ import javax.ws.rs.core.GenericType;
  * @author Carlos Olivares
  */
 public class UsuarioService {
-    
+
     public Respuesta getUsuario(String usuario, String clave) {
         try {
             Map<String, Object> parametros = new HashMap<>();
@@ -28,13 +30,13 @@ public class UsuarioService {
             parametros.put("clave", clave);
             Request request = new Request("UsuarioController/usuario", "/{usuario}/{clave}", parametros);
             request.get();
-            
+
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            
+
             UsuarioDto Usuario = (UsuarioDto) request.readEntity(UsuarioDto.class);
-            
+
             return new Respuesta(true, "", "", "Usuario", Usuario);
 
         } catch (Exception ex) {
@@ -42,7 +44,6 @@ public class UsuarioService {
             return new Respuesta(false, "Error obteniendo el usuario.", "getUsuario " + ex.getMessage());
         }
     }
-
 
     public Respuesta getUsuario(Long id) {
         try {
@@ -75,7 +76,7 @@ public class UsuarioService {
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-             List<UsuarioDto> Usuarios = (List<UsuarioDto>) request.readEntity(new GenericType<List<UsuarioDto>>() {
+            List<UsuarioDto> Usuarios = (List<UsuarioDto>) request.readEntity(new GenericType<List<UsuarioDto>>() {
             });
             return new Respuesta(true, "", "", "Usuarios", Usuarios);
         } catch (Exception ex) {
@@ -98,23 +99,23 @@ public class UsuarioService {
 
             return new Respuesta(true, "", "", "Usuarios", Usuarios);
         } catch (Exception ex) {
-            return new Respuesta(false, "", "", "Usuarios","getUsuarios " + ex.getMessage());
+            return new Respuesta(false, "", "", "Usuarios", "getUsuarios " + ex.getMessage());
         }
     }
 
     public Respuesta guardarUsuario(UsuarioDto Usuario) {
         try {
-            
+
             Request request = new Request("UsuarioController/guardar");
             request.post(Usuario);
-            
+
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            
+
             Usuario = (UsuarioDto) request.readEntity(UsuarioDto.class);
-            
-            return new Respuesta(true, "", "", "Usuario", Usuario);
+
+            return new Respuesta(true, "Guardado exitosamente", "", "Usuario", Usuario);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error guardando el Usuario.", ex);
             return new Respuesta(false, "Error guardando el Usuario.", "guardarUsuario " + ex.getMessage());
@@ -125,7 +126,7 @@ public class UsuarioService {
         try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
-            Request request = new Request("UsuarioController/eliminar","/{id}",parametros);
+            Request request = new Request("UsuarioController/eliminar", "/{id}", parametros);
             request.delete();
 
             if (request.isError()) {
@@ -135,6 +136,18 @@ public class UsuarioService {
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error eliminando el Usuario.", ex);
             return new Respuesta(false, "Error eliminando el Usuario.", "eliminarUsuario " + ex.getMessage());
+        }
+    }
+
+    public Respuesta activarUsuario(String nombreUsuario) {
+        try {
+        InetAddress address = InetAddress.getLocalHost();
+        System.out.println("IP Local :"+address.getHostAddress());
+            
+            return new Respuesta(true, AppContext.getInstance().get("resturl") + "UsuarioController/activar/" + nombreUsuario, "");
+        } catch (Exception ex) {
+            Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error eliminando el Medico.", ex);
+            return new Respuesta(false, "Error eliminando el Medico.", "eliminarMedico " + ex.getMessage());
         }
     }
 }

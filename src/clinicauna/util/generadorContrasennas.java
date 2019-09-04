@@ -10,7 +10,7 @@ package clinicauna.util;
  * @author Carlos Olivares
  */
 public class generadorContrasennas {
-    private static generadorContrasennas INSTANCE = null;
+    
     public String NUMEROS = "0123456789";
 
     public String MAYUSCULAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -18,7 +18,7 @@ public class generadorContrasennas {
     public String MINUSCULAS = "abcdefghijklmnopqrstuvwxyz";
 
     public String ESPECIALES = "ñÑ";
-
+    private static generadorContrasennas INSTANCE = null;
     private static void createInstance() {
         if (INSTANCE == null) {
             synchronized (generadorContrasennas.class) {

@@ -10,6 +10,7 @@ import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
 import clinicauna.service.UsuarioService;
+import clinicauna.util.Correos;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import clinicauna.util.generadorContrasennas;
@@ -122,7 +123,7 @@ public class UsuariosController extends Controller {
         btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
         btnEliminar1.setCursor(Cursor.HAND);
-        
+
         typeKeys();
         usuarioService = new UsuarioService();
         ms = new Mensaje();
@@ -167,9 +168,11 @@ public class UsuariosController extends Controller {
                     String idioma = (btnEspanol.isSelected()) ? "E" : "I";
                     String nombreusuario = txtNombreUsuario.getText();
                     String temp = generadorContrasennas.getInstance().getPassword();
+                    Long version = usuarioDto.getUsVersion() + 1;
+                    String estado = usuarioDto.getEstado();
                     //Integer version = table.getSelectionModel().getSelectedItem().getVersion() + 1;
 
-                    usuarioDto = new UsuarioDto(id, nombre, papellido, sapellido, "I", cedula, correo, nombreusuario, temp, null, tipoUsuario, idioma);
+                    usuarioDto = new UsuarioDto(id, nombre, papellido, estado, sapellido, cedula, correo, nombreusuario, temp, null, tipoUsuario, idioma, version);
                     try {
                         resp = usuarioService.guardarUsuario(usuarioDto);
                         ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
@@ -230,12 +233,14 @@ public class UsuariosController extends Controller {
             String idioma = (btnEspanol.isSelected()) ? "E" : "I";
             String nombreusuario = txtNombreUsuario.getText();
             String temp = generadorContrasennas.getInstance().getPassword();
-
-            usuarioDto = new UsuarioDto(null, nombre, papellido, sapellido, "I", cedula, correo, nombreusuario, temp, null, tipoUsuario, idioma);
+            Long version = new Long(1);
+            usuarioDto = new UsuarioDto(null, nombre, papellido, "I", sapellido,
+                    cedula, correo, nombreusuario, temp, null, tipoUsuario, idioma, version);
 
             try {
                 resp = usuarioService.guardarUsuario(usuarioDto);
                 usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
+
                 if (tipoUsuario.equals("M")) {
                     medicoDto = new MedicoDto(null, usuarioDto, null, null, null, "I", null, null, null);
                     resp1 = medicoService.guardarMedico(medicoDto);
@@ -249,6 +254,10 @@ public class UsuariosController extends Controller {
                 table.getItems().clear();
                 items = FXCollections.observableArrayList(usuarios);
                 table.setItems(items);
+
+                //Envia correo de activacion
+                resp = usuarioService.activarUsuario(nombreusuario);
+                Correos.getInstance().SendMail(correo, resp.getMensaje(), temp);
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el usuario...");
             }

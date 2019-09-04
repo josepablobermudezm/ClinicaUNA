@@ -7,6 +7,7 @@ package clinicauna;
 
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import java.net.InetAddress;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 
@@ -22,7 +23,8 @@ public class ClinicaUna extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        
+        InetAddress address = InetAddress.getLocalHost();
+        System.out.println("IP Local :"+address.getHostAddress());
         stage.setTitle("Clinica UNA");
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         

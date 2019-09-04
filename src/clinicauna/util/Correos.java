@@ -5,6 +5,7 @@
  */
 package clinicauna.util;
 
+import clinicauna.model.UsuarioDto;
 import java.io.IOException;
 import java.util.Properties;
 import javax.activation.DataHandler;
@@ -24,7 +25,27 @@ import javax.mail.internet.MimeMultipart;
  * @author JORDI RODRIGUEZ
  */
 public class Correos {
-    public void SendMail(String Destinatario, String Link) throws MessagingException, IOException {
+
+    private static Correos INSTANCE = null;
+
+    private static void createInstance() {
+        if (INSTANCE == null) {
+            synchronized (Correos.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new Correos();
+                }
+            }
+        }
+    }
+
+    public static Correos getInstance() {
+        if (INSTANCE == null) {
+            createInstance();
+        }
+        return INSTANCE;
+    }
+
+    public void SendMail(String Destinatario, String Link, String contraTemp) throws MessagingException, IOException {
         // Propiedades necesarias
         Properties prop = new Properties();
         prop.setProperty("mail.smtp.auth", "true");
@@ -35,7 +56,8 @@ public class Correos {
 
         Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
         BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
-        link.setText("Por favor ingresa a esta dirección web para la activación de su usuario "+Link);
+        link.setText("Por favor ingresa a esta dirección web para la activación de su usuario " + Link
+                + "\n Esta es tu contraseña temporal: " + contraTemp);
         MimeMultipart m = new MimeMultipart();
         m.addBodyPart(link);
         MimeMessage mensaje = new MimeMessage(session);
