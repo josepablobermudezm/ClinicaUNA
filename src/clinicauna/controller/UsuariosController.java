@@ -150,10 +150,6 @@ public class UsuariosController extends Controller {
         items = FXCollections.observableArrayList(usuarios);
         table.setItems(items);
 
-        //ObservableList<String> idioma = FXCollections.observableArrayList("Ingles","Español");
-        //ObservableList<String> tipo = FXCollections.observableArrayList("Administrador","Medico","Recepcionista");
-        //ComboIdioma.setItems(idioma);
-        //ComboTipoUsuario.setItems(tipo);
     }
 
     @FXML
