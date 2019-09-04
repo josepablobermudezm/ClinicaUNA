@@ -9,6 +9,8 @@ import clinicauna.ClinicaUna;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
+import clinicauna.util.AppContext;
+import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -91,9 +93,21 @@ public class MedicosController extends Controller {
     private MedicoDto medicoDto;
     @FXML
     private JFXTextField txtNombreUsuario;
-
+    private Idioma idioma;
     @Override
     public void initialize() {
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        btnEditar1.setText(idioma.getProperty("Editar"));
+        btnBuscar.setText(idioma.getProperty("Buscar"));
+        COL_CODIGO_MEDICOS.setText(idioma.getProperty("Código"));
+        COL_CARNE_MEDICOS.setText(idioma.getProperty("Carné"));
+        COL_ESTADO_MEDICOS.setText("Estado");
+        COL_INICIO_MEDICOS.setText(idioma.getProperty("Inicio")+" "+idioma.getProperty("Jornada"));
+        COL_FINAL_MEDICOS.setText(idioma.getProperty("Final")+" "+idioma.getProperty("Jornada"));
+        COL_ESPACIOS_MEDICOS.setText(idioma.getProperty("Espacio")+" "+idioma.getProperty("por")+" "+idioma.getProperty("Hora"));
+        txtFiltroEmpleado.setPromptText(idioma.getProperty("Filtro")+" "+idioma.getProperty("porBy")+" "+"ID");
+        
+        
         btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
         btnEliminar1.setCursor(Cursor.HAND);
