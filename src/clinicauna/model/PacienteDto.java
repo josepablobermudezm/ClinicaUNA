@@ -36,11 +36,13 @@ public class PacienteDto {
     private String genero;
     @XmlTransient
     private LocalDate fechaNacimiento;
+    @XmlTransient
+    private Long pacVersion;
 
     public PacienteDto() {
     }
 
-    public PacienteDto(Long ID, String nombre, String pApellido, String sApellido, String cedula, String correo, String genero, LocalDate fechaNacimiento) {
+    public PacienteDto(Long ID, String nombre, String pApellido, String sApellido, String cedula, String correo, String genero, LocalDate fechaNacimiento, Long pacVersion) {
         this.ID = ID;
         this.nombre = nombre;
         this.pApellido = pApellido;
@@ -49,6 +51,15 @@ public class PacienteDto {
         this.correo = correo;
         this.genero = genero;
         this.fechaNacimiento = fechaNacimiento;
+        this.pacVersion = pacVersion;
+    }
+
+    public Long getPacVersion() {
+        return pacVersion;
+    }
+
+    public void setPacVersion(Long pacVersion) {
+        this.pacVersion = pacVersion;
     }
 
     public Long getID() {

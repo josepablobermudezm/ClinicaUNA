@@ -163,7 +163,7 @@ public class FlowController {
         Controller controller = loader.getController();
         controller.initialize();
         Stage stage = new Stage();
-        stage.getIcons().add(new Image("/clinicaUNA/resources/medicine.png"));
+        stage.getIcons().add(new Image("/clinicauna/resources/medicine.png"));
         stage.setTitle("Clinica UNA");
         stage.setResizable(resizable);
         stage.setOnHidden((WindowEvent event) -> {

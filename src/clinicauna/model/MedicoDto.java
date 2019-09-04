@@ -40,11 +40,13 @@ public class MedicoDto {
     private Integer espacios;
     @XmlTransient
     private UsuarioDto us;
+    @XmlTransient
+    private Long medVersion;
 
     public MedicoDto() {
     }
 
-    public MedicoDto(Long ID,UsuarioDto us ,String Codigo, String Folio, String carne, String Estado, String InicioJornada, String FinJornada, Integer espacios) {
+    public MedicoDto(Long ID, String Codigo, String Folio, String carne, String Estado, String InicioJornada, String FinJornada, Integer espacios, UsuarioDto us, Long medVersion) {
         this.ID = ID;
         this.Codigo = Codigo;
         this.Folio = Folio;
@@ -54,8 +56,17 @@ public class MedicoDto {
         this.FinJornada = FinJornada;
         this.espacios = espacios;
         this.us = us;
+        this.medVersion = medVersion;
     }
 
+    public Long getMedVersion() {
+        return medVersion;
+    }
+
+    public void setMedVersion(Long medVersion) {
+        this.medVersion = medVersion;
+    }
+    
     public UsuarioDto getUs() {
         return us;
     }
