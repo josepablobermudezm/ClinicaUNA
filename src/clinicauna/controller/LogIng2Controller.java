@@ -89,7 +89,6 @@ public class LogIng2Controller extends Controller {
     @FXML
     private void ingresar(ActionEvent event) {
         try {
-
             if (txtUsuario1.getText() == null || txtUsuario1.getText().isEmpty()) {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar un usuario para ingresar al sistema.");
             } else if (txtClave1.getText() == null || txtClave1.getText().isEmpty()) {
