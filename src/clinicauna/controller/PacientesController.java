@@ -32,6 +32,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -105,6 +106,10 @@ public class PacientesController extends Controller  {
     
     @Override
     public void initialize() {
+        btnAgregar1.setCursor(Cursor.HAND);
+        btnBuscar.setCursor(Cursor.HAND);
+        btnEditar1.setCursor(Cursor.HAND);
+        btnEliminar1.setCursor(Cursor.HAND);
         
         typeKeys();
         pacienteService = new PacienteService();
@@ -194,6 +199,7 @@ public class PacientesController extends Controller  {
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
+        
     }
 
     @FXML
@@ -235,7 +241,7 @@ public class PacientesController extends Controller  {
     boolean registroCorrecto() {
         return !txtNombre.getText().isEmpty() && !txtCedula.getText().isEmpty()
                && !txtPApellido.getText().isEmpty() && !txtSApellido.getText().isEmpty()
-               && !FechaDeNacimiento.getValue().equals(null)
+               && !FechaDeNacimiento.getValue().toString().isEmpty()
                && !txtCorreo.getText().isEmpty() && (btnHombre.isSelected() || btnMujer.isSelected());
     }
     
