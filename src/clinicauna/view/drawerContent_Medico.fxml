@@ -9,7 +9,7 @@
    <children>
       <AnchorPane prefHeight="800.0" prefWidth="200.0" stylesheets="@newCascadeStyleSheet.css">
          <children>
-            <VBox prefHeight="800.0" prefWidth="200.0" style="-fx-background-color: #042a6b;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox prefHeight="800.0" prefWidth="200.0" style="-fx-background-color: #021d4d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                   <JFXButton fx:id="btnPacientes" onAction="#btnPacientes" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Pacientes">
