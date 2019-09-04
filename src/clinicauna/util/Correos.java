@@ -45,7 +45,7 @@ public class Correos {
         return INSTANCE;
     }
 
-    public void SendMail(String Destinatario, String Link, String contraTemp) throws MessagingException, IOException {
+    public void SendMail(String Destinatario, String Link) throws MessagingException, IOException {
         // Propiedades necesarias
         Properties prop = new Properties();
         prop.setProperty("mail.smtp.auth", "true");
@@ -56,8 +56,8 @@ public class Correos {
 
         Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
         BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
-        link.setText("Por favor ingresa a esta dirección web para la activación de su usuario " + Link
-                + "\n Esta es tu contraseña temporal: " + contraTemp);
+        link.setText("Por favor ingresa a esta dirección web para la activación de tu usuario en el sistema de la Clínica UNA: \n" 
+                + Link);
         MimeMultipart m = new MimeMultipart();
         m.addBodyPart(link);
         MimeMessage mensaje = new MimeMessage(session);

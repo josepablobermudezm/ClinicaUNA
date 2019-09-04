@@ -19,6 +19,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -39,6 +40,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javax.mail.MessagingException;
 
 /**
  * FXML Controller class
@@ -240,7 +242,9 @@ public class UsuariosController extends Controller {
             try {
                 resp = usuarioService.guardarUsuario(usuarioDto);
                 usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
-
+                resp = usuarioService.activarUsuario(nombreusuario);
+                 //Envia correo de activacionS
+                Correos.getInstance().SendMail(correo, resp.getMensaje());
                 if (tipoUsuario.equals("M")) {
                     Long version1 = new Long(1);
                     medicoDto = new MedicoDto(null, null, null, null, "I", null, null, null,usuarioDto, version1 );
@@ -256,11 +260,11 @@ public class UsuariosController extends Controller {
                 items = FXCollections.observableArrayList(usuarios);
                 table.setItems(items);
 
-                //Envia correo de activacion
-                resp = usuarioService.activarUsuario(nombreusuario);
-                Correos.getInstance().SendMail(correo, resp.getMensaje(), temp);
-            } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el usuario...");
+               
+                
+                
+            } catch (IOException | MessagingException e) {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), e.getMessage());
             }
         }
 

@@ -5,9 +5,9 @@
  */
 package clinicauna.controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.fxml.Initializable;
+import com.jfoenix.controls.JFXPasswordField;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 
 /**
  * FXML Controller class
@@ -15,10 +15,25 @@ import javafx.fxml.Initializable;
  * @author Carlos Olivares
  */
 public class CambiarContrasennaController extends Controller {
+
+    @FXML
+    private JFXPasswordField txtXontrasenna;
+    @FXML
+    private JFXPasswordField txtConfirmarContrasenna;
     
     @Override
     public void initialize() {
 
+    }
+
+    @FXML
+    private void cancelar(ActionEvent event) {
+        this.getStage().close();
+    }
+
+    @FXML
+    private void agregarContrasenna(ActionEvent event) {
+    
     }
     
 }
