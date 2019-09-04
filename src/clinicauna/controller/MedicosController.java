@@ -7,7 +7,6 @@ package clinicauna.controller;
 
 import clinicauna.ClinicaUna;
 import clinicauna.model.MedicoDto;
-import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -15,15 +14,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
-import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -107,8 +98,8 @@ public class MedicosController extends Controller  {
         COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFolio()!=null)?value.getValue().getFolio():"Sin Asignar"));
         COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCarne()!=null)?value.getValue().getCarne():"Sin Asignar"));
         COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
-        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada().toString():"NULO"));
-        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada().toString():"NULO"));
+        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada():"NULO"));
+        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada():"NULO"));
         COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty((value.getValue().getEspacios()!=null)?value.getValue().getEspacios():0));
         
         items = FXCollections.observableArrayList(medicos);
