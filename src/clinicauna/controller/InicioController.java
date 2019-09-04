@@ -5,6 +5,7 @@
  */
 package clinicauna.controller;
 
+import clinicauna.model.UsuarioDto;
 import clinicauna.util.AppContext;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -63,9 +64,23 @@ public class InicioController extends Controller {
             omg.setImage(omg1);
         } catch (Exception e) {
         }
-
+        VBox box = null;
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent.fxml"));
+            UsuarioDto usuario = (UsuarioDto) AppContext.getInstance().get("Usuario");
+            switch(usuario.getTipoUsuario()){
+                case "A": {
+                      box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent.fxml"));
+                      break;
+                }
+                case "M":{
+                      box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent_Medico.fxml"));
+                      break;
+                }
+                case "R":{
+                    box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent_Recepcionista.fxml"));
+                    break;
+                }
+            }
             drawer.setSidePane(box);
             HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             burgerTask2.setRate(-1);

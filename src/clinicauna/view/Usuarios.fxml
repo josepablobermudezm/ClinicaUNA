@@ -136,7 +136,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXRadioButton fx:id="btnEspanol" text="Español" GridPane.columnIndex="1">
+                  <JFXRadioButton fx:id="btnEspanol" text="Español" style="-fx-cursor: Hand;" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets left="75.0" />
                      </GridPane.margin>
@@ -144,14 +144,14 @@
                         <ToggleGroup fx:id="idiomagroup" />
                      </toggleGroup>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnIngles" text="Ingles" toggleGroup="$idiomagroup" GridPane.columnIndex="1">
+                  <JFXRadioButton fx:id="btnIngles" text="Ingles" style="-fx-cursor: Hand;" toggleGroup="$idiomagroup" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets left="180.0" />
                      </GridPane.margin>
                   </JFXRadioButton>
                   <Label text="Idioma:" GridPane.columnIndex="1" />
                   <Label text="Tipo de Usuario:" GridPane.columnIndex="3" />
-                  <JFXRadioButton fx:id="btnAdministrador" text="Administrador" GridPane.columnIndex="3">
+                  <JFXRadioButton fx:id="btnAdministrador" text="Administrador" style="-fx-cursor: Hand;" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets left="150.0" />
                      </GridPane.margin>
@@ -159,12 +159,12 @@
                         <ToggleGroup fx:id="puesto" />
                      </toggleGroup>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnRecepcionista" text="Recepcionista" toggleGroup="$puesto" GridPane.columnIndex="3">
+                  <JFXRadioButton fx:id="btnRecepcionista" text="Recepcionista" style="-fx-cursor: Hand;" toggleGroup="$puesto" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets left="300.0" />
                      </GridPane.margin>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnMedico" text="Médico" toggleGroup="$puesto" GridPane.columnIndex="3">
+                  <JFXRadioButton fx:id="btnMedico" text="Médico" style="-fx-cursor: Hand;" toggleGroup="$puesto" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets left="450.0" />
                      </GridPane.margin>

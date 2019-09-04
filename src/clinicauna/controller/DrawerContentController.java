@@ -51,14 +51,14 @@ public class DrawerContentController extends Controller {
    
     @Override
     public void initialize() { 
-        
+        /*
         btnAgenda.setCursor(Cursor.HAND);
         btnExit.setCursor(Cursor.HAND);
         btnExpediente.setCursor(Cursor.HAND);
         btnMedicos.setCursor(Cursor.HAND);
         btnReportes.setCursor(Cursor.HAND);
         btnUsuarios.setCursor(Cursor.HAND);
-        btnPacientes.setCursor(Cursor.HAND);
+        btnPacientes.setCursor(Cursor.HAND);*/
         //btnUsuarios.setDisable(true);
         
         Image img;

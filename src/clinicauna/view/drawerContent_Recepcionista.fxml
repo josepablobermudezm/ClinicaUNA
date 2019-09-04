@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.DrawerContentController">
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.DrawerContentControllerRecepcionista">
    <children>
       <AnchorPane prefHeight="800.0" prefWidth="200.0" stylesheets="@newCascadeStyleSheet.css">
          <children>
-            <VBox prefHeight="800.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox prefHeight="800.0" prefWidth="200.0" style="-fx-background-color: #042a6b;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  <JFXButton fx:id="btnUsuarios" onAction="#Usuarios" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Usuarios" />
-                  <JFXButton fx:id="btnMedicos" onAction="#btnMedicos" prefHeight="92.0" prefWidth="200.0"  style="-fx-cursor: Hand;" text="Médicos">
-                  </JFXButton>
                   <JFXButton fx:id="btnPacientes" onAction="#btnPacientes" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Pacientes">
                   </JFXButton>
                   <JFXButton fx:id="btnAgenda" onAction="#btnAgenda" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Agenda">
-                  </JFXButton>
-                  <JFXButton fx:id="btnExpediente" onAction="#btnExpediente" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Expediente Médico">
-                  </JFXButton>
-                  <JFXButton fx:id="btnReportes" onAction="#btnReportes" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Reportes">
                   </JFXButton>
                   <JFXButton fx:id="btnExit" onAction="#exit" prefHeight="97.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Exit">
                   </JFXButton>
