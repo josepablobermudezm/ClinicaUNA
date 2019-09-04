@@ -141,9 +141,6 @@ public class UsuarioService {
 
     public Respuesta activarUsuario(String nombreUsuario) {
         try {
-        InetAddress address = InetAddress.getLocalHost();
-        System.out.println("IP Local :"+address.getHostAddress());
-            
             return new Respuesta(true, AppContext.getInstance().get("resturl") + "UsuarioController/activar/" + nombreUsuario, "");
         } catch (Exception ex) {
             Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error eliminando el Medico.", ex);
