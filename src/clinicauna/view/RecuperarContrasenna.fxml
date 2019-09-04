@@ -10,21 +10,21 @@
 
 <AnchorPane id="AnchorPane" prefHeight="271.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.RecuperarContrasennaController">
    <children>
-      <VBox layoutY="-1.0" prefHeight="273.0" prefWidth="601.0" spacing="40.0">
+      <VBox layoutY="-1.0" prefHeight="273.0" prefWidth="601.0" spacing="40.0" stylesheets="@newCascadeStyleSheet.css">
          <children>
-            <Label text="Contraseña">
+            <Label text="Recuperar Contraseña">
                <VBox.margin>
-                  <Insets left="217.0" right="150.0" />
+                  <Insets left="190.0" right="150.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField alignment="CENTER" labelFloat="true" promptText="Nombre de Usuario " />
-            <HBox>
+            <JFXTextField fx:id="txtCorreoElectronico" alignment="CENTER" labelFloat="true" promptText="Correo Electrónico" />
+            <HBox spacing="40.0">
                <children>
-                  <JFXButton prefHeight="25.0" prefWidth="167.0" text="Cancelar" />
-                  <JFXButton prefHeight="25.0" prefWidth="169.0" text="Enviar Correo" />
+                  <JFXButton onAction="#cancelar" prefHeight="25.0" prefWidth="167.0" text="Cancelar" />
+                  <JFXButton onAction="#correo" prefHeight="25.0" prefWidth="169.0" text="Enviar Correo" />
                </children>
                <padding>
-                  <Insets left="100.0" right="100.0" />
+                  <Insets left="70.0" />
                </padding>
             </HBox>
          </children>

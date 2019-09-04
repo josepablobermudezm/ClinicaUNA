@@ -5,8 +5,11 @@
  */
 package clinicauna.controller;
 
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 /**
@@ -16,11 +19,22 @@ import javafx.fxml.Initializable;
  */
 public class RecuperarContrasennaController extends Controller {
 
-     
+    @FXML
+    private JFXTextField txtNombreUsuario;
 
     @Override
     public void initialize() {
 
     }
-    
+
+    @FXML
+    private void cancelar(ActionEvent event) {
+        this.getStage().close();
+    }
+
+    @FXML
+    private void correo(ActionEvent event) {
+        
+    }
+
 }

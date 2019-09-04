@@ -11,22 +11,22 @@
 
 <AnchorPane id="AnchorPane" prefHeight="271.0" prefWidth="601.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="clinicauna.controller.CambiarContrasennaController">
    <children>
-      <VBox layoutY="-1.0" prefHeight="273.0" prefWidth="601.0" spacing="40.0">
+      <VBox layoutY="-1.0" prefHeight="273.0" prefWidth="601.0" spacing="40.0" stylesheets="@newCascadeStyleSheet.css">
          <children>
-            <Label text="Cambiar contraseña">
+            <Label id=".labe;" text="Cambiar contraseña">
                <VBox.margin>
                   <Insets left="190.0" right="150.0" />
                </VBox.margin>
             </Label>
-            <JFXPasswordField alignment="CENTER" labelFloat="true" promptText="Contraseña" />
-            <JFXPasswordField alignment="CENTER" labelFloat="true" promptText="Confirmar Contraseña" />
-            <HBox>
+            <JFXPasswordField fx:id="txtXontrasenna" alignment="CENTER" labelFloat="true" promptText="Contraseña" />
+            <JFXPasswordField fx:id="txtConfirmarContrasenna" alignment="CENTER" labelFloat="true" promptText="Confirmar Contraseña" />
+            <HBox spacing="40.0">
                <children>
-                  <JFXButton prefHeight="25.0" prefWidth="167.0" text="Cancelar" />
-                  <JFXButton prefHeight="25.0" prefWidth="169.0" text="Agregar Contraseña" />
+                  <JFXButton onAction="#cancelar" prefHeight="25.0" prefWidth="167.0" text="Cancelar" />
+                  <JFXButton onAction="#agregarContrasenna" prefHeight="25.0" prefWidth="169.0" text="Agregar Contraseña" />
                </children>
                <padding>
-                  <Insets left="100.0" right="100.0" />
+                  <Insets left="70.0" />
                </padding>
             </HBox>
          </children>
