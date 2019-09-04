@@ -146,14 +146,10 @@ public class UsuariosController extends Controller {
         COL_ESTADO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
         COL_PAPELLIDO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getpApellido()));
         COL_SAPELLIDO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getsApellido()));
-
+        //System.out.println(usuarios.size());
         items = FXCollections.observableArrayList(usuarios);
         table.setItems(items);
 
-        //ObservableList<String> idioma = FXCollections.observableArrayList("Ingles","Español");
-        //ObservableList<String> tipo = FXCollections.observableArrayList("Administrador","Medico","Recepcionista");
-        //ComboIdioma.setItems(idioma);
-        //ComboTipoUsuario.setItems(tipo);
     }
 
     @FXML
