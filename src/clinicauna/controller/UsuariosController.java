@@ -261,7 +261,6 @@ public class UsuariosController extends Controller {
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el usuario...");
             }
-
         }
 
     }
