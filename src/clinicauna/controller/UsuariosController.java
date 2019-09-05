@@ -171,7 +171,6 @@ public class UsuariosController extends Controller {
                     Long version = usuarioDto.getUsVersion() + 1;
                     String estado = usuarioDto.getEstado();
                     String clave = usuarioDto.getContrasenna();
-                    //Integer version = table.getSelectionModel().getSelectedItem().getVersion() + 1;
 
                     usuarioDto = new UsuarioDto(id, nombre, papellido, estado, sapellido, cedula, correo, nombreusuario,null, clave, tipoUsuario, idioma, version);
                     try {
@@ -243,8 +242,8 @@ public class UsuariosController extends Controller {
                  //Envia correo de activacionS
                 Correos.getInstance().linkActivacion(correo, resp.getMensaje());
                 if (tipoUsuario.equals("M")) {
-                    Long version1 = new Long(1);
-                    medicoDto = new MedicoDto(null, null, null, null, "I", null, null, null,usuarioDto, version1 );
+                    medicoDto = new MedicoDto(null, null, null, null, "I", null, 
+                            null, null,usuarioDto, new Long(1));
                     resp1 = medicoService.guardarMedico(medicoDto);
                     medicoDto = (MedicoDto) resp1.getResultado("Medico");
                 }

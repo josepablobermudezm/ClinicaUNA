@@ -58,7 +58,6 @@ public class MedicosController extends Controller {
     private JFXTextField txtFiltroEmpleado;
     @FXML
     private JFXButton btnBuscar;
-    private JFXComboBox<MedicoDto> ComboEstado;
     @FXML
     private TableColumn<MedicoDto, String> COL_CODIGO_MEDICOS;
     @FXML
@@ -96,7 +95,7 @@ public class MedicosController extends Controller {
     private Idioma idioma;
     @Override
     public void initialize() {
-        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        /*idioma = (Idioma) AppContext.getInstance().get("idioma");
         btnEditar1.setText(idioma.getProperty("Editar"));
         btnBuscar.setText(idioma.getProperty("Buscar"));
         COL_CODIGO_MEDICOS.setText(idioma.getProperty("Código"));
@@ -106,7 +105,7 @@ public class MedicosController extends Controller {
         COL_FINAL_MEDICOS.setText(idioma.getProperty("Final")+" "+idioma.getProperty("Jornada"));
         COL_ESPACIOS_MEDICOS.setText(idioma.getProperty("Espacio")+" "+idioma.getProperty("por")+" "+idioma.getProperty("Hora"));
         txtFiltroEmpleado.setPromptText(idioma.getProperty("Filtro")+" "+idioma.getProperty("porBy")+" "+"ID");
-        
+        */
         
         btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
@@ -138,14 +137,11 @@ public class MedicosController extends Controller {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 if (registroCorrecto()) {
                     Long id = medicoDto.getID();
-                    String usuario = medicoDto.getUs().getNombreUsuario();
                     String folio = txtFolio.getText();
                     String carne = txtCarne.getText();
                     String codigo = txtCodigo.getText();
-                    String inicio2 = timePickerInicio.getValue().toString();
                     LocalTime inicio1 = timePickerInicio.getValue();
                     LocalTime final1 = timePickerfinal.getValue();
-                    String final2 = timePickerfinal.getValue().toString();
                     Integer espacios = Integer.parseInt(txtEspacio.getText());
                     LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicio1);
                     LocalDateTime final12 = LocalDateTime.of(LocalDate.now(), final1);
