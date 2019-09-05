@@ -66,7 +66,7 @@ public class InicioController extends Controller {
         }
         VBox box = null;
         try {
-            UsuarioDto usuario = (UsuarioDto) AppContext.getInstance().get("Usuario");
+            UsuarioDto usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             switch(usuario.getTipoUsuario()){
                 case "A": {
                       box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent.fxml"));

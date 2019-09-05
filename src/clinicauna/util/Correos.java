@@ -45,7 +45,7 @@ public class Correos {
         return INSTANCE;
     }
 
-    public void SendMail(String Destinatario, String Link) throws MessagingException, IOException {
+    public void linkActivacion(String Destinatario, String Link) throws MessagingException, IOException {
         // Propiedades necesarias
         Properties prop = new Properties();
         prop.setProperty("mail.smtp.auth", "true");
@@ -64,6 +64,32 @@ public class Correos {
         mensaje.setFrom(new InternetAddress("clinica.una.cr@gmail.com"));// Aqui se define el usuario que enviará el correo
         mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(Destinatario));// Destinatario
         mensaje.setSubject("Link de Activación");// Aqui podemos escribir el asunto que necesitemos en el correo
+        mensaje.setContent(m); // aqui seteamos nuestro archivo
+        // Aqui se conecta con nuestro usuario y contraseña se procede a enviar y se cierra la conexión
+        Transport t = session.getTransport("smtp");
+        t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
+        t.sendMessage(mensaje, mensaje.getAllRecipients());
+        t.close();
+    }
+     public void recuperarContrasenna(String Destinatario, String contrasenna) throws MessagingException, IOException {
+        // Propiedades necesarias
+        Properties prop = new Properties();
+        prop.setProperty("mail.smtp.auth", "true");
+        prop.setProperty("mail.smtp.starttls.enable", "true");
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.setProperty("mail.smtp.port", "587");
+        prop.setProperty("mail.smtp.user", "clinica.una.cr@gmail.com");
+
+        Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
+        BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
+        link.setText(" Para poder reestablecer la constraseña es necesario la siguiente clave temporal: \n" 
+                + contrasenna+" .\n Si no has intentado reestablecer tu contraseña ignora este mensaje." );
+        MimeMultipart m = new MimeMultipart();
+        m.addBodyPart(link);
+        MimeMessage mensaje = new MimeMessage(session);
+        mensaje.setFrom(new InternetAddress("clinica.una.cr@gmail.com"));// Aqui se define el usuario que enviará el correo
+        mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(Destinatario));// Destinatario
+        mensaje.setSubject("Recuperar Contraseña");// Aqui podemos escribir el asunto que necesitemos en el correo
         mensaje.setContent(m); // aqui seteamos nuestro archivo
         // Aqui se conecta con nuestro usuario y contraseña se procede a enviar y se cierra la conexión
         Transport t = session.getTransport("smtp");

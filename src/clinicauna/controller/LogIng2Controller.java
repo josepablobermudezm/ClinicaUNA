@@ -23,6 +23,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -61,6 +62,7 @@ public class LogIng2Controller extends Controller {
      */
     @Override
     public void initialize() {
+        
         btnSalir1.setCursor(Cursor.HAND);
         btnIngresar1.setCursor(Cursor.HAND);
         Image imgFondo;
@@ -101,10 +103,12 @@ public class LogIng2Controller extends Controller {
                 if (respuesta.getEstado()) {
                     String contrasena = txtClave1.getText();
                     UsuarioDto usuario = (UsuarioDto) respuesta.getResultado("Usuario");
-                    AppContext.getInstance().set("Usuario", usuario);
+                    AppContext.getInstance().set("UsuarioActivo", usuario);
                     if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
+                        AppContext.getInstance().set("stage",this.getStage());
                         FlowController.getInstance().goViewInWindowModal("cambiarContrasenna", this.getStage(), false);
                     } else if (usuario.getEstado().equals("A")) {
+                        FlowController.getInstance().initialize();
                         FlowController.getInstance().goMain();
                         this.getStage().close();
                     } else if (usuario.getEstado().equals("I")) {
@@ -141,11 +145,13 @@ public class LogIng2Controller extends Controller {
                     if (respuesta.getEstado()) {
                         String contrasena = txtClave1.getText();
                         UsuarioDto usuario = (UsuarioDto) respuesta.getResultado("Usuario");
-                        AppContext.getInstance().set("Usuario", usuario);
+                        AppContext.getInstance().set("UsuarioActivo", usuario);
                         if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
+                            AppContext.getInstance().set("stage",this.getStage());
                             FlowController.getInstance().goViewInWindowModal("cambiarContrasenna", this.getStage(), false);
                         } else if (usuario.getEstado().equals("A")) {
                             FlowController.getInstance().goMain();
+                            
                             this.getStage().close();
                         } else if (usuario.getEstado().equals("I")) {
                             new Mensaje().showModal(Alert.AlertType.WARNING, "Ingreso", this.getStage(), "El usuario no esta activo, debes activarlo previamente en el correo que ha sido enviado.");
@@ -159,6 +165,11 @@ public class LogIng2Controller extends Controller {
             }
         }
 
+    }
+
+    @FXML
+    private void restablecerContrasenna(MouseEvent event) {
+        FlowController.getInstance().goViewInWindowModal("RecuperarContrasenna", this.getStage(),false);
     }
 
 }

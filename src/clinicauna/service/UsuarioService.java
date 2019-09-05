@@ -147,4 +147,21 @@ public class UsuarioService {
             return new Respuesta(false, "Error eliminando el Medico.", "eliminarMedico " + ex.getMessage());
         }
     }
+    public Respuesta getUsuario(String correo) {
+        try {
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("correo", correo);
+            Request request = new Request("UsuarioController/recuperarContrasenna/", "/{correo}", parametros);
+            request.get();
+
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+            UsuarioDto Usuario = (UsuarioDto) request.readEntity(UsuarioDto.class);
+            return new Respuesta(true, "", "", "Usuario", Usuario);
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo Usuarios.", ex);
+            return new Respuesta(false, "Error obteniendo Usuarios.", "getUsuarios " + ex.getMessage());
+        }
+    }
 }

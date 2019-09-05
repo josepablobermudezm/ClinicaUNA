@@ -4,6 +4,14 @@
     -fx-font-size : 35pt;
     -jfx-focus-color: -fx-secondary;
 }
+#labelContra{
+    -fx-text-fill: white;
+    -jfx-focus-color: -fx-secondary;
+}
+#labelContra:hover{
+    -fx-text-fill: #999999;
+    -jfx-focus-color: -fx-secondary;
+}
 .label{
     -fx-text-fill: black;
 }

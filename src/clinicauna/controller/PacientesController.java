@@ -12,7 +12,6 @@ import clinicauna.service.PacienteService;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
-import clinicauna.util.generadorContrasennas;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
