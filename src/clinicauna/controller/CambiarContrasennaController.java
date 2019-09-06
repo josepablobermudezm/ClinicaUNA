@@ -96,7 +96,7 @@ public class CambiarContrasennaController extends Controller {
                         usuarioService.guardarUsuario(usuario);
                         FlowController.getInstance().initialize();
                         FlowController.getInstance().goMain();
-                        ((Stage) AppContext.getInstance().get("stage")).close();
+                        this.getStage().close();
 
                     } catch (Exception e) {
                         System.out.println("Hubo un error al actualizar la contrasenna");
