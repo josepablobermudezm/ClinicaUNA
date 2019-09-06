@@ -12,17 +12,20 @@ import java.util.Properties;
  *
  * @author JORDI RODRIGUEZ
  */
+
 public class Idioma extends Properties {
+    private static final long serialVersionUID = 1L;
     public Idioma(String idioma){
-         switch(idioma){
+        switch(idioma){
         case "Español":
-                getProperties("Espanol.properties");
+                getProperties("/clinicauna/resources/i18n/Espanol.properties");
                 break;
         case "Inglés":
-                getProperties("Ingles.properties");
+                getProperties("/clinicauna/resources/i18n/Ingles.properties");
                 break;
         default:
-                getProperties("Espanol.properties");
+                getProperties("/clinicauna/resources/i18n/Espanol.properties");
+                break;
     }
     }
     private void getProperties(String idioma) {

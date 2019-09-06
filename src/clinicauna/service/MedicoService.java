@@ -104,7 +104,6 @@ public class MedicoService {
 
             Request request = new Request("MedicoController/guardar");
             request.post(Medico);
-
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }

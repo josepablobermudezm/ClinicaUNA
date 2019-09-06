@@ -134,6 +134,11 @@ public class MedicoDto {
     public void setFinJornada(String FinJornada) {
         this.FinJornada = FinJornada;
     }
+
+    @Override
+    public String toString() {
+        return "MedicoDto{" + "ID=" + ID + ", Codigo=" + Codigo + ", Folio=" + Folio + ", carne=" + carne + ", Estado=" + Estado + ", InicioJornada=" + InicioJornada + ", FinJornada=" + FinJornada + ", espacios=" + espacios + ", us=" + us + ", medVersion=" + medVersion + '}';
+    }
     
     
 }

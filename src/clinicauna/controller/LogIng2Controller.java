@@ -9,6 +9,7 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -23,6 +24,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -55,12 +57,13 @@ public class LogIng2Controller extends Controller {
     private JFXButton btnSalir1;
     @FXML
     private JFXButton btnIngresar1;
-
+    private Idioma idioma;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize() {
+        
         btnSalir1.setCursor(Cursor.HAND);
         btnIngresar1.setCursor(Cursor.HAND);
         Image imgFondo;
@@ -101,15 +104,29 @@ public class LogIng2Controller extends Controller {
                 if (respuesta.getEstado()) {
                     String contrasena = txtClave1.getText();
                     UsuarioDto usuario = (UsuarioDto) respuesta.getResultado("Usuario");
-                    AppContext.getInstance().set("Usuario", usuario);
+                    AppContext.getInstance().set("UsuarioActivo", usuario);
+                 
+                    if("I".equals(usuario.getIdioma())){
+                        idioma = new Idioma("Inglés");
+                    }
+                    else{
+                        if("E".equals(usuario.getIdioma())){
+                             idioma = new Idioma("Español");
+                        }
+                    }
+                     AppContext.getInstance().set("idioma",idioma);
+                    
                     if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
+                        AppContext.getInstance().set("stage",this.getStage());
                         FlowController.getInstance().goViewInWindowModal("cambiarContrasenna", this.getStage(), false);
                     } else if (usuario.getEstado().equals("A")) {
+                        FlowController.getInstance().initialize();
                         FlowController.getInstance().goMain();
                         this.getStage().close();
                     } else if (usuario.getEstado().equals("I")) {
                         new Mensaje().showModal(Alert.AlertType.WARNING, "Ingreso", this.getStage(), "El usuario no esta activo, debes activarlo previamente en el correo que ha sido enviado.");
                     }
+                    
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Ingreso", getStage(), respuesta.getMensaje());
                 }
@@ -141,11 +158,22 @@ public class LogIng2Controller extends Controller {
                     if (respuesta.getEstado()) {
                         String contrasena = txtClave1.getText();
                         UsuarioDto usuario = (UsuarioDto) respuesta.getResultado("Usuario");
-                        AppContext.getInstance().set("Usuario", usuario);
+                        AppContext.getInstance().set("UsuarioActivo", usuario);
+                    if("I".equals(usuario.getIdioma())){
+                        idioma = new Idioma("Inglés");
+                    }
+                    else{
+                        if("E".equals(usuario.getIdioma())){
+                             idioma = new Idioma("Español");
+                        }
+                    }
+                     AppContext.getInstance().set("idioma",idioma);
                         if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
+                            AppContext.getInstance().set("stage",this.getStage());
                             FlowController.getInstance().goViewInWindowModal("cambiarContrasenna", this.getStage(), false);
                         } else if (usuario.getEstado().equals("A")) {
                             FlowController.getInstance().goMain();
+                            
                             this.getStage().close();
                         } else if (usuario.getEstado().equals("I")) {
                             new Mensaje().showModal(Alert.AlertType.WARNING, "Ingreso", this.getStage(), "El usuario no esta activo, debes activarlo previamente en el correo que ha sido enviado.");
@@ -159,6 +187,11 @@ public class LogIng2Controller extends Controller {
             }
         }
 
+    }
+
+    @FXML
+    private void restablecerContrasenna(MouseEvent event) {
+        FlowController.getInstance().goViewInWindowModal("RecuperarContrasenna", this.getStage(),false);
     }
 
 }
