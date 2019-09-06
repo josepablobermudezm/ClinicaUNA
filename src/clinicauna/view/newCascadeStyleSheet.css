@@ -18,30 +18,7 @@
 .root{
     -fx-background-color: white;
 }
-/*s
-.button:disabled{
-    -fx-background-color: #E0E0E2;
-   -fx-border-color: #94BBDA;
-   -fx-text-fill: #000000;
-}*/
-.button{
-    -fx-background-color:#042a6b;
-    -jfx-button-type: RAISED;/*raised and flat*/
-    -fx-text-fill: WHITE;
-    -jfx-rippler-fill: RED;
-}
-#btnIngresar1{
-    -fx-background-color: #083d99;
-    -jfx-button-type: RAISED;/*raised and flat*/
-    -fx-text-fill: WHITE;
-    -jfx-rippler-fill: RED;
-}
-#btnSalir1{
-    -fx-background-color: #083d99;
-    -jfx-button-type: RAISED;/*raised and flat*/
-    -fx-text-fill: WHITE;
-    -jfx-rippler-fill: RED;
-}
+
 .custom-jfx-radio-button-white{
     -fx-text-fill: white;
     -jfx-selected-color: #6622CC;
@@ -129,10 +106,31 @@
 }
 .text-field{
     -fx-prompt-text-fill: black;
-    -jfx-focus-color: #06388f;
-    -jfx-unfocus-color: #042a6b;
+    -jfx-focus-color: black;
+    -jfx-unfocus-color: black;
     /*-jfx-label-float: true;*/
     -fx-text-fill: black;
+}
+#txtXontrasenna{
+    -fx-prompt-text-fill: white;
+    -jfx-focus-color: white;
+    -jfx-unfocus-color: white;
+    /*-jfx-label-float: true;*/
+    -fx-text-fill: white;
+}
+#txtConfirmarContrasenna{
+    -fx-prompt-text-fill: white;
+    -jfx-focus-color: white;
+    -jfx-unfocus-color: white;
+    /*-jfx-label-float: true;*/
+    -fx-text-fill: white;
+}
+#txtCorreoElectronico{
+    -fx-prompt-text-fill: white;
+    -jfx-focus-color: white;
+    -jfx-unfocus-color: white;
+    /*-jfx-label-float: true;*/
+    -fx-text-fill: white;
 }
 #txtUsuario1{
     -fx-prompt-text-fill: white;
@@ -148,6 +146,12 @@
     /*-jfx-label-float: true;*/
     -fx-text-fill: white;
 }
+.button{
+    -fx-background-color:#042a6b;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: RED;
+}
 .button:hover {
     -fx-background-color: #06388f;
     -jfx-button-type: RAISED;/*raised and flat*/
@@ -156,14 +160,14 @@
 }
 
 #button2{
-    -fx-background-color: gray;
+    -fx-background-color: #083d99;
     -jfx-button-type: RAISED;/*raised and flat*/
     -fx-text-fill: WHITE;
-    -jfx-rippler-fill: GREEN;
+    -jfx-rippler-fill: RED;
     
 }
 #button2:hover {
-    -fx-background-color: #009cad;
+    -fx-background-color: #0747b5;
     -jfx-button-type: RAISED;/*raised and flat*/
     -fx-text-fill: WHITE;
     -jfx-rippler-fill: GREEN;

@@ -53,19 +53,16 @@ public class LogIng2Controller extends Controller {
     private JFXTextField txtUsuario1;
     @FXML
     private JFXPasswordField txtClave1;
-    @FXML
-    private JFXButton btnSalir1;
-    @FXML
     private JFXButton btnIngresar1;
     private Idioma idioma;
+    @FXML
+    private JFXButton button2;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize() {
-        
-        btnSalir1.setCursor(Cursor.HAND);
-        btnIngresar1.setCursor(Cursor.HAND);
+
         Image imgFondo;
         try {
             imgFondo = new Image("/clinicauna/resources/e.jpg");
@@ -117,8 +114,7 @@ public class LogIng2Controller extends Controller {
                      AppContext.getInstance().set("idioma",idioma);
                     
                     if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
-                        AppContext.getInstance().set("stage",this.getStage());
-                        FlowController.getInstance().goViewInWindowModal("cambiarContrasenna", this.getStage(), false);
+                        FlowController.getInstance().goViewInStage("cambiarContrasenna", this.getStage());
                     } else if (usuario.getEstado().equals("A")) {
                         FlowController.getInstance().initialize();
                         FlowController.getInstance().goMain();
@@ -169,11 +165,9 @@ public class LogIng2Controller extends Controller {
                     }
                      AppContext.getInstance().set("idioma",idioma);
                         if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
-                            AppContext.getInstance().set("stage",this.getStage());
-                            FlowController.getInstance().goViewInWindowModal("cambiarContrasenna", this.getStage(), false);
+                            FlowController.getInstance().goViewInStage("cambiarContrasenna", this.getStage());
                         } else if (usuario.getEstado().equals("A")) {
                             FlowController.getInstance().goMain();
-                            
                             this.getStage().close();
                         } else if (usuario.getEstado().equals("I")) {
                             new Mensaje().showModal(Alert.AlertType.WARNING, "Ingreso", this.getStage(), "El usuario no esta activo, debes activarlo previamente en el correo que ha sido enviado.");
@@ -191,7 +185,7 @@ public class LogIng2Controller extends Controller {
 
     @FXML
     private void restablecerContrasenna(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowModal("RecuperarContrasenna", this.getStage(),false);
+        FlowController.getInstance().goViewInStage("RecuperarContrasenna", this.getStage());
     }
 
 }
