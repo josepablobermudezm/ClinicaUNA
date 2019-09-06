@@ -163,7 +163,7 @@ public class LogIng2Controller extends Controller {
                              idioma = new Idioma("Español");
                         }
                     }
-                     AppContext.getInstance().set("idioma",idioma);
+                    AppContext.getInstance().set("idioma",idioma);
                         if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
                             FlowController.getInstance().goViewInStage("cambiarContrasenna", this.getStage());
                         } else if (usuario.getEstado().equals("A")) {

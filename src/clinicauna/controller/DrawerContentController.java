@@ -106,39 +106,33 @@ public class DrawerContentController extends Controller {
     }  
     @FXML
     private void Usuarios(ActionEvent event) {
-        AppContext.getInstance().set("Vista", "Usuarios");
-        FlowController.getInstance().goView("Cargando");
+        FlowController.getInstance().goView("Usuarios");
     }
 
     @FXML
     private void btnPacientes(ActionEvent event) {
-        AppContext.getInstance().set("Vista", "Pacientes");
-        FlowController.getInstance().goView("Cargando");
+        FlowController.getInstance().goView("Pacientes");
     }
 
     @FXML
     private void btnMedicos(ActionEvent event) {
-        AppContext.getInstance().set("Vista", "Medicos");
-        FlowController.getInstance().goView("Cargando");
+        FlowController.getInstance().goView("Medicos");
     }
 
     @FXML
     private void btnAgenda(ActionEvent event) {
-       AppContext.getInstance().set("Vista","Agenda");
-       FlowController.getInstance().goView("Cargando");
+       FlowController.getInstance().goView("Agenda");
     }
 
     @FXML
     private void btnExpediente(ActionEvent event) {
-        AppContext.getInstance().set("Vista","ExpedienteMedico");
-        FlowController.getInstance().goView("Cargando");
+        FlowController.getInstance().goView("ExpedienteMedico");
         
     }
 
     @FXML
     private void btnReportes(ActionEvent event) {
-        AppContext.getInstance().set("Vista","Reportes");
-        FlowController.getInstance().goView("Cargando");
+        FlowController.getInstance().goView("Reportes");
         
     }
 

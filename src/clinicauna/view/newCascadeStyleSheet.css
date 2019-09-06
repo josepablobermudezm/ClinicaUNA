@@ -4,6 +4,11 @@
     -fx-font-size : 35pt;
     -jfx-focus-color: -fx-secondary;
 }
+#lbl{
+    -fx-text-fill: gray;
+    -fx-font-size : 15pt;
+    -jfx-focus-color: -fx-secondary;
+}
 #labelContra{
     -fx-text-fill: white;
     -jfx-focus-color: -fx-secondary;
@@ -17,6 +22,10 @@
 }
 .root{
     -fx-background-color: white;
+}
+#calendarGrid {
+    -fx-background-color:  white;
+    -fx-border-style: solid inside;
 }
 
 .custom-jfx-radio-button-white{
