@@ -59,7 +59,7 @@ public class MedicoService {
             return new Respuesta(false, "Error obteniendo el Medico.", "getMedico " + ex.getMessage());
         }
     }
-
+    /*
     public Respuesta getMedicos(String cedula, String nombre, String pApellido) {
         try {
             Map<String, Object> parametros = new HashMap<>();
@@ -79,7 +79,7 @@ public class MedicoService {
             Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error obteniendo Medicos.", ex);
             return new Respuesta(false, "Error obteniendo Medicos.", "getMedicos " + ex.getMessage());
         }
-    }
+    }*/
 
     public Respuesta getMedicos() {
         try {
