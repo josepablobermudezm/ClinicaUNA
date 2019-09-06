@@ -27,8 +27,9 @@ public class CambiarContrasennaController extends Controller {
     private JFXPasswordField txtConfirmarContrasenna;
 
     @Override
-    public void initialize() {
-
+    public void initialize() {/*
+        this.txtConfirmarContrasenna.setOnKeyReleased(clinicauna.ClinicaUna.sinEspacios);
+        this.txtXontrasenna.setOnKeyReleased(clinicauna.ClinicaUna.sinEspacios);*/
     }
 
     @FXML
@@ -40,25 +41,28 @@ public class CambiarContrasennaController extends Controller {
     private void agregarContrasenna(ActionEvent event) {
         if (!txtConfirmarContrasenna.getText().isEmpty() && !txtXontrasenna.getText().isEmpty()) {
             if (txtConfirmarContrasenna.getText().equals(txtXontrasenna.getText())) {
-                UsuarioDto usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-                usuario.setContrasennaTemp(null);
-                usuario.setContrasenna(txtConfirmarContrasenna.getText());
-                try {
-                    UsuarioService usuarioService = new UsuarioService();
-                    usuarioService.guardarUsuario(usuario);
-                    FlowController.getInstance().initialize();
-                    FlowController.getInstance().goMain();
-                     ((Stage)AppContext.getInstance().get("stage")).close();
-                    
-                } catch (Exception e) {
-                    
+                if (!txtConfirmarContrasenna.getText().contains(" ")) {
+                    UsuarioDto usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+                    usuario.setContrasennaTemp(null);
+                    usuario.setContrasenna(txtConfirmarContrasenna.getText());
+                    try {
+                        UsuarioService usuarioService = new UsuarioService();
+                        usuarioService.guardarUsuario(usuario);
+                        FlowController.getInstance().initialize();
+                        FlowController.getInstance().goMain();
+                        ((Stage) AppContext.getInstance().get("stage")).close();
+
+                    } catch (Exception e) {
+                        System.out.println("Hubo un error al actualizar la contrasenna");
+                    }
+                } else {
+                    System.out.println("La contrasenna no puede tener espacios");
                 }
-
             } else {
-
+                System.out.println("Las contrasennas no coinciden");
             }
         } else {
-
+            System.out.println("Alguno de los campos esta vacio. Por favor corrige tu contrasenna");
         }
     }
 
