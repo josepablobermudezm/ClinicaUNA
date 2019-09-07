@@ -23,9 +23,23 @@
 .root{
     -fx-background-color: white;
 }
-#calendarGrid {
+.calendar_pane {
     -fx-background-color:  white;
-    -fx-border-style: solid inside;
+    -fx-border-style: dashed;
+    -fx-border-width: .5;
+    -fx-border-color: gray;
+}
+.calendar_pane:hover{
+    -fx-background-color: #0747b5;
+    -fx-border-style: solid;
+    -fx-border-width: 2.5;
+    -fx-border-color: gray;
+}
+.calendar_pane:pressed{
+    -fx-background-color: #042a6b;
+    -fx-border-style: solid;
+    -fx-border-width: 5.5;
+    -fx-border-color: gray;
 }
 
 .custom-jfx-radio-button-white{
