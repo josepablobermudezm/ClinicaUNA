@@ -4,11 +4,7 @@
     -fx-font-size : 35pt;
     -jfx-focus-color: -fx-secondary;
 }
-#lbl{
-    -fx-text-fill: gray;
-    -fx-font-size : 15pt;
-    -jfx-focus-color: -fx-secondary;
-}
+
 #labelContra{
     -fx-text-fill: white;
     -jfx-focus-color: -fx-secondary;
@@ -19,6 +15,10 @@
 }
 .label{
     -fx-text-fill: black;
+}
+.lbl{
+    -fx-font-size : 15pt;
+    -fx-text-fill : gray;
 }
 .root{
     -fx-background-color: white;
@@ -43,9 +43,34 @@
 }
 
 .custom-jfx-radio-button-white{
-    -fx-text-fill: white;
-    -jfx-selected-color: #6622CC;
+    -fx-text-fill: black;
+    -jfx-selected-color: #042a6b;
 }
+
+.button{
+    -fx-background-color:#042a6b;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: RED;
+}
+.button:hover {
+    -fx-background-color: #06388f;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: RED;
+}
+.button .jfx-rippler{
+    -jfx-rippler-fill: #577fc2;
+}
+
+.button:disabled{
+    -fx-background-color: #cccccc;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: GREEN;
+    
+}
+
 
 .table-view{
    -fx-background-color: #042a6b;
@@ -169,18 +194,6 @@
     /*-jfx-label-float: true;*/
     -fx-text-fill: white;
 }
-.button{
-    -fx-background-color:#042a6b;
-    -jfx-button-type: RAISED;/*raised and flat*/
-    -fx-text-fill: WHITE;
-    -jfx-rippler-fill: RED;
-}
-.button:hover {
-    -fx-background-color: #06388f;
-    -jfx-button-type: RAISED;/*raised and flat*/
-    -fx-text-fill: WHITE;
-    -jfx-rippler-fill: RED;
-}
 
 #button2{
     -fx-background-color: #083d99;
@@ -208,17 +221,9 @@
     -fx-text-fill: WHITE;
     -jfx-rippler-fill: GREEN;
 }
-.button:disabled{
-    -fx-background-color: #cccccc;
-    -jfx-button-type: RAISED;/*raised and flat*/
-    -fx-text-fill: WHITE;
-    -jfx-rippler-fill: GREEN;
-    
-}
-.button .jfx-rippler{
-    -jfx-rippler-fill: #577fc2;
-}
 
+
+/*
 .jfx-list-cell:selected{
     -fx-background-color: #3b8c91;
 }
@@ -235,4 +240,4 @@
     -fx-background-insets: 0;
     -fx-cell-vertical-margin:10.0;
     -fx-vertical-gap: 10;
-}
+}*/

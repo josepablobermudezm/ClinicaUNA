@@ -86,7 +86,7 @@
                      <children>
                         <JFXTextField fx:id="txtCedula" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Cedula" GridPane.columnIndex="1" />
                         <Label text="Género:" GridPane.columnIndex="3" />
-                        <JFXRadioButton fx:id="btnMujer" text="Mujer" style="-fx-cursor: Hand;" GridPane.columnIndex="3">
+                        <JFXRadioButton fx:id="btnMujer" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Mujer" GridPane.columnIndex="3">
                            <GridPane.margin>
                               <Insets left="150.0" />
                            </GridPane.margin>
@@ -94,8 +94,8 @@
                               <ToggleGroup fx:id="genero" />
                            </toggleGroup>
                         </JFXRadioButton>
-                        <JFXDatePicker fx:id="FechaDeNacimiento" prefHeight="29.0"  prefWidth="260.0" GridPane.columnIndex="5" />
-                        <JFXRadioButton fx:id="btnHombre" text="Hombre" style="-fx-cursor: Hand;" toggleGroup="$genero" GridPane.columnIndex="3">
+                        <JFXDatePicker fx:id="FechaDeNacimiento" prefHeight="29.0" prefWidth="260.0" GridPane.columnIndex="5" />
+                        <JFXRadioButton fx:id="btnHombre" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Hombre" toggleGroup="$genero" GridPane.columnIndex="3">
                            <GridPane.margin>
                               <Insets left="45.0" />
                            </GridPane.margin>

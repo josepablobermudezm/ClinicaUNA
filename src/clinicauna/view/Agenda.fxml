@@ -81,38 +81,41 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label fx:id="lbl" prefHeight="21.0" prefWidth="101.0" text="Domingo" GridPane.columnIndex="1">
+                              <Label fx:id="lblDomingo" prefHeight="21.0" prefWidth="101.0" styleClass="lbl" text="dom" GridPane.columnIndex="1">
                                  <GridPane.margin>
-                                    <Insets left="25.0" />
+                                    <Insets left="45.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Label fx:id="lbl" text="Lunes" GridPane.columnIndex="2">
+                              <Label fx:id="lblLunes" styleClass="lbl" text="lun" GridPane.columnIndex="2">
                                  <GridPane.margin>
-                                    <Insets left="35.0" />
+                                    <Insets left="45.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Label fx:id="lbl" text="Martes" GridPane.columnIndex="3">
+                              <Label fx:id="lblMartes" styleClass="lbl" text="mar" GridPane.columnIndex="3">
                                  <GridPane.margin>
-                                    <Insets left="30.0" />
+                                    <Insets left="45.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Label fx:id="lbl" text="Miercoles" GridPane.columnIndex="4">
+                              <Label fx:id="lblMiercoles" styleClass="lbl" text="mie" GridPane.columnIndex="4">
                                  <GridPane.margin>
-                                    <Insets left="20.0" />
+                                    <Insets left="45.0" />
                                  </GridPane.margin></Label>
-                              <Label fx:id="lbl" text="Jueves" GridPane.columnIndex="5">
+                              <Label fx:id="lblJueves" styleClass="lbl" text="jue" GridPane.columnIndex="5">
+                                 <GridPane.margin>
+                                    <Insets left="45.0" />
+                                 </GridPane.margin></Label>
+                              <Label fx:id="lblViernes" styleClass="lbl" text="vie" GridPane.columnIndex="6">
                                  <padding>
-                                    <Insets left="35.0" />
-                                 </padding></Label>
-                              <Label fx:id="lbl" text="Viernes" GridPane.columnIndex="6">
-                                 <padding>
-                                    <Insets left="25.0" />
-                                 </padding></Label>
-                              <Label fx:id="lbl" text="Sabado" GridPane.columnIndex="7">
-                                 <padding>
-                                    <Insets left="25.0" />
-                                 </padding></Label>
-                              <Label fx:id="lbl" text="Hora:">
+                                    <Insets left="5.0" />
+                                 </padding>
+                                 <GridPane.margin>
+                                    <Insets left="45.0" />
+                                 </GridPane.margin></Label>
+                              <Label fx:id="lblSabado" styleClass="lbl" text="sab" GridPane.columnIndex="7">
+                                 <GridPane.margin>
+                                    <Insets left="45.0" />
+                                 </GridPane.margin></Label>
+                              <Label fx:id="lbl" styleClass="lbl" text="Hora:">
                                  <GridPane.margin>
                                     <Insets left="30.0" />
                                  </GridPane.margin>
@@ -130,12 +133,13 @@
          <top>
             <AnchorPane prefHeight="75.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXDatePicker fx:id="DatePicker" layoutX="746.0" layoutY="23.0" prefHeight="29.0" prefWidth="256.0" />
-                  <Label fx:id="lbl" layoutX="313.0" layoutY="27.0" text="Año:" />
-                  <Label fx:id="lbl" layoutX="512.0" layoutY="27.0" text="Mes:" />
-                  <Label fx:id="Titulo" layoutX="14.0" layoutY="3.0" text="Agenda" />
-                  <Label fx:id="labelyear" layoutX="374.0" layoutY="32.0" prefHeight="21.0" prefWidth="74.0" />
-                  <Label fx:id="labelmes" layoutX="587.0" layoutY="30.0" prefHeight="21.0" prefWidth="74.0" />
+                  <JFXDatePicker fx:id="DatePicker" layoutX="746.0" layoutY="23.0" onHiding="#Fecha" prefHeight="29.0" prefWidth="256.0" />
+                  <Label fx:id="lbl" layoutX="14.0" layoutY="25.0" styleClass="lbl" text="Año:" />
+                  <Label fx:id="lbl" layoutX="277.0" layoutY="26.0" styleClass="lbl" text="Mes:" />
+                  <Label fx:id="labelyear" layoutX="71.0" layoutY="25.0" prefHeight="21.0" prefWidth="74.0" styleClass="lbl" />
+                  <Label fx:id="labelmes" layoutX="344.0" layoutY="25.0" prefHeight="21.0" prefWidth="117.0" styleClass="lbl" />
+                  <Label fx:id="lbl1" layoutX="519.0" layoutY="25.0" styleClass="lbl" text="Semana:" />
+                  <Label fx:id="labelSemana" layoutX="624.0" layoutY="24.0" prefHeight="30.0" prefWidth="103.0" styleClass="lbl" />
                </children>
             </AnchorPane>
          </top>
