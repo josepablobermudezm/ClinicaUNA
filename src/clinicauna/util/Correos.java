@@ -53,11 +53,12 @@ public class Correos {
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.setProperty("mail.smtp.port", "587");
         prop.setProperty("mail.smtp.user", "clinica.una.cr@gmail.com");
-
+        
         Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
         BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
-        link.setText("Por favor ingresa a esta dirección web para la activación de tu usuario en el sistema de la Clínica UNA: \n" 
-                + Link);
+        link.setContent("Por favor ingresa a esta dirección web para la activación de tu usuario en el sistema de la Clínica UNA: \n" 
+                + Link,"index/html");
+        
         MimeMultipart m = new MimeMultipart();
         m.addBodyPart(link);
         MimeMessage mensaje = new MimeMessage(session);
