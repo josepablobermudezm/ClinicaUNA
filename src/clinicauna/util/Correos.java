@@ -57,7 +57,7 @@ public class Correos {
         Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
         BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
         link.setContent("Por favor ingresa a esta dirección web para la activación de tu usuario en el sistema de la Clínica UNA: \n" 
-                + Link,"index/html");
+                + Link, "index/html");
         
         MimeMultipart m = new MimeMultipart();
         m.addBodyPart(link);
