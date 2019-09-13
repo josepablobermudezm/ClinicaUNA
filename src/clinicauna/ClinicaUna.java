@@ -7,6 +7,7 @@
 package clinicauna;
 
 import clinicauna.util.AppContext;
+import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
 import java.net.InetAddress;
 import javafx.application.Application;
@@ -24,20 +25,18 @@ public class ClinicaUna extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        /*InetAddress address = InetAddress.getLocalHost();
-        System.out.println("IP Local :" + address.getHostAddress());*/
+       
         stage.setTitle("Clinica UNA");
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
 
         FlowController.getInstance().InitializeFlow(stage, null);
         /*FlowController.getInstance().goMain();*/
-
+        //Correos.getInstance().linkActivacion("Cjosue13","solomaj12@gmail.com","HI");
         FlowController.getInstance().goViewInWindow("LogIn");
 
     }
 
     /**
-     * @param args the command line arguments
      */
     public final static EventHandler<KeyEvent> aceptaCaracteres = (KeyEvent event) -> {
         if (Character.isDigit(event.getCharacter().charAt(0))) {

@@ -59,7 +59,7 @@ public class RecuperarContrasennaController extends Controller {
             imvFondo.setImage(imgFondo);
         } catch (Exception e) {
         }
-        
+
     }
 
     @FXML
@@ -76,14 +76,20 @@ public class RecuperarContrasennaController extends Controller {
             if (resp.getEstado()) {
                 try {
                     UsuarioDto usuario = (UsuarioDto) resp.getResultado("Usuario");
-                    String contrassena = usuario.getContrasennaTemp();
-                    Correos.getInstance().recuperarContrasenna(correo, contrassena);
-                    
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(),"Se envió una contraseña temporal a este correo");
+                    if (usuario.getEstado().equals("A")) {
+                        String contrassena = usuario.getContrasennaTemp();
+                        Correos.getInstance().recuperarContrasenna(correo, contrassena);
+                        txtCorreoElectronico.clear();
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Recuperando contraseña", this.getStage(), "Se envió una contraseña temporal a este correo");
+                    }else{
+                        new Mensaje().showModal(Alert.AlertType.WARNING, "Recuperando contraseña", this.getStage(), "Este usuario no ha sido activado");
+                    }
+
                 } catch (IOException | MessagingException e) {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(), e.getMessage());
                 }
-
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(), resp.getMensaje());
             }
         }
     }

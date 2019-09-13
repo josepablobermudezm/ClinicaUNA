@@ -238,9 +238,10 @@ public class UsuariosController extends Controller {
             try {
                 resp = usuarioService.guardarUsuario(usuarioDto);
                 usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
-                resp = usuarioService.activarUsuario(nombreusuario);
-                 //Envia correo de activacionS
-                Correos.getInstance().linkActivacion(correo, resp.getMensaje());
+                resp1 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
+                 //Envia correo de activacion
+                Correos.getInstance().linkActivacion(nombreusuario,correo, resp1.getMensaje());
+                
                 if (tipoUsuario.equals("M")) {
                     medicoDto = new MedicoDto(null, null, null, null, "I", null, 
                             null, null,usuarioDto, new Long(1));
@@ -256,9 +257,6 @@ public class UsuariosController extends Controller {
                 items = FXCollections.observableArrayList(usuarios);
                 table.setItems(items);
 
-               
-                
-                
             } catch (IOException | MessagingException e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), e.getMessage());
             }
