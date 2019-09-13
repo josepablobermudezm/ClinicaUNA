@@ -53,10 +53,10 @@ public class LogIng2Controller extends Controller {
     private JFXTextField txtUsuario1;
     @FXML
     private JFXPasswordField txtClave1;
-    private JFXButton btnIngresar1;
     private Idioma idioma;
     @FXML
     private JFXButton button2;
+
     /**
      * Initializes the controller class.
      */
@@ -91,9 +91,9 @@ public class LogIng2Controller extends Controller {
     private void ingresar(ActionEvent event) {
         try {
             if (txtUsuario1.getText() == null || txtUsuario1.getText().isEmpty()) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar un usuario para ingresar al sistema.");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", this.getStage(), "Es necesario digitar un usuario para ingresar al sistema.");
             } else if (txtClave1.getText() == null || txtClave1.getText().isEmpty()) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar la clave para ingresar al sistema.");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", this.getStage(), "Es necesario digitar la clave para ingresar al sistema.");
             } else {
 
                 UsuarioService UsuarioService = new UsuarioService();
@@ -102,18 +102,18 @@ public class LogIng2Controller extends Controller {
                     String contrasena = txtClave1.getText();
                     UsuarioDto usuario = (UsuarioDto) respuesta.getResultado("Usuario");
                     AppContext.getInstance().set("UsuarioActivo", usuario);
-                 
-                    if("I".equals(usuario.getIdioma())){
+
+                    if ("I".equals(usuario.getIdioma())) {
                         idioma = new Idioma("Inglés");
-                    }
-                    else{
-                        if("E".equals(usuario.getIdioma())){
-                             idioma = new Idioma("Español");
+                    } else {
+                        if ("E".equals(usuario.getIdioma())) {
+                            idioma = new Idioma("Español");
                         }
                     }
-                     AppContext.getInstance().set("idioma",idioma);
-                    
-                    if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
+                    AppContext.getInstance().set("idioma", idioma);
+
+                    if (usuario.getEstado().equals("A") && usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
+                        FlowController.getInstance().initialize();
                         FlowController.getInstance().goViewInStage("cambiarContrasenna", this.getStage());
                     } else if (usuario.getEstado().equals("A")) {
                         FlowController.getInstance().initialize();
@@ -122,7 +122,7 @@ public class LogIng2Controller extends Controller {
                     } else if (usuario.getEstado().equals("I")) {
                         new Mensaje().showModal(Alert.AlertType.WARNING, "Ingreso", this.getStage(), "El usuario no esta activo, debes activarlo previamente en el correo que ha sido enviado.");
                     }
-                    
+
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Ingreso", getStage(), respuesta.getMensaje());
                 }
@@ -144,9 +144,9 @@ public class LogIng2Controller extends Controller {
             try {
 
                 if (txtUsuario1.getText() == null || txtUsuario1.getText().isEmpty()) {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar un usuario para ingresar al sistema.");
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", this.getStage(), "Es necesario digitar un usuario para ingresar al sistema.");
                 } else if (txtClave1.getText() == null || txtClave1.getText().isEmpty()) {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", (Stage) btnIngresar1.getScene().getWindow(), "Es necesario digitar la clave para ingresar al sistema.");
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", this.getStage(), "Es necesario digitar la clave para ingresar al sistema.");
                 } else {
 
                     UsuarioService UsuarioService = new UsuarioService();
@@ -155,16 +155,15 @@ public class LogIng2Controller extends Controller {
                         String contrasena = txtClave1.getText();
                         UsuarioDto usuario = (UsuarioDto) respuesta.getResultado("Usuario");
                         AppContext.getInstance().set("UsuarioActivo", usuario);
-                    if("I".equals(usuario.getIdioma())){
-                        idioma = new Idioma("Inglés");
-                    }
-                    else{
-                        if("E".equals(usuario.getIdioma())){
-                             idioma = new Idioma("Español");
+                        if ("I".equals(usuario.getIdioma())) {
+                            idioma = new Idioma("Inglés");
+                        } else {
+                            if ("E".equals(usuario.getIdioma())) {
+                                idioma = new Idioma("Español");
+                            }
                         }
-                    }
-                    AppContext.getInstance().set("idioma",idioma);
-                        if (usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
+                        AppContext.getInstance().set("idioma", idioma);
+                        if (usuario.getEstado().equals("A") && usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
                             FlowController.getInstance().goViewInStage("cambiarContrasenna", this.getStage());
                         } else if (usuario.getEstado().equals("A")) {
                             FlowController.getInstance().goMain();

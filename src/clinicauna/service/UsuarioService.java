@@ -10,6 +10,7 @@ import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,7 +116,7 @@ public class UsuarioService {
 
             Usuario = (UsuarioDto) request.readEntity(UsuarioDto.class);
 
-            return new Respuesta(true, "Guardado exitosamente", "", "Usuario", Usuario);
+            return new Respuesta(true, "Guardado exitosamente", request.toString(), "Usuario", Usuario);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error guardando el Usuario.", ex);
             return new Respuesta(false, "Error guardando el Usuario.", "guardarUsuario " + ex.getMessage());
@@ -139,14 +140,16 @@ public class UsuarioService {
         }
     }
 
-    public Respuesta activarUsuario(String nombreUsuario) {
+    public Respuesta activarUsuario(String codigo) {
         try {
-            return new Respuesta(true, AppContext.getInstance().get("resturl") + "UsuarioController/activar/" + nombreUsuario, "");
-        } catch (Exception ex) {
+            InetAddress address = InetAddress.getLocalHost();
+            return new Respuesta(true, "http://"+address.getHostAddress() + ":8989/WsClinicaUNA/ws/UsuarioController/activar/" + codigo, "");
+        } catch (UnknownHostException ex) {
             Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error eliminando el Medico.", ex);
             return new Respuesta(false, "Error eliminando el Medico.", "eliminarMedico " + ex.getMessage());
         }
     }
+
     public Respuesta getUsuario(String correo) {
         try {
             Map<String, Object> parametros = new HashMap<>();
