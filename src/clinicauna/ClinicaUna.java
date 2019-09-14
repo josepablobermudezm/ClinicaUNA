@@ -6,13 +6,9 @@
  */
 package clinicauna;
 
-import clinicauna.util.AppContext;
-import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
-import java.net.InetAddress;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -25,15 +21,10 @@ public class ClinicaUna extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-       
         stage.setTitle("Clinica UNA");
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
-
         FlowController.getInstance().InitializeFlow(stage, null);
-        /*FlowController.getInstance().goMain();*/
-        //Correos.getInstance().linkActivacion("Cjosue13","solomaj12@gmail.com","HI");
-        FlowController.getInstance().goViewInWindow("LogIn");
-
+        FlowController.getInstance().goViewInWindow("LogIn");        
     }
 
     /**
@@ -53,15 +44,14 @@ public class ClinicaUna extends Application {
     public final static EventHandler<KeyEvent> noEscribir = (KeyEvent event) -> {
         event.consume();
     };
-    
+
     public final static EventHandler<KeyEvent> sinEspacios = (KeyEvent event) -> {
-        if(event.getCode() == event.getCode().SPACE){
+        if (event.getCode() == event.getCode().SPACE) {
             event.consume();
         }
-        
+
     };
 
-    
     public static void main(String[] args) {
         launch(args);
     }

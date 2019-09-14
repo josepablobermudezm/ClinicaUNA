@@ -14,29 +14,22 @@ import clinicauna.util.Correos;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javax.mail.MessagingException;
@@ -80,8 +73,6 @@ public class UsuariosController extends Controller {
     private JFXButton btnAgregar1;
     @FXML
     private JFXButton btnBuscar;
-    private JFXComboBox<String> ComboTipoUsuario;
-    private JFXComboBox<String> ComboIdioma;
     @FXML
     private TableColumn<UsuarioDto, String> COL_PAPELLIDO_USUARIO;
     @FXML
@@ -120,7 +111,6 @@ public class UsuariosController extends Controller {
     @FXML
     private JFXPasswordField txtClave;
     private ArrayList<MedicoDto> medicos;
-
 
     @Override
     public void initialize() {
@@ -172,11 +162,11 @@ public class UsuariosController extends Controller {
                     String estado = usuarioDto.getEstado();
                     String clave = usuarioDto.getContrasenna();
 
-                    usuarioDto = new UsuarioDto(id, nombre, papellido, estado, sapellido, cedula, correo, nombreusuario,null, clave, tipoUsuario, idioma, version);
+                    usuarioDto = new UsuarioDto(id, nombre, papellido, estado, sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
                     try {
                         resp = usuarioService.guardarUsuario(usuarioDto);
                         ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
-                        limpiarValores();
+                        limpiarRegistro();
                         usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
                         table.getItems().clear();
                         items = FXCollections.observableArrayList(usuarios);
@@ -200,15 +190,15 @@ public class UsuariosController extends Controller {
 
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
-                usuarioService.eliminarUsuario(table.getSelectionModel().getSelectedItem().getID());
-                ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), "Datos Eliminados correctamente");
+                resp = usuarioService.eliminarUsuario(table.getSelectionModel().getSelectedItem().getID());
+                ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), resp.getMensaje());
 
                 Respuesta respuesta = usuarioService.getUsuarios();
                 items.clear();
                 usuarios = (ArrayList) respuesta.getResultado("Usuarios");
                 items = FXCollections.observableArrayList(usuarios);
                 table.setItems(items);
-                limpiarValores();
+                limpiarRegistro();
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
             }
@@ -216,7 +206,20 @@ public class UsuariosController extends Controller {
     }
 
     @FXML
-    private void limpiarRegistro(ActionEvent event) {
+    private void limpiarRegistro() {
+        txtNombre.clear();
+        txtPApellido.clear();
+        txtSApellido.clear();
+        txtCorreo.clear();
+        txtCedula.clear();
+        txtNombreUsuario.clear();
+        table.getSelectionModel().clearSelection();
+        btnAdministrador.setSelected(false);
+        btnMedico.setSelected(true);
+        btnRecepcionista.setSelected(false);
+        btnEspanol.setSelected(true);
+        btnIngles.setSelected(false);
+        txtClave.clear();
     }
 
     @FXML
@@ -234,23 +237,23 @@ public class UsuariosController extends Controller {
             String nombreusuario = txtNombreUsuario.getText();
             Long version = new Long(1);
             String clave = txtClave.getText();
-            usuarioDto = new UsuarioDto(null, nombre, papellido, "I", sapellido,cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
+            usuarioDto = new UsuarioDto(null, nombre, papellido, "I", sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
             try {
                 resp = usuarioService.guardarUsuario(usuarioDto);
                 usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
                 resp1 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
-                 //Envia correo de activacion
-                Correos.getInstance().linkActivacion(nombreusuario,correo, resp1.getMensaje());
-                
+                //Envia correo de activacion
+                Correos.getInstance().linkActivacion(nombreusuario, correo, resp1.getMensaje());
+
                 if (tipoUsuario.equals("M")) {
-                    medicoDto = new MedicoDto(null, null, null, null, "I", null, 
-                            null, null,usuarioDto, new Long(1));
+                    medicoDto = new MedicoDto(null, null, null, null, "I", null,
+                            null, null, usuarioDto, new Long(1));
                     resp1 = medicoService.guardarMedico(medicoDto);
                     medicoDto = (MedicoDto) resp1.getResultado("Medico");
                 }
 
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
-                limpiarValores();
+                limpiarRegistro();
                 usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
 
                 table.getItems().clear();
@@ -264,21 +267,7 @@ public class UsuariosController extends Controller {
 
     }
 
-    void limpiarValores() {
-        txtNombre.clear();
-        txtPApellido.clear();
-        txtSApellido.clear();
-        txtCorreo.clear();
-        txtCedula.clear();
-        txtNombreUsuario.clear();
-        table.getSelectionModel().clearSelection();
-        btnAdministrador.setSelected(false);
-        btnMedico.setSelected(false);
-        btnRecepcionista.setSelected(false);
-        btnEspanol.setSelected(false);
-        btnIngles.setSelected(false);
-        txtClave.clear();
-    }
+    
 
     private void typeKeys() {
         txtNombre.setOnKeyTyped(ClinicaUna.aceptaCaracteres);

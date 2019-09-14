@@ -9,21 +9,19 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import clinicauna.util.Mensaje;
+import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -56,10 +54,8 @@ public class CambiarContrasennaController extends Controller {
     private JFXHamburger ham3;
 
     @Override
-    public void initialize() {/*
-        this.txtConfirmarContrasenna.setOnKeyReleased(clinicauna.ClinicaUna.sinEspacios);
-        this.txtXontrasenna.setOnKeyReleased(clinicauna.ClinicaUna.sinEspacios);*/
-        
+    public void initialize() {
+
         Image imgFondo;
         try {
             imgFondo = new Image("/clinicauna/resources/e.jpg");
@@ -82,9 +78,7 @@ public class CambiarContrasennaController extends Controller {
         }
     }
 
-
-    @FXML
-    private void agregarContrasenna(ActionEvent event) {
+    private void cambiarContrasenna() {
         if (!txtConfirmarContrasenna.getText().isEmpty() && !txtXontrasenna.getText().isEmpty()) {
             if (txtConfirmarContrasenna.getText().equals(txtXontrasenna.getText())) {
                 if (!txtConfirmarContrasenna.getText().contains(" ")) {
@@ -93,35 +87,40 @@ public class CambiarContrasennaController extends Controller {
                     usuario.setContrasenna(txtConfirmarContrasenna.getText());
                     try {
                         UsuarioService usuarioService = new UsuarioService();
-                        usuarioService.guardarUsuario(usuario);
+                        Respuesta resp = usuarioService.guardarUsuario(usuario);
                         FlowController.getInstance().initialize();
                         FlowController.getInstance().goMain();
+                        AppContext.getInstance().set("UsuarioActivo", (UsuarioDto) resp.getResultado("Usuario"));
                         this.getStage().close();
 
                     } catch (Exception e) {
-                        System.out.println("Hubo un error al actualizar la contrasenna");
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiando Contraseña", this.getStage(), "Hubo un error al actualizar la contraseña");
                     }
                 } else {
-                    System.out.println("La contrasenna no puede tener espacios");
+                    new Mensaje().showModal(Alert.AlertType.WARNING, "Cambiando Contraseña", this.getStage(), "La contraseña no puede tener espacios");
                 }
             } else {
-                System.out.println("Las contrasennas no coinciden");
+                new Mensaje().showModal(Alert.AlertType.WARNING, "Cambiando Contraseña", this.getStage(), "Las contraseñas no coinciden");
             }
         } else {
-            System.out.println("Alguno de los campos esta vacio. Por favor corrige tu contrasenna");
+            new Mensaje().showModal(Alert.AlertType.WARNING, "Cambiando Contraseña", this.getStage(), "Alguno de los campos esta vacio. Por favor corrige tu contraseña");
         }
     }
 
     @FXML
-    private void iniciar(KeyEvent event) {
+    private void agregarContrasenna(ActionEvent event) {
+        cambiarContrasenna();
     }
 
+    @FXML
+    private void iniciar(KeyEvent event) {
+        cambiarContrasenna();
+    }
 
     @FXML
     private void salir(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("LogIn",this.getStage());
+        FlowController.getInstance().initialize();
+        FlowController.getInstance().goViewInStage("LogIn", this.getStage());
     }
-
-
 
 }

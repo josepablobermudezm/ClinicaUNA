@@ -4,6 +4,11 @@
     -fx-font-size : 35pt;
     -jfx-focus-color: -fx-secondary;
 }
+#Titulo2{
+    -fx-text-fill: white;
+    -fx-font-size : 30pt;
+    -jfx-focus-color: -fx-secondary;
+}
 
 #labelContra{
     -fx-text-fill: white;

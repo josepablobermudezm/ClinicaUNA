@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.UsuariosController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.UsuariosController">
    <center>
       <AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1030.0" stylesheets="@newCascadeStyleSheet.css">
          <children>
@@ -138,7 +138,8 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXRadioButton fx:id="btnEspanol" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Español" GridPane.columnIndex="3">
+                  <JFXPasswordField fx:id="txtClave" labelFloat="true" promptText="Contraseña" GridPane.columnIndex="1" />
+                  <JFXRadioButton fx:id="btnEspanol" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Español" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets left="50.0" />
                      </GridPane.margin>
@@ -172,12 +173,11 @@
                         <Insets left="160.0" />
                      </GridPane.margin>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnMedico" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Médico" toggleGroup="$puesto" GridPane.columnIndex="4">
+                  <JFXRadioButton fx:id="btnMedico" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Médico" toggleGroup="$puesto" GridPane.columnIndex="4">
                      <GridPane.margin>
                         <Insets left="290.0" />
                      </GridPane.margin>
                   </JFXRadioButton>
-                  <JFXPasswordField fx:id="txtClave" promptText="Contraseña" GridPane.columnIndex="1" />
                </children>
             </GridPane>
          </children>

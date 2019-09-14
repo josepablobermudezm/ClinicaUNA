@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,14 +26,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author Carlos
  */
-public class LogIng2Controller extends Controller {
+public class LogIngController extends Controller {
 
     @FXML
     private AnchorPane root;
@@ -89,6 +87,10 @@ public class LogIng2Controller extends Controller {
 
     @FXML
     private void ingresar(ActionEvent event) {
+        Login();
+    }
+
+    private void Login() {
         try {
             if (txtUsuario1.getText() == null || txtUsuario1.getText().isEmpty()) {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", this.getStage(), "Es necesario digitar un usuario para ingresar al sistema.");
@@ -128,9 +130,8 @@ public class LogIng2Controller extends Controller {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(LogIng2Controller.class.getName()).log(Level.SEVERE, "Error ingresando.", ex);
+            Logger.getLogger(LogIngController.class.getName()).log(Level.SEVERE, "Error ingresando.", ex);
         }
-
     }
 
     @FXML
@@ -141,43 +142,7 @@ public class LogIng2Controller extends Controller {
     @FXML
     private void iniciar(KeyEvent event) {
         if (event.getCode() == event.getCode().ENTER) {
-            try {
-
-                if (txtUsuario1.getText() == null || txtUsuario1.getText().isEmpty()) {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", this.getStage(), "Es necesario digitar un usuario para ingresar al sistema.");
-                } else if (txtClave1.getText() == null || txtClave1.getText().isEmpty()) {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", this.getStage(), "Es necesario digitar la clave para ingresar al sistema.");
-                } else {
-
-                    UsuarioService UsuarioService = new UsuarioService();
-                    Respuesta respuesta = UsuarioService.getUsuario(txtUsuario1.getText(), txtClave1.getText());
-                    if (respuesta.getEstado()) {
-                        String contrasena = txtClave1.getText();
-                        UsuarioDto usuario = (UsuarioDto) respuesta.getResultado("Usuario");
-                        AppContext.getInstance().set("UsuarioActivo", usuario);
-                        if ("I".equals(usuario.getIdioma())) {
-                            idioma = new Idioma("Inglés");
-                        } else {
-                            if ("E".equals(usuario.getIdioma())) {
-                                idioma = new Idioma("Español");
-                            }
-                        }
-                        AppContext.getInstance().set("idioma", idioma);
-                        if (usuario.getEstado().equals("A") && usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
-                            FlowController.getInstance().goViewInStage("cambiarContrasenna", this.getStage());
-                        } else if (usuario.getEstado().equals("A")) {
-                            FlowController.getInstance().goMain();
-                            this.getStage().close();
-                        } else if (usuario.getEstado().equals("I")) {
-                            new Mensaje().showModal(Alert.AlertType.WARNING, "Ingreso", this.getStage(), "El usuario no esta activo, debes activarlo previamente en el correo que ha sido enviado.");
-                        }
-                    } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Ingreso", getStage(), respuesta.getMensaje());
-                    }
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(LogIng2Controller.class.getName()).log(Level.SEVERE, "Error ingresando.", ex);
-            }
+            Login();
         }
 
     }

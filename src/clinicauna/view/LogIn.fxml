@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.LogIng2Controller">
+<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.LogIng2Controller">
    <children>
       <StackPane layoutX="115.0" layoutY="110.0" prefHeight="189.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -40,7 +40,7 @@
                      </rowConstraints>
                      <children>
                         <ImageView fx:id="imguser" fitHeight="38.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <JFXTextField fx:id="txtUsuario1" labelFloat="true" prefHeight="40.0" prefWidth="342.0" promptText="User" GridPane.columnIndex="2">
+                        <JFXTextField fx:id="txtUsuario1" labelFloat="true" prefHeight="40.0" prefWidth="342.0" promptText="Nombre de Usuario" GridPane.columnIndex="2">
                            <padding>
                               <Insets left="50.0" />
                            </padding>
@@ -62,10 +62,10 @@
                      </rowConstraints>
                      <children>
                         <ImageView fx:id="imgPassword" fitHeight="39.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <JFXPasswordField fx:id="txtClave1" labelFloat="true" onKeyPressed="#iniciar" prefHeight="36.0" prefWidth="387.0" promptText="Password" GridPane.columnIndex="2" />
+                        <JFXPasswordField fx:id="txtClave1" labelFloat="true" onKeyPressed="#iniciar" prefHeight="36.0" prefWidth="387.0" promptText="Contraseña" GridPane.columnIndex="2" />
                      </children>
                   </GridPane>
-                  <Label id="labelContra" onMouseReleased="#restablecerContrasenna" text="¿Has olvidado tu contraseña?"  style="-fx-cursor: hand;" >
+                  <Label id="labelContra" onMouseReleased="#restablecerContrasenna" style="-fx-cursor: hand;" text="¿Has olvidado tu contraseña?">
                      <VBox.margin>
                         <Insets left="190.0" />
                      </VBox.margin></Label>
@@ -80,7 +80,7 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="button2" style="-fx-cursor: hand;" buttonType="RAISED" onAction="#salir" prefHeight="38.0" prefWidth="175.0" ripplerFill="WHITE"  text="Cancelar" textFill="WHITE" GridPane.columnIndex="1">
+                        <JFXButton fx:id="button2" buttonType="RAISED" onAction="#salir" prefHeight="38.0" prefWidth="175.0" ripplerFill="WHITE" style="-fx-cursor: hand;" text="Cancelar" textFill="WHITE" GridPane.columnIndex="1">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>

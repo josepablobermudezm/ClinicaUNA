@@ -6,7 +6,6 @@
 package clinicauna.service;
 
 import clinicauna.model.UsuarioDto;
-import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.net.InetAddress;
@@ -133,7 +132,7 @@ public class UsuarioService {
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            return new Respuesta(true, "", "");
+            return new Respuesta(true, "Usuario eliminado exitosamente", "");
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error eliminando el Usuario.", ex);
             return new Respuesta(false, "Error eliminando el Usuario.", "eliminarUsuario " + ex.getMessage());
