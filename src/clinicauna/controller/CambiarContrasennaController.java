@@ -114,7 +114,10 @@ public class CambiarContrasennaController extends Controller {
 
     @FXML
     private void iniciar(KeyEvent event) {
-        cambiarContrasenna();
+        if (event.getCode() == event.getCode().ENTER) {
+            cambiarContrasenna();
+        }
+
     }
 
     @FXML

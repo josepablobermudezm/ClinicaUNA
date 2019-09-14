@@ -91,6 +91,8 @@ public class RecuperarContrasennaController extends Controller {
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(), resp.getMensaje());
             }
+        }else{
+            new Mensaje().showModal(Alert.AlertType.WARNING, "Recuperando contraseña", this.getStage(),"No se ha digitado algún correo electrónico");
         }
     }
 
