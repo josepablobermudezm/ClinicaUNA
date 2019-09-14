@@ -110,7 +110,7 @@ public class Correos {
                 + " <div id=\"imagenLogo\" style=\"width: 150px; heigth: 150px;  padding: 11px 23px\">"
                 + "<img width=\"150px\" style=\"display:block; margin: 1.5% 3%;\" \" src=\"https://i.postimg.cc/5yGvbDXK/logo-Correo.jpg\" heigth=\"150px\"></div>\n"
                 + "			<div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n"
-                + "				<h2 style=\"color: blue; margin: 0 0 7px\">Recuperación de contraseña</h2>\n"
+                + "				<h2 style=\"color: #3e3e7d; margin: 0 0 7px\">Recuperación de contraseña</h2>\n"
                 + "				<p style=\"margin: 2px; font-size: 15px\">\n"
                 + "					Para poder reestablecer la constraseña es necesario la siguiente clave temporal: " + contrasenna + "</p>\n"
                 + "                             <p style=\"margin: 2px; font-size: 15px\">\n"

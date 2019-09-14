@@ -93,9 +93,9 @@ public class LogIngController extends Controller {
     private void Login() {
         try {
             if (txtUsuario1.getText() == null || txtUsuario1.getText().isEmpty()) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", this.getStage(), "Es necesario digitar un usuario para ingresar al sistema.");
+                new Mensaje().showModal(Alert.AlertType.WARNING, "Validación de usuario", this.getStage(), "Es necesario digitar un usuario para ingresar al sistema.");
             } else if (txtClave1.getText() == null || txtClave1.getText().isEmpty()) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Validación de usuario", this.getStage(), "Es necesario digitar la clave para ingresar al sistema.");
+                new Mensaje().showModal(Alert.AlertType.WARNING, "Validación de usuario", this.getStage(), "Es necesario digitar la clave para ingresar al sistema.");
             } else {
 
                 UsuarioService UsuarioService = new UsuarioService();

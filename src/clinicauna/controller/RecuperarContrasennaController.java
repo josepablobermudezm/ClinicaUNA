@@ -84,7 +84,6 @@ public class RecuperarContrasennaController extends Controller {
                     }else{
                         new Mensaje().showModal(Alert.AlertType.WARNING, "Recuperando contraseña", this.getStage(), "Este usuario no ha sido activado");
                     }
-
                 } catch (IOException | MessagingException e) {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(), e.getMessage());
                 }
@@ -95,5 +94,4 @@ public class RecuperarContrasennaController extends Controller {
             new Mensaje().showModal(Alert.AlertType.WARNING, "Recuperando contraseña", this.getStage(),"No se ha digitado algún correo electrónico");
         }
     }
-
 }
