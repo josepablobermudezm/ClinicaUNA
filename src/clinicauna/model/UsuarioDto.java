@@ -62,10 +62,6 @@ public class UsuarioDto {
         this.usVersion = usVersion;
     }
 
-    
-
-   
-
     public Long getID() {
         return ID;
     }
