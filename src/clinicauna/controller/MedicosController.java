@@ -114,9 +114,9 @@ public class MedicosController extends Controller {
             this.timePickerfinal.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
             this.txtCarne.setPromptText(idioma.getProperty("Carné"));
             this.txtCodigo.setPromptText(idioma.getProperty("Código"));
-            this.txtEspacio.setText(idioma.getProperty("Espacio")+" "+idioma.getProperty("por")+" "+idioma.getProperty("Hora"));
-            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+" "+idioma.getProperty("Registro"));
-            this.Titulo.setText(idioma.getProperty("Mantenimiento")+" "+idioma.getProperty("de")+" "+idioma.getProperty("Medicos"));
+            this.txtEspacio.setText(idioma.getProperty("Espacio") + " " + idioma.getProperty("por") + " " + idioma.getProperty("Hora"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
+            this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Medicos"));
         }
 
         btnBuscar.setCursor(Cursor.HAND);
@@ -236,39 +236,15 @@ public class MedicosController extends Controller {
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 medicoDto = table.getSelectionModel().getSelectedItem();
-                if (medicoDto.getCarne() != null) {
-                    txtCodigo.setText(medicoDto.getCodigo());
-                } else {
-                    txtCodigo.setText("Vacío");
-                }
-                if (medicoDto.getCarne() != null) {
-                    txtCarne.setText(medicoDto.getCarne());
-                } else {
-                    txtCarne.setText("Vacío");
-                }
-                if (medicoDto.getEspacios() != null) {
-                    txtEspacio.setText(String.valueOf(medicoDto.getEspacios()));
-                } else {
-                    txtEspacio.setText("0");
-                }
-                if (medicoDto.getFolio() != null) {
-                    txtFolio.setText(medicoDto.getFolio());
-                } else {
-                    txtFolio.setText("Vacío");
-                }
-                if (medicoDto.getInicioJornada() != null) {
-                    LocalTime localTimeObj = LocalTime.parse(medicoDto.getInicioJornada());
-                    timePickerInicio.setValue(localTimeObj);
-                } else {
-                    //00:00
-                    timePickerInicio.setValue(LocalTime.MIDNIGHT);
-                }
-                if (medicoDto.getFinJornada() != null) {
-                    LocalTime localTimeObj1 = LocalTime.parse(medicoDto.getFinJornada());
-                    timePickerfinal.setValue(localTimeObj1);
-                } else {
-                    timePickerfinal.setValue(LocalTime.MIDNIGHT);
-                }
+                txtCodigo.setText(medicoDto.getCodigo());
+                txtCarne.setText(medicoDto.getCarne());
+                txtEspacio.setText(String.valueOf(medicoDto.getEspacios()));
+                txtFolio.setText(medicoDto.getFolio());
+                LocalTime localTimeObj = LocalTime.parse(medicoDto.getInicioJornada());
+                timePickerInicio.setValue(localTimeObj);
+                LocalTime localTimeObj1 = LocalTime.parse(medicoDto.getFinJornada());
+                timePickerfinal.setValue(localTimeObj1);
+
             }
         }
     }

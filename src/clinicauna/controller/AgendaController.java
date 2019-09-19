@@ -7,9 +7,11 @@ package clinicauna.controller;
 
 import clinicauna.model.MedicoDto;
 import clinicauna.service.MedicoService;
+import clinicauna.util.AppContext;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -135,6 +137,13 @@ public class AgendaController extends Controller {
             medicoDto = lista.stream().filter(x->x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
             cedulaBuscar = "";  
             cedulaEncontrada =false;
+            LocalTime localTimeObj = LocalTime.parse(medicoDto.getInicioJornada());
+            LocalTime localTimeObj2 = LocalTime.parse(medicoDto.getFinJornada());
+            Integer horas = localTimeObj2.getHour()-localTimeObj.getHour();
+            System.out.println("Horas "+horas);
+            AppContext.getInstance().set("Medico", medicoDto);
+            
+            
         }
     }
 }
