@@ -8,6 +8,7 @@ package clinicauna.controller;
 import clinicauna.model.MedicoDto;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
+import clinicauna.util.FlowController;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -18,6 +19,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -90,6 +92,7 @@ public class AgendaController extends Controller {
             for (int j = 1; j < 2; j++) {
                 // Add VBox and style it
                 VBox vPane = new VBox();
+                vPane.setOnMouseReleased(citasReleased);
                 vPane.getStyleClass().add("calendar_pane");
                 vPane.setMinWidth(125);
 
@@ -106,8 +109,14 @@ public class AgendaController extends Controller {
                 .collect(Collectors.toList()));
         ComboMedico.setItems(items);
     }
-
-   
+    
+    private EventHandler<MouseEvent> citasReleased = (event)->{
+        
+        FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
+        
+    };
+    
+  
     @FXML
     private void Fecha(Event event) {
         mes = (DatePicker.getValue().getMonth() != null) ? DatePicker.getValue().getMonth().toString() : " ";
