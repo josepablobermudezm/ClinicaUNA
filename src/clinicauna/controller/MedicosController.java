@@ -90,8 +90,6 @@ public class MedicosController extends Controller {
     @FXML
     private JFXTextField txtEspacio;
     private MedicoDto medicoDto;
-    @FXML
-    private JFXTextField txtNombreUsuario;
     private Idioma idioma;
     @Override
     public void initialize() {
@@ -126,9 +124,6 @@ public class MedicosController extends Controller {
         table.setItems(items);
     }
 
-    @FXML
-    private void DatosEmpleado(MouseEvent event) {
-    }
 
     @FXML
     private void editar(ActionEvent event) {
@@ -198,7 +193,7 @@ public class MedicosController extends Controller {
     }
 
     void limpiarValores() {
-        txtNombreUsuario.clear();
+        
         txtCarne.clear();
         txtCodigo.clear();
         txtEspacio.clear();
@@ -209,7 +204,7 @@ public class MedicosController extends Controller {
     }
 
     boolean registroCorrecto() {
-        return !txtNombreUsuario.getText().isEmpty() && !txtCarne.getText().isEmpty() && !txtCodigo.getText().isEmpty()
+        return  !txtCarne.getText().isEmpty() && !txtCodigo.getText().isEmpty()
                 && !txtFolio.getText().isEmpty() && !txtEspacio.getText().isEmpty()
                 && !timePickerInicio.getValue().toString().isEmpty() && !timePickerfinal.getValue().toString().isEmpty();
     }
@@ -228,7 +223,6 @@ public class MedicosController extends Controller {
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 medicoDto = table.getSelectionModel().getSelectedItem();
-                txtNombreUsuario.setText(medicoDto.getUs().getNombreUsuario());
                 if (medicoDto.getCarne() != null) {
                     txtCodigo.setText(medicoDto.getCodigo());
                 } else {

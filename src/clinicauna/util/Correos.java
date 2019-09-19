@@ -42,7 +42,7 @@ public class Correos {
         return INSTANCE;
     }
 
-    public void linkActivacion(String usuario, String Destinatario, String url) throws MessagingException, IOException {
+    public void mensajeActivacion(String usuario, String Destinatario, String url) throws MessagingException, IOException {
         Properties prop = new Properties();
         prop.setProperty("mail.smtp.auth", "true");
         prop.setProperty("mail.smtp.starttls.enable", "true");

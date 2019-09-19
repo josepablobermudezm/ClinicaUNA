@@ -6,9 +6,9 @@
 package clinicauna.controller;
 
 import clinicauna.model.MedicoDto;
-import clinicauna.model.PacienteDto;
-import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
+import clinicauna.util.AppContext;
+import clinicauna.util.FlowController;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -18,13 +18,10 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 
@@ -33,14 +30,12 @@ import javafx.scene.control.Label;
  *
  * @author Carlos Olivares
  */
-public class GuardarMedicosController implements Initializable {
+public class GuardarMedicosController extends Controller{
 
     @FXML
     private JFXTextField txtFolio;
     @FXML
     private JFXTextField txtCarne;
-    @FXML
-    private JFXTextField txtNombreUsuario;
     @FXML
     private JFXTimePicker timePickerInicio;
     @FXML
@@ -62,16 +57,7 @@ public class GuardarMedicosController implements Initializable {
     private Respuesta resp;
     private MedicoDto medicoDto;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-
-        medicoService = new MedicoService();
-        ms = new Mensaje();
-        //resp = medicoService.getMedico();
-        //medicos = ((ArrayList<MedicoDtoDto>) resp.getResultado("Medicos"));
-
-    }
+   
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
@@ -79,9 +65,7 @@ public class GuardarMedicosController implements Initializable {
 
     @FXML
     private void guardar(ActionEvent event) {
-
         if (registroCorrecto()) {
-
             String carne = txtCarne.getText();
             String codigo = txtCodigo.getText();
             String folio = txtFolio.getText();
@@ -93,7 +77,11 @@ public class GuardarMedicosController implements Initializable {
             //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
             Long version = new Long(1);
             medicoDto = new MedicoDto(null, codigo, folio,"A" ,carne,inicioJornada,finJornada,espacios,null,version);
-            
+            AppContext.getInstance().set("Medico",medicoDto);
+            this.getStage().close();
+        }
+        else{
+            new Mensaje().show(Alert.AlertType.WARNING,"Información de Registro","Existen datos en el registro sin completar.");
         }
 
     }
@@ -101,12 +89,19 @@ public class GuardarMedicosController implements Initializable {
     boolean registroCorrecto() {
         return !txtCarne.getText().isEmpty() && !txtCodigo.getText().isEmpty()
                 && !txtEspacio.getText().isEmpty() && !txtFolio.getText().isEmpty()
-                && !txtNombreUsuario.getText().isEmpty();
+                && timePickerInicio.getValue()!=null && timePickerfinal.getValue()!=null;
     }
 
     @FXML
     private void cancela(ActionEvent event) {
+        FlowController.getInstance().initialize();
+        this.getStage().close();
+    }
 
+    @Override
+    public void initialize() {
+        medicoService = new MedicoService();
+        ms = new Mensaje();
     }
 
 }

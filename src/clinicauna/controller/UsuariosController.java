@@ -10,7 +10,9 @@ import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
 import clinicauna.service.UsuarioService;
+import clinicauna.util.AppContext;
 import clinicauna.util.Correos;
+import clinicauna.util.FlowController;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -214,11 +216,8 @@ public class UsuariosController extends Controller {
         txtCedula.clear();
         txtNombreUsuario.clear();
         table.getSelectionModel().clearSelection();
-        btnAdministrador.setSelected(false);
-        btnMedico.setSelected(true);
-        btnRecepcionista.setSelected(false);
+        btnAdministrador.setSelected(true);
         btnEspanol.setSelected(true);
-        btnIngles.setSelected(false);
         txtClave.clear();
     }
 
@@ -227,47 +226,51 @@ public class UsuariosController extends Controller {
 
         if (registroCorrecto()) {
 
-            String nombre = txtNombre.getText();
-            String papellido = txtPApellido.getText();
-            String sapellido = txtSApellido.getText();
-            String correo = txtCorreo.getText();
-            String cedula = txtCedula.getText();
             String tipoUsuario = (btnAdministrador.isSelected()) ? "A" : (btnMedico.isSelected()) ? "M" : "R";
-            String idioma = (btnEspanol.isSelected()) ? "E" : "I";
-            String nombreusuario = txtNombreUsuario.getText();
-            Long version = new Long(1);
-            String clave = txtClave.getText();
-            usuarioDto = new UsuarioDto(null, nombre, papellido, "I", sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
-            try {
-                resp = usuarioService.guardarUsuario(usuarioDto);
-                usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
-                resp1 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
-                //Envia correo de activacion
-                Correos.getInstance().linkActivacion(nombreusuario, correo, resp1.getMensaje());
+            if ((tipoUsuario.equals("M") && AppContext.getInstance().get("Medico") != null) || !tipoUsuario.equals("M")) {
+                String idioma = (btnEspanol.isSelected()) ? "E" : "I";
 
-                if (tipoUsuario.equals("M")) {
-                    medicoDto = new MedicoDto(null, null, null, null, "I", null,
-                            null, null, usuarioDto, new Long(1));
-                    resp1 = medicoService.guardarMedico(medicoDto);
-                    medicoDto = (MedicoDto) resp1.getResultado("Medico");
+                String nombre = txtNombre.getText();
+                String papellido = txtPApellido.getText();
+                String sapellido = txtSApellido.getText();
+                String correo = txtCorreo.getText();
+                String cedula = txtCedula.getText();
+
+                String nombreusuario = txtNombreUsuario.getText();
+                Long version = new Long(1);
+                String clave = txtClave.getText();
+                usuarioDto = new UsuarioDto(null, nombre, papellido, "I", sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
+                try {
+                    resp = usuarioService.guardarUsuario(usuarioDto);
+                    usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
+                    Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
+                    //Envia correo de activacion
+                    Correos.getInstance().mensajeActivacion(nombreusuario, correo, resp2.getMensaje());
+
+                    if (tipoUsuario.equals("M")) {
+
+                        medicoDto = (MedicoDto) AppContext.getInstance().get("Medico");
+                        medicoDto.setUs(usuarioDto);
+                        medicoService.guardarMedico(medicoDto);
+                        AppContext.getInstance().delete("Medico");
+                    }
+
+                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                    limpiarRegistro();
+                    usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
+
+                    table.getItems().clear();
+                    items = FXCollections.observableArrayList(usuarios);
+                    table.setItems(items);
+
+                } catch (IOException | MessagingException e) {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), e.getMessage());
                 }
-
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
-                limpiarRegistro();
-                usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
-
-                table.getItems().clear();
-                items = FXCollections.observableArrayList(usuarios);
-                table.setItems(items);
-
-            } catch (IOException | MessagingException e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), e.getMessage());
+            }else{
+                ms.showModal(Alert.AlertType.WARNING, "Informacion de guardado", this.getStage(),"No se ha creado un médico para este usuario, debes crearlo para poder guardar.");
             }
         }
-
     }
-
-    
 
     private void typeKeys() {
         txtNombre.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
@@ -313,6 +316,11 @@ public class UsuariosController extends Controller {
 
     @FXML
     private void Filtrar(ActionEvent event) {
+    }
+
+    @FXML
+    private void crearMedico(ActionEvent event) {
+        FlowController.getInstance().goViewInWindowModal("GuardarMedicos", this.getStage(), false);
     }
 
 }
