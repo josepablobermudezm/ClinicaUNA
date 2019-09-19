@@ -116,6 +116,12 @@ public class UsuariosController extends Controller {
     private ArrayList<MedicoDto> medicos;
     private UsuarioDto usuario;
     private Idioma idioma;
+    @FXML
+    private JFXButton btnLimpiarRegistro;
+    @FXML
+    private Label lblidioma;
+    @FXML
+    private Label lblTipo;
 
     @Override
     public void initialize() {
@@ -129,10 +135,30 @@ public class UsuariosController extends Controller {
             this.btnEditar1.setText(idioma.getProperty("Editar"));
             this.btnBuscar.setText(idioma.getProperty("Buscar"));
             this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
+            this.btnAdministrador.setText(idioma.getProperty("Administrador"));
+            this.btnAgregar1.setText(idioma.getProperty("Agregar"));
+            this.btnMedico.setText(idioma.getProperty("Medico"));
+            this.btnIngles.setText(idioma.getProperty("Ingles"));
+            this.btnEspanol.setText(idioma.getProperty("Español"));
+            this.btnRecepcionista.setText(idioma.getProperty("Recepcionista"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+" "+idioma.getProperty("Registro"));
+            this.COL_NOMBRE_USUARIO.setText(idioma.getProperty("Nombre"));
+            this.COL_PAPELLIDO_USUARIO.setText(idioma.getProperty("Primero")+" "+idioma.getProperty("Apellido"));
+            this.COL_SAPELLIDO_USUARIO.setText(idioma.getProperty("Segundo")+" "+idioma.getProperty("Apellido"));
             this.COL_CEDULA_USUARIO.setText("ID");
             this.COL_CORREO_USUARIO.setText(idioma.getProperty("Correo"));
             this.COL_ESTADO_USUARIO.setText(idioma.getProperty("Estado"));
             this.COL_IDIOMA_USUARIO.setText(idioma.getProperty("Idioma"));
+            this.txtCedula.setPromptText("ID");
+            this.txtClave.setPromptText(idioma.getProperty("Contraseña"));
+            this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
+            this.txtFiltroUsuario.setPromptText(idioma.getProperty("Filtro") + " " + idioma.getProperty("porBy") + " " + "ID");
+            this.txtNombre.setPromptText(idioma.getProperty("Nombre"));
+            this.txtPApellido.setPromptText(idioma.getProperty("Primero")+" "+idioma.getProperty("Apellido"));
+            this.txtSApellido.setPromptText(idioma.getProperty("Segundo")+" "+idioma.getProperty("Apellido"));
+            this.txtNombreUsuario.setPromptText(idioma.getProperty("Usuario"));
+            this.lblTipo.setText(idioma.getProperty("Tipo"));
+            this.lblidioma.setText(idioma.getProperty("Idioma"));
             this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Usuarios"));
         }
         typeKeys();
