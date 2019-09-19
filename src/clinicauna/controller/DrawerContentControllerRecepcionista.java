@@ -9,12 +9,14 @@ import com.jfoenix.controls.JFXButton;
 import clinicauna.util.AppContext;
 import clinicauna.ClinicaUna;
 import clinicauna.controller.Controller;
+import clinicauna.model.UsuarioDto;
 import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import clinicauna.util.FlowController;
+import clinicauna.util.Idioma;
 import javafx.scene.Cursor;
 
 /**
@@ -41,32 +43,35 @@ public class DrawerContentControllerRecepcionista extends Controller {
     private JFXButton btnReportes;
     @FXML
     private JFXButton btnUsuarios;
-
+    private Idioma idioma;
+    private UsuarioDto usuario;
     @FXML
     private void exit(ActionEvent event) {
-        System.exit(0);
+        FlowController.getInstance().salir();
+        FlowController.getInstance().goViewInWindow("LogIn");
     }
 
-   
     @Override
-    public void initialize() { 
-        
-        /*btnAgenda.setCursor(Cursor.HAND);
-        btnExit.setCursor(Cursor.HAND);
-        btnExpediente.setCursor(Cursor.HAND);
-        btnMedicos.setCursor(Cursor.HAND);
-        btnReportes.setCursor(Cursor.HAND);
-        btnUsuarios.setCursor(Cursor.HAND);
-        btnPacientes.setCursor(Cursor.HAND);*/
-        //btnUsuarios.setDisable(true);
-        
+    public void initialize() {
+
+       idioma = (Idioma) AppContext.getInstance().get("idioma");
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if (usuario.getIdioma().equals("I")) {
+            btnAgenda.setText(idioma.getProperty("Agenda"));
+            btnExit.setText(idioma.getProperty("Salir"));
+            btnExpediente.setText(idioma.getProperty("MedExp") + " " + idioma.getProperty("Expediente"));
+            btnMedicos.setText(idioma.getProperty("Medicos"));
+            btnReportes.setText(idioma.getProperty("Reportes"));
+            btnUsuarios.setText(idioma.getProperty("Usuarios"));
+            btnPacientes.setText(idioma.getProperty("Pacientes"));
+        }
         Image img;
         try {
             img = new Image("/clinicauna/resources/user.jpg");
             image.setImage(img);
         } catch (Exception e) {
         }
-/*
+        /*
         Image img7;
         try {
             img7 = new Image("/horarios/resources/user2.png");
@@ -104,7 +109,8 @@ public class DrawerContentControllerRecepcionista extends Controller {
             img6.setImage(img12);
         } catch (Exception e) {
         }*/
-    }  
+    }
+
     @FXML
     private void Usuarios(ActionEvent event) {
         AppContext.getInstance().set("Vista", "Usuarios");
@@ -125,22 +131,22 @@ public class DrawerContentControllerRecepcionista extends Controller {
 
     @FXML
     private void btnAgenda(ActionEvent event) {
-       AppContext.getInstance().set("Vista","Agenda");
-       FlowController.getInstance().goView("Cargando");
+        AppContext.getInstance().set("Vista", "Agenda");
+        FlowController.getInstance().goView("Cargando");
     }
 
     @FXML
     private void btnExpediente(ActionEvent event) {
-        AppContext.getInstance().set("Vista","ExpedienteMedico");
+        AppContext.getInstance().set("Vista", "ExpedienteMedico");
         FlowController.getInstance().goView("Cargando");
-        
+
     }
 
     @FXML
     private void btnReportes(ActionEvent event) {
-        AppContext.getInstance().set("Vista","Reportes");
+        AppContext.getInstance().set("Vista", "Reportes");
         FlowController.getInstance().goView("Cargando");
-        
+
     }
 
 }
