@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -61,8 +62,6 @@ public class AgendaController extends Controller{
     @FXML
     private Label labelSemana;
     private String mes,year,semana;
-    @FXML
-    private Label lblMedico;
     @FXML
     private JFXComboBox<String> ComboMedico;
     private MedicoDto medicoDto;
@@ -125,7 +124,6 @@ public class AgendaController extends Controller{
     
     }
     
-    
     @FXML
     private void Fecha(Event event) {
         mes = (DatePicker.getValue().getMonth()!=null)?DatePicker.getValue().getMonth().toString():" ";
@@ -154,5 +152,6 @@ public class AgendaController extends Controller{
     
     private void fechasDias(){
     }
+
     
 }
