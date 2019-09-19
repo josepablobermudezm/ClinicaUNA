@@ -97,7 +97,6 @@ public class LogIngController extends Controller {
             } else if (txtClave1.getText() == null || txtClave1.getText().isEmpty()) {
                 new Mensaje().showModal(Alert.AlertType.WARNING, "Validación de usuario", this.getStage(), "Es necesario digitar la clave para ingresar al sistema.");
             } else {
-
                 UsuarioService UsuarioService = new UsuarioService();
                 Respuesta respuesta = UsuarioService.getUsuario(txtUsuario1.getText(), txtClave1.getText());
                 if (respuesta.getEstado()) {
