@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -24,25 +25,19 @@
                            <children>
                               <GridPane fx:id="calendarGrid" gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="966.0" prefWidth="1000.0">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="191.0" minWidth="10.0" prefWidth="125.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="125.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1030.0" minWidth="10.0" prefWidth="1030.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
-                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
-                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
-                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
-                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
-                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
-                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
-                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
-                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="75.0" prefHeight="75.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="75.0" prefHeight="75.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="75.0" prefHeight="75.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="75.0" prefHeight="75.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="75.0" prefHeight="75.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="75.0" prefHeight="75.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="75.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="75.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="75.0" prefHeight="75.0" vgrow="ALWAYS" />
                                     <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
                                     <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
                                     <RowConstraints maxHeight="1.7976931348623157E308" minHeight="120.0" prefHeight="30.0" vgrow="ALWAYS" />
@@ -64,84 +59,42 @@
                         </FlowPane>
                     </content>
                   </ScrollPane>
-                  <HBox prefHeight="70.0" prefWidth="1024.0">
+                  <HBox prefHeight="70.0" prefWidth="1024.0" spacing="150.0">
                      <children>
-                        <GridPane fx:id="gridDias" prefHeight="83.0" prefWidth="1000.0">
-                          <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.0" minWidth="10.0" prefWidth="125.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="156.6666717529297" minWidth="10.0" prefWidth="125.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="10.0" prefWidth="125.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="125.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="125.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label fx:id="lblDomingo" prefHeight="21.0" prefWidth="101.0" styleClass="lbl" text="dom" GridPane.columnIndex="1">
-                                 <GridPane.margin>
-                                    <Insets left="45.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label fx:id="lblLunes" styleClass="lbl" text="lun" GridPane.columnIndex="2">
-                                 <GridPane.margin>
-                                    <Insets left="45.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label fx:id="lblMartes" styleClass="lbl" text="mar" GridPane.columnIndex="3">
-                                 <GridPane.margin>
-                                    <Insets left="45.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label fx:id="lblMiercoles" styleClass="lbl" text="mie" GridPane.columnIndex="4">
-                                 <GridPane.margin>
-                                    <Insets left="45.0" />
-                                 </GridPane.margin></Label>
-                              <Label fx:id="lblJueves" styleClass="lbl" text="jue" GridPane.columnIndex="5">
-                                 <GridPane.margin>
-                                    <Insets left="45.0" />
-                                 </GridPane.margin></Label>
-                              <Label fx:id="lblViernes" styleClass="lbl" text="vie" GridPane.columnIndex="6">
-                                 <padding>
-                                    <Insets left="5.0" />
-                                 </padding>
-                                 <GridPane.margin>
-                                    <Insets left="45.0" />
-                                 </GridPane.margin></Label>
-                              <Label fx:id="lblSabado" styleClass="lbl" text="sab" GridPane.columnIndex="7">
-                                 <GridPane.margin>
-                                    <Insets left="45.0" />
-                                 </GridPane.margin></Label>
-                              <Label fx:id="lbl" styleClass="lbl" text="Hora:">
-                                 <GridPane.margin>
-                                    <Insets left="30.0" />
-                                 </GridPane.margin>
-                              </Label>
-                           </children>
+                        <Label styleClass="lbl" text="Hora:">
+                           <padding>
+                              <Insets left="20.0" top="20.0" />
+                           </padding>
+                        </Label>
+                        <JFXComboBox fx:id="ComboMedico" prefHeight="51.0" prefWidth="241.0" promptText="Selecciones un Medico">
+                           <padding>
+                              <Insets top="20.0" />
+                           </padding>
                            <HBox.margin>
-                              <Insets />
+                              <Insets left="485.0" />
                            </HBox.margin>
-                        </GridPane>
+                        </JFXComboBox>
                      </children>
                   </HBox>
                </children>
             </AnchorPane>
          </center>
          <top>
-            <AnchorPane prefHeight="75.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
+            <HBox spacing="45.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXDatePicker fx:id="DatePicker" layoutX="746.0" layoutY="23.0" onHiding="#Fecha" prefHeight="29.0" prefWidth="256.0" />
-                  <Label fx:id="lbl" layoutX="14.0" layoutY="25.0" styleClass="lbl" text="Año:" />
-                  <Label fx:id="lbl" layoutX="277.0" layoutY="26.0" styleClass="lbl" text="Mes:" />
-                  <Label fx:id="labelyear" layoutX="71.0" layoutY="25.0" prefHeight="21.0" prefWidth="74.0" styleClass="lbl" />
-                  <Label fx:id="labelmes" layoutX="344.0" layoutY="25.0" prefHeight="21.0" prefWidth="117.0" styleClass="lbl" />
-                  <Label fx:id="lbl1" layoutX="519.0" layoutY="25.0" styleClass="lbl" text="Semana:" />
-                  <Label fx:id="labelSemana" layoutX="624.0" layoutY="24.0" prefHeight="30.0" prefWidth="103.0" styleClass="lbl" />
+                  <Label fx:id="lbl" styleClass="lbl" text="Año:">
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="labelyear" prefHeight="21.0" prefWidth="74.0" styleClass="lbl" />
+                  <Label fx:id="lbl" styleClass="lbl" text="Mes:" />
+                  <Label fx:id="labelmes" prefHeight="21.0" prefWidth="117.0" styleClass="lbl" />
+                  <Label fx:id="lbl1" styleClass="lbl" text="Día:" />
+                  <Label fx:id="labelSemana" prefHeight="30.0" prefWidth="103.0" styleClass="lbl" />
+                  <JFXDatePicker fx:id="DatePicker" onHiding="#Fecha" prefHeight="29.0" prefWidth="256.0" promptText="Seleccionar Fecha" />
                </children>
-            </AnchorPane>
+            </HBox>
          </top>
       </BorderPane>
    </children>

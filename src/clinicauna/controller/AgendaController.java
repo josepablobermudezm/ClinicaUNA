@@ -5,11 +5,21 @@
  */
 package clinicauna.controller;
 
+import clinicauna.model.MedicoDto;
+import clinicauna.service.MedicoService;
+import clinicauna.util.Respuesta;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,8 +43,6 @@ import javafx.util.Callback;
 public class AgendaController extends Controller{
 
     @FXML
-    private Label Titulo;
-    @FXML
     private GridPane calendarGrid;
     @FXML
     private JFXDatePicker DatePicker;
@@ -45,8 +53,6 @@ public class AgendaController extends Controller{
     @FXML
     private Label lbl;
     @FXML
-    private GridPane gridDias;
-    @FXML
     private Label labelyear;
     @FXML
     private Label labelmes;
@@ -56,31 +62,25 @@ public class AgendaController extends Controller{
     private Label labelSemana;
     private String mes,year,semana;
     @FXML
-    private Label lblDomingo;
+    private Label lblMedico;
     @FXML
-    private Label lblLunes;
-    @FXML
-    private Label lblMartes;
-    @FXML
-    private Label lblMiercoles;
-    @FXML
-    private Label lblJueves;
-    @FXML
-    private Label lblViernes;
-    @FXML
-    private Label lblSabado;
-  
-
+    private JFXComboBox<String> ComboMedico;
+    private MedicoDto medicoDto;
+    private MedicoService medicoService;
+    private Respuesta resp;
     @Override
     public void initialize() {
 
-        Callback<DatePicker, DateCell> dayCellFactory = this.getDayCellFactory();
-        DatePicker.setDayCellFactory(dayCellFactory);
+        //Callback<DatePicker, DateCell> dayCellFactory = this.getDayCellFactory();
+        //DatePicker.setDayCellFactory(dayCellFactory);
         Inicio();
             
     }
 
     public void Inicio(){
+        
+        medicoService = new MedicoService();
+        resp = medicoService.getMedicos();
         
         int valor = 1;
         for(int i = 0; i < 24; i++){
@@ -99,7 +99,7 @@ public class AgendaController extends Controller{
         }
         
         for (int i = 0; i < 24; i++){
-            for (int j = 1; j < 8; j++){
+            for (int j = 1; j < 2; j++){
                 // Add VBox and style it
                 VBox vPane = new VBox();
                 vPane.getStyleClass().add("calendar_pane");
@@ -112,7 +112,19 @@ public class AgendaController extends Controller{
             }
         }
         
+        ArrayList<MedicoDto> lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
+        ObservableList<String> items = FXCollections.observableArrayList(lista.stream().map(x->x.getUs().getNombre() 
+                + " " + x.getUs().getpApellido() + " " + x.getUs().getsApellido() + " Ced:" + x.getUs().getCedula())
+                .collect(Collectors.toList()));
+        ComboMedico.setItems(items);
     }
+    
+    private void BuscarMedico(){
+    
+        
+    
+    }
+    
     
     @FXML
     private void Fecha(Event event) {
@@ -126,7 +138,7 @@ public class AgendaController extends Controller{
         
     }
     //Este metodo lo que hace es bloquer los días que no sean lunes del datepicker
-    private Callback<DatePicker, DateCell> getDayCellFactory() {
+    /*private Callback<DatePicker, DateCell> getDayCellFactory() {
         final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) -> new DateCell() {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
@@ -138,17 +150,9 @@ public class AgendaController extends Controller{
             }
         };
         return dayCellFactory;
-    }
+    }*/
     
     private void fechasDias(){
-        int diaMes = Integer.parseInt(semana);
-        lblDomingo.setText(lblDomingo.getText() + (diaMes-1));
-        lblLunes.setText(lblLunes.getText() + diaMes);
-        lblMartes.setText(lblMartes.getText() + (diaMes+1));
-        lblMiercoles.setText(lblMiercoles.getText() + (diaMes+2));
-        lblJueves.setText(lblJueves.getText() + (diaMes+3));
-        lblViernes.setText(lblViernes.getText() + (diaMes+4));
-        lblSabado.setText(lblSabado.getText() + (diaMes+5));
     }
     
 }

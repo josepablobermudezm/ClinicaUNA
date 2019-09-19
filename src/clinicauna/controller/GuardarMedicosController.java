@@ -76,7 +76,7 @@ public class GuardarMedicosController extends Controller{
             String finJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(final12);
             //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
             Long version = new Long(1);
-            medicoDto = new MedicoDto(null, codigo, folio,"A" ,carne,inicioJornada,finJornada,espacios,null,version);
+            medicoDto = new MedicoDto(null, codigo, folio, carne,"A",inicioJornada,finJornada,espacios,null,version);
             AppContext.getInstance().set("Medico",medicoDto);
             this.getStage().close();
         }
