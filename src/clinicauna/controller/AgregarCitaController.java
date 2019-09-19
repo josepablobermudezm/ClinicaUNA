@@ -10,6 +10,7 @@ import clinicauna.model.MedicoDto;
 import clinicauna.model.PacienteDto;
 import clinicauna.service.CitaService;
 import clinicauna.service.PacienteService;
+import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -56,6 +57,7 @@ public class AgregarCitaController extends Controller {
     private Mensaje ms;
     @FXML
     private JFXTextArea txtmotivo;
+    private ArrayList<PacienteDto> lista;
 
     @Override
     public void initialize() {
@@ -64,15 +66,17 @@ public class AgregarCitaController extends Controller {
         citaService = new CitaService();
         resp1 = citaService.getCitas();
         
-        ArrayList<PacienteDto> lista = (ArrayList<PacienteDto>) resp.getResultado("Pacientes");
+        lista = (ArrayList<PacienteDto>) resp.getResultado("Pacientes");
         ObservableList<String> items = FXCollections.observableArrayList(lista.stream().map(x->x.getNombre() 
-                + " " + x.getpApellido() + " " + x.getsApellido())
+                + " " + x.getpApellido() + " " + x.getsApellido()+ " Ced:" + x.getCedula())
                 .collect(Collectors.toList()));
         ComboPacientes.setItems(items);
     }
 
     @FXML
     private void guardar(ActionEvent event) {
+        
+        MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("");
         
         String info = ComboPacientes.getValue().toString();
         System.out.println(info);
@@ -82,7 +86,7 @@ public class AgregarCitaController extends Controller {
             String correo = txtCorreo.getText();
             String motivo = txtmotivo.getText();
             Long version = new Long(1);
-            //citaDto = new CitaDto(null,version, /*paciente*/, /*espacio Por hora */,motivo,);
+            //citaDto = new CitaDto(null,version, pacienteDto, /*espacio Por hora */,motivo,);
             try {
                 resp = citaService.guardarCita(citaDto);
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
@@ -90,6 +94,26 @@ public class AgregarCitaController extends Controller {
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
             }
+        }
+    }
+    
+    private static boolean cedulaEncontrada=false;
+    private static String cedulaBuscar="";
+    @FXML
+    private void seleccionarPaciente(ActionEvent event) {
+        if(ComboPacientes.getSelectionModel()!=null && ComboPacientes.getSelectionModel().getSelectedItem()!=null){
+            String paciente = ComboPacientes.getSelectionModel().getSelectedItem();
+            paciente.chars().forEach(x->{
+                if(((char) x)==':'){
+                    cedulaEncontrada = true;
+                }
+                else if(cedulaEncontrada){
+                    cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
+                }
+            });
+            pacienteDto = lista.stream().filter(x->x.getCedula().equals(cedulaBuscar)).findAny().get();
+            cedulaBuscar = "";  
+            cedulaEncontrada =false;
         }
     }
     
