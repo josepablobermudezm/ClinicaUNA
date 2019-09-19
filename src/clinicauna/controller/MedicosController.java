@@ -91,20 +91,34 @@ public class MedicosController extends Controller {
     private JFXTextField txtEspacio;
     private MedicoDto medicoDto;
     private Idioma idioma;
+    private UsuarioDto usuario;
+    @FXML
+    private JFXButton btnLimpiarRegistro;
+
     @Override
     public void initialize() {
-        /*idioma = (Idioma) AppContext.getInstance().get("idioma");
-        btnEditar1.setText(idioma.getProperty("Editar"));
-        btnBuscar.setText(idioma.getProperty("Buscar"));
-        COL_CODIGO_MEDICOS.setText(idioma.getProperty("Código"));
-        COL_CARNE_MEDICOS.setText(idioma.getProperty("Carné"));
-        COL_ESTADO_MEDICOS.setText("Estado");
-        COL_INICIO_MEDICOS.setText(idioma.getProperty("Inicio")+" "+idioma.getProperty("Jornada"));
-        COL_FINAL_MEDICOS.setText(idioma.getProperty("Final")+" "+idioma.getProperty("Jornada"));
-        COL_ESPACIOS_MEDICOS.setText(idioma.getProperty("Espacio")+" "+idioma.getProperty("por")+" "+idioma.getProperty("Hora"));
-        txtFiltroEmpleado.setPromptText(idioma.getProperty("Filtro")+" "+idioma.getProperty("porBy")+" "+"ID");
-        */
-        
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if (usuario.getIdioma().equals("I")) {
+            this.btnEditar1.setText(idioma.getProperty("Editar"));
+            this.btnBuscar.setText(idioma.getProperty("Buscar"));
+            this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
+            this.COL_CODIGO_MEDICOS.setText(idioma.getProperty("Código"));
+            this.COL_CARNE_MEDICOS.setText(idioma.getProperty("Carné"));
+            this.COL_ESTADO_MEDICOS.setText(idioma.getProperty("Estado"));
+            this.COL_INICIO_MEDICOS.setText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Jornada"));
+            this.COL_FINAL_MEDICOS.setText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
+            this.COL_ESPACIOS_MEDICOS.setText(idioma.getProperty("Espacio") + " " + idioma.getProperty("por") + " " + idioma.getProperty("Hora"));
+            this.txtFiltroEmpleado.setPromptText(idioma.getProperty("Filtro") + " " + idioma.getProperty("porBy") + " " + "ID");
+            this.timePickerInicio.setPromptText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Jornada"));
+            this.timePickerfinal.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
+            this.txtCarne.setPromptText(idioma.getProperty("Carné"));
+            this.txtCodigo.setPromptText(idioma.getProperty("Código"));
+            this.txtEspacio.setText(idioma.getProperty("Espacio")+" "+idioma.getProperty("por")+" "+idioma.getProperty("Hora"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+" "+idioma.getProperty("Registro"));
+            this.Titulo.setText(idioma.getProperty("Mantenimiento")+" "+idioma.getProperty("de")+" "+idioma.getProperty("Medicos"));
+        }
+
         btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
         btnEliminar1.setCursor(Cursor.HAND);
@@ -117,13 +131,12 @@ public class MedicosController extends Controller {
         COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFolio() != null) ? value.getValue().getFolio() : "Sin Asignar"));
         COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCarne() != null) ? value.getValue().getCarne() : "Sin Asignar"));
         COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
-        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada()!=null)?value.getValue().getInicioJornada():"NULO"));
-        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada()!=null)?value.getValue().getFinJornada():"NULO"));
-        COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty((value.getValue().getEspacios()!=null)?value.getValue().getEspacios():0));
+        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada() != null) ? value.getValue().getInicioJornada() : "NULO"));
+        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada() != null) ? value.getValue().getFinJornada() : "NULO"));
+        COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty((value.getValue().getEspacios() != null) ? value.getValue().getEspacios() : 0));
         items = FXCollections.observableArrayList(medicos);
         table.setItems(items);
     }
-
 
     @FXML
     private void editar(ActionEvent event) {
@@ -141,10 +154,10 @@ public class MedicosController extends Controller {
                     LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicio1);
                     LocalDateTime final12 = LocalDateTime.of(LocalDate.now(), final1);
                     UsuarioDto usuariodto = medicoDto.getUs();
-                    Long version = medicoDto.getMedVersion()+1  ;
+                    Long version = medicoDto.getMedVersion() + 1;
                     String inicioJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
                     String finJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(final12);
-                    medicoDto = new MedicoDto(id, codigo, folio, carne, "I", inicioJornada, finJornada, espacios,usuariodto,version);
+                    medicoDto = new MedicoDto(id, codigo, folio, carne, "I", inicioJornada, finJornada, espacios, usuariodto, version);
                     try {
                         resp = medicoService.guardarMedico(medicoDto);
                         ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
@@ -193,7 +206,7 @@ public class MedicosController extends Controller {
     }
 
     void limpiarValores() {
-        
+
         txtCarne.clear();
         txtCodigo.clear();
         txtEspacio.clear();
@@ -204,7 +217,7 @@ public class MedicosController extends Controller {
     }
 
     boolean registroCorrecto() {
-        return  !txtCarne.getText().isEmpty() && !txtCodigo.getText().isEmpty()
+        return !txtCarne.getText().isEmpty() && !txtCodigo.getText().isEmpty()
                 && !txtFolio.getText().isEmpty() && !txtEspacio.getText().isEmpty()
                 && !timePickerInicio.getValue().toString().isEmpty() && !timePickerfinal.getValue().toString().isEmpty();
     }
@@ -213,7 +226,7 @@ public class MedicosController extends Controller {
     private void Filtrar(ActionEvent event) {
     }
 
-    private void typeKeys() { 
+    private void typeKeys() {
         txtEspacio.setOnKeyTyped(ClinicaUna.aceptaNumeros);
     }
 

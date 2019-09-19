@@ -105,10 +105,7 @@ public class AgendaController extends Controller {
         ComboMedico.setItems(items);
     }
 
-    private void BuscarMedico() {
-        
-    }
-
+   
     @FXML
     private void Fecha(Event event) {
         mes = (DatePicker.getValue().getMonth() != null) ? DatePicker.getValue().getMonth().toString() : " ";
@@ -117,36 +114,16 @@ public class AgendaController extends Controller {
         labelmes.setText(mes);
         labelyear.setText(year);
         labelSemana.setText(semana);
-        fechasDias();
+        
 
     }
 
-    //Este metodo lo que hace es bloquer los días que no sean lunes del datepicker
-    /*private Callback<DatePicker, DateCell> getDayCellFactory() {
-        final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item.getDayOfWeek() != DayOfWeek.MONDAY ) {
-                    setDisable(true);
-                    setStyle("-fx-background-color: lightgray;");
-                }
-            }
-        };
-        return dayCellFactory;
-    }*/
-    private void fechasDias() {
-    }
     private static boolean cedulaEncontrada=false;
     private static String cedulaBuscar="";
     @FXML
     private void seleccionarMedico(ActionEvent event) {
         if(ComboMedico.getSelectionModel()!=null && ComboMedico.getSelectionModel().getSelectedItem()!=null){
             String medico = ComboMedico.getSelectionModel().getSelectedItem();
-            final String cedula = null;
-            /*for(Char x:medico.chars()){
-                
-            }*/
             medico.chars().forEach(x->{
                 if(((char) x)==':'){
                     cedulaEncontrada = true;
@@ -160,5 +137,4 @@ public class AgendaController extends Controller {
             cedulaEncontrada =false;
         }
     }
-
 }

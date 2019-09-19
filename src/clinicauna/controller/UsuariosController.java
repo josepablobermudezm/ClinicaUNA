@@ -13,6 +13,7 @@ import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;
 import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
+import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -113,6 +114,8 @@ public class UsuariosController extends Controller {
     @FXML
     private JFXPasswordField txtClave;
     private ArrayList<MedicoDto> medicos;
+    private UsuarioDto usuario;
+    private Idioma idioma;
 
     @Override
     public void initialize() {
@@ -120,7 +123,18 @@ public class UsuariosController extends Controller {
         btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
         btnEliminar1.setCursor(Cursor.HAND);
-
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if (usuario.getIdioma().equals("I")) {
+            this.btnEditar1.setText(idioma.getProperty("Editar"));
+            this.btnBuscar.setText(idioma.getProperty("Buscar"));
+            this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
+            this.COL_CEDULA_USUARIO.setText("ID");
+            this.COL_CORREO_USUARIO.setText(idioma.getProperty("Correo"));
+            this.COL_ESTADO_USUARIO.setText(idioma.getProperty("Estado"));
+            this.COL_IDIOMA_USUARIO.setText(idioma.getProperty("Idioma"));
+            this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Usuarios"));
+        }
         typeKeys();
         usuarioService = new UsuarioService();
         ms = new Mensaje();
@@ -266,8 +280,8 @@ public class UsuariosController extends Controller {
                 } catch (IOException | MessagingException e) {
                     ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), e.getMessage());
                 }
-            }else{
-                ms.showModal(Alert.AlertType.WARNING, "Informacion de guardado", this.getStage(),"No se ha creado un médico para este usuario, debes crearlo para poder guardar.");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Informacion de guardado", this.getStage(), "No se ha creado un médico para este usuario, debes crearlo para poder guardar.");
             }
         }
     }

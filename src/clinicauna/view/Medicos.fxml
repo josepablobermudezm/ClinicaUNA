@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.MedicosController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.MedicosController">
    <center>
       <AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1030.0" stylesheets="@newCascadeStyleSheet.css">
          <children>
@@ -131,7 +131,7 @@
                      <children>
                         <JFXButton fx:id="btnEditar1" onAction="#editar" style="-fx-cursor: hand;" text="Editar" />
                         <JFXButton fx:id="btnEliminar1" onAction="#eliminar" style="-fx-cursor: hand;" text="Eliminar" />
-                        <JFXButton onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
+                        <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
                      </children>
                   </HBox>
                </children>
