@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.UsuariosController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.UsuariosController">
    <center>
       <AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1030.0" stylesheets="@newCascadeStyleSheet.css">
          <children>
@@ -29,7 +29,7 @@
                <children>
                   <JFXButton fx:id="btnEditar1" onAction="#editar" style="-fx-cursor: hand;" text="Editar" />
                   <JFXButton fx:id="btnEliminar1" onAction="#eliminar" style="-fx-cursor: hand;" text="Eliminar" />
-                  <JFXButton onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
+                  <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
                   <JFXButton fx:id="btnAgregar1" onAction="#agregar" style="-fx-cursor: hand;" text="Agregar" />
                </children>
             </HBox>
@@ -152,14 +152,14 @@
                         <Insets left="145.0" />
                      </GridPane.margin>
                   </JFXRadioButton>
-                  <Label text="Idioma:" GridPane.columnIndex="3">
+                  <Label fx:id="lblidioma" text="Idioma:" GridPane.columnIndex="3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></Label>
-                  <Label text="Tipo:" GridPane.columnIndex="4" />
+                  <Label fx:id="lblTipo" text="Tipo:" GridPane.columnIndex="4" />
                   <JFXRadioButton fx:id="btnAdministrador" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Administrador" GridPane.columnIndex="4">
                      <GridPane.margin>
                         <Insets left="30.0" />
