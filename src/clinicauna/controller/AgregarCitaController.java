@@ -121,7 +121,7 @@ public class AgregarCitaController extends Controller {
         
         MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("Medico");
         
-        MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("");
+        //MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("");
 
         String info = ComboPacientes.getValue().toString();
         System.out.println(info);
