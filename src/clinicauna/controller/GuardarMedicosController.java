@@ -67,6 +67,12 @@ public class GuardarMedicosController extends Controller {
     
     @FXML
     private void limpiarRegistro(ActionEvent event) {
+        this.txtCarne.clear();
+        this.txtCodigo.clear();
+        this.txtEspacio.clear();
+        this.txtFolio.clear();
+        this.timePickerInicio.setValue(null);
+        this.timePickerfinal.setValue(null);
     }
     
     @FXML
@@ -105,8 +111,9 @@ public class GuardarMedicosController extends Controller {
     public void Formato(){
         this.txtCodigo.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
         this.txtCarne.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
-        this.txtEspacio.setTextFormatter(Formato.getInstance().integerFormat());
+        this.txtEspacio.setTextFormatter(Formato.getInstance().integerFormat(1));
         this.txtFolio.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+       
     }
     @Override
     public void initialize() {

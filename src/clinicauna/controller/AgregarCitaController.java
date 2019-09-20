@@ -165,6 +165,9 @@ public class AgregarCitaController extends Controller {
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
+        this.txtCorreo.clear();
+        this.txtTelefono.clear();
+        this.txtmotivo.clear();
     }
 
     @FXML
