@@ -114,7 +114,7 @@ public class MedicosController extends Controller {
             this.timePickerfinal.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
             this.txtCarne.setPromptText(idioma.getProperty("Carné"));
             this.txtCodigo.setPromptText(idioma.getProperty("Código"));
-            this.txtEspacio.setText(idioma.getProperty("Espacio") + " " + idioma.getProperty("por") + " " + idioma.getProperty("Hora"));
+            this.txtEspacio.setPromptText(idioma.getProperty("Espacio") + " " + idioma.getProperty("por") + " " + idioma.getProperty("Hora"));
             this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
             this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Medicos"));
         }

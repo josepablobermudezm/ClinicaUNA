@@ -5,6 +5,9 @@
  */
 package clinicauna.controller;
 
+import clinicauna.model.UsuarioDto;
+import clinicauna.util.AppContext;
+import clinicauna.util.Idioma;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -17,17 +20,23 @@ import javafx.scene.image.ImageView;
  *
  * @author Jose Pablo Bermudez
  */
-public class ReportesController extends Controller{
+public class ReportesController extends Controller {
 
     @FXML
     private ImageView omg;
     @FXML
     private Label Titulo;
+    private Idioma idioma;
+    private UsuarioDto usuario;
 
     @Override
     public void initialize() {
-
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if (usuario.getIdioma().equals("I")) {
+            this.Titulo.setText(idioma.getProperty("Reportes"));
+        }
 
     }
-    
+
 }
