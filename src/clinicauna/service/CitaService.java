@@ -8,6 +8,8 @@ package clinicauna.service;
 import clinicauna.model.CitaDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +113,7 @@ public class CitaService {
 
             Cita = (CitaDto) request.readEntity(CitaDto.class);
 
-            return new Respuesta(true, "", "", "Cita", Cita);
+            return new Respuesta(true, "Guardado exitosamente", request.toString(), "Cita", Cita);
         } catch (Exception ex) {
             Logger.getLogger(CitaService.class.getName()).log(Level.SEVERE, "Error guardando el Cita.", ex);
             return new Respuesta(false, "Error guardando el Cita.", "guardarCita " + ex.getMessage());

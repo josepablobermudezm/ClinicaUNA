@@ -207,7 +207,6 @@ public class MedicosController extends Controller {
     }
 
     void limpiarValores() {
-
         txtCarne.clear();
         txtCodigo.clear();
         txtEspacio.clear();

@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Jose Pablo Bermudez
  */
 @XmlRootElement(name = "AgendaDto")
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class AgendaDto {
     @XmlTransient
     Long ageID;
