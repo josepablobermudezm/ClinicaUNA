@@ -43,7 +43,6 @@
 .calendar_pane:pressed{
     -fx-background-color: #042a6b;
     -fx-border-style: solid;
-    -fx-border-width: 5.5;
     -fx-border-color: gray;
 }
 
