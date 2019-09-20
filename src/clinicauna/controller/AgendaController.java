@@ -54,13 +54,6 @@ public class AgendaController extends Controller {
     private Label labelSemana;
     @FXML
     private JFXComboBox<String> ComboMedico;
-    private MedicoDto medicoDto;
-    private MedicoService medicoService;
-    private Respuesta resp;
-    private String mes, year, semana;
-    private ArrayList<MedicoDto> lista;
-    private UsuarioDto usuario;
-    private Idioma idioma;
     @FXML
     private Label lblAnno;
     @FXML
@@ -69,6 +62,13 @@ public class AgendaController extends Controller {
     private Label lblDia;
     @FXML
     private Label lblHora;
+    private MedicoDto medicoDto;
+    private MedicoService medicoService;
+    private Respuesta resp;
+    private String mes, year, semana;
+    private ArrayList<MedicoDto> lista;
+    private UsuarioDto usuario;
+    private Idioma idioma;
 
     @Override
     public void initialize() {
@@ -77,7 +77,8 @@ public class AgendaController extends Controller {
     }
 
     public void Inicio() {
-
+        VBox vbox = new VBox();
+        //calendarGrid.addRow(0,vbox);
         medicoService = new MedicoService();
         resp = medicoService.getMedicos();
         idioma = (Idioma) AppContext.getInstance().get("idioma");
@@ -89,37 +90,6 @@ public class AgendaController extends Controller {
             this.lblDia.setText(idioma.getProperty("Dia"));
             this.lblHora.setText(idioma.getProperty("Hora"));
             this.lblMes.setText(idioma.getProperty("Mes"));
-        }
-
-        int valor = 1;
-        for (int i = 0; i < 24; i++) {
-            VBox vPane = new VBox();
-            vPane.getStyleClass().add("calendar_pane");
-            vPane.setMinWidth(125);
-            Label label = new Label();
-            label.setStyle("-fx-text-fill: gray; -fx-font-size : 15pt; -jfx-focus-color: -fx-secondary;");
-            label.setText(valor + ":00");
-            valor++;
-            vPane.getChildren().add(label);
-            GridPane.setVgrow(vPane, Priority.ALWAYS);
-
-            // Add it to the grid
-            calendarGrid.add(vPane, 0, i);
-        }
-
-        for (int i = 0; i < 24; i++) {
-            for (int j = 1; j < 2; j++) {
-                // Add VBox and style it
-                VBox vPane = new VBox();
-                vPane.setOnMouseReleased(citasReleased);
-                vPane.getStyleClass().add("calendar_pane");
-                vPane.setMinWidth(125);
-
-                GridPane.setVgrow(vPane, Priority.ALWAYS);
-
-                // Add it to the grid
-                calendarGrid.add(vPane, j, i);
-            }
         }
 
         lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
@@ -152,6 +122,7 @@ public class AgendaController extends Controller {
     @FXML
     private void seleccionarMedico(ActionEvent event) {
         if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
+            calendarGrid.getChildren().clear();
             String medico = ComboMedico.getSelectionModel().getSelectedItem();
             medico.chars().forEach(x -> {
                 if (((char) x) == ':') {
@@ -166,7 +137,37 @@ public class AgendaController extends Controller {
             LocalTime localTimeObj = LocalTime.parse(medicoDto.getInicioJornada());
             LocalTime localTimeObj2 = LocalTime.parse(medicoDto.getFinJornada());
             Integer horas = localTimeObj2.getHour() - localTimeObj.getHour();
-            System.out.println("Horas " + horas);
+            int valor = localTimeObj.getHour();
+            for (int i = 0; i < horas; i++) {
+                VBox vPane = new VBox();
+                vPane.getStyleClass().add("calendar_pane");
+                vPane.setMinWidth(125);
+                Label label = new Label();
+                label.setStyle("-fx-text-fill: gray; -fx-font-size : 15pt; -jfx-focus-color: -fx-secondary;");
+                label.setText(valor + ":00");
+                valor++;
+                vPane.getChildren().add(label);
+
+                GridPane.setVgrow(vPane, Priority.ALWAYS);
+
+                // Add it to the grid
+                calendarGrid.add(vPane, 0, i);
+            }
+
+            for (int i = 0; i < horas; i++) {
+                for (int j = 1; j < 2; j++) {
+                    // Add VBox and style it
+                    VBox vPane = new VBox();
+                    vPane.setOnMouseReleased(citasReleased);
+                    vPane.getStyleClass().add("calendar_pane");
+                    vPane.setMinWidth(125);
+
+                    GridPane.setVgrow(vPane, Priority.ALWAYS);
+
+                    // Add it to the grid
+                    calendarGrid.add(vPane, j, i);
+                }
+            }
             AppContext.getInstance().set("Medico", medicoDto);
 
         }

@@ -21,16 +21,12 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
@@ -52,20 +48,8 @@ public class AgregarCitaController extends Controller {
     private JFXButton btnGuardar;
     @FXML
     private Label Titulo;
-    private Respuesta resp;
-    private Respuesta resp1;
-    private PacienteService pacienteService;
-    private CitaService citaService;
-    private PacienteDto pacienteDto;
-    private CitaDto citaDto;
-    private Mensaje ms;
     @FXML
     private JFXTextArea txtmotivo;
-    private ArrayList<PacienteDto> lista;
-    @FXML
-    private JFXRadioButton btnProgramada;
-    @FXML
-    private ToggleGroup estado;
     @FXML
     private ToggleGroup estado;
     @FXML
@@ -82,8 +66,16 @@ public class AgregarCitaController extends Controller {
     private JFXButton btnLimpiarRegistro;
     @FXML
     private JFXButton btnCancelar;
+    private Respuesta resp;
+    private Respuesta resp1;
+    private PacienteService pacienteService;
+    private CitaService citaService;
+    private PacienteDto pacienteDto;
+    private CitaDto citaDto;
+    private Mensaje ms;
     private Idioma idioma;
     private UsuarioDto usuario;
+    private ArrayList<PacienteDto> lista;
 
     @Override
     public void initialize() {
@@ -123,8 +115,8 @@ public class AgregarCitaController extends Controller {
         
         //MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("");
 
-        String info = ComboPacientes.getValue().toString();
-        System.out.println(info);
+        /*String info = ComboPacientes.getValue().toString();
+        System.out.println(info);*/
         if (registroCorrecto()) {
 
             String telefono = txtTelefono.getText();
