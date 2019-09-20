@@ -43,7 +43,7 @@
                            <children>
                               <JFXButton fx:id="btnEditar1" onAction="#editar" style="-fx-cursor: hand;" text="Editar" />
                               <JFXButton fx:id="btnEliminar1" onAction="#eliminar" style="-fx-cursor: hand;" text="Eliminar" />
-                              <JFXButton onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
+                              <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
                               <JFXButton fx:id="btnAgregar1" onAction="#agregar" style="-fx-cursor: hand;" text="Agregar" />
                            </children>
                         </HBox>
@@ -85,7 +85,7 @@
                      </rowConstraints>
                      <children>
                         <JFXTextField fx:id="txtCedula" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Cedula" GridPane.columnIndex="1" />
-                        <Label text="Género:" GridPane.columnIndex="3" />
+                        <Label fx:id="lblGenero" text="Género:" GridPane.columnIndex="3" />
                         <JFXRadioButton fx:id="btnMujer" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Mujer" GridPane.columnIndex="3">
                            <GridPane.margin>
                               <Insets left="150.0" />
