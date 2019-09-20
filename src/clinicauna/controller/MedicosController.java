@@ -10,6 +10,7 @@ import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
+import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -226,10 +227,7 @@ public class MedicosController extends Controller {
     private void Filtrar(ActionEvent event) {
     }
 
-    private void typeKeys() {
-        txtEspacio.setOnKeyTyped(ClinicaUna.aceptaNumeros);
-    }
-
+  
     @FXML
     private void DatosMedico(MouseEvent event) {
 
