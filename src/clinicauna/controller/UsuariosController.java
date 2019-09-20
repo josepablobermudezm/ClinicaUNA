@@ -13,6 +13,7 @@ import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;
 import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
+import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -125,6 +126,7 @@ public class UsuariosController extends Controller {
 
     @Override
     public void initialize() {
+        Formato();
         btnAgregar1.setCursor(Cursor.HAND);
         btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
@@ -162,7 +164,6 @@ public class UsuariosController extends Controller {
             this.lblidioma.setText(idioma.getProperty("Idioma"));
             this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Usuarios"));
         }
-        typeKeys();
         usuarioService = new UsuarioService();
         ms = new Mensaje();
         resp = usuarioService.getUsuarios();
@@ -317,11 +318,15 @@ public class UsuariosController extends Controller {
         }
     }
 
-    private void typeKeys() {
-        txtNombre.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
-        txtPApellido.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
-        txtSApellido.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
-        txtFiltroUsuario.setOnKeyTyped(ClinicaUna.aceptaNumeros);
+    public void Formato() {
+        this.txtCedula.setTextFormatter(Formato.getInstance().cedulaFormat(15));
+        this.txtClave.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        this.txtCorreo.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        this.txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(50));
+        this.txtPApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
+        this.txtSApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
+        this.txtNombreUsuario.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
+        
     }
 
     boolean registroCorrecto() {
