@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author Jose Pablo Bermudez
  */
 @XmlRootElement(name = "ExamenDto")
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class ExamenDto {
     @XmlTransient
     Long exmID;

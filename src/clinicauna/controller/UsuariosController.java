@@ -283,27 +283,31 @@ public class UsuariosController extends Controller {
                 usuarioDto = new UsuarioDto(null, nombre, papellido, "I", sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
                 try {
                     resp = usuarioService.guardarUsuario(usuarioDto);
-                    usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
-                    Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
-                    //Envia correo de activacion
-                    Correos.getInstance().mensajeActivacion(nombreusuario, correo, resp2.getMensaje());
+                    if(resp.getEstado()){
+                        usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
+                        Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
+                        //Envia correo de activacion
+                        Correos.getInstance().mensajeActivacion(nombreusuario, correo, resp2.getMensaje());
 
-                    if (tipoUsuario.equals("M")) {
+                        if (tipoUsuario.equals("M")) {
 
-                        medicoDto = (MedicoDto) AppContext.getInstance().get("Medico");
-                        medicoDto.setUs(usuarioDto);
-                        medicoService.guardarMedico(medicoDto);
-                        AppContext.getInstance().delete("Medico");
+                            medicoDto = (MedicoDto) AppContext.getInstance().get("Medico");
+                            medicoDto.setUs(usuarioDto);
+                            medicoService.guardarMedico(medicoDto);
+                            AppContext.getInstance().delete("Medico");
+                        }
+
+                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        limpiarRegistro();
+                        usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
+
+                        table.getItems().clear();
+                        items = FXCollections.observableArrayList(usuarios);
+                        table.setItems(items);
+                    }else{
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                     }
-
-                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
-                    limpiarRegistro();
-                    usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
-
-                    table.getItems().clear();
-                    items = FXCollections.observableArrayList(usuarios);
-                    table.setItems(items);
-
+                    
                 } catch (IOException | MessagingException e) {
                     ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), e.getMessage());
                 }

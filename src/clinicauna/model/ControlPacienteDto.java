@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author Jose Pablo Bermudez
  */
 @XmlRootElement(name = "ControlPacienteDto")
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class ControlPacienteDto {
     
     @XmlTransient

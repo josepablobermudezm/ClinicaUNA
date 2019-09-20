@@ -111,7 +111,7 @@ public class AgregarCitaController extends Controller {
     @FXML
     private void guardar(ActionEvent event) {
         
-        MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("Medico");
+        //MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("Medico");
         
         //MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("");
 
@@ -126,12 +126,14 @@ public class AgregarCitaController extends Controller {
             String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
             citaDto = new CitaDto(null,version, pacienteDto,motivo,estado);
             try {
-                resp = citaService.guardarCita(citaDto);
+                resp1 = citaService.guardarCita(citaDto);
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                 limpiarValores();
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
             }
+        }else{
+            System.out.println("no entre");
         }
     }
 
@@ -163,7 +165,7 @@ public class AgregarCitaController extends Controller {
 
     boolean registroCorrecto() {
         return !txtCorreo.getText().isEmpty() && !txtTelefono.getText().isEmpty()
-                && ComboPacientes.getItems().isEmpty();
+                && ComboPacientes.getSelectionModel() != null;
     }
 
     @FXML
