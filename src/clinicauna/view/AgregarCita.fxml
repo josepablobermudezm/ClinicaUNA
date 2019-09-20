@@ -33,7 +33,7 @@
          <children>
             <JFXTextField fx:id="txtTelefono" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Télefono" GridPane.columnIndex="3" />
             <JFXTextField fx:id="txtCorreo" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Correo" GridPane.columnIndex="5" />
-            <JFXComboBox fx:id="ComboPacientes" prefHeight="31.0" prefWidth="221.0" promptText="Pacientes" GridPane.columnIndex="1" />
+            <JFXComboBox fx:id="ComboPacientes" onAction="#seleccionarPaciente" prefHeight="31.0" prefWidth="221.0" promptText="Pacientes" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <GridPane layoutY="179.0" prefHeight="71.0" prefWidth="818.0">
