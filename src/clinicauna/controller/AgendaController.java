@@ -138,6 +138,7 @@ public class AgendaController extends Controller {
             LocalTime localTimeObj2 = LocalTime.parse(medicoDto.getFinJornada());
             Integer horas = localTimeObj2.getHour() - localTimeObj.getHour();
             int valor = localTimeObj.getHour();
+                        
             for (int i = 0; i < horas; i++) {
                 VBox vPane = new VBox();
                 vPane.getStyleClass().add("calendar_pane");
