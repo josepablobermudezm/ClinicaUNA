@@ -9,6 +9,7 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -60,7 +61,7 @@ public class LogIngController extends Controller {
      */
     @Override
     public void initialize() {
-
+        Formato();
         Image imgFondo;
         try {
             imgFondo = new Image("/clinicauna/resources/e.jpg");
@@ -145,7 +146,10 @@ public class LogIngController extends Controller {
         }
 
     }
-
+public void Formato(){
+    this.txtClave1.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+    this.txtUsuario1.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
+}
     @FXML
     private void restablecerContrasenna(MouseEvent event) {
         FlowController.getInstance().goViewInStage("RecuperarContrasenna", this.getStage());

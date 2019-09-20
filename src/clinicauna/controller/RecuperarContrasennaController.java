@@ -9,6 +9,7 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
+import clinicauna.util.Formato;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -59,14 +60,15 @@ public class RecuperarContrasennaController extends Controller {
             imvFondo.setImage(imgFondo);
         } catch (Exception e) {
         }
-
     }
 
     @FXML
     private void cancelar(ActionEvent event) {
         FlowController.getInstance().goViewInStage("LogIn", this.getStage());
     }
-
+    public void Formato(){
+        this.txtCorreoElectronico.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
+    }
     @FXML
     private void correo(ActionEvent event) {
         if (!txtCorreoElectronico.getText().isEmpty()) {

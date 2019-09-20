@@ -13,6 +13,7 @@ import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;
 import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
+import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -125,6 +126,7 @@ public class UsuariosController extends Controller {
 
     @Override
     public void initialize() {
+        Formato();
         btnAgregar1.setCursor(Cursor.HAND);
         btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
@@ -162,7 +164,6 @@ public class UsuariosController extends Controller {
             this.lblidioma.setText(idioma.getProperty("Idioma"));
             this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Usuarios"));
         }
-        typeKeys();
         usuarioService = new UsuarioService();
         ms = new Mensaje();
         resp = usuarioService.getUsuarios();
@@ -283,27 +284,31 @@ public class UsuariosController extends Controller {
                 usuarioDto = new UsuarioDto(null, nombre, papellido, "I", sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
                 try {
                     resp = usuarioService.guardarUsuario(usuarioDto);
-                    usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
-                    Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
-                    //Envia correo de activacion
-                    Correos.getInstance().mensajeActivacion(nombreusuario, correo, resp2.getMensaje());
+                    if(resp.getEstado()){
+                        usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
+                        Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
+                        //Envia correo de activacion
+                        Correos.getInstance().mensajeActivacion(nombreusuario, correo, resp2.getMensaje());
 
-                    if (tipoUsuario.equals("M")) {
+                        if (tipoUsuario.equals("M")) {
 
-                        medicoDto = (MedicoDto) AppContext.getInstance().get("Medico");
-                        medicoDto.setUs(usuarioDto);
-                        medicoService.guardarMedico(medicoDto);
-                        AppContext.getInstance().delete("Medico");
+                            medicoDto = (MedicoDto) AppContext.getInstance().get("Medico");
+                            medicoDto.setUs(usuarioDto);
+                            medicoService.guardarMedico(medicoDto);
+                            AppContext.getInstance().delete("Medico");
+                        }
+
+                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        limpiarRegistro();
+                        usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
+
+                        table.getItems().clear();
+                        items = FXCollections.observableArrayList(usuarios);
+                        table.setItems(items);
+                    }else{
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                     }
-
-                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
-                    limpiarRegistro();
-                    usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
-
-                    table.getItems().clear();
-                    items = FXCollections.observableArrayList(usuarios);
-                    table.setItems(items);
-
+                    
                 } catch (IOException | MessagingException e) {
                     ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), e.getMessage());
                 }
@@ -313,11 +318,15 @@ public class UsuariosController extends Controller {
         }
     }
 
-    private void typeKeys() {
-        txtNombre.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
-        txtPApellido.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
-        txtSApellido.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
-        txtFiltroUsuario.setOnKeyTyped(ClinicaUna.aceptaNumeros);
+    public void Formato() {
+        this.txtCedula.setTextFormatter(Formato.getInstance().cedulaFormat(15));
+        this.txtClave.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        this.txtCorreo.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        this.txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(50));
+        this.txtPApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
+        this.txtSApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
+        this.txtNombreUsuario.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
+        
     }
 
     boolean registroCorrecto() {

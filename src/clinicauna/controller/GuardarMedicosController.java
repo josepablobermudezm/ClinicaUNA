@@ -10,6 +10,7 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -66,6 +67,12 @@ public class GuardarMedicosController extends Controller {
     
     @FXML
     private void limpiarRegistro(ActionEvent event) {
+        this.txtCarne.clear();
+        this.txtCodigo.clear();
+        this.txtEspacio.clear();
+        this.txtFolio.clear();
+        this.timePickerInicio.setValue(null);
+        this.timePickerfinal.setValue(null);
     }
     
     @FXML
@@ -101,9 +108,16 @@ public class GuardarMedicosController extends Controller {
         FlowController.getInstance().initialize();
         this.getStage().close();
     }
-    
+    public void Formato(){
+        this.txtCodigo.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        this.txtCarne.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        this.txtEspacio.setTextFormatter(Formato.getInstance().integerFormat(1));
+        this.txtFolio.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+       
+    }
     @Override
     public void initialize() {
+        Formato();
         medicoService = new MedicoService();
         ms = new Mensaje();
         idioma = (Idioma) AppContext.getInstance().get("idioma");
@@ -118,7 +132,6 @@ public class GuardarMedicosController extends Controller {
             this.txtEspacio.setPromptText(idioma.getProperty("Espacio") + " " + idioma.getProperty("por") + " " + idioma.getProperty("Hora"));
             this.timePickerInicio.setPromptText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Jornada"));
             this.timePickerfinal.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
-            
         }
     }
     

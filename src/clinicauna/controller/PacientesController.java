@@ -10,6 +10,7 @@ import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
+import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -61,7 +62,6 @@ public class PacientesController extends Controller {
     private JFXTextField txtFiltroEmpleado;
     @FXML
     private JFXButton btnBuscar;
-    private JFXTextField txtApellido;
     @FXML
     private JFXDatePicker FechaDeNacimiento;
     private Respuesta resp;
@@ -101,6 +101,7 @@ public class PacientesController extends Controller {
 
     @Override
     public void initialize() {
+        Formato();
         btnAgregar1.setCursor(Cursor.HAND);
         btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
@@ -133,7 +134,7 @@ public class PacientesController extends Controller {
             this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Pacientes"));
         }
 
-        typeKeys();
+      
         pacienteService = new PacienteService();
         ms = new Mensaje();
         resp = pacienteService.getPacientes();
@@ -216,7 +217,11 @@ public class PacientesController extends Controller {
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
-
+        this.txtCedula.clear();
+        this.txtCorreo.clear();
+        this.txtNombre.clear();
+        this.txtPApellido.clear();
+        this.txtSApellido.clear();
     }
 
     @FXML
@@ -273,11 +278,7 @@ public class PacientesController extends Controller {
         table.getSelectionModel().clearSelection();
     }
 
-    private void typeKeys() {
-        txtNombre.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
-        txtSApellido.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
-        txtPApellido.setOnKeyTyped(ClinicaUna.aceptaCaracteres);
-    }
+  
 
     @FXML
     private void DatosPaciente(MouseEvent event) {
@@ -299,5 +300,11 @@ public class PacientesController extends Controller {
             }
         }
     }
-
+    public void Formato(){
+        this.txtCedula.setTextFormatter(Formato.getInstance().cedulaFormat(20));
+        this.txtCorreo.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        this.txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(50));
+        this.txtPApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
+        this.txtSApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
+    }
 }

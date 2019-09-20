@@ -10,6 +10,7 @@ import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
+import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -127,7 +128,7 @@ public class MedicosController extends Controller {
         resp = medicoService.getMedicos();
         medicos = ((ArrayList<MedicoDto>) resp.getResultado("Medicos"));
 
-        COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCodigo() != null) ? value.getValue().getFolio() : "Sin Asignar"));
+        COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCodigo() != null) ? value.getValue().getCodigo() : "Sin Asignar"));
         COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFolio() != null) ? value.getValue().getFolio() : "Sin Asignar"));
         COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCarne() != null) ? value.getValue().getCarne() : "Sin Asignar"));
         COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
@@ -206,7 +207,6 @@ public class MedicosController extends Controller {
     }
 
     void limpiarValores() {
-
         txtCarne.clear();
         txtCodigo.clear();
         txtEspacio.clear();
@@ -226,10 +226,7 @@ public class MedicosController extends Controller {
     private void Filtrar(ActionEvent event) {
     }
 
-    private void typeKeys() {
-        txtEspacio.setOnKeyTyped(ClinicaUna.aceptaNumeros);
-    }
-
+  
     @FXML
     private void DatosMedico(MouseEvent event) {
 
