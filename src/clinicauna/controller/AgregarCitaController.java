@@ -81,6 +81,7 @@ public class AgregarCitaController extends Controller {
     public void initialize() {
         pacienteService = new PacienteService();
         resp = pacienteService.getPacientes();
+        ms = new Mensaje();
         citaService = new CitaService();
         resp1 = citaService.getCitas();
 

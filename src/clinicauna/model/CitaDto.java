@@ -18,15 +18,19 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class CitaDto {
     @XmlTransient
-    Long CtID;
+    private Long CtID;
     @XmlTransient
-    Long CtVersion;
+    private Long CtVersion;
     @XmlTransient
-    PacienteDto paciente;
+    private PacienteDto paciente;
+//    EspacioHoraDto espacioHora;
     @XmlTransient
-    String motivo;
+    private String motivo;
     @XmlTransient
-    String estado;
+    private String estado;
+
+    public CitaDto(){
+    }
 
     public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, String motivo, String estado) {
         this.CtID = CtID;
@@ -35,7 +39,6 @@ public class CitaDto {
         this.motivo = motivo;
         this.estado = estado;
     }
-
     
     
     public Long getID() {
@@ -61,6 +64,14 @@ public class CitaDto {
     public void setPaciente(PacienteDto paciente) {
         this.paciente = paciente;
     }
+
+   /* public EspacioHoraDto getEspacioHora() {
+        return espacioHora;
+    }
+
+    public void setEspacioHora(EspacioHoraDto espacioHora) {
+        this.espacioHora = espacioHora;
+    }*/
 
     public String getMotivo() {
         return motivo;
