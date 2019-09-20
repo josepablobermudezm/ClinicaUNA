@@ -6,9 +6,11 @@
 package clinicauna.controller;
 
 import clinicauna.model.MedicoDto;
+import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import clinicauna.util.Idioma;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -45,13 +47,9 @@ public class AgendaController extends Controller {
     @FXML
     private FlowPane FlowPane;
     @FXML
-    private Label lbl;
-    @FXML
     private Label labelyear;
     @FXML
     private Label labelmes;
-    @FXML
-    private Label lbl1;
     @FXML
     private Label labelSemana;
     @FXML
@@ -61,6 +59,16 @@ public class AgendaController extends Controller {
     private Respuesta resp;
     private String mes, year, semana;
     private ArrayList<MedicoDto> lista;
+    private UsuarioDto usuario;
+    private Idioma idioma;
+    @FXML
+    private Label lblAnno;
+    @FXML
+    private Label lblMes;
+    @FXML
+    private Label lblDia;
+    @FXML
+    private Label lblHora;
 
     @Override
     public void initialize() {
@@ -72,6 +80,16 @@ public class AgendaController extends Controller {
 
         medicoService = new MedicoService();
         resp = medicoService.getMedicos();
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if (usuario.getIdioma().equals("I")) {
+            this.ComboMedico.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
+            this.DatePicker.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
+            this.lblAnno.setText(idioma.getProperty("Año"));
+            this.lblDia.setText(idioma.getProperty("Dia"));
+            this.lblHora.setText(idioma.getProperty("Hora"));
+            this.lblMes.setText(idioma.getProperty("Mes"));
+        }
 
         int valor = 1;
         for (int i = 0; i < 24; i++) {
@@ -110,14 +128,13 @@ public class AgendaController extends Controller {
                 .collect(Collectors.toList()));
         ComboMedico.setItems(items);
     }
-    
-    private EventHandler<MouseEvent> citasReleased = (event)->{
-        
+
+    private EventHandler<MouseEvent> citasReleased = (event) -> {
+
         FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
-        
+
     };
-    
-  
+
     @FXML
     private void Fecha(Event event) {
         mes = (DatePicker.getValue().getMonth() != null) ? DatePicker.getValue().getMonth().toString() : " ";
@@ -126,34 +143,32 @@ public class AgendaController extends Controller {
         labelmes.setText(mes);
         labelyear.setText(year);
         labelSemana.setText(semana);
-        
 
     }
 
-    private static boolean cedulaEncontrada=false;
-    private static String cedulaBuscar="";
+    private static boolean cedulaEncontrada = false;
+    private static String cedulaBuscar = "";
+
     @FXML
     private void seleccionarMedico(ActionEvent event) {
-        if(ComboMedico.getSelectionModel()!=null && ComboMedico.getSelectionModel().getSelectedItem()!=null){
+        if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
             String medico = ComboMedico.getSelectionModel().getSelectedItem();
-            medico.chars().forEach(x->{
-                if(((char) x)==':'){
+            medico.chars().forEach(x -> {
+                if (((char) x) == ':') {
                     cedulaEncontrada = true;
-                }
-                else if(cedulaEncontrada){
+                } else if (cedulaEncontrada) {
                     cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
                 }
             });
-            medicoDto = lista.stream().filter(x->x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
-            cedulaBuscar = "";  
-            cedulaEncontrada =false;
+            medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
+            cedulaBuscar = "";
+            cedulaEncontrada = false;
             LocalTime localTimeObj = LocalTime.parse(medicoDto.getInicioJornada());
             LocalTime localTimeObj2 = LocalTime.parse(medicoDto.getFinJornada());
-            Integer horas = localTimeObj2.getHour()-localTimeObj.getHour();
-            System.out.println("Horas "+horas);
+            Integer horas = localTimeObj2.getHour() - localTimeObj.getHour();
+            System.out.println("Horas " + horas);
             AppContext.getInstance().set("Medico", medicoDto);
-            
-            
+
         }
     }
 }

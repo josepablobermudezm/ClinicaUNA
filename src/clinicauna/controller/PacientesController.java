@@ -113,10 +113,24 @@ public class PacientesController extends Controller {
             this.btnAgregar1.setText(idioma.getProperty("Agregar"));
             this.btnHombre.setText(idioma.getProperty("Masculino"));
             this.btnMujer.setText(idioma.getProperty("Femenino"));
-            
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
             this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
+            this.COL_CEDULA_PAC.setText("ID");
+            this.COL_CORREO_PAC.setText(idioma.getProperty("Correo"));
+            this.COL_FECHANACIMIENTO_PAC.setText(idioma.getProperty("Fecha") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Nacimiento"));
+            this.COL_GENERO_PAC.setText(idioma.getProperty("Genero"));
+            this.COL_PAPELLIDO_PAC.setText(idioma.getProperty("Primero") + " " + idioma.getProperty("Apellido"));
+            this.COL_NOMBRE_PAC.setText(idioma.getProperty("Nombre"));
+            this.COL_SAPELLIDO_PAC.setText(idioma.getProperty("Segundo") + " " + idioma.getProperty("Apellido"));
             this.txtFiltroEmpleado.setPromptText(idioma.getProperty("Filtro") + " " + idioma.getProperty("porBy") + " " + "ID");
-            this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Medicos"));
+            this.txtNombre.setPromptText(idioma.getProperty("Nombre"));
+            this.txtPApellido.setPromptText(idioma.getProperty("Primero") + " " + idioma.getProperty("Apellido"));
+            this.txtSApellido.setPromptText(idioma.getProperty("Segundo") + " " + idioma.getProperty("Apellido"));
+            this.txtCedula.setPromptText("ID");
+            this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
+            this.lblGenero.setText(idioma.getProperty("Genero"));
+            this.FechaDeNacimiento.setPromptText(idioma.getProperty("Fecha") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Nacimiento"));
+            this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Pacientes"));
         }
 
         typeKeys();

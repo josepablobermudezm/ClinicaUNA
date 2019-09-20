@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.GuardarMedicosController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.GuardarMedicosController">
    <children>
       <GridPane layoutX="3.0" layoutY="130.0" prefHeight="62.0" prefWidth="800.0">
          <columnConstraints>
@@ -73,8 +73,8 @@
                </padding>
                <children>
                   <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Guardar" />
-                  <JFXButton onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
-                  <JFXButton onAction="#cancela" style="-fx-cursor: hand;" text="Cancelar" />
+                  <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
+                  <JFXButton fx:id="BtnCancelar" onAction="#cancela" style="-fx-cursor: hand;" text="Cancelar" />
                </children>
                <opaqueInsets>
                   <Insets />
