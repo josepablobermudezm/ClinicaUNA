@@ -82,11 +82,19 @@ public class Formato {
         return numericFormat;
     }
 
-    public TextFormatter integerFormat() {
+    public TextFormatter integerFormat(int valor) {
         TextFormatter numericFormat = new TextFormatter<>(c
                 -> {
-            if (c.getControlNewText().isEmpty()) {
+           if (c.getControlNewText().isEmpty()) {
                 return c;
+            }
+            if (valor > 0) {
+                if (((TextInputControl) c.getControl()).getLength() >= valor && !c.isDeleted()) {
+                    return null;
+                }
+                if (c.getText().length() > valor && !c.isDeleted()) {
+                    return null;
+                }
             }
 
             Pattern validDoubleText = Pattern.compile("\\d+");

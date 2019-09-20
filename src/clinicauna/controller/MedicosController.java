@@ -128,7 +128,7 @@ public class MedicosController extends Controller {
         resp = medicoService.getMedicos();
         medicos = ((ArrayList<MedicoDto>) resp.getResultado("Medicos"));
 
-        COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCodigo() != null) ? value.getValue().getFolio() : "Sin Asignar"));
+        COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCodigo() != null) ? value.getValue().getCodigo() : "Sin Asignar"));
         COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFolio() != null) ? value.getValue().getFolio() : "Sin Asignar"));
         COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCarne() != null) ? value.getValue().getCarne() : "Sin Asignar"));
         COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));

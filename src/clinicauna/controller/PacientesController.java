@@ -217,7 +217,11 @@ public class PacientesController extends Controller {
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
-
+        this.txtCedula.clear();
+        this.txtCorreo.clear();
+        this.txtNombre.clear();
+        this.txtPApellido.clear();
+        this.txtSApellido.clear();
     }
 
     @FXML
