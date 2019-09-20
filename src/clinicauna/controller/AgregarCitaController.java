@@ -111,13 +111,7 @@ public class AgregarCitaController extends Controller {
 
     @FXML
     private void guardar(ActionEvent event) {
-        
-        //MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("Medico");
-        
-        //MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("");
 
-        /*String info = ComboPacientes.getValue().toString();
-        System.out.println(info);*/
         if (registroCorrecto()) {
 
             String telefono = txtTelefono.getText();

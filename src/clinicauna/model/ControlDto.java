@@ -18,9 +18,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *
  * @author Jose Pablo Bermudez
  */
-@XmlRootElement(name = "ControlPacienteDto")
+@XmlRootElement(name = "ControlDto")
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-public class ControlPacienteDto {
+public class ControlDto {
     
     @XmlTransient
     Long ctrPacID;
@@ -59,7 +59,7 @@ public class ControlPacienteDto {
     @XmlTransient
     ExamenDto examen;
 
-    public ControlPacienteDto(Long ctrPacID, Long ctrPacVersion, LocalDate fecha, String hora, float presion, float frecuenciaCardiaca, float peso, float talla, float temperatura, float imc, String anotacionEnfermeria, String razonConsulta, String PlanAtencion, String Observaciones, String examenFisico, String tratamiento, PacienteDto paciente, ExamenDto examen) {
+    public ControlDto(Long ctrPacID, Long ctrPacVersion, LocalDate fecha, String hora, float presion, float frecuenciaCardiaca, float peso, float talla, float temperatura, float imc, String anotacionEnfermeria, String razonConsulta, String PlanAtencion, String Observaciones, String examenFisico, String tratamiento, PacienteDto paciente, ExamenDto examen) {
         this.ctrPacID = ctrPacID;
         this.ctrPacVersion = ctrPacVersion;
         this.fecha = fecha;
@@ -79,11 +79,6 @@ public class ControlPacienteDto {
         this.paciente = paciente;
         this.examen = examen;
     }
-
-    
-    
-    
-    
     public Long getCtrPacID() {
         return ctrPacID;
     }
@@ -227,9 +222,4 @@ public class ControlPacienteDto {
     public void setExamen(ExamenDto examen) {
         this.examen = examen;
     }
-
-    
-    
-    
-    
 }

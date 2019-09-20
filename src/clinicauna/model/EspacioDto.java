@@ -14,22 +14,44 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Jose Pablo Bermudez
  */
-@XmlRootElement(name = "EspacioHoraDto")
+@XmlRootElement(name = "EspacioDto")
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-public class EspacioHoraDto {
+public class EspacioDto {
     @XmlTransient
-    Long espID;
+    private Long espID;
     @XmlTransient
-    Long espVersion;
+    private Long espVersion;
     @XmlTransient
-    AgendaDto agenda;
+    private AgendaDto agenda;
+    @XmlTransient
+    private String espHoraFin;
+    @XmlTransient
+    private String espHoraInicio;
 
-    public EspacioHoraDto(Long espID, Long espVersion, AgendaDto agenda) {
+    public EspacioDto(Long espID, Long espVersion, AgendaDto agenda, String espHoraFin, String espHoraInicio) {
         this.espID = espID;
         this.espVersion = espVersion;
         this.agenda = agenda;
+        this.espHoraFin = espHoraFin;
+        this.espHoraInicio = espHoraInicio;
     }
 
+    public String getEspHoraFin() {
+        return espHoraFin;
+    }
+
+    public void setEspHoraFin(String espHoraFin) {
+        this.espHoraFin = espHoraFin;
+    }
+
+    public String getEspHoraInicio() {
+        return espHoraInicio;
+    }
+
+    public void setEspHoraInicio(String espHoraInicio) {
+        this.espHoraInicio = espHoraInicio;
+    }
+    
     public Long getEspID() {
         return espID;
     }
