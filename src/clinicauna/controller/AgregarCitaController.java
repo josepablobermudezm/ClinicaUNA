@@ -16,6 +16,7 @@ import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -30,6 +31,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleGroup;
 
 /**
  * FXML Controller class
@@ -58,6 +60,16 @@ public class AgregarCitaController extends Controller {
     @FXML
     private JFXTextArea txtmotivo;
     private ArrayList<PacienteDto> lista;
+    @FXML
+    private JFXRadioButton btnProgramada;
+    @FXML
+    private ToggleGroup estado;
+    @FXML
+    private JFXRadioButton btnAtendida;
+    @FXML
+    private JFXRadioButton btnCancelada;
+    @FXML
+    private JFXRadioButton btnAusente;
 
     @Override
     public void initialize() {
@@ -76,7 +88,7 @@ public class AgregarCitaController extends Controller {
     @FXML
     private void guardar(ActionEvent event) {
         
-        MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("");
+        MedicoDto Medico = (MedicoDto) AppContext.getInstance().get("Medico");
         
         String info = ComboPacientes.getValue().toString();
         System.out.println(info);
@@ -86,7 +98,8 @@ public class AgregarCitaController extends Controller {
             String correo = txtCorreo.getText();
             String motivo = txtmotivo.getText();
             Long version = new Long(1);
-            //citaDto = new CitaDto(null,version, pacienteDto, /*espacio Por hora */,motivo,);
+            String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
+            citaDto = new CitaDto(null,version, pacienteDto,motivo,estado);
             try {
                 resp = citaService.guardarCita(citaDto);
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());

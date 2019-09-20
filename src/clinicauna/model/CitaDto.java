@@ -24,17 +24,14 @@ public class CitaDto {
     @XmlTransient
     PacienteDto paciente;
     @XmlTransient
-    EspacioHoraDto espacioHora;
-    @XmlTransient
     String motivo;
     @XmlTransient
     String estado;
 
-    public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, EspacioHoraDto espacioHora, String motivo, String estado) {
+    public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, String motivo, String estado) {
         this.CtID = CtID;
         this.CtVersion = CtVersion;
         this.paciente = paciente;
-        this.espacioHora = espacioHora;
         this.motivo = motivo;
         this.estado = estado;
     }
@@ -63,14 +60,6 @@ public class CitaDto {
 
     public void setPaciente(PacienteDto paciente) {
         this.paciente = paciente;
-    }
-
-    public EspacioHoraDto getEspacioHora() {
-        return espacioHora;
-    }
-
-    public void setEspacioHora(EspacioHoraDto espacioHora) {
-        this.espacioHora = espacioHora;
     }
 
     public String getMotivo() {
