@@ -138,17 +138,19 @@ public class AgendaController extends Controller {
             LocalTime localTimeObj2 = LocalTime.parse(medicoDto.getFinJornada());
             Integer horas = localTimeObj2.getHour() - localTimeObj.getHour();
             int valor = localTimeObj.getHour();
+                        
             for (int i = 0; i < horas; i++) {
                 VBox vPane = new VBox();
                 vPane.getStyleClass().add("calendar_pane");
                 vPane.setMinWidth(125);
+                vPane.setMinHeight(50);
                 Label label = new Label();
                 label.setStyle("-fx-text-fill: gray; -fx-font-size : 15pt; -jfx-focus-color: -fx-secondary;");
                 label.setText(valor + ":00");
                 valor++;
                 vPane.getChildren().add(label);
 
-                GridPane.setVgrow(vPane, Priority.ALWAYS);
+                GridPane.setVgrow(vPane, Priority.NEVER);
 
                 // Add it to the grid
                 calendarGrid.add(vPane, 0, i);
@@ -161,7 +163,7 @@ public class AgendaController extends Controller {
                     vPane.setOnMouseReleased(citasReleased);
                     vPane.getStyleClass().add("calendar_pane");
                     vPane.setMinWidth(125);
-
+                    vPane.setMinHeight(50);
                     GridPane.setVgrow(vPane, Priority.ALWAYS);
 
                     // Add it to the grid
