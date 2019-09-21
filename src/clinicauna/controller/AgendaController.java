@@ -5,6 +5,7 @@
  */
 package clinicauna.controller;
 
+import clinicauna.model.AgendaDto;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
@@ -69,6 +70,7 @@ public class AgendaController extends Controller {
     private ArrayList<MedicoDto> lista;
     private UsuarioDto usuario;
     private Idioma idioma;
+    private AgendaDto agendaDto;
 
     @Override
     public void initialize() {
@@ -113,6 +115,8 @@ public class AgendaController extends Controller {
         labelmes.setText(mes);
         labelyear.setText(year);
         labelSemana.setText(semana);
+        
+        agendaDto = new AgendaDto();
 
     }
 
