@@ -20,7 +20,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import clinicauna.ClinicaUna;
 import clinicauna.controller.Controller;
+import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
+import javafx.util.Duration;
 
 /**
  *
@@ -32,7 +34,8 @@ public class FlowController {
     private static Stage mainStage;
     private static ResourceBundle idioma;
     private static HashMap<String, FXMLLoader> loaders = new HashMap<>();
-
+    private Stage stage;
+    
     private FlowController() {
     }
 
@@ -106,7 +109,7 @@ public class FlowController {
         Controller controller = loader.getController();//clase abstracta
         controller.setAccion(accion);
         controller.initialize();
-        Stage stage = controller.getStage();
+        this.stage = controller.getStage();
         if (stage == null) {
             stage = this.mainStage;
             controller.setStage(stage);
@@ -114,8 +117,16 @@ public class FlowController {
 
         switch (location) {
             case "Center":
-                ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().clear();
-                ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().add(loader.getRoot());
+                FadeTransition t1 = new FadeTransition(Duration.seconds(0.5), ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()));
+                t1.setByValue(-1);
+                t1.setOnFinished(f -> {
+                    ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().clear();
+                    ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().add(loader.getRoot());
+                    FadeTransition t2 = new FadeTransition(Duration.seconds(0.5), ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()));
+                    t2.setByValue(1);
+                    t2.play();
+                });
+                t1.play();
                 break;
             case "Top":
                 break;
