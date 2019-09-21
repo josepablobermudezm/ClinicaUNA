@@ -119,7 +119,7 @@ public class AgregarCitaController extends Controller {
             String motivo = txtmotivo.getText();
             Long version = new Long(1);
             String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
-            citaDto = new CitaDto(null,version, pacienteDto,motivo,estado);
+            citaDto = new CitaDto(null,version, pacienteDto,motivo,estado,telefono,correo);
             try {
                 resp1 = citaService.guardarCita(citaDto);
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
