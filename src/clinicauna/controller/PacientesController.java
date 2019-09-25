@@ -262,7 +262,7 @@ public class PacientesController extends Controller {
     boolean registroCorrecto() {
         return !txtNombre.getText().isEmpty() && !txtCedula.getText().isEmpty()
                 && !txtPApellido.getText().isEmpty() && !txtSApellido.getText().isEmpty()
-                && !FechaDeNacimiento.getValue().toString().isEmpty()
+                && FechaDeNacimiento.getValue()!=null
                 && !txtCorreo.getText().isEmpty() && (btnHombre.isSelected() || btnMujer.isSelected());
     }
 
