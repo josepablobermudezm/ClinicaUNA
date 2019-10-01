@@ -7,10 +7,10 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 
 <AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1030.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.AgendaController">
    <children>
@@ -18,15 +18,16 @@
          <center>
             <AnchorPane id="AnchorPane" prefHeight="715.0" prefWidth="717.0" stylesheets="@newCascadeStyleSheet.css">
                <children>
-                  <ScrollPane fx:id="ScrollPane" layoutY="70.0" prefHeight="629.0" prefWidth="1024.0">
+                  <ScrollPane fx:id="ScrollPane" layoutY="70.0" prefHeight="692.0" prefWidth="1024.0">
                     <content>
-                        <FlowPane fx:id="FlowPane" prefHeight="731.0" prefWidth="846.0">
+                        <FlowPane fx:id="FlowPane" prefHeight="679.0" prefWidth="1000.0">
                            <children>
-                              <GridPane fx:id="calendarGrid" gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="966.0" prefWidth="1000.0">
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1030.0" minWidth="10.0" prefWidth="1030.0" />
-                                 </columnConstraints>
+                              <GridPane fx:id="calendarGrid" gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="686.0" prefWidth="1000.0" style="-fx-cursor: hand;">
+                                 <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                 </rowConstraints>
                               </GridPane>
                            </children>
                         </FlowPane>
@@ -65,7 +66,7 @@
                   <Label fx:id="labelmes" prefHeight="21.0" prefWidth="117.0" styleClass="lbl" />
                   <Label fx:id="lblDia" styleClass="lbl" text="Día:" />
                   <Label fx:id="labelSemana" prefHeight="30.0" prefWidth="103.0" styleClass="lbl" />
-                  <JFXDatePicker fx:id="DatePicker" onHiding="#Fecha" prefHeight="29.0" prefWidth="256.0" promptText="Seleccionar Fecha" />
+                  <JFXDatePicker fx:id="DatePicker" defaultColor="#0d008f" onHiding="#Fecha" prefHeight="29.0" prefWidth="256.0" promptText="Seleccionar Fecha" />
                </children>
             </HBox>
          </top>
