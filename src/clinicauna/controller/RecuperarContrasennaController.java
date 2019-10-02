@@ -35,21 +35,17 @@ public class RecuperarContrasennaController extends Controller {
     @FXML
     private JFXTextField txtCorreoElectronico;
     @FXML
-    private Label Titulo;
-    @FXML
-    private AnchorPane root;
-    @FXML
     private ImageView imvFondo;
     @FXML
     private VBox VboxLOG;
     @FXML
     private ImageView omg;
     @FXML
-    private ImageView imgPassword;
-    @FXML
     private ImageView imguser;
     @FXML
     private JFXButton button2;
+    @FXML
+    private AnchorPane root1;
 
     @Override
     public void initialize() {
@@ -60,7 +56,14 @@ public class RecuperarContrasennaController extends Controller {
             imvFondo.setImage(imgFondo);
         } catch (Exception e) {
         }
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/clinicauna/resources/logo.png");
+            omg.setImage(imgLogo);
+        } catch (Exception e) {
+        }
     }
+    
 
     @FXML
     private void cancelar(ActionEvent event) {

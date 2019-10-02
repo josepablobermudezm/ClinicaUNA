@@ -20,7 +20,7 @@
                   </JFXButton>
                   <JFXButton fx:id="btnReportes" onAction="#btnReportes" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Reportes">
                   </JFXButton>
-                  <JFXButton fx:id="btnExit" onAction="#exit" prefHeight="97.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Exit">
+                  <JFXButton fx:id="btnExit" onAction="#exit" prefHeight="97.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Cerrar Sesión">
                   </JFXButton>
                </children>
             </VBox>

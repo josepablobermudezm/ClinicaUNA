@@ -52,7 +52,7 @@
             <JFXTextArea fx:id="txtmotivo" promptText="Motivo..." GridPane.columnIndex="1" />
             <Label text="Estado:" GridPane.columnIndex="3" />
             <Label fx:id="lblEstado" text="Estado:" GridPane.columnIndex="3" />
-            <JFXRadioButton fx:id="btnProgramada" selected="true" text="Programada" GridPane.columnIndex="3">
+            <JFXRadioButton fx:id="btnProgramada" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Programada" GridPane.columnIndex="3">
                <GridPane.margin>
                   <Insets left="40.0" />
                </GridPane.margin>
@@ -60,17 +60,17 @@
                   <ToggleGroup fx:id="estado" />
                </toggleGroup>
             </JFXRadioButton>
-            <JFXRadioButton fx:id="btnAtendida" text="Atendida" toggleGroup="$estado" GridPane.columnIndex="3">
+            <JFXRadioButton fx:id="btnAtendida" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Atendida" toggleGroup="$estado" GridPane.columnIndex="3">
                <GridPane.margin>
                   <Insets left="160.0" />
                </GridPane.margin>
             </JFXRadioButton>
-            <JFXRadioButton fx:id="btnCancelada" text="Cancelada" toggleGroup="$estado" GridPane.columnIndex="3">
+            <JFXRadioButton fx:id="btnCancelada" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Cancelada" toggleGroup="$estado" GridPane.columnIndex="3">
                <GridPane.margin>
                   <Insets left="260.0" />
                </GridPane.margin>
             </JFXRadioButton>
-            <JFXRadioButton fx:id="btnAusente" text="Ausente" toggleGroup="$estado" GridPane.columnIndex="3">
+            <JFXRadioButton fx:id="btnAusente" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Ausente" toggleGroup="$estado" GridPane.columnIndex="3">
                <GridPane.margin>
                   <Insets left="365.0" />
                </GridPane.margin>

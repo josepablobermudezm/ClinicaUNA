@@ -22,6 +22,7 @@ import clinicauna.ClinicaUna;
 import clinicauna.controller.Controller;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
@@ -104,6 +105,27 @@ public class FlowController {
         goView(viewName, "Center", accion);
     }
 
+    
+    public void goViewInWindowTransparent(String viewName) {
+        FXMLLoader loader = getLoader(viewName);
+        Controller controller = loader.getController();
+        Stage stage = new Stage();
+        controller.setStage(stage);
+        controller.initialize();
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.getIcons().add(new Image(ClinicaUna.class.getResourceAsStream("resources/pharmacy.png")));
+        stage.setTitle("ClinicaUNA");
+//        stage.setMinWidth(630);
+//        stage.setMinHeight(420);
+        stage.setOnHidden((WindowEvent event) -> {
+        });
+        Parent root = loader.getRoot();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+    
     public void goView(String viewName, String location, String accion) {
         FXMLLoader loader = getLoader(viewName);
         Controller controller = loader.getController();//clase abstracta

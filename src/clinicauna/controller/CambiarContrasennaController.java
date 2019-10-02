@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -35,8 +36,6 @@ public class CambiarContrasennaController extends Controller {
     @FXML
     private JFXPasswordField txtConfirmarContrasenna;
     @FXML
-    private AnchorPane root;
-    @FXML
     private ImageView imvFondo;
     @FXML
     private VBox VboxLOG;
@@ -47,11 +46,9 @@ public class CambiarContrasennaController extends Controller {
     @FXML
     private ImageView imgPassword;
     @FXML
-    private JFXButton btnCancelar;
+    private AnchorPane root1;
     @FXML
-    private JFXButton btnAgregarn;
-    @FXML
-    private JFXHamburger ham3;
+    private JFXButton button2;
 
     @Override
     public void initialize() {
@@ -70,6 +67,13 @@ public class CambiarContrasennaController extends Controller {
 
         }
 
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/clinicauna/resources/logo.png");
+            omg.setImage(imgLogo);
+        } catch (Exception e) {
+        }
+        
         Image omg2;
         try {
             omg2 = new Image("/clinicauna/resources/key (1).png");
@@ -78,6 +82,7 @@ public class CambiarContrasennaController extends Controller {
         }
     }
 
+    @FXML
     private void cambiarContrasenna() {
         if (!txtConfirmarContrasenna.getText().isEmpty() && !txtXontrasenna.getText().isEmpty()) {
             if (txtConfirmarContrasenna.getText().equals(txtXontrasenna.getText())) {
@@ -107,12 +112,10 @@ public class CambiarContrasennaController extends Controller {
         }
     }
 
-    @FXML
     private void agregarContrasenna(ActionEvent event) {
         cambiarContrasenna();
     }
 
-    @FXML
     private void iniciar(KeyEvent event) {
         if (event.getCode() == event.getCode().ENTER) {
             cambiarContrasenna();
@@ -124,6 +127,10 @@ public class CambiarContrasennaController extends Controller {
     private void salir(ActionEvent event) {
         FlowController.getInstance().initialize();
         FlowController.getInstance().goViewInStage("LogIn", this.getStage());
+    }
+
+    @FXML
+    private void restablecerContrasenna(MouseEvent event) {
     }
 
 }

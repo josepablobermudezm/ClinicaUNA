@@ -25,7 +25,8 @@ public class ClinicaUna extends Application {
         stage.setTitle("Clinica UNA");
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         FlowController.getInstance().InitializeFlow(stage, null);
-        FlowController.getInstance().goViewInWindow("LogIn");        
+        FlowController.getInstance().goViewInWindowTransparent("LogIn"); 
+        
     }
 
     /**
