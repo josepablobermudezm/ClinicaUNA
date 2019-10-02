@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -13,25 +12,26 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.CambiarContrasennaController">
+
+<AnchorPane fx:id="root1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.CambiarContrasennaController">
    <children>
-      <StackPane layoutX="115.0" layoutY="110.0" prefHeight="189.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane layoutX="115.0" layoutY="110.0" prefHeight="189.0" prefWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fx:id="imvFondo" fitHeight="401.0" fitWidth="601.0" pickOnBounds="true" />
-            <VBox fx:id="VboxLOG" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" style="-fx-background-color: #04245c;" StackPane.alignment="TOP_RIGHT">
+            <ImageView fx:id="imvFondo" fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" />
+            <VBox fx:id="VboxLOG" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" style="-fx-background-color: #04245c;" StackPane.alignment="TOP_RIGHT">
                <StackPane.margin>
-                  <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                  <Insets bottom="75.0" left="75.0" right="75.0" top="75.0" />
                </StackPane.margin>
                <children>
-                  <Label id="Titulo2" fx:id="Titulo" prefHeight="58.0" prefWidth="440.0" text="Reestablecer Contraseña" />
+                  <ImageView fx:id="omg" fitHeight="174.0" fitWidth="198.0" pickOnBounds="true" preserveRatio="true" />
                   <GridPane>
                      <VBox.margin>
-                        <Insets />
+                        <Insets bottom="20.0" />
                      </VBox.margin>
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="20.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="48.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.0" minWidth="10.0" prefWidth="388.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="27.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="514.0" minWidth="10.0" prefWidth="501.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.0" minWidth="10.0" prefWidth="59.0" />
                      </columnConstraints>
                      <rowConstraints>
@@ -39,7 +39,7 @@
                      </rowConstraints>
                      <children>
                         <ImageView fx:id="imguser" fitHeight="38.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <JFXPasswordField fx:id="txtXontrasenna" labelFloat="true" promptText="Contraseña Nueva" GridPane.columnIndex="2" />
+                        <JFXPasswordField fx:id="txtXontrasenna" promptText="Nueva Contraseña" GridPane.columnIndex="2" />
                      </children>
                   </GridPane>
                   <GridPane prefHeight="55.0" prefWidth="500.0">
@@ -48,8 +48,8 @@
                      </VBox.margin>
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="21.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="39.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="461.0" minWidth="10.0" prefWidth="387.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="2.0" prefWidth="24.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="524.0" minWidth="10.0" prefWidth="502.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="461.0" minWidth="10.0" prefWidth="54.0" />
                      </columnConstraints>
                      <rowConstraints>
@@ -57,31 +57,34 @@
                      </rowConstraints>
                      <children>
                         <ImageView fx:id="imgPassword" fitHeight="39.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <JFXPasswordField fx:id="txtConfirmarContrasenna" labelFloat="true" onKeyPressed="#iniciar" prefHeight="36.0" prefWidth="387.0" promptText="Confirmar Contraseña" GridPane.columnIndex="2" />
+                        <JFXPasswordField fx:id="txtConfirmarContrasenna" promptText="Confirmar Contraseña" GridPane.columnIndex="2" />
                      </children>
                   </GridPane>
                   <GridPane prefHeight="85.0" prefWidth="505.0">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="255.0" minWidth="10.0" prefWidth="70.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="288.0" minWidth="10.0" prefWidth="219.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="10.0" prefWidth="182.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="10.0" prefWidth="75.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="255.0" minWidth="10.0" prefWidth="97.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="386.0" minWidth="10.0" prefWidth="355.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="10.0" prefWidth="196.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="10.0" prefWidth="46.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="button2" buttonType="RAISED" onAction="#salir" prefHeight="38.0" prefWidth="175.0" ripplerFill="WHITE" style="-fx-cursor: hand;" text="Atrás" textFill="WHITE" GridPane.columnIndex="1">
+                        <JFXButton fx:id="button2" buttonType="RAISED" onAction="#salir" prefHeight="38.0" prefWidth="175.0" ripplerFill="WHITE" style="-fx-cursor: hand;" text="Cancelar" textFill="WHITE" GridPane.columnIndex="1">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="button2" buttonType="RAISED" onAction="#agregarContrasenna" prefHeight="38.0" prefWidth="168.0" ripplerFill="WHITE" style="-fx-cursor: hand;" text="Cambiar Contraseña" textFill="WHITE" GridPane.columnIndex="2">
+                        <JFXButton fx:id="button2" buttonType="RAISED" onAction="#cambiarContrasenna" prefHeight="38.0" prefWidth="168.0" ripplerFill="WHITE" style="-fx-cursor: hand;" text="Cambiar Contraseña" textFill="WHITE" GridPane.columnIndex="2">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </JFXButton>
                      </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </GridPane>
                </children>
             </VBox>

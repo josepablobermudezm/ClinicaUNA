@@ -36,8 +36,6 @@ import javafx.scene.layout.VBox;
 public class LogIngController extends Controller {
 
     @FXML
-    private AnchorPane root;
-    @FXML
     private ImageView imvFondo;
 
     @FXML
@@ -55,6 +53,8 @@ public class LogIngController extends Controller {
     private Idioma idioma;
     @FXML
     private JFXButton button2;
+    @FXML
+    private AnchorPane root1;
 
     /**
      * Initializes the controller class.
@@ -62,6 +62,12 @@ public class LogIngController extends Controller {
     @Override
     public void initialize() {
         Formato();
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/clinicauna/resources/logo.png");
+            omg.setImage(imgLogo);
+        } catch (Exception e) {
+        }
         Image imgFondo;
         try {
             imgFondo = new Image("/clinicauna/resources/e.jpg");
@@ -139,20 +145,26 @@ public class LogIngController extends Controller {
         this.getStage().close();
     }
 
-    @FXML
     private void iniciar(KeyEvent event) {
         if (event.getCode() == event.getCode().ENTER) {
             Login();
         }
 
     }
-public void Formato(){
+    public void Formato(){
     this.txtClave1.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
     this.txtUsuario1.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
 }
     @FXML
     private void restablecerContrasenna(MouseEvent event) {
         FlowController.getInstance().goViewInStage("RecuperarContrasenna", this.getStage());
+    }
+
+    @FXML
+    private void LogInKey(KeyEvent event) {
+        if (event.getCode() == event.getCode().ENTER) {
+            Login();
+        }
     }
 
 }

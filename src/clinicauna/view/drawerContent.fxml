@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -14,7 +13,7 @@
                <children>
                   <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                   <JFXButton fx:id="btnUsuarios" onAction="#Usuarios" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Usuarios" />
-                  <JFXButton fx:id="btnMedicos" onAction="#btnMedicos" prefHeight="92.0" prefWidth="200.0"  style="-fx-cursor: Hand;" text="Médicos">
+                  <JFXButton fx:id="btnMedicos" onAction="#btnMedicos" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Médicos">
                   </JFXButton>
                   <JFXButton fx:id="btnPacientes" onAction="#btnPacientes" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Pacientes">
                   </JFXButton>
@@ -24,7 +23,7 @@
                   </JFXButton>
                   <JFXButton fx:id="btnReportes" onAction="#btnReportes" prefHeight="92.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Reportes">
                   </JFXButton>
-                  <JFXButton fx:id="btnExit" onAction="#exit" prefHeight="97.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Exit">
+                  <JFXButton fx:id="btnExit" onAction="#exit" prefHeight="97.0" prefWidth="200.0" style="-fx-cursor: Hand;" text="Cerrar Sesión">
                   </JFXButton>
                </children>
             </VBox>

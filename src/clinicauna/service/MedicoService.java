@@ -109,7 +109,7 @@ public class MedicoService {
 
             Medico = (MedicoDto) request.readEntity(MedicoDto.class);
 
-            return new Respuesta(true, "", "", "Medico", Medico);
+            return new Respuesta(true, "Medico Actualizado Correctamente", "", "Medico", Medico);
         } catch (Exception ex) {
             Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error guardando el Medico.", ex);
             return new Respuesta(false, "Error guardando el Medico.", "guardarMedico " + ex.getMessage());

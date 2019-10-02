@@ -20,7 +20,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import clinicauna.ClinicaUna;
 import clinicauna.controller.Controller;
+import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 /**
  *
@@ -32,7 +35,8 @@ public class FlowController {
     private static Stage mainStage;
     private static ResourceBundle idioma;
     private static HashMap<String, FXMLLoader> loaders = new HashMap<>();
-
+    private Stage stage;
+    
     private FlowController() {
     }
 
@@ -101,12 +105,33 @@ public class FlowController {
         goView(viewName, "Center", accion);
     }
 
+    
+    public void goViewInWindowTransparent(String viewName) {
+        FXMLLoader loader = getLoader(viewName);
+        Controller controller = loader.getController();
+        Stage stage = new Stage();
+        controller.setStage(stage);
+        controller.initialize();
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.getIcons().add(new Image(ClinicaUna.class.getResourceAsStream("resources/pharmacy.png")));
+        stage.setTitle("ClinicaUNA");
+//        stage.setMinWidth(630);
+//        stage.setMinHeight(420);
+        stage.setOnHidden((WindowEvent event) -> {
+        });
+        Parent root = loader.getRoot();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+    
     public void goView(String viewName, String location, String accion) {
         FXMLLoader loader = getLoader(viewName);
         Controller controller = loader.getController();//clase abstracta
         controller.setAccion(accion);
         controller.initialize();
-        Stage stage = controller.getStage();
+        this.stage = controller.getStage();
         if (stage == null) {
             stage = this.mainStage;
             controller.setStage(stage);
@@ -114,8 +139,16 @@ public class FlowController {
 
         switch (location) {
             case "Center":
-                ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().clear();
-                ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().add(loader.getRoot());
+                FadeTransition t1 = new FadeTransition(Duration.seconds(0.5), ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()));
+                t1.setByValue(-1);
+                t1.setOnFinished(f -> {
+                    ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().clear();
+                    ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().add(loader.getRoot());
+                    FadeTransition t2 = new FadeTransition(Duration.seconds(0.5), ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()));
+                    t2.setByValue(1);
+                    t2.play();
+                });
+                t1.play();
                 break;
             case "Top":
                 break;

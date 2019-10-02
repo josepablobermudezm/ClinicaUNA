@@ -5,10 +5,13 @@
  */
 package clinicauna.model;
 
+import clinicauna.util.LocalDateAdapter;
+import java.time.LocalDate;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
@@ -23,11 +26,25 @@ public class AgendaDto {
     MedicoDto medicoDto;
     @XmlTransient
     Long agenVersion;
+    @XmlTransient
+    LocalDate fecha;
 
-    public AgendaDto(Long ageID, MedicoDto medicoDto, Long agenVersion) {
+    public AgendaDto(){
+    }
+
+    public AgendaDto(Long ageID, MedicoDto medicoDto, Long agenVersion, LocalDate fecha) {
         this.ageID = ageID;
         this.medicoDto = medicoDto;
         this.agenVersion = agenVersion;
+        this.fecha = fecha;
+    }
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public LocalDate getFecha() {
+        return fecha;
+    }
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
 
     public Long getID() {

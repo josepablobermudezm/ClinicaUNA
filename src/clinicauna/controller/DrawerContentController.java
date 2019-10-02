@@ -27,7 +27,6 @@ public class DrawerContentController extends Controller {
 
     @FXML
     private ImageView image;
-    static public File filePath2;
     @FXML
     private JFXButton btnExit;
     @FXML

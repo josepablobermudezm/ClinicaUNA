@@ -28,18 +28,39 @@ public class CitaDto {
     private String motivo;
     @XmlTransient
     private String estado;
+    @XmlTransient
+    private String telefono;
+    @XmlTransient
+    private String correo;
 
     public CitaDto(){
     }
 
-    public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, String motivo, String estado) {
+    public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, String motivo, String estado, String telefono, String correo) {
         this.CtID = CtID;
         this.CtVersion = CtVersion;
         this.paciente = paciente;
         this.motivo = motivo;
         this.estado = estado;
+        this.telefono = telefono;
+        this.correo = correo;
     }
-    
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
     
     public Long getID() {
         return CtID;
@@ -88,4 +109,10 @@ public class CitaDto {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return "CitaDto{" + "CtID=" + CtID + ", CtVersion=" + CtVersion + ", paciente=" + paciente + ", motivo=" + motivo + ", estado=" + estado + ", telefono=" + telefono + ", correo=" + correo + '}';
+    }
+    
 }

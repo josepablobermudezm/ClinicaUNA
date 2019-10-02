@@ -16,6 +16,7 @@ import clinicauna.util.FlowController;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
+import clinicauna.util.vistaCita;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
@@ -30,6 +31,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -76,6 +79,7 @@ public class AgregarCitaController extends Controller {
     private Idioma idioma;
     private UsuarioDto usuario;
     private ArrayList<PacienteDto> lista;
+    private MedicoDto medicoDto;
 
     @Override
     public void initialize() {
@@ -119,16 +123,24 @@ public class AgregarCitaController extends Controller {
             String motivo = txtmotivo.getText();
             Long version = new Long(1);
             String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
-            citaDto = new CitaDto(null,version, pacienteDto,motivo,estado);
+            citaDto = new CitaDto(null, version, pacienteDto, motivo, estado, telefono, correo);
             try {
+                medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
                 resp1 = citaService.guardarCita(citaDto);
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                citaDto = (CitaDto) resp1.getResultado("Cita");
+                HBox hBox = (HBox) AppContext.getInstance().get("hBox");
+                vistaCita vistaCita = new vistaCita(citaDto);
+                int valor = 0;
+                hBox.getChildren().add(vistaCita.get((medicoDto.getEspacios()==2)?450:(medicoDto.getEspacios()==1)?950:(medicoDto.getEspacios()==3)?280:200));
+                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp1.getMensaje());
                 limpiarValores();
+                this.getStage().close();
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
             }
-        }else{
-            System.out.println("no entre");
+
+        } else {
+            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
         }
     }
 
@@ -155,6 +167,7 @@ public class AgregarCitaController extends Controller {
     void limpiarValores() {
         txtCorreo.clear();
         txtTelefono.clear();
+        txtmotivo.clear();
         ComboPacientes.getSelectionModel().clearSelection();
     }
 
