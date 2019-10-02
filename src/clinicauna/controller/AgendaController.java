@@ -150,7 +150,7 @@ public class AgendaController extends Controller {
                 valor++;
                 vPane.getChildren().add(label);
 
-                GridPane.setVgrow(vPane, Priority.NEVER);
+                GridPane.setVgrow(vPane, Priority.ALWAYS);
 
                 // Add it to the grid
                 calendarGrid.add(vPane, 0, i);
@@ -170,6 +170,7 @@ public class AgendaController extends Controller {
                     calendarGrid.add(vPane, j, i);
                 }
             }
+            
             AppContext.getInstance().set("Medico", medicoDto);
 
         }

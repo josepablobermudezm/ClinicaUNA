@@ -66,9 +66,11 @@ public class RecuperarContrasennaController extends Controller {
     private void cancelar(ActionEvent event) {
         FlowController.getInstance().goViewInStage("LogIn", this.getStage());
     }
-    public void Formato(){
+
+    public void Formato() {
         this.txtCorreoElectronico.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
     }
+
     @FXML
     private void correo(ActionEvent event) {
         if (!txtCorreoElectronico.getText().isEmpty()) {
@@ -80,20 +82,27 @@ public class RecuperarContrasennaController extends Controller {
                     UsuarioDto usuario = (UsuarioDto) resp.getResultado("Usuario");
                     if (usuario.getEstado().equals("A")) {
                         String contrassena = usuario.getContrasennaTemp();
-                        Correos.getInstance().recuperarContrasenna(correo, contrassena);
-                        txtCorreoElectronico.clear();
-                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Recuperando contraseña", this.getStage(), "Se envió una contraseña temporal a este correo");
-                    }else{
+                        resp = Correos.getInstance().recuperarContrasenna(correo, contrassena);
+                        if (resp.getEstado()) {
+                            txtCorreoElectronico.clear();
+                            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Recuperando contraseña", this.getStage(), "Se envió una contraseña temporal a este correo");
+                        } else {
+                            usuario.setContrasennaTemp(null);
+                            usService.guardarUsuario(usuario);
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(),resp.getMensaje());
+                        }
+
+                    } else {
                         new Mensaje().showModal(Alert.AlertType.WARNING, "Recuperando contraseña", this.getStage(), "Este usuario no ha sido activado");
                     }
-                } catch (IOException | MessagingException e) {
+                } catch (Exception e) {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(), e.getMessage());
                 }
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(), resp.getMensaje());
             }
-        }else{
-            new Mensaje().showModal(Alert.AlertType.WARNING, "Recuperando contraseña", this.getStage(),"No se ha digitado algún correo electrónico");
+        } else {
+            new Mensaje().showModal(Alert.AlertType.WARNING, "Recuperando contraseña", this.getStage(), "No se ha digitado algún correo electrónico");
         }
     }
 }

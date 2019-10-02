@@ -8,6 +8,7 @@ package clinicauna.service;
 import clinicauna.model.UsuarioDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -41,6 +42,9 @@ public class UsuarioService {
 
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo el usuario [" + usuario + "]", ex);
+            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+                return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuario " + ex.getMessage());
+            }
             return new Respuesta(false, "Error obteniendo el usuario.", "getUsuario " + ex.getMessage());
         }
     }
@@ -60,6 +64,9 @@ public class UsuarioService {
             return new Respuesta(true, "", "", "Usuario", Usuario);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo el Usuario [" + id + "]", ex);
+            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+                return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuario " + ex.getMessage());
+            }
             return new Respuesta(false, "Error obteniendo el Usuario.", "getUsuario " + ex.getMessage());
         }
     }
@@ -81,6 +88,9 @@ public class UsuarioService {
             return new Respuesta(true, "", "", "Usuarios", Usuarios);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo Usuarios.", ex);
+            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+                return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuario " + ex.getMessage());
+            }
             return new Respuesta(false, "Error obteniendo Usuarios.", "getUsuarios " + ex.getMessage());
         }
     }
@@ -99,6 +109,10 @@ public class UsuarioService {
 
             return new Respuesta(true, "", "", "Usuarios", Usuarios);
         } catch (Exception ex) {
+            Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo Usuarios.", ex);
+            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+                return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuarioS " + ex.getMessage());
+            }
             return new Respuesta(false, "", "", "Usuarios", "getUsuarios " + ex.getMessage());
         }
     }
@@ -118,6 +132,9 @@ public class UsuarioService {
             return new Respuesta(true, "Guardado exitosamente", request.toString(), "Usuario", Usuario);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error guardando el Usuario.", ex);
+            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+                return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuario " + ex.getMessage());
+            }
             return new Respuesta(false, "Error guardando el Usuario.", "guardarUsuario " + ex.getMessage());
         }
     }
@@ -135,6 +152,9 @@ public class UsuarioService {
             return new Respuesta(true, "Usuario eliminado exitosamente", "");
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error eliminando el Usuario.", ex);
+            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+                return new Respuesta(false, "No se ha podido conectar con el servidor.", "eliminarUsuario " + ex.getMessage());
+            }
             return new Respuesta(false, "Error eliminando el Usuario.", "eliminarUsuario " + ex.getMessage());
         }
     }
@@ -144,8 +164,8 @@ public class UsuarioService {
             InetAddress address = InetAddress.getLocalHost();
             return new Respuesta(true, "http://"+address.getHostAddress() + ":8989/WsClinicaUNA/ws/UsuarioController/activar/" + codigo, "");
         } catch (UnknownHostException ex) {
-            Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error eliminando el Medico.", ex);
-            return new Respuesta(false, "Error eliminando el Medico.", "eliminarMedico " + ex.getMessage());
+            Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error activando al usuario.", ex);
+            return new Respuesta(false, "Error en la direccion IP.", "activarUsuario " + ex.getMessage());
         }
     }
 
@@ -163,6 +183,9 @@ public class UsuarioService {
             return new Respuesta(true, "", "", "Usuario", Usuario);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo Usuarios.", ex);
+            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+                return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuarios " + ex.getMessage());
+            }
             return new Respuesta(false, "Error obteniendo Usuarios.", "getUsuarios " + ex.getMessage());
         }
     }

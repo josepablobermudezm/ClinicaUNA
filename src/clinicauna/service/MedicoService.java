@@ -101,7 +101,6 @@ public class MedicoService {
 
     public Respuesta guardarMedico(MedicoDto Medico) {
         try {
-
             Request request = new Request("MedicoController/guardar");
             request.post(Medico);
             if (request.isError()) {

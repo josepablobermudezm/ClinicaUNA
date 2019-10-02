@@ -16,13 +16,13 @@
    <children>
       <BorderPane layoutX="5.0" layoutY="5.0">
          <center>
-            <AnchorPane id="AnchorPane" prefHeight="715.0" prefWidth="717.0" stylesheets="@newCascadeStyleSheet.css">
+            <AnchorPane id="AnchorPane" prefHeight="699.0" prefWidth="768.0" stylesheets="@newCascadeStyleSheet.css">
                <children>
-                  <ScrollPane fx:id="ScrollPane" layoutY="70.0" prefHeight="629.0" prefWidth="1024.0">
+                  <ScrollPane fx:id="ScrollPane" layoutY="70.0" prefHeight="629.0" prefWidth="965.0">
                     <content>
-                        <FlowPane fx:id="FlowPane" prefHeight="731.0" prefWidth="846.0">
+                        <FlowPane fx:id="FlowPane" prefHeight="628.0" prefWidth="944.0">
                            <children>
-                              <GridPane fx:id="calendarGrid" gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="966.0" prefWidth="1000.0">
+                              <GridPane fx:id="calendarGrid" gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="626.0" prefWidth="964.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1030.0" minWidth="10.0" prefWidth="1030.0" />

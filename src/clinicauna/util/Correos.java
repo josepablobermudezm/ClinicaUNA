@@ -42,55 +42,67 @@ public class Correos {
         return INSTANCE;
     }
 
-    public void mensajeActivacion(String usuario, String Destinatario, String url) throws MessagingException, IOException {
-        Properties prop = new Properties();
-        prop.setProperty("mail.smtp.auth", "true");
-        prop.setProperty("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.setProperty("mail.smtp.port", "587");
-        prop.setProperty("mail.smtp.user", "clinica.una.cr@gmail.com");
+    public Respuesta mensajeActivacion(String usuario, String Destinatario, String url) {
+        try {
+            Properties prop = new Properties();
+            prop.setProperty("mail.smtp.auth", "true");
+            prop.setProperty("mail.smtp.starttls.enable", "true");
+            prop.put("mail.smtp.host", "smtp.gmail.com");
+            prop.setProperty("mail.smtp.port", "587");
+            prop.setProperty("mail.smtp.user", "clinica.una.cr@gmail.com");
 
-        Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
-        BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
-        link.setContent(activarUsuario(usuario, url), "text/html");
-        MimeMultipart m = new MimeMultipart();
-        m.addBodyPart(link);
-        MimeMessage mensaje = new MimeMessage(session);
-        mensaje.setFrom(new InternetAddress("clinica.una.cr@gmail.com"));// Aqui se define el usuario que enviará el correo
-        mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(Destinatario));// Destinatario
-        mensaje.setSubject("Mensaje de Activación");// Aqui podemos escribir el asunto que necesitemos en el correo
-        mensaje.setContent(m); // aqui seteamos nuestro archivo
-        // Aqui se conecta con nuestro usuario y contraseña se procede a enviar y se cierra la conexión
-        Transport t = session.getTransport("smtp");
-        t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
-        t.sendMessage(mensaje, mensaje.getAllRecipients());
-        t.close();
+            Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
+            BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
+            link.setContent(activarUsuario(usuario, url), "text/html");
+            MimeMultipart m = new MimeMultipart();
+            m.addBodyPart(link);
+            MimeMessage mensaje = new MimeMessage(session);
+            mensaje.setFrom(new InternetAddress("clinica.una.cr@gmail.com"));// Aqui se define el usuario que enviará el correo
+            mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(Destinatario));// Destinatario
+            mensaje.setSubject("Mensaje de Activación");// Aqui podemos escribir el asunto que necesitemos en el correo
+            mensaje.setContent(m); // aqui seteamos nuestro archivo
+            // Aqui se conecta con nuestro usuario y contraseña se procede a enviar y se cierra la conexión
+            Transport t = session.getTransport("smtp");
+            t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
+            t.sendMessage(mensaje, mensaje.getAllRecipients());
+            t.close();
+            return new Respuesta(true,"Mensaje de Activación enviado exitosamente","");
+        } catch (MessagingException e) {
+            return new Respuesta(false,"Hubo un error al enviar el correo de activación al usuario.","");
+        }
+
     }
 
-    public void recuperarContrasenna(String Destinatario, String contrasenna) throws MessagingException, IOException {
-        // Propiedades necesarias
-        Properties prop = new Properties();
-        prop.setProperty("mail.smtp.auth", "true");
-        prop.setProperty("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.setProperty("mail.smtp.port", "587");
-        prop.setProperty("mail.smtp.user", "clinica.una.cr@gmail.com");
+    public Respuesta recuperarContrasenna(String Destinatario, String contrasenna) {
+        try {
+            // Propiedades necesarias
+            Properties prop = new Properties();
+            prop.setProperty("mail.smtp.auth", "true");
+            prop.setProperty("mail.smtp.starttls.enable", "true");
+            prop.put("mail.smtp.host", "smtp.gmail.com");
+            prop.setProperty("mail.smtp.port", "587");
+            prop.setProperty("mail.smtp.user", "clinica.una.cr@gmail.com");
 
-        Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
-        BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
-        link.setContent(htmlRecuperarContrasenna(contrasenna), "text/html");
-        MimeMultipart m = new MimeMultipart();
-        m.addBodyPart(link);
-        MimeMessage mensaje = new MimeMessage(session);
-        mensaje.setFrom(new InternetAddress("clinica.una.cr@gmail.com"));// Aqui se define el usuario que enviará el correo
-        mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(Destinatario));// Destinatario
-        mensaje.setSubject("Recuperación de Contraseña");// Aqui podemos escribir el asunto que necesitemos en el correo
-        mensaje.setContent(m); // aqui seteamos nuestro archivo
-        // Aqui se conecta con nuestro usuario y contraseña se procede a enviar y se cierra la conexión
-        Transport t = session.getTransport("smtp");
-        t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
-        t.sendMessage(mensaje, mensaje.getAllRecipients());
-        t.close();
+            Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
+            BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
+            link.setContent(htmlRecuperarContrasenna(contrasenna), "text/html");
+            MimeMultipart m = new MimeMultipart();
+            m.addBodyPart(link);
+            MimeMessage mensaje = new MimeMessage(session);
+            mensaje.setFrom(new InternetAddress("clinica.una.cr@gmail.com"));// Aqui se define el usuario que enviará el correo
+            mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(Destinatario));// Destinatario
+            mensaje.setSubject("Recuperación de Contraseña");// Aqui podemos escribir el asunto que necesitemos en el correo
+            mensaje.setContent(m); // aqui seteamos nuestro archivo
+            // Aqui se conecta con nuestro usuario y contraseña se procede a enviar y se cierra la conexión
+            Transport t = session.getTransport("smtp");
+            t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
+            t.sendMessage(mensaje, mensaje.getAllRecipients());
+            t.close();
+            return new Respuesta(true,"","");
+        } catch (MessagingException e) {
+            return new Respuesta(false,"No se ha enviado un correo de recuperación debido a un problema de red.",e.getLocalizedMessage());
+        }
+
     }
 
     public String htmlRecuperarContrasenna(String contrasenna) {

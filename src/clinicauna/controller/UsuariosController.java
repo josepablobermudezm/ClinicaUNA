@@ -5,7 +5,6 @@
  */
 package clinicauna.controller;
 
-import clinicauna.ClinicaUna;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.MedicoService;
@@ -181,7 +180,6 @@ public class UsuariosController extends Controller {
         COL_ESTADO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
         COL_PAPELLIDO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getpApellido()));
         COL_SAPELLIDO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getsApellido()));
-        //System.out.println(usuarios.size());
         items = FXCollections.observableArrayList(usuarios);
         table.setItems(items);
 
@@ -284,32 +282,40 @@ public class UsuariosController extends Controller {
                 usuarioDto = new UsuarioDto(null, nombre, papellido, "I", sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
                 try {
                     resp = usuarioService.guardarUsuario(usuarioDto);
-                    if(resp.getEstado()){
+                    if (resp.getEstado()) {
                         usuarioDto = (UsuarioDto) resp.getResultado("Usuario");
-                        Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
-                        //Envia correo de activacion
-                        Correos.getInstance().mensajeActivacion(nombreusuario, correo, resp2.getMensaje());
 
                         if (tipoUsuario.equals("M")) {
-
                             medicoDto = (MedicoDto) AppContext.getInstance().get("Medico");
                             medicoDto.setUs(usuarioDto);
-                            medicoService.guardarMedico(medicoDto);
-                            AppContext.getInstance().delete("Medico");
+                            resp = medicoService.guardarMedico(medicoDto);
+                            if (!resp.getEstado()) {
+                                usuarioService.eliminarUsuario(usuarioDto.getID());
+                                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            } else {
+                                AppContext.getInstance().delete("Medico");
+                            }
                         }
 
-                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
-                        limpiarRegistro();
-                        usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
+                        Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
+                        //Envia correo de activacion
+                        resp = Correos.getInstance().mensajeActivacion(nombreusuario, correo, resp2.getMensaje());
 
-                        table.getItems().clear();
-                        items = FXCollections.observableArrayList(usuarios);
-                        table.setItems(items);
-                    }else{
+                        if (resp.getEstado()) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            limpiarRegistro();
+                            usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
+                            table.getItems().clear();
+                            items = FXCollections.observableArrayList(usuarios);
+                            table.setItems(items);
+                        }else{
+                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        }
+                    } else {
                         ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                     }
-                    
-                } catch (IOException | MessagingException e) {
+
+                } catch (Exception e) {
                     ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), e.getMessage());
                 }
             } else {
@@ -326,7 +332,7 @@ public class UsuariosController extends Controller {
         this.txtPApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
         this.txtSApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
         this.txtNombreUsuario.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
-        
+
     }
 
     boolean registroCorrecto() {
