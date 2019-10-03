@@ -29,13 +29,12 @@ public class vistaCita{
     private CitaDto cita;
     
     public vistaCita(){
-        super();
         
     }
     public vistaCita(CitaDto cita){
         super();
         this.cita = cita;
-        this.Nombre.setText(cita.getPaciente().getNombre() + cita.getPaciente().getpApellido() + cita.getPaciente().getsApellido());
+        this.Nombre.setText(cita.getPaciente().getNombre() +" " +cita.getPaciente().getpApellido() +" " +cita.getPaciente().getsApellido());
         this.Correo.setText(cita.getCorreo());
         this.Telefono.setText(cita.getTelefono());
         this.vBox.getChildren().addAll(Nombre,Correo,Telefono);
@@ -44,6 +43,7 @@ public class vistaCita{
         this.vBox.setOnMouseReleased(x->{
             System.out.println(this.cita.toString());
         });
+        
         //this.getChildren().addAll(vBox);
         //System.out.println(this.getChildren().size());
     }

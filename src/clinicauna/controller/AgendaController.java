@@ -150,8 +150,17 @@ public class AgendaController extends Controller {
             LocalTime localTimeObj = LocalTime.parse(medicoDto.getInicioJornada());
             LocalTime localTimeObj2 = LocalTime.parse(medicoDto.getFinJornada());
             int EspaciosPorHora = medicoDto.getEspacios();
-            Integer horas = localTimeObj2.getHour() - localTimeObj.getHour();
+            Integer horas = 0;
+            //Calcula la cantidad de espacios por hora que tendra la agenda
+            if (localTimeObj.isBefore(localTimeObj2)) {
+                horas = -(localTimeObj.getHour() - localTimeObj2.getHour());
+
+            } else {
+                horas = ((24 - localTimeObj.getHour()) + localTimeObj.getHour()) - localTimeObj2.getHour();
+            }
+
             int valor = localTimeObj.getHour();
+
             for (int i = 0; i < horas; i++) {
                 for (int j = 0; j < EspaciosPorHora; j++) {
                     HBox hPane = new HBox();
@@ -160,8 +169,25 @@ public class AgendaController extends Controller {
                     hPane.setMinWidth((EspaciosPorHora == 4) ? 250 : (EspaciosPorHora == 3) ? 333 : (EspaciosPorHora == 2) ? 500 : 1000);
                     hPane.setMinHeight(100);
                     Label label = new Label();
+                    //Introduce los valores desde 1 si se ha superado ya las 24 horas
+                    if (valor > 24) {
+                        valor = 1;
+                    }
                     label.setStyle("-fx-text-fill: gray; -fx-font-size : 12pt; -jfx-focus-color: -fx-secondary;");
-                    label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":15") : (j == 2) ? (valor + ":30") : (j == 3) ? (valor + ":45") : (valor + ":00"));
+                    switch (EspaciosPorHora) {
+                        case 1:
+                            label.setText((valor + ":00"));
+                            break;
+                        case 2:
+                            label.setText((j == 0) ? (valor + ":00") : (valor + ":30") );
+                            break;
+                        case 3:
+                            label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":20") : (valor + ":40") );
+                            break;
+                        case 4:
+                            label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":15") : (j == 2) ? (valor + ":30") : (j == 3) ? (valor + ":45") : (valor + ":00"));
+                            break;
+                    }
                     hPane.getChildren().add(label);
                     hPane.setAlignment(Pos.BASELINE_LEFT);
                     GridPane.setVgrow(hPane, Priority.NEVER);
@@ -170,9 +196,8 @@ public class AgendaController extends Controller {
                 }
                 valor++;
             }
-            
-            AppContext.getInstance().set("Medico", medicoDto);
 
+            AppContext.getInstance().set("Medico", medicoDto);
 
         }
     }
