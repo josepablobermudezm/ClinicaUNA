@@ -81,6 +81,11 @@ public class AgendaController extends Controller {
     public void initialize() {
         Inicio();
 
+        if (this.DatePicker.getValue() != null) {
+            this.ComboMedico.setDisable(false);
+        } else {
+            this.ComboMedico.setDisable(true);
+        }
     }
 
     public void Inicio() {
@@ -179,10 +184,10 @@ public class AgendaController extends Controller {
                             label.setText((valor + ":00"));
                             break;
                         case 2:
-                            label.setText((j == 0) ? (valor + ":00") : (valor + ":30") );
+                            label.setText((j == 0) ? (valor + ":00") : (valor + ":30"));
                             break;
                         case 3:
-                            label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":20") : (valor + ":40") );
+                            label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":20") : (valor + ":40"));
                             break;
                         case 4:
                             label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":15") : (j == 2) ? (valor + ":30") : (j == 3) ? (valor + ":45") : (valor + ":00"));
@@ -199,6 +204,20 @@ public class AgendaController extends Controller {
 
             AppContext.getInstance().set("Medico", medicoDto);
 
+        }
+    }
+
+    @FXML
+    private void Validacion(ActionEvent event) {
+        if (this.DatePicker.getValue() != null) {
+            this.ComboMedico.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void click(MouseEvent event) {
+        if (this.DatePicker.getValue() == null) {
+            this.ComboMedico.setDisable(true);
         }
     }
 }

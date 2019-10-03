@@ -40,7 +40,7 @@
                               <Insets left="20.0" top="20.0" />
                            </padding>
                         </Label>
-                        <JFXComboBox fx:id="ComboMedico" labelFloat="true" onAction="#seleccionarMedico" prefHeight="5.0" prefWidth="241.0" promptText="Seleccionar un Medico">
+                        <JFXComboBox fx:id="ComboMedico" labelFloat="true" onAction="#seleccionarMedico" onMouseClicked="#click" prefHeight="5.0" prefWidth="241.0" promptText="Seleccionar un Medico">
                            <padding>
                               <Insets top="30.0" />
                            </padding>
@@ -66,7 +66,7 @@
                   <Label fx:id="labelmes" prefHeight="21.0" prefWidth="117.0" styleClass="lbl" />
                   <Label fx:id="lblDia" styleClass="lbl" text="Día:" />
                   <Label fx:id="labelSemana" prefHeight="30.0" prefWidth="103.0" styleClass="lbl" />
-                  <JFXDatePicker fx:id="DatePicker" defaultColor="#0d008f" onHiding="#Fecha" prefHeight="29.0" prefWidth="256.0" promptText="Seleccionar Fecha" />
+                  <JFXDatePicker fx:id="DatePicker" defaultColor="#0d008f" onAction="#Validacion" onHiding="#Fecha" prefHeight="29.0" prefWidth="256.0" promptText="Seleccionar Fecha" />
                </children>
             </HBox>
          </top>
