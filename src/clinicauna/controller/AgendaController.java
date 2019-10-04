@@ -178,19 +178,40 @@ public class AgendaController extends Controller {
                     if (valor > 24) {
                         valor = 1;
                     }
+
                     label.setStyle("-fx-text-fill: gray; -fx-font-size : 12pt; -jfx-focus-color: -fx-secondary;");
                     switch (EspaciosPorHora) {
                         case 1:
-                            label.setText((valor + ":00"));
+                            if (valor > 10) {
+                                label.setText(valor + ":00");
+                            } else {
+                                label.setText("0" + valor + ":00");
+                            }
+
                             break;
                         case 2:
-                            label.setText((j == 0) ? (valor + ":00") : (valor + ":30"));
+                            if (valor > 10) {
+                                label.setText((j == 0) ? (valor + ":00") : (valor + ":30"));
+                            } else {
+                                label.setText((j == 0) ? "0" + valor + ":00" : "0" + valor + ":30");
+                            }
+
                             break;
                         case 3:
-                            label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":20") : (valor + ":40"));
+
+                            if (valor > 10) {
+                                label.setText((j == 0) ? valor + ":00" : (j == 1) ? valor + ":20" : valor + ":40");
+                            } else {
+                                label.setText((j == 0) ? "0" + valor + ":00" : (j == 1) ? "0" + valor + ":20" : "0" + valor + ":40");
+                            }
                             break;
                         case 4:
-                            label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":15") : (j == 2) ? (valor + ":30") : (j == 3) ? (valor + ":45") : (valor + ":00"));
+                            if (valor > 10) {
+                                label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":15") : (j == 2) ? (valor + ":30") : (j == 3) ? (valor + ":45") : (valor + ":00"));
+                            }else{
+                                label.setText((j == 0) ? "0"+valor + ":00" : (j == 1) ? "0"+valor + ":15" : (j == 2) ? "0"+valor + ":30" : (j == 3) ? "0"+valor + ":45" : "0"+valor + ":00");
+                            }
+
                             break;
                     }
                     hPane.getChildren().add(label);
