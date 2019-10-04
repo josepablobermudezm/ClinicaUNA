@@ -111,7 +111,7 @@ public class PacienteService {
             
             Paciente = (PacienteDto) request.readEntity(PacienteDto.class);
             
-            return new Respuesta(true, "", "", "Paciente", Paciente);
+            return new Respuesta(true, "Guardado exitosamente", request.toString(), "Paciente", Paciente);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error guardando el Paciente.", ex);
             return new Respuesta(false, "Error guardando el Paciente.", "guardarPaciente " + ex.getMessage());

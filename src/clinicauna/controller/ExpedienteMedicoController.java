@@ -5,8 +5,10 @@
  */
 package clinicauna.controller;
 
+import clinicauna.model.ExpedienteDto;
 import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
+import clinicauna.service.ExpedienteService;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
 import clinicauna.util.Idioma;
@@ -44,21 +46,11 @@ public class ExpedienteMedicoController extends Controller {
     private Idioma idioma;
     private UsuarioDto usuario;
     @FXML
-    private TableView<PacienteDto> table;
+    private TableView<ExpedienteDto> table;
     @FXML
-    private TableColumn<PacienteDto, String> COL_NOMBRE_PAC;
+    private TableColumn<ExpedienteDto, String> COL_NOMBRE_PAC;
     @FXML
-    private TableColumn<PacienteDto, String> COL_PAPELLIDO_PAC;
-    @FXML
-    private TableColumn<PacienteDto, String> COL_SAPELLIDO_PAC;
-    @FXML
-    private TableColumn<PacienteDto, String> COL_CEDULA_PAC;
-    @FXML
-    private TableColumn<PacienteDto, String> COL_CORREO_PAC;
-    @FXML
-    private TableColumn<PacienteDto, String> COL_GENERO_PAC;
-    @FXML
-    private TableColumn<PacienteDto, String> COL_FECHANACIMIENTO_PAC;
+    private TableColumn<ExpedienteDto, String> COL_CEDULA_PAC;
     @FXML
     private Label lblGenero;
     @FXML
@@ -93,9 +85,9 @@ public class ExpedienteMedicoController extends Controller {
     private JFXButton btnEliminar1;
     @FXML
     private JFXButton btnLimpiarRegistro;
-    private PacienteService pacienteService = new PacienteService();
+    private ExpedienteService expedienteService = new ExpedienteService();
     private Mensaje ms = new Mensaje();
-    private ArrayList<PacienteDto> pacientes;
+    private ArrayList<ExpedienteDto> expedientes;
     private Respuesta resp;
     private ObservableList items;
     @FXML
@@ -112,6 +104,18 @@ public class ExpedienteMedicoController extends Controller {
     private JFXTextArea txtOperaciones;
     @FXML
     private JFXTextArea txtAntecedentesPatologicos;
+    private ExpedienteDto expedienteDto;
+    private PacienteDto pacienteDto;
+    @FXML
+    private TableColumn<ExpedienteDto, String> COL_TRATAMIENTO_PAC;
+    @FXML
+    private TableColumn<ExpedienteDto, String> COL_OPERACIONES_PAC;
+    @FXML
+    private TableColumn<ExpedienteDto, String> COL_ALERGIAS_PAC;
+    @FXML
+    private TableColumn<ExpedienteDto, String> COL_HOSPITALIZACIONESPAC;
+    @FXML
+    private TableColumn<ExpedienteDto, String> COL_ANTECEDENTES_PATOLOGICOS_PAC;
     @Override
     public void initialize() {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
@@ -120,20 +124,20 @@ public class ExpedienteMedicoController extends Controller {
             this.Titulo.setText(idioma.getProperty("MedExp") + " " + idioma.getProperty("Expediente"));
         }
 
-        pacienteService = new PacienteService();
+        expedienteService = new ExpedienteService();
         ms = new Mensaje();
-        resp = pacienteService.getPacientes();
-        pacientes = ((ArrayList<PacienteDto>) resp.getResultado("Pacientes"));
+        resp = expedienteService.getExpedientes();
+        expedientes = ((ArrayList<ExpedienteDto>) resp.getResultado("Expedientes"));
 
-        COL_NOMBRE_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre()));
-        COL_PAPELLIDO_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getpApellido()));
-        COL_SAPELLIDO_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getsApellido()));
-        COL_CEDULA_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCedula()));
-        COL_CORREO_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCorreo()));
-        COL_GENERO_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getGenero()));
-        COL_FECHANACIMIENTO_PAC.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFechaNacimiento() != null) ? value.getValue().getFechaNacimiento().toString() : "NULO"));
+        COL_NOMBRE_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getNombre()+" "+value.getValue().getPaciente().getpApellido() + " " + value.getValue().getPaciente().getsApellido()));
+        COL_TRATAMIENTO_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getTratamientos()));
+        COL_OPERACIONES_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getOperaciones()));
+        COL_CEDULA_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getCedula()));
+        COL_ALERGIAS_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAlergias()));
+        COL_HOSPITALIZACIONESPAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getHospitalizaciones()));
+        COL_ANTECEDENTES_PATOLOGICOS_PAC.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getAntecedentesPatologicos())));
 
-        items = FXCollections.observableArrayList(pacientes);
+        items = FXCollections.observableArrayList(expedientes);
         table.setItems(items);
         
     }
@@ -141,7 +145,12 @@ public class ExpedienteMedicoController extends Controller {
     @FXML
     private void DatosPaciente(MouseEvent event) {
         //Cargar los datos que se guardaron en la base de datos, en la vista de paciente
-        
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                expedienteDto = table.getSelectionModel().getSelectedItem();
+                //txtAlergias.setText();
+            }
+        }
         
     }
 

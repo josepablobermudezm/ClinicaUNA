@@ -32,11 +32,13 @@ public class ExpedienteDto {
     @XmlTransient
     String tratamientos;
     @XmlTransient
-    String antecedentesFamiliares;
-    @XmlTransient
     PacienteDto paciente;
 
-    public ExpedienteDto(Long expID, Long expVersion, String antecedentesPatologicos, String hospitalizaciones, String operaciones, String alergias, String tratamientos, String antecedentesFamiliares, PacienteDto paciente) {
+    public ExpedienteDto(){
+        
+    }
+    
+    public ExpedienteDto(Long expID, Long expVersion, String antecedentesPatologicos, String hospitalizaciones, String operaciones, String alergias, String tratamientos,/* String antecedentesFamiliares,*/ PacienteDto paciente) {
         this.expID = expID;
         this.expVersion = expVersion;
         this.antecedentesPatologicos = antecedentesPatologicos;
@@ -44,7 +46,7 @@ public class ExpedienteDto {
         this.operaciones = operaciones;
         this.alergias = alergias;
         this.tratamientos = tratamientos;
-        this.antecedentesFamiliares = antecedentesFamiliares;
+        //this.antecedentesFamiliares = antecedentesFamiliares;
         this.paciente = paciente;
     }
 
@@ -103,7 +105,7 @@ public class ExpedienteDto {
     public void setTratamientos(String tratamientos) {
         this.tratamientos = tratamientos;
     }
-
+/*
     public String getAntecedentesFamiliares() {
         return antecedentesFamiliares;
     }
@@ -111,7 +113,7 @@ public class ExpedienteDto {
     public void setAntecedentesFamiliares(String antecedentesFamiliares) {
         this.antecedentesFamiliares = antecedentesFamiliares;
     }
-
+*/
     public PacienteDto getPaciente() {
         return paciente;
     }

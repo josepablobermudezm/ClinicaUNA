@@ -22,18 +22,18 @@
                   <ImageView fx:id="omg" fitHeight="800.0" fitWidth="1030.0" pickOnBounds="true" preserveRatio="true" />
                   <HBox layoutX="-1.0" layoutY="144.0" prefHeight="280.0" prefWidth="1030.0">
                      <children>
-                        <TableView fx:id="table" onMouseReleased="#DatosPaciente" prefHeight="280.0" prefWidth="950.0">
+                        <TableView fx:id="table" onMouseReleased="#DatosPaciente" prefHeight="280.0" prefWidth="980.0">
                            <columns>
-                              <TableColumn fx:id="COL_NOMBRE_PAC" prefWidth="135.7" text="Nombre" />
-                              <TableColumn fx:id="COL_PAPELLIDO_PAC" prefWidth="135.7" text="Primer Apellidos" />
-                              <TableColumn fx:id="COL_SAPELLIDO_PAC" prefWidth="135.7" text="Segundo Apellido" />
-                              <TableColumn fx:id="COL_CEDULA_PAC" prefWidth="135.7" text="Cedula" />
-                              <TableColumn fx:id="COL_CORREO_PAC" prefWidth="135.7" text="Correo Electrónico" />
-                              <TableColumn fx:id="COL_GENERO_PAC" prefWidth="135.7" text="Género" />
-                              <TableColumn fx:id="COL_FECHANACIMIENTO_PAC" prefWidth="135.7" text="Fecha de Nacimiento" />
+                              <TableColumn fx:id="COL_NOMBRE_PAC" prefWidth="236.0" text="Nombre Completo" />
+                              <TableColumn fx:id="COL_CEDULA_PAC" minWidth="0.0" prefWidth="118.0" text="Cedula" />
+                              <TableColumn fx:id="COL_TRATAMIENTO_PAC" prefWidth="118.0" text="Tratamientos" />
+                              <TableColumn fx:id="COL_OPERACIONES_PAC" prefWidth="118.0" text="Operaciones" />
+                              <TableColumn fx:id="COL_ALERGIAS_PAC" prefWidth="118.0" text="Alergias" />
+                              <TableColumn fx:id="COL_HOSPITALIZACIONESPAC" prefWidth="118.0" text="Hospitalizaciones" />
+                              <TableColumn fx:id="COL_ANTECEDENTES_PATOLOGICOS_PAC" prefWidth="153.0" text="Antecedentes Patologicos" />
                            </columns>
                            <HBox.margin>
-                              <Insets left="40.0" />
+                              <Insets left="25.0" />
                            </HBox.margin>
                         </TableView>
                      </children>

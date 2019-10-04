@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" stylesheets="@newCascadeStyleSheet.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="clinicauna.controller.AgregarExpedienteController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.AgregarExpedienteController">
    <children>
       <Label fx:id="Titulo" layoutX="333.0" layoutY="14.0" text="Agregar Expediente" />
       <HBox layoutX="28.0" layoutY="110.0" prefHeight="29.0" prefWidth="987.0">
@@ -29,32 +28,28 @@
                   <ToggleGroup fx:id="Tratamiento" />
                </toggleGroup>
             </JFXRadioButton>
-            <Label fx:id="lblGenero" text="Hospitalizaciones:">
+            <Label fx:id="lblGenero1" text="Operaciones:">
                <HBox.margin>
                   <Insets left="120.0" />
                </HBox.margin>
             </Label>
-            <JFXRadioButton fx:id="btnSiHospitalizaciones" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
+            <JFXRadioButton fx:id="btnSiOperaciones" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
                <toggleGroup>
-                  <ToggleGroup fx:id="Hospitalizacion" />
+                  <ToggleGroup fx:id="Operaciones" />
                </toggleGroup>
             </JFXRadioButton>
-            <JFXRadioButton fx:id="btnNoHospitalizaciones" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Hospitalizacion">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </JFXRadioButton>
+            <JFXRadioButton fx:id="btnNoOperaciones" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Operaciones" />
             <Label text="Alergias:">
                <HBox.margin>
-                  <Insets left="120.0" />
+                  <Insets left="160.0" />
                </HBox.margin>
             </Label>
-            <JFXRadioButton fx:id="btnSiAlergias" text="Si">
+            <JFXRadioButton fx:id="btnSiAlergias" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
                <toggleGroup>
                   <ToggleGroup fx:id="Alergias" />
                </toggleGroup>
             </JFXRadioButton>
-            <JFXRadioButton fx:id="btnNoAlergias" text="No" toggleGroup="$Alergias">
+            <JFXRadioButton fx:id="btnNoAlergias" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Alergias">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -68,11 +63,7 @@
                   <Insets />
                </HBox.margin>
             </JFXTextArea>
-            <JFXTextArea fx:id="txtHospitalizaciones" prefHeight="56.0" prefWidth="306.0" promptText="Hospitalizaciones...">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </JFXTextArea>
+            <JFXTextArea fx:id="txtOperaciones" prefHeight="56.0" prefWidth="331.0" promptText="Operaciones" />
             <JFXTextArea fx:id="txtAlergias" prefHeight="56.0" prefWidth="297.0" promptText="Alergias..">
                <HBox.margin>
                   <Insets />
@@ -80,22 +71,23 @@
             </JFXTextArea>
          </children>
       </HBox>
-      <HBox layoutX="345.0" layoutY="301.0" prefHeight="72.0" prefWidth="443.0" spacing="20.0">
+      <HBox layoutX="702.0" layoutY="268.0" prefHeight="72.0" prefWidth="363.0" spacing="20.0">
          <padding>
             <Insets left="20.0" right="20.0" top="40.0" />
          </padding>
          <children>
-            <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Guardar" />
+            <JFXButton onAction="#cancela" text="Cancelar" />
             <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
+            <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Guardar" />
          </children>
       </HBox>
-      <Label fx:id="lblGenero1" layoutX="28.0" layoutY="267.0" text="Operaciones:" />
-      <JFXRadioButton fx:id="btnSiOperaciones" layoutX="127.0" layoutY="267.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
+      <Label fx:id="lblGenero" layoutX="28.0" layoutY="291.0" text="Hospitalizaciones:" />
+      <JFXRadioButton fx:id="btnSiHospitalizaciones" layoutX="162.0" layoutY="293.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
          <toggleGroup>
-            <ToggleGroup fx:id="Operaciones" />
+            <ToggleGroup fx:id="Hospitalizacion" />
          </toggleGroup>
       </JFXRadioButton>
-      <JFXRadioButton fx:id="btnNoOperaciones" layoutX="197.0" layoutY="267.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Operaciones" />
-      <JFXTextArea fx:id="txtOperaciones" layoutX="14.0" layoutY="309.0" prefHeight="56.0" prefWidth="331.0" promptText="Operaciones" />
+      <JFXRadioButton fx:id="btnNoHospitalizaciones" layoutX="237.0" layoutY="291.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Hospitalizacion" />
+      <JFXTextArea fx:id="txtAntedecentes" layoutX="356.0" layoutY="284.0" prefHeight="56.0" prefWidth="319.0" promptText="Antecedentes" />
    </children>
 </AnchorPane>
