@@ -156,6 +156,7 @@ public class PacientesController extends Controller {
 
         items = FXCollections.observableArrayList(pacientes);
         table.setItems(items);
+        btnHombre.setSelected(true);
         //FechaDeNacimiento.getValue().
     }
 
@@ -251,23 +252,32 @@ public class PacientesController extends Controller {
                 FlowController.getInstance().goViewInWindowModal("AgregarExpediente", this.getStage(), false);
                 pacienteDto = (PacienteDto) resp.getResultado("Paciente");
                 expedienteDto = (ExpedienteDto) AppContext.getInstance().get("Expediente");
-                expedienteDto.setPaciente(pacienteDto);
-                resp = expedienteService.guardarExpediente(expedienteDto);
-                
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
-                limpiarValores();
-                pacientes = (ArrayList) pacienteService.getPacientes().getResultado("Pacientes");
-                
-                table.getItems().clear();
-                items = FXCollections.observableArrayList(pacientes);
-                table.setItems(items);
-                
+                if (expedienteDto != null) {
+                    expedienteDto.setPaciente(pacienteDto);
+                    resp = expedienteService.guardarExpediente(expedienteDto);
+                    if (!resp.getEstado()) {
+                        pacienteService.eliminarPaciente(pacienteDto.getID());
+                        ms.showModal(Alert.AlertType.ERROR, "Error al guardar el paciente", this.getStage(), "No se ha podido guardar el expediente");
+                    } else {
+                        System.out.println("todo está bien");
+                    }
+                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), "Guardado Exitosamente");
+                    limpiarValores();
+                    pacientes = (ArrayList) pacienteService.getPacientes().getResultado("Pacientes");
+
+                    table.getItems().clear();
+                    items = FXCollections.observableArrayList(pacientes);
+                    table.setItems(items);
+                }
+                else{
+                    ms.showModal(Alert.AlertType.ERROR, "Error al guardar el expediente", this.getStage(), "Hubo un error al momento de guardar el paciente");
+                }
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
             }
-        }else{
-        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Información Incompleta");
-    }
+        } else {
+            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Información Incompleta");
+        }
 
     }
 
@@ -278,7 +288,7 @@ public class PacientesController extends Controller {
     boolean registroCorrecto() {
         return !txtNombre.getText().isEmpty() && !txtCedula.getText().isEmpty()
                 && !txtPApellido.getText().isEmpty() && !txtSApellido.getText().isEmpty()
-                && FechaDeNacimiento.getValue()!=null
+                && FechaDeNacimiento.getValue() != null
                 && !txtCorreo.getText().isEmpty() && (btnHombre.isSelected() || btnMujer.isSelected());
     }
 
@@ -292,9 +302,8 @@ public class PacientesController extends Controller {
         btnHombre.setSelected(false);
         FechaDeNacimiento.setValue(null);
         table.getSelectionModel().clearSelection();
+        AppContext.getInstance().delete("Expediente");
     }
-
-  
 
     @FXML
     private void DatosPaciente(MouseEvent event) {
@@ -316,7 +325,8 @@ public class PacientesController extends Controller {
             }
         }
     }
-    public void Formato(){
+
+    public void Formato() {
         this.txtCedula.setTextFormatter(Formato.getInstance().cedulaFormat(20));
         this.txtCorreo.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
         this.txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(50));

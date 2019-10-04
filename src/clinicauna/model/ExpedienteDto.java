@@ -5,6 +5,7 @@
  */
 package clinicauna.model;
 
+import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,27 +19,33 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class ExpedienteDto {
     @XmlTransient
-    Long expID;
+    private Long expID;
     @XmlTransient
-    Long expVersion;
+    private Long expVersion;
     @XmlTransient
-    String antecedentesPatologicos;
+    private String antecedentesPatologicos;
     @XmlTransient
-    String hospitalizaciones;
+    private String hospitalizaciones;
     @XmlTransient
-    String operaciones;
+    private String operaciones;
     @XmlTransient
-    String alergias;
+    private String alergias;
     @XmlTransient
-    String tratamientos;
+    private String tratamientos;
     @XmlTransient
-    PacienteDto paciente;
-
+    //private String antecedentesFamiliares;
+    private PacienteDto paciente;
+    private ArrayList<AntecedenteDto> antecedentes;
+    @XmlTransient
+    private ArrayList<ExamenDto> examenes;
+    @XmlTransient
+    private ArrayList<ControlDto> controles;
+    
     public ExpedienteDto(){
         
     }
-    
-    public ExpedienteDto(Long expID, Long expVersion, String antecedentesPatologicos, String hospitalizaciones, String operaciones, String alergias, String tratamientos,/* String antecedentesFamiliares,*/ PacienteDto paciente) {
+
+    public ExpedienteDto(Long expID, Long expVersion, String antecedentesPatologicos, String hospitalizaciones, String operaciones, String alergias, String tratamientos, PacienteDto paciente/*, ArrayList<AntecedenteDto> antecedentes, ArrayList<ExamenDto> examenes, ArrayList<ControlDto> controles*/) {
         this.expID = expID;
         this.expVersion = expVersion;
         this.antecedentesPatologicos = antecedentesPatologicos;
@@ -46,8 +53,34 @@ public class ExpedienteDto {
         this.operaciones = operaciones;
         this.alergias = alergias;
         this.tratamientos = tratamientos;
-        //this.antecedentesFamiliares = antecedentesFamiliares;
         this.paciente = paciente;
+        this.antecedentes = antecedentes;
+        this.examenes = examenes;
+        this.controles = controles;
+    }
+
+    public ArrayList<AntecedenteDto> getAntecedentes() {
+        return antecedentes;
+    }
+
+    public void setAntecedentes(ArrayList<AntecedenteDto> antecedentes) {
+        this.antecedentes = antecedentes;
+    }
+
+    public ArrayList<ExamenDto> getExamenes() {
+        return examenes;
+    }
+
+    public void setExamenes(ArrayList<ExamenDto> examenes) {
+        this.examenes = examenes;
+    }
+
+    public ArrayList<ControlDto> getControles() {
+        return controles;
+    }
+
+    public void setControles(ArrayList<ControlDto> controles) {
+        this.controles = controles;
     }
 
     public Long getExpID() {
@@ -105,15 +138,7 @@ public class ExpedienteDto {
     public void setTratamientos(String tratamientos) {
         this.tratamientos = tratamientos;
     }
-/*
-    public String getAntecedentesFamiliares() {
-        return antecedentesFamiliares;
-    }
 
-    public void setAntecedentesFamiliares(String antecedentesFamiliares) {
-        this.antecedentesFamiliares = antecedentesFamiliares;
-    }
-*/
     public PacienteDto getPaciente() {
         return paciente;
     }

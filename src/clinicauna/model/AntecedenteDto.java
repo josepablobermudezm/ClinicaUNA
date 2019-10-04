@@ -8,18 +8,24 @@ package clinicauna.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Carlos Olivares
  */
-@XmlRootElement(name = "ControlDto")
+@XmlRootElement(name = "AntecedenteDto")
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class AntecedenteDto {
+    @XmlTransient
     private Long antId;
+    @XmlTransient
     private String antEnfermedad;
+    @XmlTransient
     private String antParentezco;
+    @XmlTransient
     private Long antVersion;
+    @XmlTransient
     private ExpedienteDto antExpediente;
 
     public AntecedenteDto() {

@@ -5,6 +5,7 @@
  */
 package clinicauna.model;
 
+import clinicauna.util.LocalDateAdapter;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -30,16 +31,25 @@ public class ExamenDto {
     String anotaciones;
     @XmlTransient
     Long exmVersion;
+    @XmlTransient
+    ExpedienteDto expediente;
 
-    public ExamenDto(Long exmID, String nombreExamen, LocalDate fecha, String anotaciones, Long exmVersion) {
+    public ExamenDto(Long exmID, String nombreExamen, LocalDate fecha, String anotaciones, Long exmVersion, ExpedienteDto expediente) {
         this.exmID = exmID;
         this.nombreExamen = nombreExamen;
         this.fecha = fecha;
         this.anotaciones = anotaciones;
         this.exmVersion = exmVersion;
+        this.expediente = expediente;
     }
 
-    
+    public ExpedienteDto getExpediente() {
+        return expediente;
+    }
+
+    public void setExpediente(ExpedienteDto expediente) {
+        this.expediente = expediente;
+    }
 
     public Long getExmID() {
         return exmID;
@@ -56,11 +66,11 @@ public class ExamenDto {
     public void setNombreExamen(String nombreExamen) {
         this.nombreExamen = nombreExamen;
     }
-
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getFecha() {
         return fecha;
     }
-
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
@@ -80,6 +90,4 @@ public class ExamenDto {
     public void setExmVersion(Long exmVersion) {
         this.exmVersion = exmVersion;
     }
-    
-    
 }

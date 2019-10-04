@@ -41,10 +41,6 @@ public class AgregarExpedienteController extends Controller {
     @FXML
     private Label lblGenero11;
     @FXML
-    private ToggleGroup Tratamientos;
-    @FXML
-    private ToggleGroup Tratamiento;
-    @FXML
     private Label lblGenero;
     @FXML
     private JFXRadioButton btnSiHospitalizaciones;
@@ -87,9 +83,16 @@ public class AgregarExpedienteController extends Controller {
     @FXML
     private JFXTextArea txtAntedecentes;
     private Respuesta resp = new Respuesta();
-
+    @FXML
+    private ToggleGroup TratamientosToggle;
+    
+    
     @FXML
     private void limpiarRegistro(ActionEvent event) {
+        Limpiar();
+    }
+    
+    private void Limpiar(){
         this.txtAlergias.clear();
         this.txtOperaciones.clear();
         this.txtTratamientos.clear();
@@ -110,12 +113,16 @@ public class AgregarExpedienteController extends Controller {
         paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
         ms = new Mensaje();
 
-
+        btnNoAlergias.setSelected(true);
+        btnNoHospitalizaciones.setSelected(true);
+        btnNoOperaciones.setSelected(true);
+        btnNoTratamientos.setSelected(true);
     }
 
     @FXML
     private void guardar(ActionEvent event) {
         if(registroCorrecto()){
+            try{
             String alergias = txtAlergias.getText();
             String operaciones = txtOperaciones.getText();
             String tratamientos = txtTratamientos.getText();
@@ -123,13 +130,14 @@ public class AgregarExpedienteController extends Controller {
             String antecedente = txtAntedecentes.getText();
             Long version = new Long(1);
             expedienteDto = new ExpedienteDto(null, version,antecedente, hospitalizacion, operaciones, alergias, tratamientos, null);
-            System.out.println(expedienteDto.getAlergias());
-            System.out.println(expedienteDto.getHospitalizaciones());
-            System.out.println(expedienteDto.getTratamientos());
             
             AppContext.getInstance().set("Expediente", expedienteDto);
             //resp = expedienteService.guardarExpediente(expedienteDto);
+            Limpiar();
             this.getStage().close();
+            }catch(Exception e){
+                ms.showModal(Alert.AlertType.ERROR, "Información de guardado", this.getStage(), "Error al guardar el expediente");
+            }
         }else{
             ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Existen datos en el registro sin completar.");
         }

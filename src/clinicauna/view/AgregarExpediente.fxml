@@ -17,16 +17,13 @@
             <Label fx:id="lblGenero11" text="Tratamientos" />
             <JFXRadioButton fx:id="btnSiTratamientos" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
                <toggleGroup>
-                  <ToggleGroup fx:id="Tratamientos" />
+                  <ToggleGroup fx:id="TratamientosToggle" />
                </toggleGroup>
             </JFXRadioButton>
-            <JFXRadioButton fx:id="btnNoTratamientos" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No">
+            <JFXRadioButton fx:id="btnNoTratamientos" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$TratamientosToggle">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
-               <toggleGroup>
-                  <ToggleGroup fx:id="Tratamiento" />
-               </toggleGroup>
             </JFXRadioButton>
             <Label fx:id="lblGenero1" text="Operaciones:">
                <HBox.margin>
@@ -58,13 +55,13 @@
       </HBox>
       <HBox layoutX="14.0" layoutY="184.0" prefHeight="56.0" prefWidth="993.0" spacing="50.0">
          <children>
-            <JFXTextArea fx:id="txtTratamientos" prefHeight="56.0" prefWidth="301.0" promptText="Tratamientos...">
+            <JFXTextArea fx:id="txtTratamientos" labelFloat="true" prefHeight="56.0" prefWidth="301.0" promptText="Tratamientos...">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </JFXTextArea>
-            <JFXTextArea fx:id="txtOperaciones" prefHeight="56.0" prefWidth="331.0" promptText="Operaciones" />
-            <JFXTextArea fx:id="txtAlergias" prefHeight="56.0" prefWidth="297.0" promptText="Alergias..">
+            <JFXTextArea fx:id="txtOperaciones" labelFloat="true" prefHeight="56.0" prefWidth="331.0" promptText="Operaciones" />
+            <JFXTextArea fx:id="txtAlergias" labelFloat="true" prefHeight="56.0" prefWidth="297.0" promptText="Alergias..">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -88,6 +85,6 @@
          </toggleGroup>
       </JFXRadioButton>
       <JFXRadioButton fx:id="btnNoHospitalizaciones" layoutX="237.0" layoutY="291.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Hospitalizacion" />
-      <JFXTextArea fx:id="txtAntedecentes" layoutX="356.0" layoutY="284.0" prefHeight="56.0" prefWidth="319.0" promptText="Antecedentes" />
+      <JFXTextArea fx:id="txtAntedecentes" labelFloat="true" layoutX="356.0" layoutY="284.0" prefHeight="56.0" prefWidth="319.0" promptText="Antecedentes" />
    </children>
 </AnchorPane>

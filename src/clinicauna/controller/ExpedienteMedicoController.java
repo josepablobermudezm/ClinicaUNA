@@ -127,8 +127,9 @@ public class ExpedienteMedicoController extends Controller {
         expedienteService = new ExpedienteService();
         ms = new Mensaje();
         resp = expedienteService.getExpedientes();
-        expedientes = ((ArrayList<ExpedienteDto>) resp.getResultado("Expedientes"));
-
+        System.out.println(resp.getResultado("Expedientes"));
+        expedientes =  (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
+        
         COL_NOMBRE_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getNombre()+" "+value.getValue().getPaciente().getpApellido() + " " + value.getValue().getPaciente().getsApellido()));
         COL_TRATAMIENTO_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getTratamientos()));
         COL_OPERACIONES_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getOperaciones()));

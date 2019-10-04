@@ -5,6 +5,7 @@
  */
 package clinicauna.model;
 
+import clinicauna.util.LocalDateAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -21,205 +22,197 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name = "ControlDto")
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class ControlDto {
+    @XmlTransient
+    private Long cntId;
+    @XmlTransient
+    private LocalDate cntFecha;
+    @XmlTransient
+    private String cntHora;
+    @XmlTransient
+    private Double cntPresion;
+    @XmlTransient
+    private Double cntFrecuenciaCardiaca;
+    @XmlTransient
+    private Double cntPeso;
+    @XmlTransient
+    private Double cntTalla;
+    @XmlTransient
+    private Double cntTemperatura;
+    @XmlTransient
+    private Double cntImc;
+    @XmlTransient
+    private String cntAnotacionEnfermeria;
+    @XmlTransient
+    private String cntRazonConsulta;
+    @XmlTransient
+    private String cntPlanAtencion;
+    @XmlTransient
+    private String cntObservaciones;
+    @XmlTransient
+    private String cntExamenFisico;
+    @XmlTransient
+    private String cntTratamiento;
+    @XmlTransient
+    private Long cntVersion;
+    @XmlTransient
+    private ExpedienteDto cntExpediente;
+
+    public ControlDto(Long cntId, LocalDate cntFecha, String cntHora, Double cntPresion, Double cntFrecuenciaCardiaca, Double cntPeso, Double cntTalla, Double cntTemperatura, Double cntImc, String cntAnotacionEnfermeria, String cntRazonConsulta, String cntPlanAtencion, String cntObservaciones, String cntExamenFisico, String cntTratamiento, Long cntVersion, ExpedienteDto cntExpediente) {
+        this.cntId = cntId;
+        this.cntFecha = cntFecha;
+        this.cntHora = cntHora;
+        this.cntPresion = cntPresion;
+        this.cntFrecuenciaCardiaca = cntFrecuenciaCardiaca;
+        this.cntPeso = cntPeso;
+        this.cntTalla = cntTalla;
+        this.cntTemperatura = cntTemperatura;
+        this.cntImc = cntImc;
+        this.cntAnotacionEnfermeria = cntAnotacionEnfermeria;
+        this.cntRazonConsulta = cntRazonConsulta;
+        this.cntPlanAtencion = cntPlanAtencion;
+        this.cntObservaciones = cntObservaciones;
+        this.cntExamenFisico = cntExamenFisico;
+        this.cntTratamiento = cntTratamiento;
+        this.cntVersion = cntVersion;
+        this.cntExpediente = cntExpediente;
+    }
     
-    @XmlTransient
-    Long ctrPacID;
-    @XmlTransient
-    Long ctrPacVersion;
-    @XmlTransient
-    LocalDate fecha;
-    @XmlTransient
-    String hora;
-    @XmlTransient
-    float presion;
-    @XmlTransient
-    float frecuenciaCardiaca;
-    @XmlTransient
-    float peso;
-    @XmlTransient
-    float talla;
-    @XmlTransient
-    float temperatura;
-    @XmlTransient
-    float imc;
-    @XmlTransient
-    String anotacionEnfermeria;
-    @XmlTransient
-    String razonConsulta;
-    @XmlTransient
-    String PlanAtencion;
-    @XmlTransient
-    String Observaciones;
-    @XmlTransient
-    String examenFisico;
-    @XmlTransient
-    String tratamiento;
-    @XmlTransient
-    PacienteDto paciente;
-    @XmlTransient
-    ExamenDto examen;
 
-    public ControlDto(Long ctrPacID, Long ctrPacVersion, LocalDate fecha, String hora, float presion, float frecuenciaCardiaca, float peso, float talla, float temperatura, float imc, String anotacionEnfermeria, String razonConsulta, String PlanAtencion, String Observaciones, String examenFisico, String tratamiento, PacienteDto paciente, ExamenDto examen) {
-        this.ctrPacID = ctrPacID;
-        this.ctrPacVersion = ctrPacVersion;
-        this.fecha = fecha;
-        this.hora = hora;
-        this.presion = presion;
-        this.frecuenciaCardiaca = frecuenciaCardiaca;
-        this.peso = peso;
-        this.talla = talla;
-        this.temperatura = temperatura;
-        this.imc = imc;
-        this.anotacionEnfermeria = anotacionEnfermeria;
-        this.razonConsulta = razonConsulta;
-        this.PlanAtencion = PlanAtencion;
-        this.Observaciones = Observaciones;
-        this.examenFisico = examenFisico;
-        this.tratamiento = tratamiento;
-        this.paciente = paciente;
-        this.examen = examen;
-    }
-    public Long getCtrPacID() {
-        return ctrPacID;
+    public Long getCntId() {
+        return cntId;
     }
 
-    public void setCtrPacID(Long ctrPacID) {
-        this.ctrPacID = ctrPacID;
+    public void setCntId(Long cntId) {
+        this.cntId = cntId;
+    }
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public LocalDate getCntFecha() {
+        return cntFecha;
+    }
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public void setCntFecha(LocalDate cntFecha) {
+        this.cntFecha = cntFecha;
     }
 
-    public Long getCtrPacVersion() {
-        return ctrPacVersion;
+    public String getCntHora() {
+        return cntHora;
     }
 
-    public void setCtrPacVersion(Long ctrPacVersion) {
-        this.ctrPacVersion = ctrPacVersion;
+    public void setCntHora(String cntHora) {
+        this.cntHora = cntHora;
     }
 
-    public LocalDate getFecha() {
-        return fecha;
+    public Double getCntPresion() {
+        return cntPresion;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
+    public void setCntPresion(Double cntPresion) {
+        this.cntPresion = cntPresion;
     }
 
-    public String getHora() {
-        return hora;
+    public Double getCntFrecuenciaCardiaca() {
+        return cntFrecuenciaCardiaca;
     }
 
-    public void setHora(String hora) {
-        this.hora = hora;
+    public void setCntFrecuenciaCardiaca(Double cntFrecuenciaCardiaca) {
+        this.cntFrecuenciaCardiaca = cntFrecuenciaCardiaca;
     }
 
-    public float getPresion() {
-        return presion;
+    public Double getCntPeso() {
+        return cntPeso;
     }
 
-    public void setPresion(float presion) {
-        this.presion = presion;
+    public void setCntPeso(Double cntPeso) {
+        this.cntPeso = cntPeso;
     }
 
-    public float getFrecuenciaCardiaca() {
-        return frecuenciaCardiaca;
+    public Double getCntTalla() {
+        return cntTalla;
     }
 
-    public void setFrecuenciaCardiaca(float frecuenciaCardiaca) {
-        this.frecuenciaCardiaca = frecuenciaCardiaca;
+    public void setCntTalla(Double cntTalla) {
+        this.cntTalla = cntTalla;
     }
 
-    public float getPeso() {
-        return peso;
+    public Double getCntTemperatura() {
+        return cntTemperatura;
     }
 
-    public void setPeso(float peso) {
-        this.peso = peso;
+    public void setCntTemperatura(Double cntTemperatura) {
+        this.cntTemperatura = cntTemperatura;
     }
 
-    public float getTalla() {
-        return talla;
+    public Double getCntImc() {
+        return cntImc;
     }
 
-    public void setTalla(float talla) {
-        this.talla = talla;
+    public void setCntImc(Double cntImc) {
+        this.cntImc = cntImc;
     }
 
-    public float getTemperatura() {
-        return temperatura;
+    public String getCntAnotacionEnfermeria() {
+        return cntAnotacionEnfermeria;
     }
 
-    public void setTemperatura(float temperatura) {
-        this.temperatura = temperatura;
+    public void setCntAnotacionEnfermeria(String cntAnotacionEnfermeria) {
+        this.cntAnotacionEnfermeria = cntAnotacionEnfermeria;
     }
 
-    public float getImc() {
-        return imc;
+    public String getCntRazonConsulta() {
+        return cntRazonConsulta;
     }
 
-    public void setImc(float imc) {
-        this.imc = imc;
+    public void setCntRazonConsulta(String cntRazonConsulta) {
+        this.cntRazonConsulta = cntRazonConsulta;
     }
 
-    public String getAnotacionEnfermeria() {
-        return anotacionEnfermeria;
+    public String getCntPlanAtencion() {
+        return cntPlanAtencion;
     }
 
-    public void setAnotacionEnfermeria(String anotacionEnfermeria) {
-        this.anotacionEnfermeria = anotacionEnfermeria;
+    public void setCntPlanAtencion(String cntPlanAtencion) {
+        this.cntPlanAtencion = cntPlanAtencion;
     }
 
-    public String getRazonConsulta() {
-        return razonConsulta;
+    public String getCntObservaciones() {
+        return cntObservaciones;
     }
 
-    public void setRazonConsulta(String razonConsulta) {
-        this.razonConsulta = razonConsulta;
+    public void setCntObservaciones(String cntObservaciones) {
+        this.cntObservaciones = cntObservaciones;
     }
 
-    public String getPlanAtencion() {
-        return PlanAtencion;
+    public String getCntExamenFisico() {
+        return cntExamenFisico;
     }
 
-    public void setPlanAtencion(String PlanAtencion) {
-        this.PlanAtencion = PlanAtencion;
+    public void setCntExamenFisico(String cntExamenFisico) {
+        this.cntExamenFisico = cntExamenFisico;
     }
 
-    public String getObservaciones() {
-        return Observaciones;
+    public String getCntTratamiento() {
+        return cntTratamiento;
     }
 
-    public void setObservaciones(String Observaciones) {
-        this.Observaciones = Observaciones;
+    public void setCntTratamiento(String cntTratamiento) {
+        this.cntTratamiento = cntTratamiento;
     }
 
-    public String getExamenFisico() {
-        return examenFisico;
+    public Long getCntVersion() {
+        return cntVersion;
     }
 
-    public void setExamenFisico(String examenFisico) {
-        this.examenFisico = examenFisico;
+    public void setCntVersion(Long cntVersion) {
+        this.cntVersion = cntVersion;
     }
 
-    public String getTratamiento() {
-        return tratamiento;
+    public ExpedienteDto getCntExpediente() {
+        return cntExpediente;
     }
 
-    public void setTratamiento(String tratamiento) {
-        this.tratamiento = tratamiento;
+    public void setCntExpediente(ExpedienteDto cntExpediente) {
+        this.cntExpediente = cntExpediente;
     }
+   
 
-    public PacienteDto getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(PacienteDto paciente) {
-        this.paciente = paciente;
-    }
-
-    public ExamenDto getExamen() {
-        return examen;
-    }
-
-    public void setExamen(ExamenDto examen) {
-        this.examen = examen;
-    }
 }
