@@ -33,7 +33,8 @@ public class ExpedienteDto {
     @XmlTransient
     private String tratamientos;
     @XmlTransient
-    //private String antecedentesFamiliares;
+    private String antecedentesFamiliares;
+    @XmlTransient
     private PacienteDto paciente;
     /*private ArrayList<AntecedenteDto> antecedentes;
     @XmlTransient

@@ -116,6 +116,7 @@ public class ExpedienteMedicoController extends Controller {
     private TableColumn<ExpedienteDto, String> COL_HOSPITALIZACIONESPAC;
     @FXML
     private TableColumn<ExpedienteDto, String> COL_ANTECEDENTES_PATOLOGICOS_PAC;
+
     @Override
     public void initialize() {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
@@ -128,9 +129,9 @@ public class ExpedienteMedicoController extends Controller {
         ms = new Mensaje();
         resp = expedienteService.getExpedientes();
         System.out.println(resp.getResultado("Expedientes"));
-        expedientes =  (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
-        
-        COL_NOMBRE_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getNombre()+" "+value.getValue().getPaciente().getpApellido() + " " + value.getValue().getPaciente().getsApellido()));
+        expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
+
+        COL_NOMBRE_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getNombre() + " " + value.getValue().getPaciente().getpApellido() + " " + value.getValue().getPaciente().getsApellido()));
         COL_TRATAMIENTO_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getTratamientos()));
         COL_OPERACIONES_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getOperaciones()));
         COL_CEDULA_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getCedula()));
@@ -140,7 +141,7 @@ public class ExpedienteMedicoController extends Controller {
 
         items = FXCollections.observableArrayList(expedientes);
         table.setItems(items);
-        
+
     }
 
     @FXML
@@ -149,14 +150,29 @@ public class ExpedienteMedicoController extends Controller {
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 expedienteDto = table.getSelectionModel().getSelectedItem();
-                //txtAlergias.setText();
+                txtAlergias.setText((expedienteDto.getAlergias()!=null)?expedienteDto.getAlergias():"");
+                txtAntecedentesPatologicos.setText((expedienteDto.getAntecedentesPatologicos()!=null)?expedienteDto.getAntecedentesPatologicos():"");
+                txtHospitalizaciones.setText((expedienteDto.getHospitalizaciones()!=null)?expedienteDto.getHospitalizaciones():"");
+                txtOperaciones.setText((expedienteDto.getOperaciones()!=null)?expedienteDto.getOperaciones():"");
+                txtTratamientos.setText((expedienteDto.getTratamientos()!=null)?expedienteDto.getTratamientos():"");
+                
+                
             }
         }
-        
+
     }
 
     @FXML
     private void editar(ActionEvent event) {
+
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+//                if (registroCorrecto()) {
+//                
+//                }
+            }
+        }
+
     }
 
     @FXML
