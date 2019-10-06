@@ -111,7 +111,7 @@ public class ExpedienteService {
 
             Expediente = (ExpedienteDto) request.readEntity(ExpedienteDto.class);
             
-            return new Respuesta(true, "", "", "Expediente", Expediente);
+            return new Respuesta(true, "Guardado exitosamente", request.toString(), "Expediente", Expediente);
         } catch (Exception ex) {
             Logger.getLogger(ExpedienteService.class.getName()).log(Level.SEVERE, "Error guardando el Expediente.", ex);
             return new Respuesta(false, "Error guardando el Expediente.", "guardarExpediente " + ex.getMessage());

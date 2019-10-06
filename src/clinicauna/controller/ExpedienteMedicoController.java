@@ -10,6 +10,7 @@ import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.ExpedienteService;
 import clinicauna.util.AppContext;
+import clinicauna.util.FlowController;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -22,6 +23,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -59,8 +61,6 @@ public class ExpedienteMedicoController extends Controller {
     @FXML
     private ToggleGroup Tratamientos;
     @FXML
-    private ToggleGroup Tratamiento;
-    @FXML
     private JFXRadioButton btnSiHospitalizaciones;
     @FXML
     private JFXRadioButton btnNoHospitalizaciones;
@@ -94,8 +94,6 @@ public class ExpedienteMedicoController extends Controller {
     @FXML
     private JFXTextArea txtTratamientos;
     @FXML
-    private JFXTextArea txtHospitalizaciones;
-    @FXML
     private JFXTextArea txtAlergias;
     @FXML
     private JFXTextArea txtOperaciones;
@@ -113,6 +111,9 @@ public class ExpedienteMedicoController extends Controller {
     private TableColumn<ExpedienteDto, String> COL_HOSPITALIZACIONESPAC;
     @FXML
     private TableColumn<ExpedienteDto, String> COL_ANTECEDENTES_PATOLOGICOS_PAC;
+    @FXML
+    private JFXButton btnAntecedentes;
+
     @Override
     public void initialize() {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
@@ -125,7 +126,6 @@ public class ExpedienteMedicoController extends Controller {
         ms = new Mensaje();
         resp = expedienteService.getExpedientes();
         expedientes =  (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
-        
         COL_NOMBRE_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getNombre()+" "+value.getValue().getPaciente().getpApellido() + " " + value.getValue().getPaciente().getsApellido()));
         COL_TRATAMIENTO_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getTratamientos()));
         COL_OPERACIONES_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getOperaciones()));
@@ -136,7 +136,7 @@ public class ExpedienteMedicoController extends Controller {
 
         items = FXCollections.observableArrayList(expedientes);
         table.setItems(items);
-        
+
     }
 
     @FXML
@@ -144,23 +144,161 @@ public class ExpedienteMedicoController extends Controller {
         //Cargar los datos que se guardaron en la base de datos, en la vista de paciente
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
+
                 expedienteDto = table.getSelectionModel().getSelectedItem();
-                //txtAlergias.setText();
+                txtAlergias.setText((expedienteDto.getAlergias() != null) ? expedienteDto.getAlergias() : "");
+                txtAntecedentesPatologicos.setText((expedienteDto.getAntecedentesPatologicos() != null) ? expedienteDto.getAntecedentesPatologicos() : "");
+                txtOperaciones.setText((expedienteDto.getOperaciones() != null) ? expedienteDto.getOperaciones() : "");
+                txtTratamientos.setText((expedienteDto.getTratamientos() != null) ? expedienteDto.getTratamientos() : "");
+                if (expedienteDto.getAlergias().equals(" ")) {
+                    btnNoAlergias.setSelected(true);
+                } else {
+                    btnSiAlergias.setSelected(true);
+                }
+                if (expedienteDto.getOperaciones().equals(" ")) {
+                    btnNoOperaciones.setSelected(true);
+                } else {
+                    btnSiOperaciones.setSelected(true);
+                }
+                if (expedienteDto.getHospitalizaciones().equals(" ")) {
+                    btnNoHospitalizaciones.setSelected(true);
+                } else {
+                    btnSiHospitalizaciones.setSelected(true);
+                }
+                if (expedienteDto.getTratamientos().equals(" ")) {
+                    btnNoTratamientos.setSelected(true);
+                } else {
+                    btnSiTratamientos.setSelected(true);
+                }
             }
         }
-        
     }
 
     @FXML
     private void editar(ActionEvent event) {
+
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                if (registroCorrecto()) {
+                    String antecedentes = txtAntecedentesPatologicos.getText();
+                    String tratamientos = txtTratamientos.getText();
+                    String hospitalizaciones = (btnSiHospitalizaciones.isSelected()?"S":"N");
+                    System.out.println(hospitalizaciones);
+                    String alergias = txtAlergias.getText();
+                    String operaciones = txtOperaciones.getText();
+                    Long id = expedienteDto.getExpID();
+                    Long version = expedienteDto.getExpVersion() + 1;
+                    PacienteDto paciente = expedienteDto.getPaciente();
+                    if (btnNoAlergias.isSelected()) {
+                        alergias = " ";
+                    }
+                    if (btnNoHospitalizaciones.isSelected()) {
+                        hospitalizaciones = " ";
+                        System.out.println("entre");
+                    }
+                    if (btnNoOperaciones.isSelected()) {
+                        operaciones = " ";
+                    }
+                    if (btnNoTratamientos.isSelected()) {
+                        tratamientos = " ";
+                    }
+                    expedienteDto = new ExpedienteDto(id, version, antecedentes, hospitalizaciones, operaciones, alergias, tratamientos, paciente);
+                    try {
+                        resp = expedienteService.guardarExpediente(expedienteDto);
+                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
+                        Limpiar();
+                        expedientes = (ArrayList) expedienteService.getExpedientes().getResultado("Expedientes");
+                        table.getItems().clear();
+                        items = FXCollections.observableArrayList(expedientes);
+                        table.setItems(items);
+                    } catch (Exception e) {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el usuario.");
+                    }
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Existen datos en el registro sin completar.");
+                }
+            }
+        }
+
     }
 
     @FXML
     private void eliminar(ActionEvent event) {
+
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                expedienteService.eliminarExpediente(table.getSelectionModel().getSelectedItem().getExpID());
+                ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), "Datos Eliminados correctamente");
+                Limpiar();
+                expedientes = (ArrayList) expedienteService.getExpedientes().getResultado("Expedientes");
+                table.getItems().clear();
+                items = FXCollections.observableArrayList(expedientes);
+                table.setItems(items);
+            }
+        }
     }
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
+        Limpiar();
+    }
+
+    private void Limpiar() {
+        this.txtAlergias.clear();
+        this.txtOperaciones.clear();
+        this.txtTratamientos.clear();
+        this.txtAntecedentesPatologicos.clear();
+        this.btnNoAlergias.setSelected(true);
+        this.btnNoHospitalizaciones.setSelected(true);
+        this.btnNoOperaciones.setSelected(true);
+        this.btnNoTratamientos.setSelected(true);
+        this.btnSiAlergias.setSelected(false);
+        this.btnSiHospitalizaciones.setSelected(false);
+        this.btnSiOperaciones.setSelected(false);
+        this.btnSiTratamientos.setSelected(false);
+    }
+
+    boolean registroCorrecto() {
+        boolean Value1 = true;
+        boolean Value2 = true;
+        boolean Value3 = true;
+        boolean Value4 = true;
+        //va a evuluar que estén seleccionadas todos los radiobutton y además que si un botón está en sí, que tenga que escribir una descripción
+        if ((btnNoAlergias.isSelected() || btnSiAlergias.isSelected())
+                && (btnNoHospitalizaciones.isSelected() || btnSiHospitalizaciones.isSelected())
+                && (btnNoOperaciones.isSelected() || btnSiOperaciones.isSelected())
+                && (btnNoTratamientos.isSelected() || btnSiTratamientos.isSelected())) {
+            if (btnSiAlergias.isSelected()) {
+                Value1 = false;
+                Value1 = !txtAlergias.getText().equals(" ");
+            }
+            if (btnSiOperaciones.isSelected()) {
+                Value2 = false;
+                Value2 = !txtOperaciones.getText().equals(" ");
+            }
+            if (btnSiTratamientos.isSelected()) {
+                Value3 = false;
+                Value3 = !txtTratamientos.getText().equals(" ");
+            }
+        }
+        return (btnNoAlergias.isSelected() || btnSiAlergias.isSelected())
+                && (btnNoHospitalizaciones.isSelected() || btnSiHospitalizaciones.isSelected())
+                && (btnNoOperaciones.isSelected() || btnSiOperaciones.isSelected())
+                && (btnNoTratamientos.isSelected() || btnSiTratamientos.isSelected())
+                && Value1 && Value2 && Value3 && Value4 && !txtAntecedentesPatologicos.getText().isEmpty();
+    }
+
+    @FXML
+    private void Antecedentes(ActionEvent event) {
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                FlowController.getInstance().goViewInWindowModal("Antecedentes", this.getStage(), false);
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+            }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+        }
     }
 
 }

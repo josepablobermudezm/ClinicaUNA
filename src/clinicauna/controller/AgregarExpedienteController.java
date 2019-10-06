@@ -96,6 +96,7 @@ public class AgregarExpedienteController extends Controller {
         this.txtAlergias.clear();
         this.txtOperaciones.clear();
         this.txtTratamientos.clear();
+        this.txtAntedecentes.clear();
         this.btnNoAlergias.setSelected(false);
         this.btnNoHospitalizaciones.setSelected(false);
         this.btnNoOperaciones.setSelected(false);
@@ -128,6 +129,18 @@ public class AgregarExpedienteController extends Controller {
             String tratamientos = txtTratamientos.getText();
             String hospitalizacion = (btnSiHospitalizaciones.isSelected()?"S":"N");
             String antecedente = txtAntedecentes.getText();
+            if(alergias.isEmpty()){
+                alergias = " ";
+            }
+            if(operaciones.isEmpty()){
+                operaciones = " ";
+            }
+            if(tratamientos.isEmpty()){
+                tratamientos = " ";
+            }
+            if(hospitalizacion.isEmpty()){
+                hospitalizacion = " ";
+            }
             Long version = new Long(1);
             expedienteDto = new ExpedienteDto(null, version,antecedente, hospitalizacion, operaciones, alergias, tratamientos, null);
             
