@@ -33,14 +33,13 @@ public class ExpedienteDto {
     @XmlTransient
     private String tratamientos;
     @XmlTransient
-    //private String antecedentesFamiliares;
     private PacienteDto paciente;
     @XmlTransient
-    private ArrayList<AntecedenteDto> antecedentes;
+    public ArrayList<AntecedenteDto> antecedentes;
     @XmlTransient
-    private ArrayList<ExamenDto> examenes;
+    public ArrayList<ExamenDto> examenes;
     @XmlTransient
-    private ArrayList<ControlDto> controles;
+    public ArrayList<ControlDto> controles;
     
     public ExpedienteDto(){
         
@@ -55,12 +54,9 @@ public class ExpedienteDto {
         this.alergias = alergias;
         this.tratamientos = tratamientos;
         this.paciente = paciente;
-        /*this.antecedentes = antecedentes;
-        this.examenes = examenes;
-        this.controles = controles;*/
     }
-
-    /*public ArrayList<AntecedenteDto> getAntecedentes() {
+/*
+    public ArrayList<AntecedenteDto> getAntecedentes() {
         return antecedentes;
     }
 
@@ -82,8 +78,8 @@ public class ExpedienteDto {
 
     public void setControles(ArrayList<ControlDto> controles) {
         this.controles = controles;
-    }
-*/
+    }*/
+
     public Long getExpID() {
         return expID;
     }
@@ -147,5 +143,4 @@ public class ExpedienteDto {
     public void setPaciente(PacienteDto paciente) {
         this.paciente = paciente;
     }
-    //HIHIHIH
 }

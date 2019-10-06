@@ -9,16 +9,13 @@ import clinicauna.model.ExpedienteDto;
 import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.ExpedienteService;
-import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTextField;
 import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -127,7 +124,6 @@ public class ExpedienteMedicoController extends Controller {
         expedienteService = new ExpedienteService();
         ms = new Mensaje();
         resp = expedienteService.getExpedientes();
-        System.out.println(resp.getResultado("Expedientes"));
         expedientes =  (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
         
         COL_NOMBRE_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getNombre()+" "+value.getValue().getPaciente().getpApellido() + " " + value.getValue().getPaciente().getsApellido()));

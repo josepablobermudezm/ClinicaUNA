@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.PacientesController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.PacientesController">
    <center>
       <AnchorPane stylesheets="@newCascadeStyleSheet.css">
          <children>
@@ -94,7 +94,7 @@
                               <ToggleGroup fx:id="genero" />
                            </toggleGroup>
                         </JFXRadioButton>
-                        <JFXDatePicker fx:id="FechaDeNacimiento" defaultColor="#042f86" prefHeight="29.0" prefWidth="260.0" GridPane.columnIndex="5" />
+                        <JFXDatePicker fx:id="FechaDeNacimiento" defaultColor="#042f86" prefHeight="29.0" prefWidth="260.0" promptText="Fecha de Nacimiento" GridPane.columnIndex="5" />
                         <JFXRadioButton fx:id="btnHombre" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Hombre" toggleGroup="$genero" GridPane.columnIndex="3">
                            <GridPane.margin>
                               <Insets left="45.0" />
