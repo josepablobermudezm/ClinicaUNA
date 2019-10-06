@@ -104,6 +104,8 @@ public class PacientesController extends Controller {
     private Label lblGenero;
     private ExpedienteDto expedienteDto;
     private ExpedienteService expedienteService;
+    @FXML
+    private JFXButton btnAntecedentes;
 
     @Override
     public void initialize() {
@@ -162,7 +164,6 @@ public class PacientesController extends Controller {
 
     @FXML
     private void editar(ActionEvent event) {
-
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 if (registroCorrecto()) {
@@ -195,8 +196,10 @@ public class PacientesController extends Controller {
                             + "verifica que todos los datos esten llenos.");
                 }
             } else {
-                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a editar");
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
 
     }
@@ -235,7 +238,6 @@ public class PacientesController extends Controller {
     private void agregar(ActionEvent event) {
 
         if (registroCorrecto()) {
-
             String nombre = txtNombre.getText();
             String papellido = txtPApellido.getText();
             String sapellido = txtSApellido.getText();
@@ -258,8 +260,6 @@ public class PacientesController extends Controller {
                     if (!resp.getEstado()) {
                         pacienteService.eliminarPaciente(pacienteDto.getID());
                         ms.showModal(Alert.AlertType.ERROR, "Error al guardar el paciente", this.getStage(), "No se ha podido guardar el expediente");
-                    } else {
-                        System.out.println("todo está bien");
                     }
                     ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), "Guardado Exitosamente");
                     limpiarValores();
@@ -268,8 +268,7 @@ public class PacientesController extends Controller {
                     table.getItems().clear();
                     items = FXCollections.observableArrayList(pacientes);
                     table.setItems(items);
-                }
-                else{
+                } else {
                     ms.showModal(Alert.AlertType.ERROR, "Error al guardar el expediente", this.getStage(), "Hubo un error al momento de guardar el paciente");
                 }
             } catch (Exception e) {

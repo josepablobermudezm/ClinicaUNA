@@ -11,6 +11,7 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.service.ExpedienteService;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
+import clinicauna.util.FlowController;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -63,8 +64,6 @@ public class ExpedienteMedicoController extends Controller {
     @FXML
     private ToggleGroup Tratamientos;
     @FXML
-    private ToggleGroup Tratamiento;
-    @FXML
     private JFXRadioButton btnSiHospitalizaciones;
     @FXML
     private JFXRadioButton btnNoHospitalizaciones;
@@ -98,8 +97,6 @@ public class ExpedienteMedicoController extends Controller {
     @FXML
     private JFXTextArea txtTratamientos;
     @FXML
-    private JFXTextArea txtHospitalizaciones;
-    @FXML
     private JFXTextArea txtAlergias;
     @FXML
     private JFXTextArea txtOperaciones;
@@ -117,6 +114,8 @@ public class ExpedienteMedicoController extends Controller {
     private TableColumn<ExpedienteDto, String> COL_HOSPITALIZACIONESPAC;
     @FXML
     private TableColumn<ExpedienteDto, String> COL_ANTECEDENTES_PATOLOGICOS_PAC;
+    @FXML
+    private JFXButton btnAntecedentes;
 
     @Override
     public void initialize() {
@@ -291,6 +290,19 @@ public class ExpedienteMedicoController extends Controller {
                 && (btnNoOperaciones.isSelected() || btnSiOperaciones.isSelected())
                 && (btnNoTratamientos.isSelected() || btnSiTratamientos.isSelected())
                 && Value1 && Value2 && Value3 && Value4 && !txtAntecedentesPatologicos.getText().isEmpty();
+    }
+
+    @FXML
+    private void Antecedentes(ActionEvent event) {
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                FlowController.getInstance().goViewInWindowModal("Antecedentes", this.getStage(), false);
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+            }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+        }
     }
 
 }

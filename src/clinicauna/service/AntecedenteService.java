@@ -10,9 +10,11 @@ import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.net.ConnectException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.core.GenericType;
 
 /**
  *
@@ -54,6 +56,23 @@ public class AntecedenteService {
                 return new Respuesta(false, "No se ha podido conectar con el servidor.", "eliminarAntecedente " + ex.getMessage());
             }
             return new Respuesta(false, "Error eliminando el Antecedente.", "eliminarAntecedente " + ex.getMessage());
+        }
+    }
+     public Respuesta getAntecedentes() {
+        try {
+            Request request = new Request("AntecedenteController/antecedentes");
+            request.get();
+
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+
+            List<AntecedenteDto> Antecedentes = (List<AntecedenteDto>) request.readEntity(new GenericType<List<AntecedenteDto>>() {
+            });
+
+            return new Respuesta(true, "", "", "Antecedentes", Antecedentes);
+        } catch (Exception ex) {
+            return new Respuesta(false, "", "", "Antecedentes", "getAntecedentes" + ex.getMessage());
         }
     }
 }

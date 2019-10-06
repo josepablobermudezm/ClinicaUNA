@@ -7,14 +7,18 @@ package clinicauna.controller;
 
 import clinicauna.model.AntecedenteDto;
 import clinicauna.model.MedicoDto;
+import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.AntecedenteService;
 import clinicauna.service.MedicoService;
 import clinicauna.service.UsuarioService;
+import clinicauna.util.AppContext;
+import clinicauna.util.FlowController;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -45,14 +49,6 @@ public class AntecedentesController extends Controller {
     @FXML
     private JFXButton btnGuardar;
     @FXML
-    private Label lblGenero;
-    @FXML
-    private ToggleGroup antecedentes;
-    @FXML
-    private JFXRadioButton btnSiAnt;
-    @FXML
-    private JFXRadioButton btnNoAnt;
-    @FXML
     private TableColumn<AntecedenteDto, String> COL_PARENTESCO_ANT;
     @FXML
     private TableColumn<AntecedenteDto, String> COL_ENFERMEDAD_ANT;
@@ -63,13 +59,21 @@ public class AntecedentesController extends Controller {
     private Mensaje ms;
     private Respuesta resp;
     private ArrayList<AntecedenteDto> antecedentesList;
+    @FXML
+    private JFXTextField txtParentesco;
+    @FXML
+    private JFXTextField txtEnfermedad;
+    private AntecedenteDto antecedenteDto;
+    private PacienteDto paciente;
     @Override
     public void initialize() {
         
+        paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
         antecedenteService = new AntecedenteService();
+        antecedenteDto = new AntecedenteDto();
         ms = new Mensaje();
-        //resp = antecedentesService.getAntecedentes();
-        //antecedentesList = ((ArrayList<AntecedenteDto>) resp.getResultado("Antecedentes"));
+        resp = antecedenteService.getAntecedentes();
+        antecedentesList = ((ArrayList<AntecedenteDto>) resp.getResultado("Antecedentes"));
 
         COL_PARENTESCO_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntParentezco()));
         COL_ENFERMEDAD_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntEnfermedad()));
@@ -81,12 +85,21 @@ public class AntecedentesController extends Controller {
 
     @FXML
     private void cancela(ActionEvent event) {
+        FlowController.getInstance().initialize();
+        this.getStage().close();
     }
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
+        txtEnfermedad.clear();
+        txtParentesco.clear();
+        table.getSelectionModel().clearSelection();
     }
 
+    boolean RegistroCorrecto(){
+        return !txtEnfermedad.getText().isEmpty() && !txtParentesco.getText().isEmpty();
+   }
+    
     @FXML
     private void Eliminar(ActionEvent event) {
     }
@@ -97,6 +110,7 @@ public class AntecedentesController extends Controller {
 
     @FXML
     private void guardar(ActionEvent event) {
+        
     }
     
 }
