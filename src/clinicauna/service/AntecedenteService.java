@@ -33,7 +33,7 @@ public class AntecedenteService {
 
             antecedente = (AntecedenteDto) request.readEntity(AntecedenteDto.class);
 
-            return new Respuesta(true, "", "", "Antecedente", antecedente);
+            return new Respuesta(true, "Guardado Exitosamente", request.toString(), "Antecedente", antecedente);
         } catch (Exception ex) {
             Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error guardando el Antecedente.", ex);
             return new Respuesta(false, "Error guardando el Antecedente.", "guardarAntecedente " + ex.getMessage());

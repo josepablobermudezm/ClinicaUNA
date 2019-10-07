@@ -257,6 +257,7 @@ public class PacientesController extends Controller {
                 if (expedienteDto != null) {
                     expedienteDto.setPaciente(pacienteDto);
                     resp = expedienteService.guardarExpediente(expedienteDto);
+                    expedienteDto = (ExpedienteDto) resp.getResultado("Expediente");
                     if (!resp.getEstado()) {
                         pacienteService.eliminarPaciente(pacienteDto.getID());
                         ms.showModal(Alert.AlertType.ERROR, "Error al guardar el paciente", this.getStage(), "No se ha podido guardar el expediente");
