@@ -317,6 +317,16 @@ public class ExpedienteMedicoController extends Controller {
 
     @FXML
     private void controles(ActionEvent event) {
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                AppContext.getInstance().set("Expediente", table.getSelectionModel().getSelectedItem());
+                FlowController.getInstance().goViewInWindowModal("ControlPaciente", this.getStage(), false);
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+            }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+        }
     }
 
 }
