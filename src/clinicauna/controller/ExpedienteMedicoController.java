@@ -171,7 +171,11 @@ public class ExpedienteMedicoController extends Controller {
                 } else {
                     btnSiTratamientos.setSelected(true);
                 }
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
     }
 
@@ -218,7 +222,11 @@ public class ExpedienteMedicoController extends Controller {
                 } else {
                     ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Existen datos en el registro sin completar.");
                 }
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
 
     }
@@ -235,7 +243,11 @@ public class ExpedienteMedicoController extends Controller {
                 table.getItems().clear();
                 items = FXCollections.observableArrayList(expedientes);
                 table.setItems(items);
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
     }
 
