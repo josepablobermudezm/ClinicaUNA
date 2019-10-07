@@ -80,10 +80,9 @@ public class AntecedentesController extends Controller {
         ms = new Mensaje();
         resp = antecedenteService.getAntecedentes();
         antecedentesList = ((ArrayList<AntecedenteDto>) resp.getResultado("Antecedentes"));
-        /*antecedentesList.stream().filter(x->x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x->{
-            //antecedentesList2.add(x);
-            System.out.println(x);
-        });*/
+        antecedentesList.stream().filter(x->x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x->{
+            antecedentesList2.add(x);
+        });
         COL_PARENTESCO_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntParentezco()));
         COL_ENFERMEDAD_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntEnfermedad()));
         items = FXCollections.observableArrayList(antecedentesList2);

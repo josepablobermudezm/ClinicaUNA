@@ -35,7 +35,7 @@
          </children>
       </HBox>
       <HBox layoutX="21.0" layoutY="109.0" />
-      <TableView fx:id="table" layoutX="698.0" layoutY="83.0" prefHeight="287.0" prefWidth="336.0">
+      <TableView fx:id="table" layoutX="698.0" layoutY="83.0" onMouseReleased="#datos" prefHeight="287.0" prefWidth="336.0">
         <columns>
           <TableColumn fx:id="COL_PARENTESCO_ANT" prefWidth="170.0" text="Parentesco" />
           <TableColumn fx:id="COL_ENFERMEDAD_ANT" prefWidth="170.0" text="Enfermedad" />
