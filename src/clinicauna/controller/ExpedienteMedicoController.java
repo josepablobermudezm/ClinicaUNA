@@ -125,8 +125,9 @@ public class ExpedienteMedicoController extends Controller {
         expedienteService = new ExpedienteService();
         ms = new Mensaje();
         resp = expedienteService.getExpedientes();
-        expedientes =  (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
-        COL_NOMBRE_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getNombre()+" "+value.getValue().getPaciente().getpApellido() + " " + value.getValue().getPaciente().getsApellido()));
+        expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
+
+        COL_NOMBRE_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getNombre() + " " + value.getValue().getPaciente().getpApellido() + " " + value.getValue().getPaciente().getsApellido()));
         COL_TRATAMIENTO_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getTratamientos()));
         COL_OPERACIONES_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getOperaciones()));
         COL_CEDULA_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getCedula()));
@@ -182,7 +183,7 @@ public class ExpedienteMedicoController extends Controller {
                 if (registroCorrecto()) {
                     String antecedentes = txtAntecedentesPatologicos.getText();
                     String tratamientos = txtTratamientos.getText();
-                    String hospitalizaciones = (btnSiHospitalizaciones.isSelected()?"S":"N");
+                    String hospitalizaciones = (btnSiHospitalizaciones.isSelected() ? "S" : "N");
                     System.out.println(hospitalizaciones);
                     String alergias = txtAlergias.getText();
                     String operaciones = txtOperaciones.getText();

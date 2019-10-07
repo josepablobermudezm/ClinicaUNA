@@ -6,6 +6,7 @@
 package clinicauna.service;
 
 import clinicauna.model.ControlDto;
+import clinicauna.model.ExpedienteDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import javax.ws.rs.core.GenericType;
  * @author Jose Pablo Bermudez
  */
 public class ControlService {
-    
+
     public Respuesta getControl(String Control, String clave) {
         try {
             Map<String, Object> parametros = new HashMap<>();
@@ -59,6 +60,7 @@ public class ControlService {
             return new Respuesta(false, "Error obteniendo el Control.", "getControl " + ex.getMessage());
         }
     }
+
     /*
     public Respuesta getControls(String cedula, String nombre, String pApellido) {
         try {
@@ -99,6 +101,26 @@ public class ControlService {
         }
     }
 
+    public Respuesta getControles(ExpedienteDto exp) {
+        try {
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("id", exp.getExpID());
+            Request request = new Request("ControlController/Controles", "/{id}", parametros);
+            request.get();
+
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+
+            List<ControlDto> Controls = (List<ControlDto>) request.readEntity(new GenericType<List<ControlDto>>() {
+            });
+
+            return new Respuesta(true, "", "", "Controles", Controls);
+        } catch (Exception ex) {
+            return new Respuesta(false,"getControles " + ex.getMessage(),"");
+        }
+    }
+
     public Respuesta guardarControl(ControlDto Control) {
         try {
 
@@ -135,5 +157,4 @@ public class ControlService {
         }
     }
 
-    
 }

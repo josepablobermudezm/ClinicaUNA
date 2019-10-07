@@ -6,6 +6,7 @@
 package clinicauna.service;
 
 import clinicauna.model.AntecedenteDto;
+import clinicauna.model.ExpedienteDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.net.ConnectException;
@@ -61,6 +62,25 @@ public class AntecedenteService {
      public Respuesta getAntecedentes() {
         try {
             Request request = new Request("AntecedenteController/antecedentes");
+            request.get();
+
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+
+            List<AntecedenteDto> Antecedentes = (List<AntecedenteDto>) request.readEntity(new GenericType<List<AntecedenteDto>>() {
+            });
+
+            return new Respuesta(true, "", "", "Antecedentes", Antecedentes);
+        } catch (Exception ex) {
+            return new Respuesta(false, "", "", "Antecedentes", "getAntecedentes" + ex.getMessage());
+        }
+    }
+     public Respuesta getAntecedentes(ExpedienteDto expediente) {
+        try {
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("id", expediente.getExpID());
+            Request request = new Request("AntecedenteController/antecedentes", "/{id}", parametros);
             request.get();
 
             if (request.isError()) {
