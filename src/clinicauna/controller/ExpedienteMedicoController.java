@@ -315,4 +315,8 @@ public class ExpedienteMedicoController extends Controller {
         }
     }
 
+    @FXML
+    private void controles(ActionEvent event) {
+    }
+
 }
