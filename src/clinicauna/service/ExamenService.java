@@ -6,6 +6,7 @@
 package clinicauna.service;
 
 import clinicauna.model.ExamenDto;
+import clinicauna.model.ExpedienteDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.util.HashMap;
@@ -81,9 +82,9 @@ public class ExamenService {
         }
     }*/
 
-    public Respuesta getExamens() {
+    public Respuesta getExamenes() {
         try {
-            Request request = new Request("ExamenController/Examens");
+            Request request = new Request("ExamenController/Examenes");
             request.get();
 
             if (request.isError()) {
@@ -98,7 +99,28 @@ public class ExamenService {
             return new Respuesta(false, "", "", "Examens", "getExamens " + ex.getMessage());
         }
     }
+    
+    public Respuesta getExamenes(ExpedienteDto expediente) {
+        try {
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("expId", expediente.getExpID());
+            Request request = new Request("ExamenController/Examenes","/{expId}", parametros);
+            request.get();
 
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+
+            List<ExamenDto> Examens = (List<ExamenDto>) request.readEntity(new GenericType<List<ExamenDto>>() {
+            });
+            
+            return new Respuesta(true, "", "", "Examenes", Examens);
+        } catch (Exception ex) {
+            return new Respuesta(false, "getExamens " + ex.getMessage(),"");
+        }
+    }
+
+    
     public Respuesta guardarExamen(ExamenDto Examen) {
         try {
 

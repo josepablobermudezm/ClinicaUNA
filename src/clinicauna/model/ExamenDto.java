@@ -22,27 +22,21 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class ExamenDto {
     @XmlTransient
-    Long exmID;
+    private Long exmID;
     @XmlTransient
-    String nombreExamen;
+    private String nombreExamen;
     @XmlTransient
-    LocalDate fecha;
+    private LocalDate fecha;
     @XmlTransient
-    String anotaciones;
+    private String anotaciones;
     @XmlTransient
-    Long exmVersion;
+    private Long exmVersion;
     @XmlTransient
-    ExpedienteDto expediente;
+    private ExpedienteDto expediente;
 
-    public ExamenDto(Long exmID, String nombreExamen, LocalDate fecha, String anotaciones, Long exmVersion, ExpedienteDto expediente) {
-        this.exmID = exmID;
-        this.nombreExamen = nombreExamen;
-        this.fecha = fecha;
-        this.anotaciones = anotaciones;
-        this.exmVersion = exmVersion;
-        this.expediente = expediente;
+    public ExamenDto() {
     }
-
+    
     public ExpedienteDto getExpediente() {
         return expediente;
     }

@@ -56,25 +56,9 @@ public class ControlDto {
     private Long cntVersion;
     @XmlTransient
     private ExpedienteDto cntExpediente;
-
-    public ControlDto(Long cntId, LocalDate cntFecha, String cntHora, Double cntPresion, Double cntFrecuenciaCardiaca, Double cntPeso, Double cntTalla, Double cntTemperatura, Double cntImc, String cntAnotacionEnfermeria, String cntRazonConsulta, String cntPlanAtencion, String cntObservaciones, String cntExamenFisico, String cntTratamiento, Long cntVersion, ExpedienteDto cntExpediente) {
-        this.cntId = cntId;
-        this.cntFecha = cntFecha;
-        this.cntHora = cntHora;
-        this.cntPresion = cntPresion;
-        this.cntFrecuenciaCardiaca = cntFrecuenciaCardiaca;
-        this.cntPeso = cntPeso;
-        this.cntTalla = cntTalla;
-        this.cntTemperatura = cntTemperatura;
-        this.cntImc = cntImc;
-        this.cntAnotacionEnfermeria = cntAnotacionEnfermeria;
-        this.cntRazonConsulta = cntRazonConsulta;
-        this.cntPlanAtencion = cntPlanAtencion;
-        this.cntObservaciones = cntObservaciones;
-        this.cntExamenFisico = cntExamenFisico;
-        this.cntTratamiento = cntTratamiento;
-        this.cntVersion = cntVersion;
-        this.cntExpediente = cntExpediente;
+    
+    public ControlDto(){
+    
     }
     
 
@@ -85,6 +69,7 @@ public class ControlDto {
     public void setCntId(Long cntId) {
         this.cntId = cntId;
     }
+    
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getCntFecha() {
         return cntFecha;
@@ -213,6 +198,6 @@ public class ControlDto {
     public void setCntExpediente(ExpedienteDto cntExpediente) {
         this.cntExpediente = cntExpediente;
     }
-   
+    
 
 }

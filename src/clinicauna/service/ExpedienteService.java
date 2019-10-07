@@ -5,11 +5,14 @@
  */
 package clinicauna.service;
 
+import clinicauna.model.AntecedenteDto;
+import clinicauna.model.ControlDto;
+import clinicauna.model.ExamenDto;
 import clinicauna.model.ExpedienteDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +23,7 @@ import javax.ws.rs.core.GenericType;
  * @author Jose Pablo Bermudez
  */
 public class ExpedienteService {
-    
+
     public Respuesta getExpediente(String Expediente, String clave) {
         try {
             Map<String, Object> parametros = new HashMap<>();
@@ -59,6 +62,7 @@ public class ExpedienteService {
             return new Respuesta(false, "Error obteniendo el Expediente.", "getExpediente " + ex.getMessage());
         }
     }
+
     /*
     public Respuesta getExpedientes(String cedula, String nombre, String pApellido) {
         try {
@@ -80,7 +84,6 @@ public class ExpedienteService {
             return new Respuesta(false, "Error obteniendo Expedientes.", "getExpedientes " + ex.getMessage());
         }
     }*/
-
     public Respuesta getExpedientes() {
         try {
             Request request = new Request("ExpedienteController/Expedientes");
@@ -90,12 +93,12 @@ public class ExpedienteService {
                 return new Respuesta(false, request.getError(), "");
             }
 
-            List<ExpedienteDto> Expedientes = (List<ExpedienteDto>) request.readEntity(new GenericType<List<ExpedienteDto>>() {
+            ArrayList<ExpedienteDto> expedientes = (ArrayList<ExpedienteDto>) request.readEntity(new GenericType<ArrayList<ExpedienteDto>>() {
             });
 
-            return new Respuesta(true, "", "", "Expedientes", Expedientes);
+            return new Respuesta(true, "", "", "Expedientes", expedientes);
         } catch (Exception ex) {
-            return new Respuesta(false, "", "", "Expedientes", "getExpedientes " + ex.getMessage());
+            return new Respuesta(false, "getExpedientes " + ex.getMessage(), "");
         }
     }
 
@@ -110,7 +113,7 @@ public class ExpedienteService {
             }
 
             Expediente = (ExpedienteDto) request.readEntity(ExpedienteDto.class);
-            
+
             return new Respuesta(true, "Guardado exitosamente", request.toString(), "Expediente", Expediente);
         } catch (Exception ex) {
             Logger.getLogger(ExpedienteService.class.getName()).log(Level.SEVERE, "Error guardando el Expediente.", ex);
@@ -135,5 +138,4 @@ public class ExpedienteService {
         }
     }
 
-    
 }
