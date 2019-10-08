@@ -113,7 +113,7 @@ public class AgendaController extends Controller {
     private EventHandler<MouseEvent> citasReleased = (event) -> {
         AppContext.getInstance().set("hBox", (HBox) event.getSource());
         FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
-
+        
     };
 
     @FXML

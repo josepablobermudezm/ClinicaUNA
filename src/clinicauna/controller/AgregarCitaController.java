@@ -36,6 +36,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -130,8 +131,39 @@ public class AgregarCitaController extends Controller {
             String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
             //Obtengo el primer el Hbox que contiene el Label con la hora
             HBox hBox = (HBox) AppContext.getInstance().get("hBox");
-            Label hora = (Label)hBox.getChildren().get(0);
-            
+            switch (estado) {
+                case "AT":
+                    {
+                        hBox.setBackground(Background.EMPTY);
+                        String style = "-fx-background-color: #8cff8c; ";
+                        hBox.setStyle(style);
+                        break;
+                    }
+                case "CA":
+                    {
+                        hBox.setBackground(Background.EMPTY);
+                        String style = "-fx-background-color: #fa7a7a";
+                        hBox.setStyle(style);
+                        break;
+                    }
+                case "PR":
+                    {
+                        hBox.setBackground(Background.EMPTY);
+                        String style = "-fx-background-color: #fad655";
+                        hBox.setStyle(style);
+                        break;
+                    }
+                case "AU":
+                    {
+                        hBox.setBackground(Background.EMPTY);
+                        String style = "-fx-background-color: #bdbdbd";
+                        hBox.setStyle(style);
+                        break;
+                    }
+                default:
+                    break;
+            }
+            Label hora = (Label) hBox.getChildren().get(0);
             LocalTime localTimeObj = LocalTime.parse(hora.getText());
 
             LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
@@ -143,7 +175,7 @@ public class AgregarCitaController extends Controller {
                 medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
                 resp1 = citaService.guardarCita(citaDto);
                 citaDto = (CitaDto) resp1.getResultado("Cita");
-                
+
                 vistaCita vistaCita = new vistaCita(citaDto);
                 int valor = 0;
                 hBox.getChildren().add(vistaCita.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
