@@ -34,6 +34,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -78,14 +79,16 @@ public class AntecedentesController extends Controller {
         antecedenteService = new AntecedenteService();
         antecedenteDto = new AntecedenteDto();
         ms = new Mensaje();
-        resp = antecedenteService.getAntecedentes();
+        /*resp = antecedenteService.getAntecedentes();
         antecedentesList = ((ArrayList<AntecedenteDto>) resp.getResultado("Antecedentes"));
         antecedentesList.stream().filter(x->x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x->{
             antecedentesList2.add(x);
-        });
+        });*/
+   
+        antecedentesList = expediente.getAntecedentes();
         COL_PARENTESCO_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntParentezco()));
         COL_ENFERMEDAD_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntEnfermedad()));
-        items = FXCollections.observableArrayList(antecedentesList2);
+        items = FXCollections.observableArrayList(antecedentesList);
         table.setItems(items);
 
     }
@@ -130,6 +133,7 @@ public class AntecedentesController extends Controller {
             antecedenteDto = new AntecedenteDto(null, enfermedad, parentesco, version, expediente);
             try {
                 resp = antecedenteService.guardarAntecedente(antecedenteDto);
+                
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                 limpiarValores();
                 antecedentesList = (ArrayList) antecedenteService.getAntecedentes().getResultado("Antecedentes");
@@ -146,6 +150,10 @@ public class AntecedentesController extends Controller {
             ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
                     + "verifica que todos los datos esten llenos.");
         }
+    }
+
+    @FXML
+    private void datos(MouseEvent event) {
     }
 
 }
