@@ -39,27 +39,9 @@ import javafx.scene.input.MouseEvent;
 public class ExpedienteMedicoController extends Controller {
 
     @FXML
-    private ImageView omg;
-    @FXML
     private Label Titulo;
     private Idioma idioma;
     private UsuarioDto usuario;
-    @FXML
-    private TableView<ExpedienteDto> table;
-    @FXML
-    private TableColumn<ExpedienteDto, String> COL_NOMBRE_PAC;
-    @FXML
-    private TableColumn<ExpedienteDto, String> COL_CEDULA_PAC;
-    @FXML
-    private Label lblGenero;
-    @FXML
-    private Label lblGenero1;
-    @FXML
-    private ToggleGroup Hospitalizacion;
-    @FXML
-    private Label lblGenero11;
-    @FXML
-    private ToggleGroup Tratamientos;
     @FXML
     private JFXRadioButton btnSiHospitalizaciones;
     @FXML
@@ -67,21 +49,11 @@ public class ExpedienteMedicoController extends Controller {
     @FXML
     private JFXRadioButton btnSiAlergias;
     @FXML
-    private ToggleGroup Alergias;
-    @FXML
     private JFXRadioButton btnNoAlergias;
     @FXML
     private JFXRadioButton btnSiOperaciones;
     @FXML
-    private ToggleGroup Operaciones;
-    @FXML
     private JFXRadioButton btnNoOperaciones;
-    @FXML
-    private JFXButton btnEditar1;
-    @FXML
-    private JFXButton btnEliminar1;
-    @FXML
-    private JFXButton btnLimpiarRegistro;
     private ExpedienteService expedienteService = new ExpedienteService();
     private Mensaje ms = new Mensaje();
     private ArrayList<ExpedienteDto> expedientes;
@@ -102,17 +74,45 @@ public class ExpedienteMedicoController extends Controller {
     private ExpedienteDto expedienteDto;
     private PacienteDto pacienteDto;
     @FXML
-    private TableColumn<ExpedienteDto, String> COL_TRATAMIENTO_PAC;
+    private ToggleGroup Tratamientos;
     @FXML
-    private TableColumn<ExpedienteDto, String> COL_OPERACIONES_PAC;
+    private ToggleGroup Alergias;
     @FXML
-    private TableColumn<ExpedienteDto, String> COL_ALERGIAS_PAC;
+    private ToggleGroup Operaciones;
     @FXML
-    private TableColumn<ExpedienteDto, String> COL_HOSPITALIZACIONESPAC;
+    private Label lblAntecedente;
     @FXML
-    private TableColumn<ExpedienteDto, String> COL_ANTECEDENTES_PATOLOGICOS_PAC;
+    private JFXRadioButton btnAntecedenteSi;
+    @FXML
+    private ToggleGroup Hospitalizacion1;
+    @FXML
+    private JFXRadioButton btnAntecedentesNo;
+    @FXML
+    private ToggleGroup Hospitalizacion2;
+    @FXML
+    private ToggleGroup Hospitalizacion;
+    @FXML
+    private JFXButton btnEditar1;
+    @FXML
+    private JFXButton btnEliminar1;
+    @FXML
+    private JFXButton btnLimpiarRegistro;
     @FXML
     private JFXButton btnAntecedentes;
+    @FXML
+    private JFXButton btnControles;
+    @FXML
+    private JFXButton btnGuardar;
+    @FXML
+    private Label lblTratamiento;
+    @FXML
+    private Label lblAlergias;
+    @FXML
+    private Label lblOperaciones;
+    @FXML
+    private Label lblHospitalizaciones;
+    @FXML
+    private JFXButton btnBuscar;
 
     @Override
     public void initialize() {
@@ -127,21 +127,9 @@ public class ExpedienteMedicoController extends Controller {
         resp = expedienteService.getExpedientes();
         expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
 
-        COL_NOMBRE_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getNombre() + " " + value.getValue().getPaciente().getpApellido() + " " + value.getValue().getPaciente().getsApellido()));
-        COL_TRATAMIENTO_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getTratamientos()));
-        COL_OPERACIONES_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getOperaciones()));
-        COL_CEDULA_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getPaciente().getCedula()));
-        COL_ALERGIAS_PAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAlergias()));
-        COL_HOSPITALIZACIONESPAC.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getHospitalizaciones()));
-        COL_ANTECEDENTES_PATOLOGICOS_PAC.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getAntecedentesPatologicos())));
-
-        items = FXCollections.observableArrayList(expedientes);
-        table.setItems(items);
-
     }
 
-    @FXML
-    private void DatosPaciente(MouseEvent event) {
+   /* private void DatosPaciente(MouseEvent event) {
         //Cargar los datos que se guardaron en la base de datos, en la vista de paciente
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
@@ -177,12 +165,12 @@ public class ExpedienteMedicoController extends Controller {
         } else {
             ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
-    }
+    }*/
 
     @FXML
     private void editar(ActionEvent event) {
 
-        if (table.getSelectionModel() != null) {
+       /* if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 if (registroCorrecto()) {
                     String antecedentes = txtAntecedentesPatologicos.getText();
@@ -228,13 +216,13 @@ public class ExpedienteMedicoController extends Controller {
         } else {
             ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
         }
-
+*/
     }
 
     @FXML
     private void eliminar(ActionEvent event) {
 
-        if (table.getSelectionModel() != null) {
+       /* if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 expedienteService.eliminarExpediente(table.getSelectionModel().getSelectedItem().getExpID());
                 ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), "Datos Eliminados correctamente");
@@ -248,7 +236,7 @@ public class ExpedienteMedicoController extends Controller {
             }
         } else {
             ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
-        }
+        }*/
     }
 
     @FXML
@@ -303,7 +291,7 @@ public class ExpedienteMedicoController extends Controller {
 
     @FXML
     private void Antecedentes(ActionEvent event) {
-        if (table.getSelectionModel() != null) {
+       /* if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 AppContext.getInstance().set("Expediente", table.getSelectionModel().getSelectedItem());
                 FlowController.getInstance().goViewInWindowModal("Antecedentes", this.getStage(), false);
@@ -312,12 +300,12 @@ public class ExpedienteMedicoController extends Controller {
             }
         } else {
             ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
-        }
+        }*/
     }
 
     @FXML
     private void controles(ActionEvent event) {
-        if (table.getSelectionModel() != null) {
+        /*if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 AppContext.getInstance().set("Expediente", table.getSelectionModel().getSelectedItem());
                 FlowController.getInstance().goViewInWindowModal("ControlPaciente", this.getStage(), false);
@@ -326,7 +314,16 @@ public class ExpedienteMedicoController extends Controller {
             }
         } else {
             ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
-        }
+        }*/
+    }
+
+    @FXML
+    private void AgregarExpediente(ActionEvent event) {
+    }
+
+    @FXML
+    private void BuscarPaciente(ActionEvent event) {
+        FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
     }
 
 }

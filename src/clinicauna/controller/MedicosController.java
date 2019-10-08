@@ -46,8 +46,6 @@ import javafx.scene.input.MouseEvent;
 public class MedicosController extends Controller {
 
     @FXML
-    private ImageView omg;
-    @FXML
     private Label Titulo;
     @FXML
     private TableView<MedicoDto> table;
@@ -95,6 +93,8 @@ public class MedicosController extends Controller {
     private UsuarioDto usuario;
     @FXML
     private JFXButton btnLimpiarRegistro;
+    @FXML
+    private ImageView omg;
 
     @Override
     public void initialize() {
@@ -205,10 +205,6 @@ public class MedicosController extends Controller {
 
     }
 
-    @FXML
-    private void limpiarRegistro(ActionEvent event) {
-
-    }
 
     void limpiarValores() {
         txtCarne.clear();
@@ -226,9 +222,6 @@ public class MedicosController extends Controller {
                 && !timePickerInicio.getValue().toString().isEmpty() && !timePickerfinal.getValue().toString().isEmpty();
     }
 
-    @FXML
-    private void Filtrar(ActionEvent event) {
-    }
 
     @FXML
     private void DatosMedico(MouseEvent event) {
@@ -247,5 +240,13 @@ public class MedicosController extends Controller {
 
             }
         }
+    }
+
+    @FXML
+    private void Filtrar(ActionEvent event) {
+    }
+
+    @FXML
+    private void limpiarRegistro(ActionEvent event) {
     }
 }

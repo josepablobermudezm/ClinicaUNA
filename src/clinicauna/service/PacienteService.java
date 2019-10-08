@@ -59,14 +59,14 @@ public class PacienteService {
             return new Respuesta(false, "Error obteniendo el Paciente.", "getPaciente " + ex.getMessage());
         }
     }
-    /*
+    
     public Respuesta getPacientes(String cedula, String nombre, String pApellido) {
         try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("cedula", cedula);
             parametros.put("nombre", nombre);
             parametros.put("pApellido", pApellido);
-            Request request = new Request("PacienteController/Pacientes", "/{cedula}/{nombre}/{pApellido}", parametros);
+            Request request = new Request("PacienteController/pacientes", "/{cedula}/{nombre}/{pApellido}", parametros);
             request.get();
 
             if (request.isError()) {
@@ -79,7 +79,7 @@ public class PacienteService {
             Logger.getLogger(PacienteService.class.getName()).log(Level.SEVERE, "Error obteniendo Usuarios.", ex);
             return new Respuesta(false, "Error obteniendo Pacientes.", "getPacientes " + ex.getMessage());
         }
-    }*/
+    }
 
     public Respuesta getPacientes() {
         try {
