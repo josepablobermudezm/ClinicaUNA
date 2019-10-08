@@ -7,6 +7,8 @@ package clinicauna.controller;
 
 import clinicauna.model.PacienteDto;
 import clinicauna.service.PacienteService;
+import clinicauna.util.AppContext;
+import clinicauna.util.FlowController;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -65,7 +67,12 @@ public class BuscarPacienteController extends Controller {
 
     @FXML
     private void MostrarDatos(MouseEvent event) {
-
+        if(Table_Buscar.getSelectionModel()!= null && Table_Buscar.getSelectionModel().getSelectedItem()!=null){
+            AppContext.getInstance().set("Paciente", Table_Buscar.getSelectionModel().getSelectedItem());
+            FlowController.getInstance().initialize();
+            this.getStage().close();
+        }
+        
     }
 
     @Override

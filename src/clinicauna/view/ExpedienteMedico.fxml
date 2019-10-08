@@ -6,27 +6,43 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.ExpedienteMedicoController">
    <left>
-      <VBox alignment="TOP_CENTER" prefHeight="800.0" prefWidth="1030.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="800.0" prefWidth="1030.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="Titulo" text="Expediente Médico" />
+            <HBox prefHeight="33.0" prefWidth="1030.0">
+               <children>
+                  <Label text="Paciente:">
+                     <HBox.margin>
+                        <Insets left="105.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="lblPaciente" prefHeight="21.0" prefWidth="257.0">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
             <HBox alignment="CENTER" prefHeight="102.0" prefWidth="1030.0">
                <children>
-                  <Label fx:id="lblTratamiento" prefHeight="17.0" prefWidth="73.0" text="Tratamientos">
+                  <Label fx:id="lblTratamiento" prefHeight="21.0" prefWidth="95.0" text="Tratamientos">
                      <HBox.margin>
                         <Insets left="-70.0" />
-                     </HBox.margin></Label>
+                     </HBox.margin>
+                  </Label>
                   <JFXRadioButton fx:id="btnSiTratamientos" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
                      <toggleGroup>
                         <ToggleGroup fx:id="Tratamientos" />
                      </toggleGroup>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="45.0" />
                      </HBox.margin>
                   </JFXRadioButton>
                   <JFXRadioButton fx:id="btnNoTratamientos" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Tratamientos">
@@ -34,34 +50,7 @@
                         <Insets left="25.0" />
                      </HBox.margin>
                   </JFXRadioButton>
-                  <JFXTextArea fx:id="txtTratamientos" labelFloat="true" prefHeight="102.0" prefWidth="409.0" promptText="Tratamientos...">
-                     <HBox.margin>
-                        <Insets left="55.0" top="40.0" />
-                     </HBox.margin>
-                  </JFXTextArea>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="98.0" prefWidth="1030.0">
-               <children>
-                  <Label fx:id="lblAlergias" text="Alergias:">
-                     <HBox.margin>
-                        <Insets left="-50.0" />
-                     </HBox.margin>
-                  </Label>
-                  <JFXRadioButton fx:id="btnSiAlergias" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="Alergias" />
-                     </toggleGroup>
-                     <HBox.margin>
-                        <Insets left="60.0" />
-                     </HBox.margin>
-                  </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnNoAlergias" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Alergias">
-                     <HBox.margin>
-                        <Insets left="30.0" />
-                     </HBox.margin>
-                  </JFXRadioButton>
-                  <JFXTextArea fx:id="txtAlergias" labelFloat="true" prefHeight="100.0" prefWidth="412.0" promptText="Alergias..">
+                  <JFXTextArea fx:id="txtTratamientos" labelFloat="true" prefHeight="102.0" prefWidth="412.0" promptText="Tratamientos...">
                      <HBox.margin>
                         <Insets left="55.0" top="40.0" />
                      </HBox.margin>
@@ -70,9 +59,9 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="lblOperaciones" text="Operaciones:">
+                  <Label fx:id="lblOperaciones" prefHeight="21.0" prefWidth="94.0" text=" Operaciones:">
                      <HBox.margin>
-                        <Insets left="-50.0" />
+                        <Insets left="-70.0" />
                      </HBox.margin>
                   </Label>
                   <JFXRadioButton fx:id="btnSiOperaciones" prefHeight="17.0" prefWidth="36.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
@@ -80,15 +69,15 @@
                         <ToggleGroup fx:id="Operaciones" />
                      </toggleGroup>
                      <HBox.margin>
-                        <Insets left="45.0" />
+                        <Insets left="47.0" />
                      </HBox.margin>
                   </JFXRadioButton>
                   <JFXRadioButton fx:id="btnNoOperaciones" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Operaciones">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets left="25.0" />
                      </HBox.margin>
                   </JFXRadioButton>
-                  <JFXTextArea fx:id="txtOperaciones" labelFloat="true" prefHeight="72.0" prefWidth="418.0" promptText="Operaciones">
+                  <JFXTextArea fx:id="txtOperaciones" labelFloat="true" prefHeight="72.0" prefWidth="412.0" promptText="Operaciones">
                      <HBox.margin>
                         <Insets left="55.0" top="40.0" />
                      </HBox.margin>
@@ -100,23 +89,20 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="140.0" prefWidth="1030.0" spacing="10.0">
                <children>
-                  <Label fx:id="lblAntecedente" text="Antecedentes:">
+                  <Label fx:id="lblAntecedente" prefHeight="21.0" prefWidth="116.0" text="  Antecedentes:">
                      <HBox.margin>
-                        <Insets left="-10.0" />
+                        <Insets left="-35.0" />
                      </HBox.margin>
                   </Label>
                   <JFXRadioButton fx:id="btnAntecedenteSi" prefHeight="17.0" prefWidth="38.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="Hospitalizacion1" />
-                     </toggleGroup>
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
-                  </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnAntecedentesNo" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No">
                      <toggleGroup>
-                        <ToggleGroup fx:id="Hospitalizacion2" />
+                        <ToggleGroup fx:id="Antecedentes" />
                      </toggleGroup>
+                  </JFXRadioButton>
+                  <JFXRadioButton fx:id="btnAntecedentesNo" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Antecedentes">
                      <HBox.margin>
                         <Insets left="15.0" />
                      </HBox.margin>
@@ -128,11 +114,38 @@
                   </JFXTextArea>
                </children>
             </HBox>
-            <HBox prefHeight="22.0" prefWidth="1030.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="lblHospitalizaciones" text="Hospitalizaciones:">
+                  <Label fx:id="lblOperaciones1" prefHeight="21.0" prefWidth="93.0" text=" Alergias">
                      <HBox.margin>
-                        <Insets left="135.0" />
+                        <Insets left="-70.0" />
+                     </HBox.margin>
+                  </Label>
+                  <JFXRadioButton fx:id="btnSiAlergias" prefHeight="17.0" prefWidth="36.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
+                     <HBox.margin>
+                        <Insets left="45.0" />
+                     </HBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="Alergias" />
+                     </toggleGroup>
+                  </JFXRadioButton>
+                  <JFXRadioButton fx:id="btnNoAlergias" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Alergias">
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                  </JFXRadioButton>
+                  <JFXTextArea fx:id="txtAlergias" labelFloat="true" prefHeight="72.0" prefWidth="412.0" promptText="Alergias">
+                     <HBox.margin>
+                        <Insets left="55.0" top="40.0" />
+                     </HBox.margin>
+                  </JFXTextArea>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="22.0" prefWidth="1030.0">
+               <children>
+                  <Label fx:id="lblHospitalizaciones" prefHeight="21.0" prefWidth="131.0" text="Hospitalizaciones:">
+                     <HBox.margin>
+                        <Insets />
                      </HBox.margin>
                   </Label>
                   <JFXRadioButton fx:id="btnSiHospitalizaciones" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
@@ -140,7 +153,7 @@
                         <ToggleGroup fx:id="Hospitalizacion" />
                      </toggleGroup>
                      <HBox.margin>
-                        <Insets left="15.0" />
+                        <Insets left="10.0" />
                      </HBox.margin>
                   </JFXRadioButton>
                   <JFXRadioButton fx:id="btnNoHospitalizaciones" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Hospitalizacion">
@@ -148,6 +161,7 @@
                         <Insets left="25.0" />
                      </HBox.margin>
                   </JFXRadioButton>
+                  <ImageView fitHeight="13.0" fitWidth="538.0" pickOnBounds="true" preserveRatio="true" />
                </children>
                <VBox.margin>
                   <Insets />
@@ -159,12 +173,11 @@
                </padding>
                <children>
                   <JFXButton fx:id="btnEditar1" onAction="#editar" style="-fx-cursor: hand;" text="Editar" />
-                  <JFXButton fx:id="btnEliminar1" onAction="#eliminar" style="-fx-cursor: hand;" text="Eliminar" />
                   <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
+                  <JFXButton fx:id="btnBuscar" onAction="#BuscarPaciente" style="-fx-cursor: hand;" text="Buscar" />
                   <JFXButton fx:id="btnAntecedentes" onAction="#Antecedentes" style="-fx-cursor: Hand;" text="Antecedentes Familiares" />
-                  <JFXButton fx:id="btnControles" onAction="#controles" text="Controles" />
-                  <JFXButton fx:id="btnGuardar" onAction="#AgregarExpediente" text="Guardar" />
-                  <JFXButton fx:id="btnBuscar" onAction="#BuscarPaciente" text="Buscar" />
+                  <JFXButton fx:id="btnControles" onAction="#controles" style="-fx-cursor: hand;" text="Controles" />
+                  <JFXButton fx:id="btnGuardar" onAction="#AgregarExpediente" style="-fx-cursor: hand;" text="Guardar" />
                </children>
             </HBox>
          </children>
