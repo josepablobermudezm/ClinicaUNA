@@ -171,7 +171,11 @@ public class ExpedienteMedicoController extends Controller {
                 } else {
                     btnSiTratamientos.setSelected(true);
                 }
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
     }
 
@@ -213,12 +217,16 @@ public class ExpedienteMedicoController extends Controller {
                         items = FXCollections.observableArrayList(expedientes);
                         table.setItems(items);
                     } catch (Exception e) {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el usuario.");
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el expediente.");
                     }
                 } else {
                     ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Existen datos en el registro sin completar.");
                 }
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
         }
 
     }
@@ -235,7 +243,11 @@ public class ExpedienteMedicoController extends Controller {
                 table.getItems().clear();
                 items = FXCollections.observableArrayList(expedientes);
                 table.setItems(items);
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
         }
     }
 
@@ -296,10 +308,24 @@ public class ExpedienteMedicoController extends Controller {
                 AppContext.getInstance().set("Expediente", table.getSelectionModel().getSelectedItem());
                 FlowController.getInstance().goViewInWindowModal("Antecedentes", this.getStage(), false);
             } else {
-                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
             }
         } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+        }
+    }
+
+    @FXML
+    private void controles(ActionEvent event) {
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                AppContext.getInstance().set("Expediente", table.getSelectionModel().getSelectedItem());
+                FlowController.getInstance().goViewInWindowModal("ControlPaciente", this.getStage(), false);
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+            }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
         }
     }
 

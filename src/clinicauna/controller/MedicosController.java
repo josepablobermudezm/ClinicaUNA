@@ -177,6 +177,8 @@ public class MedicosController extends Controller {
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a editar");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
     }
 
@@ -197,6 +199,8 @@ public class MedicosController extends Controller {
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
 
     }
@@ -226,7 +230,6 @@ public class MedicosController extends Controller {
     private void Filtrar(ActionEvent event) {
     }
 
-  
     @FXML
     private void DatosMedico(MouseEvent event) {
 

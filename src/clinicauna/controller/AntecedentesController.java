@@ -81,7 +81,7 @@ public class AntecedentesController extends Controller {
         ms = new Mensaje();
         /*resp = antecedenteService.getAntecedentes();
         antecedentesList = ((ArrayList<AntecedenteDto>) resp.getResultado("Antecedentes"));
-        antecedentesList.stream().filter(x->x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x->{
+        antecedentesList.stream().filter(x -> x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x -> {
             antecedentesList2.add(x);
         });*/
    
@@ -112,15 +112,71 @@ public class AntecedentesController extends Controller {
 
     @FXML
     private void Eliminar(ActionEvent event) {
+
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                resp = antecedenteService.eliminarUsuario(antecedenteDto.getAntId());
+                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                limpiarValores();
+                antecedentesList = (ArrayList) antecedenteService.getAntecedentes().getResultado("Antecedentes");
+                antecedentesList2.clear();
+                antecedentesList.stream().filter(x -> x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x -> {
+                    antecedentesList2.add(x);
+                });
+                table.getItems().clear();
+                items = FXCollections.observableArrayList(antecedentesList2);
+                table.setItems(items);
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+            }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+        }
+
     }
 
     @FXML
     private void editar(ActionEvent event) {
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                if (RegistroCorrecto()) {
+                    String parentesco = txtParentesco.getText();
+                    String enfermedad = txtEnfermedad.getText();
+                    Long id = antecedenteDto.getAntId();
+                    System.out.println(id + " ID");
+                    Long version = antecedenteDto.getAntVersion() + 1;
+                    antecedenteDto = new AntecedenteDto(id, enfermedad, parentesco, version, expediente);
+                    try {
+                        resp = antecedenteService.guardarAntecedente(antecedenteDto);
+                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        limpiarValores();
+                        antecedentesList = (ArrayList) antecedenteService.getAntecedentes().getResultado("Antecedentes");
+                        antecedentesList2.clear();
+                        antecedentesList.stream().filter(x -> x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x -> {
+                            antecedentesList2.add(x);
+                        });
+                        table.getItems().clear();
+                        items = FXCollections.observableArrayList(antecedentesList2);
+                        table.setItems(items);
+                    } catch (Exception e) {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                    }
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                            + "verifica que todos los datos esten llenos.");
+                }
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+            }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+        }
     }
 
     private void limpiarValores() {
         txtEnfermedad.clear();
         txtParentesco.clear();
+        table.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -137,7 +193,8 @@ public class AntecedentesController extends Controller {
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                 limpiarValores();
                 antecedentesList = (ArrayList) antecedenteService.getAntecedentes().getResultado("Antecedentes");
-                antecedentesList.stream().filter(x->x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x->{
+                antecedentesList2.clear();
+                antecedentesList.stream().filter(x -> x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x -> {
                     antecedentesList2.add(x);
                 });
                 table.getItems().clear();
@@ -154,6 +211,13 @@ public class AntecedentesController extends Controller {
 
     @FXML
     private void datos(MouseEvent event) {
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                antecedenteDto = table.getSelectionModel().getSelectedItem();
+                txtEnfermedad.setText(antecedenteDto.getAntEnfermedad());
+                txtParentesco.setText(antecedenteDto.getAntParentezco());
+            }
+        }
     }
 
 }

@@ -221,6 +221,8 @@ public class PacientesController extends Controller {
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
 
     }
@@ -322,7 +324,11 @@ public class PacientesController extends Controller {
                     btnMujer.setSelected(true);
                 }
                 FechaDeNacimiento.setValue(pacienteDto.getFechaNacimiento());
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
             }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
     }
 
