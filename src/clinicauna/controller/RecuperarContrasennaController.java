@@ -94,7 +94,6 @@ public class RecuperarContrasennaController extends Controller {
                             usService.guardarUsuario(usuario);
                             new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(),resp.getMensaje());
                         }
-
                     } else {
                         new Mensaje().showModal(Alert.AlertType.WARNING, "Recuperando contraseña", this.getStage(), "Este usuario no ha sido activado");
                     }

@@ -40,6 +40,10 @@ public class vistaCita{
         this.vBox.getChildren().addAll(Nombre,Correo,Telefono);
         this.vBox.setAlignment(Pos.CENTER);
         this.vBox.setSpacing(10);
+        String style = "-fx-text-fill: #636361;";
+        this.Nombre.setStyle(style);
+        this.Correo.setStyle(style);
+        this.Telefono.setStyle(style);
         this.vBox.setOnMouseReleased(x->{
             System.out.println(this.cita.toString());
         });
