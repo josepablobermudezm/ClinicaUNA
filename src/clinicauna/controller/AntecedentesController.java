@@ -79,14 +79,16 @@ public class AntecedentesController extends Controller {
         antecedenteService = new AntecedenteService();
         antecedenteDto = new AntecedenteDto();
         ms = new Mensaje();
-        resp = antecedenteService.getAntecedentes();
+        /*resp = antecedenteService.getAntecedentes();
         antecedentesList = ((ArrayList<AntecedenteDto>) resp.getResultado("Antecedentes"));
         antecedentesList.stream().filter(x -> x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x -> {
             antecedentesList2.add(x);
-        });
+        });*/
+   
+        antecedentesList = expediente.getAntecedentes();
         COL_PARENTESCO_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntParentezco()));
         COL_ENFERMEDAD_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntEnfermedad()));
-        items = FXCollections.observableArrayList(antecedentesList2);
+        items = FXCollections.observableArrayList(antecedentesList);
         table.setItems(items);
 
     }
@@ -187,6 +189,7 @@ public class AntecedentesController extends Controller {
             antecedenteDto = new AntecedenteDto(null, enfermedad, parentesco, version, expediente);
             try {
                 resp = antecedenteService.guardarAntecedente(antecedenteDto);
+                
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                 limpiarValores();
                 antecedentesList = (ArrayList) antecedenteService.getAntecedentes().getResultado("Antecedentes");
@@ -208,7 +211,6 @@ public class AntecedentesController extends Controller {
 
     @FXML
     private void datos(MouseEvent event) {
-
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 antecedenteDto = table.getSelectionModel().getSelectedItem();
@@ -217,4 +219,5 @@ public class AntecedentesController extends Controller {
             }
         }
     }
+
 }
