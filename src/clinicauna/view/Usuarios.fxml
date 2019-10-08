@@ -9,178 +9,105 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.UsuariosController">
+<BorderPane prefHeight="800.0" prefWidth="1030.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.UsuariosController">
    <center>
-      <AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1030.0" stylesheets="@newCascadeStyleSheet.css">
+      <VBox spacing="20.0">
          <children>
-            <ImageView fx:id="omg" fitHeight="800.0" fitWidth="1030.0" pickOnBounds="true" preserveRatio="true" />
-            <HBox layoutX="294.0" layoutY="655.0" prefHeight="74.0" prefWidth="443.0" spacing="20.0">
+            <HBox alignment="CENTER">
+               <children>
+                  <Label fx:id="Titulo" text="Mantenimiento de Usuarios" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <JFXTextField fx:id="txtFiltroUsuario" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Filtro por ID" />
+               </children>
                <padding>
-                  <Insets left="20.0" right="20.0" top="40.0" />
+                  <Insets left="20.0" />
                </padding>
+            </HBox>
+            <HBox>
+               <children>
+                  <TableView fx:id="table" onMouseReleased="#DatosUsuario" prefHeight="280.0" prefWidth="950.0">
+                     <columns>
+                        <TableColumn fx:id="COL_NOMBRE_USUARIO" prefWidth="195.0" text="Nombre Completo" />
+                        <TableColumn fx:id="COL_CEDULA_USUARIO" minWidth="0.0" prefWidth="97.0" text="Cedula" />
+                        <TableColumn fx:id="COL_CORREO_USUARIO" prefWidth="172.0" text="Correo" />
+                        <TableColumn fx:id="COL_TIPO_USUARIO" prefWidth="182.0" text="Tipo de Usuario" />
+                        <TableColumn fx:id="COL_IDIOMA_USUARIO" prefWidth="178.0" text="Idioma" />
+                        <TableColumn fx:id="COL_ESTADO_USUARIO" prefWidth="124.0" text="Estado" />
+                     </columns>
+                  </TableView>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER" spacing="30.0">
+               <children>
+                  <JFXTextField fx:id="txtNombre" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Nombre" />
+                  <JFXTextField fx:id="txtPApellido" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Primer Apellido" />
+                  <JFXTextField fx:id="txtSApellido" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Segundo Apellido" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="30.0">
+               <children>
+                  <JFXTextField fx:id="txtCedula" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Cedula" />
+                  <JFXTextField fx:id="txtCorreo" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Correo" />
+                  <JFXTextField fx:id="txtNombreUsuario" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Usuario" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="948.0">
+               <children>
+                  <JFXPasswordField fx:id="txtClave" labelFloat="true" prefHeight="31.0" prefWidth="249.0" promptText="Contraseña" />
+               </children>
+               <padding>
+                  <Insets left="110.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER" spacing="30.0">
+               <children>
+                  <Label fx:id="lblidioma" text="Idioma:">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <JFXRadioButton fx:id="btnEspanol" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Español">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="idiomagroup" />
+                     </toggleGroup>
+                  </JFXRadioButton>
+                  <JFXRadioButton fx:id="btnIngles" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Ingles" toggleGroup="$idiomagroup" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Label fx:id="lblTipo" text="Tipo:" />
+                        <JFXRadioButton fx:id="btnAdministrador" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Administrador">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="puesto" />
+                           </toggleGroup>
+                        </JFXRadioButton>
+                        <JFXRadioButton fx:id="btnRecepcionista" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Recepcionista" toggleGroup="$puesto" />
+                        <JFXRadioButton fx:id="btnMedico" onAction="#crearMedico" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Médico" toggleGroup="$puesto" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="10.0">
                <children>
                   <JFXButton fx:id="btnEditar1" onAction="#editar" style="-fx-cursor: hand;" text="Editar" />
                   <JFXButton fx:id="btnEliminar1" onAction="#eliminar" style="-fx-cursor: hand;" text="Eliminar" />
                   <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
                   <JFXButton fx:id="btnAgregar1" onAction="#agregar" style="-fx-cursor: hand;" text="Agregar" />
                </children>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
             </HBox>
-            <GridPane prefHeight="62.0" prefWidth="1030.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="769.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label fx:id="Titulo" text="Mantenimiento de Usuarios" GridPane.columnIndex="1" />
-               </children>
-            </GridPane>
-            <GridPane layoutY="62.0" prefHeight="62.0" prefWidth="1030.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="112.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="394.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="102.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="713.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <JFXTextField fx:id="txtFiltroUsuario" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Filtro por ID" GridPane.columnIndex="1" />
-                  <JFXButton fx:id="btnBuscar" onAction="#Filtrar" style="-fx-cursor: hand;" text="Buscar" GridPane.columnIndex="3" />
-               </children>
-            </GridPane>
-            <GridPane layoutY="138.0" prefHeight="280.0" prefWidth="1030.0" AnchorPane.bottomAnchor="382.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="138.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="2.0" prefWidth="36.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1002.0" minWidth="10.0" prefWidth="951.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="994.0" minWidth="0.0" prefWidth="44.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <TableView fx:id="table" onMouseReleased="#DatosUsuario" prefHeight="280.0" prefWidth="950.0" GridPane.columnIndex="1">
-                     <columns>
-                        <TableColumn fx:id="COL_NOMBRE_USUARIO" prefWidth="118.0" text="Nombre" />
-                        <TableColumn fx:id="COL_PAPELLIDO_USUARIO" prefWidth="118.0" text="Primer Apellido" />
-                        <TableColumn fx:id="COL_SAPELLIDO_USUARIO" prefWidth="130.0" text="S Apellido" />
-                        <TableColumn fx:id="COL_CEDULA_USUARIO" prefWidth="118.0" text="Cedula" />
-                        <TableColumn fx:id="COL_CORREO_USUARIO" prefWidth="118.0" text="Correo" />
-                        <TableColumn fx:id="COL_TIPO_USUARIO" prefWidth="118.0" text="Tipo de Usuario" />
-                        <TableColumn fx:id="COL_IDIOMA_USUARIO" prefWidth="118.0" text="Idioma" />
-                        <TableColumn fx:id="COL_ESTADO_USUARIO" prefWidth="118.0" text="Estado" />
-                     </columns>
-                  </TableView>
-               </children>
-            </GridPane>
-            <GridPane layoutY="436.0" prefHeight="62.0" prefWidth="1033.0" AnchorPane.bottomAnchor="302.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="436.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="30.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="44.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="303.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="60.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="254.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="71.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <JFXTextField fx:id="txtNombre" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Nombre  Completo" GridPane.columnIndex="1" />
-                  <JFXTextField fx:id="txtPApellido" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Primer Apellido" GridPane.columnIndex="3" />
-                  <JFXTextField fx:id="txtSApellido" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Segundo Apellido" GridPane.columnIndex="5" />
-               </children>
-            </GridPane>
-            <GridPane layoutX="3.0" layoutY="514.0" prefHeight="62.0" prefWidth="1033.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="30.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="44.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="303.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="60.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="254.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="71.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <JFXTextField fx:id="txtCedula" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Cedula" GridPane.columnIndex="1" />
-                  <JFXTextField fx:id="txtCorreo" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Correo" GridPane.columnIndex="3" />
-                  <JFXTextField fx:id="txtNombreUsuario" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Usuario" GridPane.columnIndex="5" />
-               </children>
-            </GridPane>
-            <GridPane layoutX="3.0" layoutY="593.0" prefHeight="62.0" prefWidth="1033.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="33.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="240.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="67.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="249.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="338.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="109.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <JFXPasswordField fx:id="txtClave" labelFloat="true" promptText="Contraseña" GridPane.columnIndex="1" />
-                  <JFXRadioButton fx:id="btnEspanol" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Español" GridPane.columnIndex="3">
-                     <GridPane.margin>
-                        <Insets left="50.0" />
-                     </GridPane.margin>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="idiomagroup" />
-                     </toggleGroup>
-                  </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnIngles" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Ingles" toggleGroup="$idiomagroup" GridPane.columnIndex="3">
-                     <GridPane.margin>
-                        <Insets left="145.0" />
-                     </GridPane.margin>
-                  </JFXRadioButton>
-                  <Label fx:id="lblidioma" text="Idioma:" GridPane.columnIndex="3">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin></Label>
-                  <Label fx:id="lblTipo" text="Tipo:" GridPane.columnIndex="4" />
-                  <JFXRadioButton fx:id="btnAdministrador" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Administrador" GridPane.columnIndex="4">
-                     <GridPane.margin>
-                        <Insets left="30.0" />
-                     </GridPane.margin>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="puesto" />
-                     </toggleGroup>
-                  </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnRecepcionista" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Recepcionista" toggleGroup="$puesto" GridPane.columnIndex="4">
-                     <GridPane.margin>
-                        <Insets left="160.0" />
-                     </GridPane.margin>
-                  </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnMedico" onAction="#crearMedico" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Médico" toggleGroup="$puesto" GridPane.columnIndex="4">
-                     <GridPane.margin>
-                        <Insets left="290.0" />
-                     </GridPane.margin>
-                  </JFXRadioButton>
-               </children>
-            </GridPane>
          </children>
-      </AnchorPane>
+      </VBox>
    </center>
 </BorderPane>

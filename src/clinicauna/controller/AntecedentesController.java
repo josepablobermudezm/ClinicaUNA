@@ -143,7 +143,6 @@ public class AntecedentesController extends Controller {
                     String parentesco = txtParentesco.getText();
                     String enfermedad = txtEnfermedad.getText();
                     Long id = antecedenteDto.getAntId();
-                    System.out.println(id + " ID");
                     Long version = antecedenteDto.getAntVersion() + 1;
                     antecedenteDto = new AntecedenteDto(id, enfermedad, parentesco, version, expediente);
                     try {

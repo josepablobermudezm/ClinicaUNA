@@ -20,7 +20,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
-import java.io.IOException;
 import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -33,9 +32,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javax.mail.MessagingException;
 
 /**
  * FXML Controller class
@@ -46,8 +43,6 @@ public class UsuariosController extends Controller {
 
     @FXML
     private Label Titulo;
-    @FXML
-    private ImageView omg;
     @FXML
     private TableView<UsuarioDto> table;
     @FXML
@@ -75,24 +70,11 @@ public class UsuariosController extends Controller {
     @FXML
     private JFXButton btnAgregar1;
     @FXML
-    private JFXButton btnBuscar;
-    @FXML
-    private TableColumn<UsuarioDto, String> COL_PAPELLIDO_USUARIO;
-    @FXML
-    private TableColumn<UsuarioDto, String> COL_SAPELLIDO_USUARIO;
-    @FXML
     private JFXTextField txtPApellido;
     @FXML
     private JFXTextField txtSApellido;
-    private UsuarioDto usuarioDto;
     @FXML
     private JFXTextField txtNombreUsuario;
-    private Respuesta resp;
-    private Respuesta resp1;
-    private UsuarioService usuarioService;
-    private Mensaje ms;
-    private ArrayList<UsuarioDto> usuarios;
-    private ObservableList items;
     @FXML
     private JFXTextField txtFiltroUsuario;
     @FXML
@@ -109,32 +91,35 @@ public class UsuariosController extends Controller {
     private JFXRadioButton btnRecepcionista;
     @FXML
     private JFXRadioButton btnMedico;
-    private MedicoDto medicoDto;
-    private MedicoService medicoService;
     @FXML
     private JFXPasswordField txtClave;
-    private ArrayList<MedicoDto> medicos;
-    private UsuarioDto usuario;
-    private Idioma idioma;
     @FXML
     private JFXButton btnLimpiarRegistro;
     @FXML
     private Label lblidioma;
     @FXML
     private Label lblTipo;
-
+    private Respuesta resp;
+    private UsuarioService usuarioService;
+    private Mensaje ms;
+    private ArrayList<UsuarioDto> usuarios;
+    private ObservableList items;
+    private UsuarioDto usuarioDto;
+    private MedicoDto medicoDto;
+    private MedicoService medicoService;
+    private UsuarioDto usuario;
+    private Idioma idioma;
+    
     @Override
     public void initialize() {
         Formato();
         btnAgregar1.setCursor(Cursor.HAND);
-        btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
         btnEliminar1.setCursor(Cursor.HAND);
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
             this.btnEditar1.setText(idioma.getProperty("Editar"));
-            this.btnBuscar.setText(idioma.getProperty("Buscar"));
             this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
             this.btnAdministrador.setText(idioma.getProperty("Administrador"));
             this.btnAgregar1.setText(idioma.getProperty("Agregar"));
@@ -144,8 +129,6 @@ public class UsuariosController extends Controller {
             this.btnRecepcionista.setText(idioma.getProperty("Recepcionista"));
             this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
             this.COL_NOMBRE_USUARIO.setText(idioma.getProperty("Nombre"));
-            this.COL_PAPELLIDO_USUARIO.setText(idioma.getProperty("Primero") + " " + idioma.getProperty("Apellido"));
-            this.COL_SAPELLIDO_USUARIO.setText(idioma.getProperty("Segundo") + " " + idioma.getProperty("Apellido"));
             this.COL_CEDULA_USUARIO.setText("ID");
             this.COL_CORREO_USUARIO.setText(idioma.getProperty("Correo"));
             this.COL_ESTADO_USUARIO.setText(idioma.getProperty("Estado"));
@@ -163,23 +146,18 @@ public class UsuariosController extends Controller {
             this.lblidioma.setText(idioma.getProperty("Idioma"));
             this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Usuarios"));
         }
+        
         usuarioService = new UsuarioService();
         ms = new Mensaje();
         resp = usuarioService.getUsuarios();
         usuarios = ((ArrayList<UsuarioDto>) resp.getResultado("Usuarios"));
-
         medicoService = new MedicoService();
-        resp1 = medicoService.getMedicos();
-        medicos = ((ArrayList<MedicoDto>) resp1.getResultado("Medicos"));
-
-        COL_NOMBRE_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre()));
+        COL_NOMBRE_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre()+" "+value.getValue().getpApellido()+" "+value.getValue().getsApellido()));
         COL_CEDULA_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCedula()));
         COL_CORREO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCorreo()));
-        COL_TIPO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getTipoUsuario()));
-        COL_IDIOMA_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getIdioma()));
-        COL_ESTADO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
-        COL_PAPELLIDO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getpApellido()));
-        COL_SAPELLIDO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getsApellido()));
+        COL_TIPO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty( value.getValue().getTipoUsuario().equals("M") ?"Médico":value.getValue().getTipoUsuario().equals("A")?"Administrador":"Recepcionista"));
+        COL_IDIOMA_USUARIO.setCellValueFactory(value -> new SimpleStringProperty( value.getValue().getIdioma().equals("I")?"Inglés":"Español" ));
+        COL_ESTADO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado().equals("A") ?"Activo":"Inactivo"));
         items = FXCollections.observableArrayList(usuarios);
         table.setItems(items);
 
@@ -187,7 +165,6 @@ public class UsuariosController extends Controller {
 
     @FXML
     private void editar(ActionEvent event) {
-
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 if (registroCorrecto()) {
@@ -374,9 +351,6 @@ public class UsuariosController extends Controller {
         }
     }
 
-    @FXML
-    private void Filtrar(ActionEvent event) {
-    }
 
     @FXML
     private void crearMedico(ActionEvent event) {
