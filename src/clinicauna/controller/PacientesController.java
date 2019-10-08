@@ -13,6 +13,7 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.service.ExpedienteService;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
+import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
 import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
@@ -252,28 +253,21 @@ public class PacientesController extends Controller {
             pacienteDto = new PacienteDto(null, nombre, papellido, sapellido, cedula, correo, genero1, fecha, version);
             try {
                 resp = pacienteService.guardarPaciente(pacienteDto);
-                //guarda el expediente
-                FlowController.getInstance().goViewInWindowModal("AgregarExpediente", this.getStage(), false);
-                pacienteDto = (PacienteDto) resp.getResultado("Paciente");
-                expedienteDto = (ExpedienteDto) AppContext.getInstance().get("Expediente");
-                if (expedienteDto != null) {
-                    expedienteDto.setPaciente(pacienteDto);
-                    resp = expedienteService.guardarExpediente(expedienteDto);
-                    expedienteDto = (ExpedienteDto) resp.getResultado("Expediente");
-                    if (!resp.getEstado()) {
-                        pacienteService.eliminarPaciente(pacienteDto.getID());
-                        ms.showModal(Alert.AlertType.ERROR, "Error al guardar el paciente", this.getStage(), "No se ha podido guardar el expediente");
+                if (resp.getEstado()) {
+                        pacienteDto = (PacienteDto) resp.getResultado("Paciente");
+                        if (resp.getEstado()) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            limpiarValores();
+                            pacientes = (ArrayList) pacienteService.getPacientes().getResultado("Pacientes");
+                            table.getItems().clear();
+                            items = FXCollections.observableArrayList(pacientes);
+                            table.setItems(items);
+                        }else{
+                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        }
+                    } else {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                     }
-                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), "Guardado Exitosamente");
-                    limpiarValores();
-                    pacientes = (ArrayList) pacienteService.getPacientes().getResultado("Pacientes");
-
-                    table.getItems().clear();
-                    items = FXCollections.observableArrayList(pacientes);
-                    table.setItems(items);
-                } else {
-                    ms.showModal(Alert.AlertType.ERROR, "Error al guardar el expediente", this.getStage(), "Hubo un error al momento de guardar el paciente");
-                }
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
             }
