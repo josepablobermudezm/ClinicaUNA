@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clinicauna.controller;
 
 import clinicauna.model.PacienteDto;
@@ -29,10 +24,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-
 /**
  * FXML Controller class
- *
  * @author Jose Pablo Bermudez
  */
 public class ReportesController extends Controller {
@@ -96,7 +89,6 @@ public class ReportesController extends Controller {
         }
         ColNomPac.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre() + " " + value.getValue().getpApellido() + " " + value.getValue().getsApellido()));
         ColCedPac.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCedula()));
-
     }
 
     @FXML
@@ -134,7 +126,6 @@ public class ReportesController extends Controller {
             pacientes = (ArrayList<PacienteDto>) resp.getResultado("Pacientes");
             items = FXCollections.observableArrayList(pacientes);
             TvPaciente.setItems(items);
-
         } else {
             System.out.println(resp.getMensaje());
         }
