@@ -40,15 +40,15 @@
             </HBox>
             <HBox alignment="CENTER" spacing="90.0">
                <children>
-                  <JFXTextArea fx:id="txtAnotaciones" prefHeight="40.0" prefWidth="251.0" promptText="Anotaciones" />
-                  <JFXTextArea fx:id="txtRazonConsulta" prefHeight="40.0" prefWidth="251.0" promptText="Razón de Consulta" />
-                  <JFXTextArea fx:id="txtPlanAtencion" prefHeight="40.0" prefWidth="251.0" promptText="Plan de Atención" />
+                  <JFXTextArea fx:id="txtAnotaciones" labelFloat="true" prefHeight="40.0" prefWidth="251.0" promptText="Anotaciones" />
+                  <JFXTextArea fx:id="txtRazonConsulta" labelFloat="true" prefHeight="40.0" prefWidth="251.0" promptText="Razón de Consulta" />
+                  <JFXTextArea fx:id="txtPlanAtencion" labelFloat="true" prefHeight="40.0" prefWidth="251.0" promptText="Plan de Atención" />
                </children>
             </HBox>
             <HBox spacing="90.0">
                <children>
-                  <JFXTextArea fx:id="txtObservaciones" prefHeight="40.0" prefWidth="250.0" promptText="Observaciones" />
-                  <JFXTextArea fx:id="txtExamenFisico" prefHeight="40.0" prefWidth="250.0" promptText="Examen Físico" />
+                  <JFXTextArea fx:id="txtObservaciones" labelFloat="true" prefHeight="40.0" prefWidth="250.0" promptText="Observaciones" />
+                  <JFXTextArea fx:id="txtExamenFisico" labelFloat="true" prefHeight="40.0" prefWidth="250.0" promptText="Examen Físico" />
                </children>
                <padding>
                   <Insets left="50.0" />
@@ -63,7 +63,7 @@
       </HBox>
       <HBox alignment="CENTER" layoutY="110.0" prefHeight="244.0" prefWidth="1030.0">
          <children>
-            <TableView fx:id="table" prefHeight="230.0" prefWidth="930.0">
+            <TableView fx:id="table" onMouseReleased="#DatosControl" prefHeight="230.0" prefWidth="930.0">
               <columns>
                 <TableColumn fx:id="COL_FECHA_CONTROL" prefWidth="465.0" text="Fecha" />
                 <TableColumn fx:id="COL_HORA_CONTROL" prefWidth="465.0" text="Hora" />
@@ -78,7 +78,6 @@
          <children>
             <JFXButton onAction="#cancela" style="-fx-cursor: Hand;" text="Volver" />
             <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
-            <JFXButton onAction="#Eliminar" style="-fx-cursor: Hand;" text="Eliminar" />
             <JFXButton fx:id="btnEditar" onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />
             <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Agregar" />
          </children>

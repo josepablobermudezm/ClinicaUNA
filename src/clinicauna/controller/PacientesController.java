@@ -5,16 +5,12 @@
  */
 package clinicauna.controller;
 
-import clinicauna.ClinicaUna;
 import clinicauna.model.ExpedienteDto;
-import clinicauna.model.MedicoDto;
 import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.ExpedienteService;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
-import clinicauna.util.Correos;
-import clinicauna.util.FlowController;
 import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;

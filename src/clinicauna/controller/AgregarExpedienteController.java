@@ -6,7 +6,6 @@
 package clinicauna.controller;
 
 import clinicauna.model.ExpedienteDto;
-import clinicauna.model.MedicoDto;
 import clinicauna.model.PacienteDto;
 import clinicauna.service.ExpedienteService;
 import clinicauna.util.AppContext;
@@ -16,15 +15,8 @@ import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
-import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;

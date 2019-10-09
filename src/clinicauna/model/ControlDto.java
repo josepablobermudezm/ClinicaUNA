@@ -7,8 +7,6 @@ package clinicauna.model;
 
 import clinicauna.util.LocalDateAdapter;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -215,6 +213,11 @@ public class ControlDto {
 
     public void setCntExpediente(ExpedienteDto cntExpediente) {
         this.cntExpediente = cntExpediente;
+    }
+
+    @Override
+    public String toString() {
+        return "ControlDto{" + "cntId=" + cntId + ", cntFecha=" + cntFecha + ", cntHora=" + cntHora + ", cntPresion=" + cntPresion + ", cntFrecuenciaCardiaca=" + cntFrecuenciaCardiaca + ", cntPeso=" + cntPeso + ", cntTalla=" + cntTalla + ", cntTemperatura=" + cntTemperatura + ", cntImc=" + cntImc + ", cntAnotacionEnfermeria=" + cntAnotacionEnfermeria + ", cntRazonConsulta=" + cntRazonConsulta + ", cntPlanAtencion=" + cntPlanAtencion + ", cntObservaciones=" + cntObservaciones + ", cntExamenFisico=" + cntExamenFisico + ", cntTratamiento=" + cntTratamiento + ", cntVersion=" + cntVersion + ", cntExpediente=" + cntExpediente + '}';
     }
     
 
