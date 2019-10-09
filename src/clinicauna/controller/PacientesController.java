@@ -206,8 +206,8 @@ public class PacientesController extends Controller {
 
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
-                pacienteService.eliminarPaciente(table.getSelectionModel().getSelectedItem().getID());
-                ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), "Datos Eliminados correctamente");
+                Respuesta r = pacienteService.eliminarPaciente(table.getSelectionModel().getSelectedItem().getID());
+                ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), r.getMensaje());
 
                 Respuesta respuesta = pacienteService.getPacientes();
                 items.clear();

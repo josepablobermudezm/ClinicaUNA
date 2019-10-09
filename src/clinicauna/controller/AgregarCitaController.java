@@ -236,6 +236,7 @@ public class AgregarCitaController extends Controller {
         txtmotivo.clear();
         ComboPacientes.getSelectionModel().clearSelection();
         val = false;
+        bandera = false;
         aux.clear();
         i = 0;
         j = 0;
@@ -268,22 +269,24 @@ public class AgregarCitaController extends Controller {
     }
     private static int i, j = 0;
     private boolean val = false;
+    private boolean bandera = false;
     private static List<vistaCita> aux = new ArrayList<>();
 
     private void ValidarEspacios(String style) {
 
         int x = grid.getChildren().indexOf(hBox);
         int espacio = Integer.parseInt(txtEspacios.getText());
+        
         grid.getChildren().stream().forEach(l -> {
             if (grid.getChildren().indexOf(l) >= x) {
                 i++;
-                if (i <= espacio) {
+                if (i <= espacio && !bandera) {
                     if (((vistaCita) l).getCita() == null) {
                         aux.add((vistaCita) l);
                         j++;
                     } else {
                         val = true;
-                        return;
+                        bandera = true;
                     }
                 }
             }
