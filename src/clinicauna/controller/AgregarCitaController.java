@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -38,6 +39,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -87,17 +89,24 @@ public class AgregarCitaController extends Controller {
     private UsuarioDto usuario;
     private ArrayList<PacienteDto> lista;
     private MedicoDto medicoDto;
+    @FXML
+    private JFXTextField txtEspacios;
+    private GridPane grid;
+    private vistaCita hBox;
 
     @Override
     public void initialize() {
-        if(AppContext.getInstance().get("Cita")!=null){
+        hBox = (vistaCita) AppContext.getInstance().get("hBox");
+        grid = (GridPane) AppContext.getInstance().get("Grid");
+        medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
+        if (AppContext.getInstance().get("Cita") != null) {
             citaDto = (CitaDto) AppContext.getInstance().get("Cita");
             txtCorreo.setText(citaDto.getCorreo());
             txtTelefono.setText(citaDto.getTelefono());
             txtmotivo.setText(citaDto.getMotivo());
-            
+
         }
-        
+
         formato();
         pacienteService = new PacienteService();
         resp = pacienteService.getPacientes();
@@ -140,40 +149,7 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1);
             String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
             //Obtengo el primer el Hbox que contiene el Label con la hora
-            vistaCita hBox = (vistaCita) AppContext.getInstance().get("hBox");
-            switch (estado) {
-                case "AT":
-                    {
-                        hBox.setBackground(Background.EMPTY);
-                        String style = "-fx-background-color: #8cff8c; ";
-                        hBox.setStyle(style);
-                        break;
-                    }
-                case "CA":
-                    {
-                        hBox.setBackground(Background.EMPTY);
-                        String style = "-fx-background-color: #fa7a7a";
-                        hBox.setStyle(style);
-                        break;
-                    }
-                case "PR":
-                    {
-                        hBox.setBackground(Background.EMPTY);
-                        String style = "-fx-background-color: #fad655";
-                        hBox.setStyle(style);
-                        break;
-                    }
-                case "AU":
-                    {
-                        hBox.setBackground(Background.EMPTY);
-                        String style = "-fx-background-color: #bdbdbd";
-                        hBox.setStyle(style);
-                        break;
-                    }
-                default:
-                    break;
-            }
-            
+
             Label hora = (Label) hBox.getChildren().get(0);
             LocalTime localTimeObj = LocalTime.parse(hora.getText());
 
@@ -182,22 +158,52 @@ public class AgregarCitaController extends Controller {
             String horaCita = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
 
             citaDto = new CitaDto(null, version, pacienteDto, motivo, estado, telefono, correo, horaCita);
-            
-            
+            switch (estado) {
+                case "AT": {
+                    //hBox.setBackground(Background.EMPTY);
+                    String style = "-fx-background-color: #8cff8c; ";
+                    // hBox.setStyle(style);
+                    ValidarEspacios(style);
+                    break;
+                }
+                case "CA": {
+                    // hBox.setBackground(Background.EMPTY);
+                    String style = "-fx-background-color: #fa7a7a";
+                    // hBox.setStyle(style);
+                    ValidarEspacios(style);
+                    break;
+                }
+                case "PR": {
+                    //hBox.setBackground(Background.EMPTY);
+                    String style = "-fx-background-color: #fad655";
+                    // hBox.setStyle(style);
+                    ValidarEspacios(style);
+                    break;
+                }
+                case "AU": {
+                    //hBox.setBackground(Background.EMPTY);
+                    String style = "-fx-background-color: #bdbdbd";
+                    // hBox.setStyle(style);
+                    ValidarEspacios(style);
+                    break;
+                }
+                default:
+                    break;
+            }
             try {
-                medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
+
                 resp1 = citaService.guardarCita(citaDto);
                 citaDto = (CitaDto) resp1.getResultado("Cita");
 
-                hBox.AgregarCita(citaDto);
-                hBox.getChildren().add(hBox.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
+                // hBox.AgregarCita(citaDto);
+                // hBox.getChildren().add(hBox.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp1.getMensaje());
                 limpiarValores();
                 AppContext.getInstance().set("hBox", null);
                 FlowController.getInstance().initialize();
                 this.getStage().close();
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente..."+ e.getMessage());
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente..." + e.getMessage());
             }
 
         } else {
@@ -249,11 +255,55 @@ public class AgregarCitaController extends Controller {
         FlowController.getInstance().initialize();
         this.getStage().close();
     }
-    
-    private void formato(){
+
+    private void formato() {
         this.txtCorreo.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
         this.txtTelefono.setTextFormatter(Formato.getInstance().integerFormat(15));
         this.txtmotivo.setTextFormatter(Formato.getInstance().maxLengthFormat(100));
+        this.txtEspacios.setTextFormatter(Formato.getInstance().integerFormat(1));
+    }
+    private static int i, j = 0;
+    private boolean val = false;
+    private static List<vistaCita> aux = new ArrayList<>();
+
+    private void ValidarEspacios(String style) {
+
+        int x = grid.getChildren().indexOf(hBox);
+        int espacio = Integer.parseInt(txtEspacios.getText());
+        grid.getChildren().stream().forEach(l -> {
+            if (grid.getChildren().indexOf(l) >= x) {
+                i++;
+                if (i <= espacio) {
+                    if (((vistaCita) l).getCita() == null) {
+                        aux.add((vistaCita) l);
+                        j++;
+                    } else {
+                        val = true;
+                        return;
+                    }
+                }
+            }
+        });
+        if (val) {
+            if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
+                AgregarCita(style);
+            }
+        } else {
+            AgregarCita(style);
+        }
     }
 
+    public void AgregarCita(String style) {
+        aux.stream().forEach(l -> {
+            l.setBackground(Background.EMPTY);
+            l.setStyle(style);
+            l.AgregarCita(citaDto);
+            l.getChildren().add(((vistaCita) l).get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
+
+        });
+        val=false;
+        aux.clear();
+        i=0;
+        j=0;
+    }
 }
