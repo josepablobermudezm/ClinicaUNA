@@ -197,7 +197,6 @@ public class AgregarCitaController extends Controller {
 
                 // hBox.AgregarCita(citaDto);
                 // hBox.getChildren().add(hBox.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp1.getMensaje());
                 limpiarValores();
                 AppContext.getInstance().set("hBox", null);
                 FlowController.getInstance().initialize();
@@ -236,6 +235,10 @@ public class AgregarCitaController extends Controller {
         txtTelefono.clear();
         txtmotivo.clear();
         ComboPacientes.getSelectionModel().clearSelection();
+        val = false;
+        aux.clear();
+        i = 0;
+        j = 0;
     }
 
     boolean registroCorrecto() {
@@ -253,6 +256,7 @@ public class AgregarCitaController extends Controller {
     @FXML
     private void cancela(ActionEvent event) {
         FlowController.getInstance().initialize();
+        limpiarValores();
         this.getStage().close();
     }
 
@@ -288,8 +292,15 @@ public class AgregarCitaController extends Controller {
             if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
                 AgregarCita(style);
             }
+            else{
+                 limpiarValores();
+            }
         } else {
-            AgregarCita(style);
+            if (j == espacio) {
+                AgregarCita(style);
+            }else{
+                limpiarValores();
+            }
         }
     }
 
@@ -299,11 +310,8 @@ public class AgregarCitaController extends Controller {
             l.setStyle(style);
             l.AgregarCita(citaDto);
             l.getChildren().add(((vistaCita) l).get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
-
         });
-        val=false;
-        aux.clear();
-        i=0;
-        j=0;
+        limpiarValores();
     }
+    
 }
