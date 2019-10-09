@@ -94,9 +94,9 @@ public class ExamenService {
             List<ExamenDto> Examens = (List<ExamenDto>) request.readEntity(new GenericType<List<ExamenDto>>() {
             });
 
-            return new Respuesta(true, "", "", "Examens", Examens);
+            return new Respuesta(true, "", "", "Examenes", Examens);
         } catch (Exception ex) {
-            return new Respuesta(false, "", "", "Examens", "getExamens " + ex.getMessage());
+            return new Respuesta(false, "", "", "Examenes", "getExamenes " + ex.getMessage());
         }
     }
     

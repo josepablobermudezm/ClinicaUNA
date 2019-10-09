@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.ExamenesController">
+   <children>
+      <HBox alignment="CENTER" layoutX="1.0" layoutY="14.0" prefHeight="69.0" prefWidth="1065.0">
+         <children>
+            <Label fx:id="Titulo" text="Exámenes" />
+         </children>
+      </HBox>
+      <HBox layoutX="14.0" layoutY="109.0" prefHeight="56.0" prefWidth="678.0" spacing="50.0">
+         <children>
+            <JFXTextField fx:id="txtNombreExamen" labelFloat="true" prefHeight="29.0" prefWidth="314.0" promptText="Nombre del examen" />
+            <JFXDatePicker fx:id="Fecha" defaultColor="#042f86" prefHeight="29.0" prefWidth="314.0" promptText="Fecha" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="-1.0" layoutY="254.0" prefHeight="72.0" prefWidth="696.0" spacing="20.0">
+         <padding>
+            <Insets left="15.0" right="20.0" top="40.0" />
+         </padding>
+         <children>
+            <JFXButton onAction="#cancela" style="-fx-cursor: Hand;" text="Cancelar" />
+            <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
+            <JFXButton onAction="#Eliminar" style="-fx-cursor: Hand;" text="Eliminar" />
+            <JFXButton fx:id="btnEditar" onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />
+            <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Agregar" />
+         </children>
+      </HBox>
+      <HBox layoutX="21.0" layoutY="109.0" />
+      <TableView fx:id="table" layoutX="698.0" layoutY="83.0" onMouseReleased="#datos" prefHeight="287.0" prefWidth="336.0">
+         <columns>
+            <TableColumn fx:id="COL_NOMBRE_EXA" prefWidth="170.0" text="Nombre del examen" />
+            <TableColumn fx:id="COL_FECHA_EXA" prefWidth="170.0" text="Fecha" />
+         </columns>
+      </TableView>
+      <HBox layoutX="14.0" layoutY="165.0" prefHeight="100.0" prefWidth="678.0">
+         <children>
+            <JFXTextArea fx:id="txtAnotaciones" labelFloat="true" prefHeight="100.0" prefWidth="668.0" promptText="Anotaciones..." />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

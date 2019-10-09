@@ -36,6 +36,15 @@ public class ExamenDto {
 
     public ExamenDto() {
     }
+
+    public ExamenDto(Long exmID, String nombreExamen, LocalDate fecha, String anotaciones, Long exmVersion, ExpedienteDto expediente) {
+        this.exmID = exmID;
+        this.nombreExamen = nombreExamen;
+        this.fecha = fecha;
+        this.anotaciones = anotaciones;
+        this.exmVersion = exmVersion;
+        this.expediente = expediente;
+    }
     
     public ExpedienteDto getExpediente() {
         return expediente;

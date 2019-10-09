@@ -82,17 +82,11 @@ public class ExpedienteMedicoController extends Controller {
     @FXML
     private JFXRadioButton btnAntecedenteSi;
     @FXML
-    private ToggleGroup Hospitalizacion1;
-    @FXML
     private JFXRadioButton btnAntecedentesNo;
-    @FXML
-    private ToggleGroup Hospitalizacion2;
     @FXML
     private ToggleGroup Hospitalizacion;
     @FXML
     private JFXButton btnEditar1;
-    @FXML
-    private JFXButton btnEliminar1;
     @FXML
     private JFXButton btnLimpiarRegistro;
     @FXML
@@ -113,15 +107,16 @@ public class ExpedienteMedicoController extends Controller {
     private Label lblPaciente;
     @FXML
     private Label lblOperaciones1;
-    @FXML
-    private ToggleGroup Operaciones1;
     private PacienteDto paciente;
+    @FXML
+    private ToggleGroup Antecedentes;
+    @FXML
+    private ToggleGroup Alergias;
 
     @Override
     public void initialize() {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-
         if (usuario.getIdioma().equals("I")) {
             this.Titulo.setText(idioma.getProperty("MedExp") + " " + idioma.getProperty("Expediente"));
         }
@@ -172,7 +167,7 @@ public class ExpedienteMedicoController extends Controller {
                 ms.showModal(Alert.AlertType.WARNING, "Busqueda de paciente", this.getStage(), "El paciente seleccionado no tiene un expediente");
             }
             lblPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
-            AppContext.getInstance().delete("Paciente");
+            //AppContext.getInstance().delete("Paciente");
         }
     }
 
@@ -234,6 +229,7 @@ public class ExpedienteMedicoController extends Controller {
         this.btnSiTratamientos.setSelected(false);
         this.btnAntecedenteSi.setSelected(false);
         this.lblPaciente.setText(null);
+        AppContext.getInstance().delete("Paciente");
     }
 
     boolean registroCorrecto() {
@@ -347,6 +343,16 @@ public class ExpedienteMedicoController extends Controller {
     private void BuscarPaciente(ActionEvent event) {
         FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
         initialize();
+    }
+
+    @FXML
+    private void examenes(ActionEvent event) {
+        if (expedienteDto != null) {
+            //AppContext.getInstance().set("Expediente", expedienteDto);
+            FlowController.getInstance().goViewInWindowModal("Examenes",this.getStage(),false);
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+        }
     }
 
 }

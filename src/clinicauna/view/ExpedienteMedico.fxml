@@ -172,11 +172,12 @@
                   <Insets left="20.0" right="20.0" top="40.0" />
                </padding>
                <children>
+                  <JFXButton fx:id="btnAntecedentes" onAction="#Antecedentes" style="-fx-cursor: Hand;" text="Antecedentes Familiares" />
+                  <JFXButton fx:id="btnControles" onAction="#controles" style="-fx-cursor: hand;" text="Controles" />
+                  <JFXButton onAction="#examenes" style="-fx-cursor: Hand;" text="Exámenes" />
                   <JFXButton fx:id="btnEditar1" onAction="#editar" style="-fx-cursor: hand;" text="Editar" />
                   <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
                   <JFXButton fx:id="btnBuscar" onAction="#BuscarPaciente" style="-fx-cursor: hand;" text="Buscar" />
-                  <JFXButton fx:id="btnAntecedentes" onAction="#Antecedentes" style="-fx-cursor: Hand;" text="Antecedentes Familiares" />
-                  <JFXButton fx:id="btnControles" onAction="#controles" style="-fx-cursor: hand;" text="Controles" />
                   <JFXButton fx:id="btnGuardar" onAction="#AgregarExpediente" style="-fx-cursor: hand;" text="Guardar" />
                </children>
             </HBox>
