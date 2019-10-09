@@ -8,6 +8,7 @@ package clinicauna.service;
 import clinicauna.model.AgendaDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,23 +22,19 @@ import javax.ws.rs.core.GenericType;
  */
 public class AgendaService {
     
-    
-    public Respuesta getAgenda(String Agenda, String clave) {
+    public Respuesta getAgenda(String fecha) {
         try {
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("Agenda", Agenda);
-            parametros.put("clave", clave);
-            Request request = new Request("AgendaController/Agenda", "/{Agenda}/{clave}", parametros);
+            parametros.put("fecha", fecha);
+            Request request = new Request("AgendaController/agenda", "/{fecha}", parametros);
             request.get();
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-
             AgendaDto agenda = (AgendaDto) request.readEntity(AgendaDto.class);
             return new Respuesta(true, "", "", "Agenda", agenda);
-
         } catch (Exception ex) {
-            Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo el Agenda [" + Agenda + "]", ex);
+            Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo la Agenda [" + fecha + "]", ex);
             return new Respuesta(false, "Error obteniendo el Agenda.", "getAgenda " + ex.getMessage());
         }
     }

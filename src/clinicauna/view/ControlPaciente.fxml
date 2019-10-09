@@ -76,7 +76,7 @@
             <Insets left="20.0" right="20.0" top="40.0" />
          </padding>
          <children>
-            <JFXButton onAction="#cancela" style="-fx-cursor: Hand;" text="Cancelar" />
+            <JFXButton onAction="#cancela" style="-fx-cursor: Hand;" text="Volver" />
             <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
             <JFXButton onAction="#Eliminar" style="-fx-cursor: Hand;" text="Eliminar" />
             <JFXButton fx:id="btnEditar" onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />

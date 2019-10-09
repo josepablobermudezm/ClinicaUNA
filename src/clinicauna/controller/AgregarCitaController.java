@@ -13,6 +13,7 @@ import clinicauna.service.CitaService;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
@@ -89,6 +90,15 @@ public class AgregarCitaController extends Controller {
 
     @Override
     public void initialize() {
+        if(AppContext.getInstance().get("Cita")!=null){
+            citaDto = (CitaDto) AppContext.getInstance().get("Cita");
+            txtCorreo.setText(citaDto.getCorreo());
+            txtTelefono.setText(citaDto.getTelefono());
+            txtmotivo.setText(citaDto.getMotivo());
+            
+        }
+        
+        formato();
         pacienteService = new PacienteService();
         resp = pacienteService.getPacientes();
         ms = new Mensaje();
@@ -130,7 +140,7 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1);
             String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
             //Obtengo el primer el Hbox que contiene el Label con la hora
-            HBox hBox = (HBox) AppContext.getInstance().get("hBox");
+            vistaCita hBox = (vistaCita) AppContext.getInstance().get("hBox");
             switch (estado) {
                 case "AT":
                     {
@@ -163,6 +173,7 @@ public class AgregarCitaController extends Controller {
                 default:
                     break;
             }
+            
             Label hora = (Label) hBox.getChildren().get(0);
             LocalTime localTimeObj = LocalTime.parse(hora.getText());
 
@@ -171,20 +182,22 @@ public class AgregarCitaController extends Controller {
             String horaCita = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
 
             citaDto = new CitaDto(null, version, pacienteDto, motivo, estado, telefono, correo, horaCita);
+            
+            
             try {
                 medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
                 resp1 = citaService.guardarCita(citaDto);
                 citaDto = (CitaDto) resp1.getResultado("Cita");
 
-                vistaCita vistaCita = new vistaCita(citaDto);
-                int valor = 0;
-                hBox.getChildren().add(vistaCita.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
+                hBox.AgregarCita(citaDto);
+                hBox.getChildren().add(hBox.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp1.getMensaje());
                 limpiarValores();
                 AppContext.getInstance().set("hBox", null);
+                FlowController.getInstance().initialize();
                 this.getStage().close();
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente..."+ e.getMessage());
             }
 
         } else {
@@ -235,6 +248,12 @@ public class AgregarCitaController extends Controller {
     private void cancela(ActionEvent event) {
         FlowController.getInstance().initialize();
         this.getStage().close();
+    }
+    
+    private void formato(){
+        this.txtCorreo.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        this.txtTelefono.setTextFormatter(Formato.getInstance().integerFormat(15));
+        this.txtmotivo.setTextFormatter(Formato.getInstance().maxLengthFormat(100));
     }
 
 }

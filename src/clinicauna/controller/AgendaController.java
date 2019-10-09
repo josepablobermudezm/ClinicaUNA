@@ -8,16 +8,21 @@ package clinicauna.controller;
 import clinicauna.model.AgendaDto;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
+import clinicauna.service.AgendaService;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
 import clinicauna.util.Idioma;
-import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
+import clinicauna.util.vistaCita;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +31,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
@@ -34,7 +38,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -75,7 +78,7 @@ public class AgendaController extends Controller {
     private UsuarioDto usuario;
     private Idioma idioma;
     private AgendaDto agendaDto;
-    ObservableList<String> items;
+    private ObservableList<String> items;
 
     @Override
     public void initialize() {
@@ -89,7 +92,6 @@ public class AgendaController extends Controller {
     }
 
     public void Inicio() {
-        //calendarGrid.addRow(0,vbox);
         medicoService = new MedicoService();
         resp = medicoService.getMedicos();
         idioma = (Idioma) AppContext.getInstance().get("idioma");
@@ -111,9 +113,11 @@ public class AgendaController extends Controller {
     }
 
     private EventHandler<MouseEvent> citasReleased = (event) -> {
-        AppContext.getInstance().set("hBox", (HBox) event.getSource());
+        vistaCita hCita = (vistaCita) event.getSource();
+        AppContext.getInstance().set("hBox", hCita);
+        AppContext.getInstance().set("Cita", hCita.getCita());
         FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
-        
+        AppContext.getInstance().delete("Cita");
     };
 
     @FXML
@@ -125,8 +129,6 @@ public class AgendaController extends Controller {
             labelmes.setText(mes);
             labelyear.setText(year);
             labelSemana.setText(semana);
-
-            agendaDto = new AgendaDto();
         } catch (Exception e) {
 
         }
@@ -147,27 +149,26 @@ public class AgendaController extends Controller {
                     cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
                 }
             });
+
             medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
-            AppContext.getInstance().set("MedicoDto", medicoDto);
-            cedulaBuscar = "";
-            cedulaEncontrada = false;
-            LocalTime localTimeObj = LocalTime.parse(medicoDto.getInicioJornada());
-            LocalTime localTimeObj2 = LocalTime.parse(medicoDto.getFinJornada());
+
+            LocalTime inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
+            LocalTime finJornada = LocalTime.parse(medicoDto.getFinJornada());
             int EspaciosPorHora = medicoDto.getEspacios();
             Integer horas = 0;
             //Calcula la cantidad de espacios por hora que tendra la agenda
-            if (localTimeObj.isBefore(localTimeObj2)) {
-                horas = -(localTimeObj.getHour() - localTimeObj2.getHour());
+            if (inicioJornada.isBefore(finJornada)) {
+                horas = -(inicioJornada.getHour() - finJornada.getHour());
 
             } else {
-                horas = ((24 - localTimeObj.getHour()) + localTimeObj.getHour()) - localTimeObj2.getHour();
+                horas = ((24 - inicioJornada.getHour()) + inicioJornada.getHour()) - finJornada.getHour();
             }
 
-            int valor = localTimeObj.getHour();
+            int valor = inicioJornada.getHour();
 
             for (int i = 0; i < horas; i++) {
                 for (int j = 0; j < EspaciosPorHora; j++) {
-                    HBox hPane = new HBox();
+                    vistaCita hPane = new vistaCita();
                     hPane.getStyleClass().add("calendar_pane");
                     hPane.setOnMouseReleased(citasReleased);
                     hPane.setMinWidth((EspaciosPorHora == 4) ? 250 : (EspaciosPorHora == 3) ? 333 : (EspaciosPorHora == 2) ? 500 : 1000);
@@ -207,22 +208,47 @@ public class AgendaController extends Controller {
                         case 4:
                             if (valor >= 10) {
                                 label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":15") : (j == 2) ? (valor + ":30") : (j == 3) ? (valor + ":45") : (valor + ":00"));
-                            }else{
-                                label.setText((j == 0) ? "0"+valor + ":00" : (j == 1) ? "0"+valor + ":15" : (j == 2) ? "0"+valor + ":30" : (j == 3) ? "0"+valor + ":45" : "0"+valor + ":00");
+                            } else {
+                                label.setText((j == 0) ? "0" + valor + ":00" : (j == 1) ? "0" + valor + ":15" : (j == 2) ? "0" + valor + ":30" : (j == 3) ? "0" + valor + ":45" : "0" + valor + ":00");
                             }
                             break;
                     }
+
                     hPane.getChildren().add(label);
                     hPane.setAlignment(Pos.BASELINE_LEFT);
                     GridPane.setVgrow(hPane, Priority.NEVER);
-                    // Add it to the grid
                     calendarGrid.add(hPane, j, i);
                 }
                 valor++;
             }
 
-            AppContext.getInstance().set("Medico", medicoDto);
+            //Agenda
+            /*
+            Si la Agenda del medico con el dia seleccionado no se ha creado, entonces la creamos 
+             */
+            resp = new AgendaService().getAgenda(DatePicker.getValue().toString());
 
+            if (resp.getEstado()) {
+                agendaDto = (AgendaDto) resp.getResultado("Agenda");
+            } else {
+                //Creo las conversiones de las horas del medico con formato
+                LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
+                LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
+
+                String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
+                String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
+                
+                medicoDto.setInicioJornada(inicioS);
+                medicoDto.setFinJornada(finS);
+                //Creo la agenda 
+                agendaDto = new AgendaDto(null, DatePicker.getValue(), new Long(1), medicoDto);
+                agendaDto = (AgendaDto) new AgendaService().guardarAgenda(agendaDto).getResultado("Agenda");
+                medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
+            }
+            
+            cedulaBuscar = "";
+            cedulaEncontrada = false;
+            AppContext.getInstance().set("MedicoDto", medicoDto);
         }
     }
 

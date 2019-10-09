@@ -235,6 +235,7 @@ public class PacientesController extends Controller {
         this.txtNombre.clear();
         this.txtPApellido.clear();
         this.txtSApellido.clear();
+        this.FechaDeNacimiento.setValue(null);
     }
 
     @FXML
