@@ -61,9 +61,9 @@
             <Label fx:id="Titulo" text="Control de Paciente" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutY="110.0" prefHeight="244.0" prefWidth="1030.0">
+      <HBox alignment="CENTER" layoutY="122.0" prefHeight="232.0" prefWidth="1030.0">
          <children>
-            <TableView fx:id="table" onMouseReleased="#DatosControl" prefHeight="230.0" prefWidth="930.0">
+            <TableView fx:id="table" onMouseReleased="#DatosControl" prefHeight="229.0" prefWidth="930.0">
               <columns>
                 <TableColumn fx:id="COL_FECHA_CONTROL" prefWidth="465.0" text="Fecha" />
                 <TableColumn fx:id="COL_HORA_CONTROL" prefWidth="465.0" text="Hora" />
@@ -80,6 +80,20 @@
             <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
             <JFXButton fx:id="btnEditar" onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />
             <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Agregar" />
+         </children>
+      </HBox>
+      <HBox layoutX="5.0" layoutY="95.0" prefHeight="33.0" prefWidth="1030.0">
+         <children>
+            <Label prefHeight="21.0" prefWidth="67.0" text="Paciente:">
+               <HBox.margin>
+                  <Insets left="40.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="lblPaciente" prefHeight="21.0" prefWidth="257.0">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Label>
          </children>
       </HBox>
    </children>

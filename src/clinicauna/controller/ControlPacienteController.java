@@ -94,6 +94,8 @@ public class ControlPacienteController extends Controller {
     private ControlDto controlDto;
     private ExpedienteDto expedienteDto;
     private PacienteDto pacienteDto;
+    @FXML
+    private Label lblPaciente;
 
     @Override
     public void initialize() {
@@ -113,13 +115,15 @@ public class ControlPacienteController extends Controller {
         items = FXCollections.observableArrayList(controles2);
         table.setItems(items);
         Formato();
+        lblPaciente.setText(expedienteDto.getPaciente().getNombre() + " " + expedienteDto.getPaciente().getpApellido() + " " + expedienteDto.getPaciente().getsApellido());
     }
 
     @FXML
     private void cancela(ActionEvent event) {
-
+        //AppContext.getInstance().set("Paciente", pacienteDto);
+        //FlowController.getInstance().initialize();
         FlowController.getInstance().goView("ExpedienteMedico");
-
+        
     }
 
     @FXML
@@ -216,7 +220,7 @@ public class ControlPacienteController extends Controller {
                 items = FXCollections.observableArrayList(controles2);
                 table.setItems(items);
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente....");
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el control....");
             }
 
         } else {
