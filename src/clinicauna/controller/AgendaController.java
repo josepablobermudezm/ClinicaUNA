@@ -216,11 +216,13 @@ public class AgendaController extends Controller {
                     hPane.getChildren().add(label);
                     hPane.setAlignment(Pos.BASELINE_LEFT);
                     GridPane.setVgrow(hPane, Priority.NEVER);
+                    hPane.setStyle("-fx-background-color: #FFFF;");
                     calendarGrid.add(hPane, j, i);
+                    
                 }
                 valor++;
             }
-
+            AppContext.getInstance().set("Grid", calendarGrid);
             //Agenda
             /*
             Si la Agenda del medico con el dia seleccionado no se ha creado, entonces la creamos 

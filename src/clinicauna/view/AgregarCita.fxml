@@ -16,24 +16,26 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.AgregarCitaController">
    <children>
-      <GridPane layoutX="7.0" layoutY="98.0" prefHeight="62.0" prefWidth="800.0">
+      <GridPane layoutX="27.0" layoutY="98.0" prefHeight="62.0" prefWidth="780.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="27.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="223.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="55.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="206.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="21.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="211.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="71.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="161.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="22.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="197.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="19.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="180.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="24.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="203.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="9.0" prefWidth="9.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXTextField fx:id="txtTelefono" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Télefono" GridPane.columnIndex="3" />
-            <JFXTextField fx:id="txtCorreo" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Correo" GridPane.columnIndex="5" />
-            <JFXComboBox fx:id="ComboPacientes" onAction="#seleccionarPaciente" prefHeight="31.0" prefWidth="221.0" promptText="Pacientes" GridPane.columnIndex="1" />
+            <JFXTextField fx:id="txtTelefono" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Télefono" GridPane.columnIndex="4" />
+            <JFXTextField fx:id="txtCorreo" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Correo" GridPane.columnIndex="6" />
+            <JFXComboBox fx:id="ComboPacientes" onAction="#seleccionarPaciente" prefHeight="31.0" prefWidth="221.0" promptText="Pacientes" GridPane.columnIndex="2" />
+            <JFXTextField fx:id="txtEspacios" labelFloat="true" prefHeight="25.0" prefWidth="143.0" promptText="Espacios de Agenda" />
          </children>
       </GridPane>
       <GridPane layoutY="179.0" prefHeight="71.0" prefWidth="818.0">
