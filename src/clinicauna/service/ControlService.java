@@ -85,7 +85,7 @@ public class ControlService {
 
     public Respuesta getControles() {
         try {
-            Request request = new Request("ControlController/Controles");
+            Request request = new Request("ControlController/controles");
             request.get();
 
             if (request.isError()) {
@@ -95,9 +95,9 @@ public class ControlService {
             List<ControlDto> Controls = (List<ControlDto>) request.readEntity(new GenericType<List<ControlDto>>() {
             });
 
-            return new Respuesta(true, "", "", "Controles", Controls);
+            return new Respuesta(true, "", "", "controles", Controls);
         } catch (Exception ex) {
-            return new Respuesta(false, "", "", "Controles", "getControles " + ex.getMessage());
+            return new Respuesta(false, "", "", "controles", "getControles " + ex.getMessage());
         }
     }
 
@@ -133,7 +133,7 @@ public class ControlService {
 
             Control = (ControlDto) request.readEntity(ControlDto.class);
 
-            return new Respuesta(true, "", "", "Control", Control);
+            return new Respuesta(true,"Guardado Exitosamente", request.toString(), "Control", Control);
         } catch (Exception ex) {
             Logger.getLogger(ControlService.class.getName()).log(Level.SEVERE, "Error guardando el Control.", ex);
             return new Respuesta(false, "Error guardando el Control.", "guardarControl " + ex.getMessage());

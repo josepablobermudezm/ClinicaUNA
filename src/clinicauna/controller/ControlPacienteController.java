@@ -12,6 +12,7 @@ import clinicauna.model.PacienteDto;
 import clinicauna.service.ControlService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import clinicauna.util.Formato;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -88,6 +89,7 @@ public class ControlPacienteController extends Controller {
     private JFXButton btnGuardar;
     private ObservableList items;
     private ArrayList<ControlDto> controles;
+    private ArrayList<ControlDto> controles2;
     private Respuesta resp;
     private ControlService controlService;
     private Mensaje ms;
@@ -97,18 +99,22 @@ public class ControlPacienteController extends Controller {
 
     @Override
     public void initialize() {
-
-        pacienteDto = (PacienteDto) AppContext.getInstance().get("Paciente");
+        controles2 = new ArrayList();
         expedienteDto = (ExpedienteDto) AppContext.getInstance().get("Expediente");
+        pacienteDto = (PacienteDto) AppContext.getInstance().get("Paciente");
         controlService = new ControlService();
-        resp = controlService.getControles();
-        ms = new Mensaje();
         controlDto = new ControlDto();
-        controles = ((ArrayList<ControlDto>) resp.getResultado("Controles"));
+        ms = new Mensaje();
+        resp = controlService.getControles();
+        controles = ((ArrayList<ControlDto>) resp.getResultado("controles"));
+        controles.stream().filter(x -> x.getCntExpediente().getExpID().equals(expedienteDto.getExpID())).forEach(x -> {
+            controles2.add(x);
+        });
         COL_FECHA_CONTROL.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCntFecha().toString()));
         COL_HORA_CONTROL.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCntHora()));
-        items = FXCollections.observableArrayList(controles);
+        items = FXCollections.observableArrayList(controles2);
         table.setItems(items);
+        Formato();
     }
 
     @FXML
@@ -147,10 +153,10 @@ public class ControlPacienteController extends Controller {
             Double talla = Double.parseDouble(txtTalla.getText());
             Double temperatura = Double.parseDouble(txtTemperatura.getText());
             String tratamiento = txtTratamiento.getText();
-            
+
             LocalDateTime horaLocal = LocalDateTime.of(LocalDate.now(), Hora.getValue());
             String hora = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaLocal);
-            
+
             LocalDate fecha = Fecha.getValue();
             Long version = new Long(1);
             controlDto = new ControlDto(null, fecha, hora, presion, frecuenciaCardiaca, peso, talla, temperatura, indiceMasaCoportal, anotaciones, razon, planAtencion, observaciones, Examen, tratamiento, version, expedienteDto);
@@ -159,12 +165,16 @@ public class ControlPacienteController extends Controller {
 
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                 limpiarRegistro();
-                controles = ((ArrayList<ControlDto>) resp.getResultado("Controles"));
+                controles = (ArrayList) controlService.getControles().getResultado("controles");
+                controles2.clear();
+                controles.stream().filter(x -> x.getCntExpediente().getExpID().equals(expedienteDto.getExpID())).forEach(x -> {
+                    controles2.add(x);
+                });
                 table.getItems().clear();
-                items = FXCollections.observableArrayList(controles);
+                items = FXCollections.observableArrayList(controles2);
                 table.setItems(items);
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente....");
             }
 
         } else {
@@ -197,6 +207,21 @@ public class ControlPacienteController extends Controller {
                 && !txtPlanAtencion.getText().isEmpty() && !txtPresion.getText().isEmpty() && !txtRazonConsulta.getText().isEmpty()
                 && !txtTalla.getText().isEmpty() && !txtTemperatura.getText().isEmpty() && !txtTratamiento.getText().isEmpty()
                 && Fecha.getValue() != null && Hora.getValue() != null;
+    }
+
+    public void Formato() {
+        this.txtAnotaciones.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
+        this.txtExamenFisico.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
+        this.txtFrecuenciaCardiaca.setTextFormatter(Formato.getInstance().integerFormat(3));
+        this.txtIndiceMasaCorporal.setTextFormatter(Formato.getInstance().integerFormat(3));
+        this.txtObservaciones.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
+        this.txtPeso.setTextFormatter(Formato.getInstance().integerFormat(3));
+        this.txtPlanAtencion.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
+        this.txtPresion.setTextFormatter(Formato.getInstance().integerFormat(3));
+        this.txtRazonConsulta.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
+        this.txtTalla.setTextFormatter(Formato.getInstance().integerFormat(3));
+        this.txtTemperatura.setTextFormatter(Formato.getInstance().integerFormat(3));
+        this.txtTratamiento.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
     }
 
 }

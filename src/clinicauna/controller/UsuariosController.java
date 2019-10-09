@@ -313,7 +313,6 @@ public class UsuariosController extends Controller {
         this.txtPApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
         this.txtSApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
         this.txtNombreUsuario.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
-
     }
 
     boolean registroCorrecto() {

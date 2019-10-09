@@ -26,8 +26,8 @@
             </HBox>
             <HBox alignment="CENTER" spacing="90.0">
                <children>
-                  <JFXDatePicker fx:id="Fecha" prefHeight="29.0" prefWidth="250.0" promptText="Fecha" />
-                  <JFXTimePicker fx:id="Hora" prefHeight="29.0" prefWidth="250.0" promptText="Hora" />
+                  <JFXDatePicker fx:id="Fecha" defaultColor="#042f86" prefHeight="29.0" prefWidth="250.0" promptText="Fecha" />
+                  <JFXTimePicker fx:id="Hora" defaultColor="#042f86" prefHeight="29.0" prefWidth="250.0" promptText="Hora" />
                   <JFXTextField fx:id="txtTratamiento" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Tratamiento" />
                </children>
             </HBox>
