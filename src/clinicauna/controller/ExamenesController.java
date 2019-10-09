@@ -5,6 +5,7 @@
  */
 package clinicauna.controller;
 
+import clinicauna.model.AntecedenteDto;
 import clinicauna.model.ControlDto;
 import clinicauna.model.ExamenDto;
 import clinicauna.model.ExpedienteDto;
@@ -45,7 +46,6 @@ public class ExamenesController extends Controller {
 
     @FXML
     private Label Titulo;
-    private JFXTextField txtNombre;
     @FXML
     private JFXButton btnLimpiarRegistro;
     @FXML
@@ -111,6 +111,41 @@ public class ExamenesController extends Controller {
 
     @FXML
     private void editar(ActionEvent event) {
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                if (RegistroCorrecto()) {
+                    txtAnotaciones.getText();
+                    String examen = txtNombreExamen.getText();
+                    LocalDate fecha = Fecha.getValue();
+                    String anotaciones = txtAnotaciones.getText();
+                    Long id = table.getSelectionModel().getSelectedItem().getExmID();
+                    Long version = table.getSelectionModel().getSelectedItem().getExmVersion()+ 1;
+                    examenDto = new ExamenDto(id, examen, fecha, anotaciones, version,expedienteDto);
+                    try {
+                        resp = examenService.guardarExamen(examenDto);
+                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        limpiarRegistro();
+                        examenes = (ArrayList) examenService.getExamenes().getResultado("Examenes");
+                        examenes2.clear();
+                        examenes.stream().filter(x -> x.getExpediente().getExpID().equals(expedienteDto.getExpID())).forEach(x -> {
+                            examenes2.add(x);
+                        });
+                        table.getItems().clear();
+                        items = FXCollections.observableArrayList(examenes2);
+                        table.setItems(items);
+                    } catch (Exception e) {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                    }
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                            + "verifica que todos los datos esten llenos.");
+                }
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+            }
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+        }
     }
 
     @FXML
