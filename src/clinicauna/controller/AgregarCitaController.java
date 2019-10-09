@@ -273,10 +273,8 @@ public class AgregarCitaController extends Controller {
     private static List<vistaCita> aux = new ArrayList<>();
 
     private void ValidarEspacios(String style) {
-
         int x = grid.getChildren().indexOf(hBox);
         int espacio = Integer.parseInt(txtEspacios.getText());
-        
         grid.getChildren().stream().forEach(l -> {
             if (grid.getChildren().indexOf(l) >= x) {
                 i++;
@@ -302,6 +300,9 @@ public class AgregarCitaController extends Controller {
             if (j == espacio) {
                 AgregarCita(style);
             }else{
+                if(!val){
+                    
+                }
                 limpiarValores();
             }
         }
