@@ -292,18 +292,20 @@ public class AgregarCitaController extends Controller {
         if (val) {
             if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
                 AgregarCita(style);
-            }
-            else{
-                 limpiarValores();
+            } else {
+                limpiarValores();
             }
         } else {
             if (j == espacio) {
                 AgregarCita(style);
-            }else{
-                if(!val){
-                    
+            } else {
+                if (!val) {
+                    if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
+                        AgregarCita(style);
+                    } else {
+                        limpiarValores();
+                    }
                 }
-                limpiarValores();
             }
         }
     }
@@ -317,5 +319,5 @@ public class AgregarCitaController extends Controller {
         });
         limpiarValores();
     }
-    
+
 }
