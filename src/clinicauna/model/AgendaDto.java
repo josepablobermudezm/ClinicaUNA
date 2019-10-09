@@ -7,6 +7,7 @@ package clinicauna.model;
 
 import clinicauna.util.LocalDateAdapter;
 import java.time.LocalDate;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -21,55 +22,71 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class AgendaDto {
     @XmlTransient
-    Long ageID;
+    private Long ageId;
     @XmlTransient
-    MedicoDto medicoDto;
+    private LocalDate ageFecha;
     @XmlTransient
-    Long agenVersion;
+    private Long ageVersion;
     @XmlTransient
-    LocalDate fecha;
-
+    private MedicoDto ageMedico;
+    @XmlTransient
+    private List<EspacioDto> espacioList;
+    
     public AgendaDto(){
     }
 
-    public AgendaDto(Long ageID, MedicoDto medicoDto, Long agenVersion, LocalDate fecha) {
-        this.ageID = ageID;
-        this.medicoDto = medicoDto;
-        this.agenVersion = agenVersion;
-        this.fecha = fecha;
-    }
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    public LocalDate getFecha() {
-        return fecha;
-    }
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public Long getID() {
-        return ageID;
-    }
-
-    public void setID(Long ID) {
-        this.ageID = ID;
-    }
-
-    public MedicoDto getMedicoDto() {
-        return medicoDto;
-    }
-
-    public void setMedicoDto(MedicoDto medicoDto) {
-        this.medicoDto = medicoDto;
-    }
-
-    public Long getAgenVersion() {
-        return agenVersion;
-    }
-
-    public void setAgenVersion(Long agenVersion) {
-        this.agenVersion = agenVersion;
+    public AgendaDto(Long ageId, LocalDate ageFecha, Long ageVersion, MedicoDto ageMedico) {
+        this.ageId = ageId;
+        this.ageFecha = ageFecha;
+        this.ageVersion = ageVersion;
+        this.ageMedico = ageMedico;
     }
     
+    public Long getAgeId() {
+        return ageId;
+    }
+
+    public void setAgeId(Long ageId) {
+        this.ageId = ageId;
+    }
+    
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public LocalDate getAgeFecha() {
+        return ageFecha;
+    }
+    
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public void setAgeFecha(LocalDate ageFecha) {
+        this.ageFecha = ageFecha;
+    }
+
+    public Long getAgeVersion() {
+        return ageVersion;
+    }
+
+    public void setAgeVersion(Long ageVersion) {
+        this.ageVersion = ageVersion;
+    }
+
+    public MedicoDto getAgeMedico() {
+        return ageMedico;
+    }
+
+    public void setAgeMedico(MedicoDto ageMedico) {
+        this.ageMedico = ageMedico;
+    }
+
+    public List<EspacioDto> getEspacioList() {
+        return espacioList;
+    }
+
+    public void setEspacioList(List<EspacioDto> espacioList) {
+        this.espacioList = espacioList;
+    }
+
+    @Override
+    public String toString() {
+        return "AgendaDto{" + "ageId=" + ageId + ", ageFecha=" + ageFecha + ", ageVersion=" + ageVersion + ", ageMedico=" + ageMedico + ", espacioList=" + espacioList + '}';
+    }
     
 }

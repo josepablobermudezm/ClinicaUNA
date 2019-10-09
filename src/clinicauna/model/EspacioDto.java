@@ -5,6 +5,9 @@
  */
 package clinicauna.model;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,24 +21,29 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class EspacioDto {
     @XmlTransient
-    private Long espID;
-    @XmlTransient
-    private Long espVersion;
-    @XmlTransient
-    private AgendaDto agenda;
+    private Long espId;
     @XmlTransient
     private String espHoraFin;
     @XmlTransient
     private String espHoraInicio;
+    @XmlTransient
+    private Long espVersion;
+    @XmlTransient
+    private List<CitaPorEspacioDto> citasPorEspacioList;
+    @XmlTransient
+    private AgendaDto espAgenda;
 
-    public EspacioDto(Long espID, Long espVersion, AgendaDto agenda, String espHoraFin, String espHoraInicio) {
-        this.espID = espID;
-        this.espVersion = espVersion;
-        this.agenda = agenda;
-        this.espHoraFin = espHoraFin;
-        this.espHoraInicio = espHoraInicio;
+    public EspacioDto(){
     }
 
+    public EspacioDto(Long espId, String espHoraFin, String espHoraInicio, Long espVersion, AgendaDto espAgenda) {
+        this.espId = espId;
+        this.espHoraFin = espHoraFin;
+        this.espHoraInicio = espHoraInicio;
+        this.espVersion = espVersion;
+        this.espAgenda = espAgenda;
+    }
+    
     public String getEspHoraFin() {
         return espHoraFin;
     }
@@ -51,14 +59,7 @@ public class EspacioDto {
     public void setEspHoraInicio(String espHoraInicio) {
         this.espHoraInicio = espHoraInicio;
     }
-    
-    public Long getEspID() {
-        return espID;
-    }
 
-    public void setEspID(Long espID) {
-        this.espID = espID;
-    }
 
     public Long getEspVersion() {
         return espVersion;
@@ -68,13 +69,28 @@ public class EspacioDto {
         this.espVersion = espVersion;
     }
 
-    public AgendaDto getAgenda() {
-        return agenda;
+    public Long getEspId() {
+        return espId;
     }
 
-    public void setAgenda(AgendaDto agenda) {
-        this.agenda = agenda;
+    public void setEspId(Long espId) {
+        this.espId = espId;
     }
-    
+
+    public List<CitaPorEspacioDto> getCitasPorEspacioList() {
+        return citasPorEspacioList;
+    }
+
+    public void setCitasPorEspacioList(List<CitaPorEspacioDto> citasPorEspacioList) {
+        this.citasPorEspacioList = citasPorEspacioList;
+    }
+
+    public AgendaDto getEspAgenda() {
+        return espAgenda;
+    }
+
+    public void setEspAgenda(AgendaDto espAgenda) {
+        this.espAgenda = espAgenda;
+    }
     
 }
