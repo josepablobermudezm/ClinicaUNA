@@ -233,6 +233,7 @@ public class ExpedienteMedicoController extends Controller {
         this.btnSiOperaciones.setSelected(false);
         this.btnSiTratamientos.setSelected(false);
         this.btnAntecedenteSi.setSelected(false);
+        this.lblPaciente.setText(null);
     }
 
     boolean registroCorrecto() {

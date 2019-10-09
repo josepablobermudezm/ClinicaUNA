@@ -7,8 +7,6 @@ package clinicauna.model;
 
 import clinicauna.util.LocalDateAdapter;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -60,7 +58,26 @@ public class ControlDto {
     public ControlDto(){
     
     }
-    
+
+    public ControlDto(Long cntId, LocalDate cntFecha, String cntHora, Double cntPresion, Double cntFrecuenciaCardiaca, Double cntPeso, Double cntTalla, Double cntTemperatura, Double cntImc, String cntAnotacionEnfermeria, String cntRazonConsulta, String cntPlanAtencion, String cntObservaciones, String cntExamenFisico, String cntTratamiento, Long cntVersion, ExpedienteDto cntExpediente) {
+        this.cntId = cntId;
+        this.cntFecha = cntFecha;
+        this.cntHora = cntHora;
+        this.cntPresion = cntPresion;
+        this.cntFrecuenciaCardiaca = cntFrecuenciaCardiaca;
+        this.cntPeso = cntPeso;
+        this.cntTalla = cntTalla;
+        this.cntTemperatura = cntTemperatura;
+        this.cntImc = cntImc;
+        this.cntAnotacionEnfermeria = cntAnotacionEnfermeria;
+        this.cntRazonConsulta = cntRazonConsulta;
+        this.cntPlanAtencion = cntPlanAtencion;
+        this.cntObservaciones = cntObservaciones;
+        this.cntExamenFisico = cntExamenFisico;
+        this.cntTratamiento = cntTratamiento;
+        this.cntVersion = cntVersion;
+        this.cntExpediente = cntExpediente;
+    }
 
     public Long getCntId() {
         return cntId;
@@ -69,7 +86,6 @@ public class ControlDto {
     public void setCntId(Long cntId) {
         this.cntId = cntId;
     }
-    
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getCntFecha() {
         return cntFecha;
@@ -197,6 +213,11 @@ public class ControlDto {
 
     public void setCntExpediente(ExpedienteDto cntExpediente) {
         this.cntExpediente = cntExpediente;
+    }
+
+    @Override
+    public String toString() {
+        return "ControlDto{" + "cntId=" + cntId + ", cntFecha=" + cntFecha + ", cntHora=" + cntHora + ", cntPresion=" + cntPresion + ", cntFrecuenciaCardiaca=" + cntFrecuenciaCardiaca + ", cntPeso=" + cntPeso + ", cntTalla=" + cntTalla + ", cntTemperatura=" + cntTemperatura + ", cntImc=" + cntImc + ", cntAnotacionEnfermeria=" + cntAnotacionEnfermeria + ", cntRazonConsulta=" + cntRazonConsulta + ", cntPlanAtencion=" + cntPlanAtencion + ", cntObservaciones=" + cntObservaciones + ", cntExamenFisico=" + cntExamenFisico + ", cntTratamiento=" + cntTratamiento + ", cntVersion=" + cntVersion + ", cntExpediente=" + cntExpediente + '}';
     }
     
 
