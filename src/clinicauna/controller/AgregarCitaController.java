@@ -273,10 +273,8 @@ public class AgregarCitaController extends Controller {
     private static List<vistaCita> aux = new ArrayList<>();
 
     private void ValidarEspacios(String style) {
-
         int x = grid.getChildren().indexOf(hBox);
         int espacio = Integer.parseInt(txtEspacios.getText());
-        
         grid.getChildren().stream().forEach(l -> {
             if (grid.getChildren().indexOf(l) >= x) {
                 i++;
@@ -294,15 +292,20 @@ public class AgregarCitaController extends Controller {
         if (val) {
             if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
                 AgregarCita(style);
-            }
-            else{
-                 limpiarValores();
+            } else {
+                limpiarValores();
             }
         } else {
             if (j == espacio) {
                 AgregarCita(style);
-            }else{
-                limpiarValores();
+            } else {
+                if (!val) {
+                    if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
+                        AgregarCita(style);
+                    } else {
+                        limpiarValores();
+                    }
+                }
             }
         }
     }
@@ -316,5 +319,5 @@ public class AgregarCitaController extends Controller {
         });
         limpiarValores();
     }
-    
+
 }
