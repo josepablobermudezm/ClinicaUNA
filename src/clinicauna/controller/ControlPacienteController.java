@@ -20,7 +20,11 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -28,6 +32,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -128,22 +133,44 @@ public class ControlPacienteController extends Controller {
 
     @FXML
     private void guardar(ActionEvent event) {
-        if(RegistroCorrecto()){
+
+        if (RegistroCorrecto()) {
             String anotaciones = txtAnotaciones.getText();
             String Examen = txtExamenFisico.getText();
-            String frecuenciaCardiaca = txtFrecuenciaCardiaca.getText();
-            String indiceMasaCoportal = txtIndiceMasaCorporal.getText();
+            Double frecuenciaCardiaca = Double.parseDouble(txtFrecuenciaCardiaca.getText());
+            Double indiceMasaCoportal = Double.parseDouble(txtIndiceMasaCorporal.getText());
             String observaciones = txtObservaciones.getText();
-            String peso = txtPeso.getText();
+            Double peso = Double.parseDouble(txtPeso.getText());
             String planAtencion = txtPlanAtencion.getText();
-            String presion = txtPresion.getText();
+            Double presion = Double.parseDouble(txtPresion.getText());
             String razon = txtRazonConsulta.getText();
-            String talla = txtTalla.getText();
-            String temperatura = txtTemperatura.getText();
+            Double talla = Double.parseDouble(txtTalla.getText());
+            Double temperatura = Double.parseDouble(txtTemperatura.getText());
             String tratamiento = txtTratamiento.getText();
-            String fecha = Fecha.getValue().toString();
-            String hora = Hora.getValue().toString();
-       }
+            
+            LocalDateTime horaLocal = LocalDateTime.of(LocalDate.now(), Hora.getValue());
+            String hora = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaLocal);
+            
+            LocalDate fecha = Fecha.getValue();
+            Long version = new Long(1);
+            controlDto = new ControlDto(null, fecha, hora, presion, frecuenciaCardiaca, peso, talla, temperatura, indiceMasaCoportal, anotaciones, razon, planAtencion, observaciones, Examen, tratamiento, version, expedienteDto);
+            try {
+                resp = controlService.guardarControl(controlDto);
+
+                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                limpiarRegistro();
+                controles = ((ArrayList<ControlDto>) resp.getResultado("Controles"));
+                table.getItems().clear();
+                items = FXCollections.observableArrayList(controles);
+                table.setItems(items);
+            } catch (Exception e) {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+            }
+
+        } else {
+            ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                    + "verifica que todos los datos esten llenos.");
+        }
 
     }
 
