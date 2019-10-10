@@ -49,8 +49,8 @@
          </rowConstraints>
          <children>
             <JFXTextField fx:id="txtEspacio" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Espacio por Hora" GridPane.columnIndex="1" />
-            <JFXTimePicker fx:id="timePickerInicio" prefHeight="29.0" prefWidth="250.0" promptText="Inicio Jornada" GridPane.columnIndex="3" />
-            <JFXTimePicker fx:id="timePickerfinal" prefHeight="29.0" prefWidth="250.0" promptText="Final Jornada" GridPane.columnIndex="5" />
+            <JFXTimePicker fx:id="timePickerInicio" defaultColor="#0c0093" prefHeight="29.0" prefWidth="250.0" promptText="Inicio Jornada" GridPane.columnIndex="3" />
+            <JFXTimePicker fx:id="timePickerfinal" defaultColor="#0c0093" prefHeight="29.0" prefWidth="250.0" promptText="Final Jornada" GridPane.columnIndex="5" />
          </children>
       </GridPane>
       <GridPane layoutX="7.0" layoutY="296.0" prefHeight="62.0" prefWidth="800.0">

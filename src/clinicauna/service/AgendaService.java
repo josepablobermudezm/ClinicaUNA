@@ -8,7 +8,6 @@ package clinicauna.service;
 import clinicauna.model.AgendaDto;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,41 +21,24 @@ import javax.ws.rs.core.GenericType;
  */
 public class AgendaService {
     
-    public Respuesta getAgenda(String fecha) {
+    public Respuesta getAgenda(String fecha, Long id) {
         try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("fecha", fecha);
-            Request request = new Request("AgendaController/agenda", "/{fecha}", parametros);
+            parametros.put("id", id);
+            Request request = new Request("AgendaController/agenda", "/{fecha}/{id}", parametros);
             request.get();
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
             AgendaDto agenda = (AgendaDto) request.readEntity(AgendaDto.class);
-            return new Respuesta(true, "", "", "Agenda", agenda);
+            return new Respuesta(true, "Agenda Existente", "", "Agenda", agenda);
         } catch (Exception ex) {
             Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo la Agenda [" + fecha + "]", ex);
             return new Respuesta(false, "Error obteniendo el Agenda.", "getAgenda " + ex.getMessage());
         }
     }
-
-    public Respuesta getAgenda(Long id) {
-        try {
-            Map<String, Object> parametros = new HashMap<>();
-            parametros.put("id", id);
-            Request request = new Request("AgendaController/Agenda", "/{id}", parametros);
-            request.get();
-
-            if (request.isError()) {
-                return new Respuesta(false, request.getError(), "");
-            }
-
-            AgendaDto Agenda = (AgendaDto) request.readEntity(AgendaDto.class);
-            return new Respuesta(true, "", "", "Agenda", Agenda);
-        } catch (Exception ex) {
-            Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo el Agenda [" + id + "]", ex);
-            return new Respuesta(false, "Error obteniendo el Agenda.", "getAgenda " + ex.getMessage());
-        }
-    }
+    
     /*
     public Respuesta getAgendas(String cedula, String nombre, String pApellido) {
         try {

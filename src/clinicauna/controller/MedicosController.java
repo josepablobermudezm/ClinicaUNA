@@ -244,5 +244,13 @@ public class MedicosController extends Controller {
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
+        
+        txtCarne.clear();
+        txtCodigo.clear();
+        txtEspacio.clear();
+        txtFolio.clear();
+        timePickerInicio.setValue(null);
+        timePickerfinal.setValue(null);
+        
     }
 }

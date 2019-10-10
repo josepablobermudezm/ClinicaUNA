@@ -22,7 +22,7 @@ public class AntecedenteDto {
     @XmlTransient
     private String antEnfermedad;
     @XmlTransient
-    private String antParentezco;
+    private String antParentesco;
     @XmlTransient
     private Long antVersion;
     @XmlTransient
@@ -34,7 +34,7 @@ public class AntecedenteDto {
     public AntecedenteDto(Long antId, String antEnfermedad, String antParentezco, Long antVersion, ExpedienteDto antExpediente) {
         this.antId = antId;
         this.antEnfermedad = antEnfermedad;
-        this.antParentezco = antParentezco;
+        this.antParentesco = antParentezco;
         this.antVersion = antVersion;
         this.antExpediente = antExpediente;
     }
@@ -55,12 +55,12 @@ public class AntecedenteDto {
         this.antEnfermedad = antEnfermedad;
     }
 
-    public String getAntParentezco() {
-        return antParentezco;
+    public String getAntParentesco() {
+        return antParentesco;
     }
 
-    public void setAntParentezco(String antParentezco) {
-        this.antParentezco = antParentezco;
+    public void setAntParentesco(String antParentesco) {
+        this.antParentesco = antParentesco;
     }
 
     public Long getAntVersion() {

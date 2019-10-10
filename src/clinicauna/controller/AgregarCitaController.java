@@ -96,6 +96,7 @@ public class AgregarCitaController extends Controller {
 
     @Override
     public void initialize() {
+        
         hBox = (vistaCita) AppContext.getInstance().get("hBox");
         grid = (GridPane) AppContext.getInstance().get("Grid");
         medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
@@ -136,6 +137,7 @@ public class AgregarCitaController extends Controller {
                 + " " + x.getpApellido() + " " + x.getsApellido() + " Ced:" + x.getCedula())
                 .collect(Collectors.toList()));
         ComboPacientes.setItems(items);
+        txtEspacios.setText("1");
     }
 
     @FXML
@@ -157,7 +159,7 @@ public class AgregarCitaController extends Controller {
 
             String horaCita = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
 
-            citaDto = new CitaDto(null, version, pacienteDto, motivo, estado, telefono, correo, horaCita);
+            citaDto = new CitaDto(null, version, pacienteDto, motivo, estado, telefono, correo,"N");
             switch (estado) {
                 case "AT": {
                     //hBox.setBackground(Background.EMPTY);

@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement(name = "CitaDto")
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class CitaDto {
+
     @XmlTransient
     private Long CtID;
     @XmlTransient
@@ -33,12 +34,12 @@ public class CitaDto {
     @XmlTransient
     private String correo;
     @XmlTransient
-    private String hora;
+    private String correoEnviado;
 
-    public CitaDto(){
+    public CitaDto() {
     }
 
-    public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, String motivo, String estado, String telefono, String correo, String hora) {
+    public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, String motivo, String estado, String telefono, String correo,String correoEnviado) {
         this.CtID = CtID;
         this.CtVersion = CtVersion;
         this.paciente = paciente;
@@ -46,10 +47,8 @@ public class CitaDto {
         this.estado = estado;
         this.telefono = telefono;
         this.correo = correo;
-        this.hora = hora;
+        this.correoEnviado = correoEnviado;
     }
-
-    
 
     public String getTelefono() {
         return telefono;
@@ -66,7 +65,7 @@ public class CitaDto {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-    
+
     public Long getID() {
         return CtID;
     }
@@ -91,20 +90,20 @@ public class CitaDto {
         this.paciente = paciente;
     }
 
-    public String getHora() {
-        return hora;
-    }
-
-    public void setHora(String hora) {
-        this.hora = hora;
-    }
-
     public String getMotivo() {
         return motivo;
     }
 
     public void setMotivo(String motivo) {
         this.motivo = motivo;
+    }
+
+    public String getCorreoEnviado() {
+        return correoEnviado;
+    }
+
+    public void setCorreoEnviado(String correoEnviado) {
+        this.correoEnviado = correoEnviado;
     }
 
     public String getEstado() {
@@ -119,5 +118,5 @@ public class CitaDto {
     public String toString() {
         return "CitaDto{" + "CtID=" + CtID + ", CtVersion=" + CtVersion + ", paciente=" + paciente + ", motivo=" + motivo + ", estado=" + estado + ", telefono=" + telefono + ", correo=" + correo + '}';
     }
-    
+
 }
