@@ -349,7 +349,7 @@ public class ExpedienteMedicoController extends Controller {
     private void examenes(ActionEvent event) {
         if (expedienteDto != null) {
             AppContext.getInstance().set("Expediente", expedienteDto);
-            FlowController.getInstance().goViewInWindowModal("Examenes",this.getStage(),false);
+            FlowController.getInstance().goViewInWindowModal("Examenes", this.getStage(), false);
         } else {
             ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
         }
@@ -357,9 +357,13 @@ public class ExpedienteMedicoController extends Controller {
 
     @FXML
     private void evolucion(ActionEvent event) {
-        
-        
-        
+        if (expedienteDto != null) {
+            AppContext.getInstance().set("Expediente", expedienteDto);
+            FlowController.getInstance().goViewInWindowModal("evolucionHistorica", this.getStage(), false);
+        } else {
+            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+
+        }
     }
 
 }

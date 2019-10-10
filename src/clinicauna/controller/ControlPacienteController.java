@@ -62,8 +62,6 @@ public class ControlPacienteController extends Controller {
     @FXML
     private JFXTextField txtTemperatura;
     @FXML
-    private JFXTextField txtIndiceMasaCorporal;
-    @FXML
     private JFXTextArea txtAnotaciones;
     @FXML
     private JFXTextArea txtRazonConsulta;
@@ -121,7 +119,7 @@ public class ControlPacienteController extends Controller {
     @FXML
     private void cancela(ActionEvent event) {
         FlowController.getInstance().goView("ExpedienteMedico");
-        
+
     }
 
     @FXML
@@ -139,7 +137,6 @@ public class ControlPacienteController extends Controller {
                     Double peso = Double.parseDouble(txtPeso.getText());
                     Double talla = Double.parseDouble(txtTalla.getText());
                     Double temperatura = Double.parseDouble(txtTemperatura.getText());
-                    Double imc = Double.parseDouble(txtIndiceMasaCorporal.getText());
                     String tratamiento = txtTratamiento.getText();
                     String Anotaciones = txtAnotaciones.getText();
                     String razon = txtRazonConsulta.getText();
@@ -152,8 +149,10 @@ public class ControlPacienteController extends Controller {
                     LocalDate fecha = Fecha.getValue();
                     Long id = table.getSelectionModel().getSelectedItem().getCntId();
                     Long version = table.getSelectionModel().getSelectedItem().getCntVersion() + 1;
-                    controlDto = new ControlDto(id, fecha, horaC ,presion,frecueciaCardiaca, peso, talla, temperatura, imc, Anotaciones, 
-                    razon, plan, observacion, examen, tratamiento, version, expedienteDto);
+                    Double imc = peso / Math.pow(talla, 2);
+
+                    controlDto = new ControlDto(id, fecha, horaC, presion, frecueciaCardiaca, peso, talla, temperatura, imc, Anotaciones,
+                            razon, plan, observacion, examen, tratamiento, version, expedienteDto);
                     try {
                         resp = controlService.guardarControl(controlDto);
                         ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
@@ -188,7 +187,6 @@ public class ControlPacienteController extends Controller {
             String anotaciones = txtAnotaciones.getText();
             String Examen = txtExamenFisico.getText();
             Double frecuenciaCardiaca = Double.parseDouble(txtFrecuenciaCardiaca.getText());
-            Double indiceMasaCoportal = Double.parseDouble(txtIndiceMasaCorporal.getText());
             String observaciones = txtObservaciones.getText();
             Double peso = Double.parseDouble(txtPeso.getText());
             String planAtencion = txtPlanAtencion.getText();
@@ -200,10 +198,10 @@ public class ControlPacienteController extends Controller {
 
             LocalDateTime horaLocal = LocalDateTime.of(LocalDate.now(), Hora.getValue());
             String hora = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaLocal);
-
+            Double imc = peso / Math.pow(talla, 2);
             LocalDate fecha = Fecha.getValue();
             Long version = new Long(1);
-            controlDto = new ControlDto(null, fecha, hora, presion, frecuenciaCardiaca, peso, talla, temperatura, indiceMasaCoportal, anotaciones, razon, planAtencion, observaciones, Examen, tratamiento, version, expedienteDto);
+            controlDto = new ControlDto(null, fecha, hora, presion, frecuenciaCardiaca, peso, talla, temperatura, imc, anotaciones, razon, planAtencion, observaciones, Examen, tratamiento, version, expedienteDto);
             try {
                 resp = controlService.guardarControl(controlDto);
 
@@ -232,7 +230,6 @@ public class ControlPacienteController extends Controller {
         txtAnotaciones.clear();
         txtExamenFisico.clear();
         txtFrecuenciaCardiaca.clear();
-        txtIndiceMasaCorporal.clear();
         txtObservaciones.clear();
         txtPeso.clear();
         txtPlanAtencion.clear();
@@ -247,7 +244,7 @@ public class ControlPacienteController extends Controller {
 
     boolean RegistroCorrecto() {
         return !txtAnotaciones.getText().isEmpty() && !txtExamenFisico.getText().isEmpty() && !txtFrecuenciaCardiaca.getText().isEmpty()
-                && !txtIndiceMasaCorporal.getText().isEmpty() && !txtObservaciones.getText().isEmpty() && !txtPeso.getText().isEmpty()
+                && !txtObservaciones.getText().isEmpty() && !txtPeso.getText().isEmpty()
                 && !txtPlanAtencion.getText().isEmpty() && !txtPresion.getText().isEmpty() && !txtRazonConsulta.getText().isEmpty()
                 && !txtTalla.getText().isEmpty() && !txtTemperatura.getText().isEmpty() && !txtTratamiento.getText().isEmpty()
                 && Fecha.getValue() != null && Hora.getValue() != null;
@@ -257,7 +254,6 @@ public class ControlPacienteController extends Controller {
         this.txtAnotaciones.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
         this.txtExamenFisico.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
         this.txtFrecuenciaCardiaca.setTextFormatter(Formato.getInstance().twoDecimalFormat());
-        this.txtIndiceMasaCorporal.setTextFormatter(Formato.getInstance().twoDecimalFormat());
         this.txtObservaciones.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
         this.txtPeso.setTextFormatter(Formato.getInstance().twoDecimalFormat());
         this.txtPlanAtencion.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
@@ -276,7 +272,6 @@ public class ControlPacienteController extends Controller {
                 txtAnotaciones.setText(controlDto.getCntAnotacionEnfermeria());
                 txtExamenFisico.setText(controlDto.getCntExamenFisico());
                 txtFrecuenciaCardiaca.setText(controlDto.getCntFrecuenciaCardiaca().toString());
-                txtIndiceMasaCorporal.setText(controlDto.getCntImc().toString());
                 txtObservaciones.setText(controlDto.getCntObservaciones());
                 txtPeso.setText(controlDto.getCntPeso().toString());
                 txtPlanAtencion.setText(controlDto.getCntPlanAtencion());

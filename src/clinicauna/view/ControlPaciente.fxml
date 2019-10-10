@@ -31,12 +31,14 @@
                   <JFXTextField fx:id="txtTratamiento" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Tratamiento" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" spacing="90.0">
+            <HBox spacing="90.0">
                <children>
                   <JFXTextField fx:id="txtTalla" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Talla" />
                   <JFXTextField fx:id="txtTemperatura" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Temperatura" />
-                  <JFXTextField fx:id="txtIndiceMasaCorporal" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Indice de masa corporal" />
                </children>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
             </HBox>
             <HBox alignment="CENTER" spacing="90.0">
                <children>

@@ -56,7 +56,7 @@
    <top>
       <HBox prefHeight="98.0" prefWidth="695.0" BorderPane.alignment="TOP_CENTER">
          <children>
-            <Label fx:id="lblTitulo" prefHeight="17.0" prefWidth="146.0" stylesheets="@newCascadeStyleSheet.css" text="Busqueda de Empleados">
+            <Label fx:id="lblTitulo" prefHeight="17.0" prefWidth="146.0" stylesheets="@newCascadeStyleSheet.css" text="Busqueda de Pacientes">
                <HBox.margin>
                   <Insets left="300.0" />
                </HBox.margin></Label>
