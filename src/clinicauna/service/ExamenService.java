@@ -133,7 +133,7 @@ public class ExamenService {
 
             Examen = (ExamenDto) request.readEntity(ExamenDto.class);
 
-            return new Respuesta(true, "", "", "Examen", Examen);
+            return new Respuesta(true, "Guardado Exitosamente", "Se ha guardadoo el examen exitosamente", "Examen", Examen);
         } catch (Exception ex) {
             Logger.getLogger(ExamenService.class.getName()).log(Level.SEVERE, "Error guardando el Examen.", ex);
             return new Respuesta(false, "Error guardando el Examen.", "guardarExamen " + ex.getMessage());

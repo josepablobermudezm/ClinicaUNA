@@ -348,7 +348,7 @@ public class ExpedienteMedicoController extends Controller {
     @FXML
     private void examenes(ActionEvent event) {
         if (expedienteDto != null) {
-            //AppContext.getInstance().set("Expediente", expedienteDto);
+            AppContext.getInstance().set("Expediente", expedienteDto);
             FlowController.getInstance().goViewInWindowModal("Examenes",this.getStage(),false);
         } else {
             ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
