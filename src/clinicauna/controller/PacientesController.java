@@ -32,6 +32,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -41,7 +43,6 @@ import javafx.scene.input.MouseEvent;
  */
 public class PacientesController extends Controller {
 
-    @FXML
     private Label Titulo;
     @FXML
     private TableView<PacienteDto> table;
@@ -59,9 +60,7 @@ public class PacientesController extends Controller {
     private JFXButton btnAgregar1;
     @FXML
     private ToggleGroup genero;
-    @FXML
     private JFXTextField txtFiltroEmpleado;
-    @FXML
     private JFXButton btnBuscar;
     @FXML
     private JFXDatePicker FechaDeNacimiento;
@@ -102,13 +101,12 @@ public class PacientesController extends Controller {
     private ExpedienteDto expedienteDto;
     private ExpedienteService expedienteService;
     @FXML
-    private JFXButton btnAntecedentes;
+    private ImageView omg;
 
     @Override
     public void initialize() {
         Formato();
         btnAgregar1.setCursor(Cursor.HAND);
-        btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
         btnEliminar1.setCursor(Cursor.HAND);
         idioma = (Idioma) AppContext.getInstance().get("idioma");
@@ -156,7 +154,6 @@ public class PacientesController extends Controller {
         items = FXCollections.observableArrayList(pacientes);
         table.setItems(items);
         btnHombre.setSelected(true);
-        //FechaDeNacimiento.getValue().
     }
 
     @FXML
@@ -274,9 +271,6 @@ public class PacientesController extends Controller {
 
     }
 
-    @FXML
-    private void Filtrar(ActionEvent event) {
-    }
 
     boolean registroCorrecto() {
         return !txtNombre.getText().isEmpty() && !txtCedula.getText().isEmpty()
