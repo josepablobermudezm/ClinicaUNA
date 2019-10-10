@@ -227,8 +227,8 @@ public class AgendaController extends Controller {
             /*
             Si la Agenda del medico con el dia seleccionado no se ha creado, entonces la creamos 
              */
-            resp = new AgendaService().getAgenda(DatePicker.getValue().toString());
-
+            resp = new AgendaService().getAgenda(DatePicker.getValue().toString(),medicoDto.getID());
+            System.out.println(resp.getMensaje());
             if (resp.getEstado()) {
                 agendaDto = (AgendaDto) resp.getResultado("Agenda");
             } else {

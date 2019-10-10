@@ -96,6 +96,7 @@ public class AgregarCitaController extends Controller {
 
     @Override
     public void initialize() {
+        
         hBox = (vistaCita) AppContext.getInstance().get("hBox");
         grid = (GridPane) AppContext.getInstance().get("Grid");
         medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");

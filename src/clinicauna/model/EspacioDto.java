@@ -5,8 +5,6 @@
  */
 package clinicauna.model;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
