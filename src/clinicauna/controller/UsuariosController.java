@@ -32,6 +32,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -75,7 +77,6 @@ public class UsuariosController extends Controller {
     private JFXTextField txtSApellido;
     @FXML
     private JFXTextField txtNombreUsuario;
-    @FXML
     private JFXTextField txtFiltroUsuario;
     @FXML
     private ToggleGroup idiomagroup;
@@ -109,6 +110,8 @@ public class UsuariosController extends Controller {
     private MedicoService medicoService;
     private UsuarioDto usuario;
     private Idioma idioma;
+    @FXML
+    private ImageView omg;
     
     @Override
     public void initialize() {
@@ -160,7 +163,6 @@ public class UsuariosController extends Controller {
         COL_ESTADO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado().equals("A") ?"Activo":"Inactivo"));
         items = FXCollections.observableArrayList(usuarios);
         table.setItems(items);
-
     }
 
     @FXML

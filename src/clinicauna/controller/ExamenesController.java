@@ -5,12 +5,9 @@
  */
 package clinicauna.controller;
 
-import clinicauna.model.AntecedenteDto;
-import clinicauna.model.ControlDto;
 import clinicauna.model.ExamenDto;
 import clinicauna.model.ExpedienteDto;
 import clinicauna.model.PacienteDto;
-import clinicauna.service.ControlService;
 import clinicauna.service.ExamenService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
@@ -22,10 +19,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -107,6 +101,9 @@ public class ExamenesController extends Controller {
 
     @FXML
     private void Eliminar(ActionEvent event) {
+        
+        
+        
     }
 
     @FXML
@@ -119,8 +116,8 @@ public class ExamenesController extends Controller {
                     LocalDate fecha = Fecha.getValue();
                     String anotaciones = txtAnotaciones.getText();
                     Long id = table.getSelectionModel().getSelectedItem().getExmID();
-                    Long version = table.getSelectionModel().getSelectedItem().getExmVersion()+ 1;
-                    examenDto = new ExamenDto(id, examen, fecha, anotaciones, version,expedienteDto);
+                    Long version = table.getSelectionModel().getSelectedItem().getExmVersion() + 1;
+                    examenDto = new ExamenDto(id, examen, fecha, anotaciones, version, expedienteDto);
                     try {
                         resp = examenService.guardarExamen(examenDto);
                         ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
@@ -151,12 +148,12 @@ public class ExamenesController extends Controller {
     @FXML
     private void guardar(ActionEvent event) {
         if (RegistroCorrecto()) {
-            
+
             String anotaciones = txtAnotaciones.getText();
             String nombre = txtNombreExamen.getText();
             LocalDate fecha = Fecha.getValue();
             Long version = new Long(1);
-            examenDto = new ExamenDto(null,nombre,fecha, anotaciones,version,expedienteDto);
+            examenDto = new ExamenDto(null, nombre, fecha, anotaciones, version, expedienteDto);
             try {
                 resp = examenService.guardarExamen(examenDto);
 
@@ -182,21 +179,26 @@ public class ExamenesController extends Controller {
 
     @FXML
     private void datos(MouseEvent event) {
-        
-        
-        
+        if (table.getSelectionModel() != null) {
+            if (table.getSelectionModel().getSelectedItem() != null) {
+                examenDto = table.getSelectionModel().getSelectedItem();
+                txtAnotaciones.setText(examenDto.getAnotaciones());
+                txtNombreExamen.setText(examenDto.getNombreExamen());
+                Fecha.setValue(examenDto.getFecha());
+            }
+        }
     }
-    
+
     boolean RegistroCorrecto() {
         return !txtAnotaciones.getText().isEmpty() && !txtNombreExamen.getText().isEmpty() && Fecha.getValue() != null;
     }
-    
-    private void limpiarRegistro(){
+
+    private void limpiarRegistro() {
         txtAnotaciones.clear();
         txtNombreExamen.clear();
         Fecha.setValue(null);
     }
-    
+
     public void Formato() {
         this.txtAnotaciones.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
         this.txtNombreExamen.setTextFormatter(Formato.getInstance().maxLengthFormat(50));

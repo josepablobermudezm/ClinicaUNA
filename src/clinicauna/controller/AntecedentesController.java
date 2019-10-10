@@ -7,33 +7,24 @@ package clinicauna.controller;
 
 import clinicauna.model.AntecedenteDto;
 import clinicauna.model.ExpedienteDto;
-import clinicauna.model.MedicoDto;
 import clinicauna.model.PacienteDto;
-import clinicauna.model.UsuarioDto;
 import clinicauna.service.AntecedenteService;
-import clinicauna.service.MedicoService;
-import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 
 /**

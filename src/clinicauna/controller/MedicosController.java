@@ -35,6 +35,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -45,7 +46,6 @@ import javafx.scene.input.MouseEvent;
  */
 public class MedicosController extends Controller {
 
-    @FXML
     private Label Titulo;
     @FXML
     private TableView<MedicoDto> table;
@@ -53,9 +53,7 @@ public class MedicosController extends Controller {
     private JFXButton btnEditar1;
     @FXML
     private JFXButton btnEliminar1;
-    @FXML
     private JFXTextField txtFiltroEmpleado;
-    @FXML
     private JFXButton btnBuscar;
     @FXML
     private TableColumn<MedicoDto, String> COL_CODIGO_MEDICOS;
@@ -95,6 +93,8 @@ public class MedicosController extends Controller {
     private JFXButton btnLimpiarRegistro;
     @FXML
     private ImageView omg;
+    @FXML
+    private ImageView omg1;
 
     @Override
     public void initialize() {
@@ -120,7 +120,6 @@ public class MedicosController extends Controller {
             this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Medicos"));
         }
 
-        btnBuscar.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
         btnEliminar1.setCursor(Cursor.HAND);
         medicoService = new MedicoService();
@@ -242,9 +241,6 @@ public class MedicosController extends Controller {
         }
     }
 
-    @FXML
-    private void Filtrar(ActionEvent event) {
-    }
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
