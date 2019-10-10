@@ -137,6 +137,7 @@ public class AgregarCitaController extends Controller {
                 + " " + x.getpApellido() + " " + x.getsApellido() + " Ced:" + x.getCedula())
                 .collect(Collectors.toList()));
         ComboPacientes.setItems(items);
+        txtEspacios.setText("1");
     }
 
     @FXML
