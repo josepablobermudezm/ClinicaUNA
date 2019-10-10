@@ -50,11 +50,28 @@ public class RecuperarContrasennaController extends Controller {
     @Override
     public void initialize() {
 
-        Image imgFondo;
-        try {
-            imgFondo = new Image("/clinicauna/resources/e.jpg");
-            imvFondo.setImage(imgFondo);
-        } catch (Exception e) {
+        int valorEntero = (int) Math.floor(Math.random() * (3 - 1 + 1) + 1);
+        if (valorEntero == 1) {
+            Image imgFondo;
+            try {
+                imgFondo = new Image("/clinicauna/resources/fondo.jpg");
+                imvFondo.setImage(imgFondo);
+            } catch (Exception e) {
+            }
+        } else if (valorEntero == 2) {
+            Image imgFondo;
+            try {
+                imgFondo = new Image("/clinicauna/resources/e.jpg");
+                imvFondo.setImage(imgFondo);
+            } catch (Exception e) {
+            }
+        } else if (valorEntero == 3) {
+            Image imgFondo;
+            try {
+                imgFondo = new Image("/clinicauna/resources/fondo2.jpg");
+                imvFondo.setImage(imgFondo);
+            } catch (Exception e) {
+            }
         }
         Image imgLogo;
         try {

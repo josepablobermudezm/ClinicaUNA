@@ -68,11 +68,28 @@ public class LogIngController extends Controller {
             omg.setImage(imgLogo);
         } catch (Exception e) {
         }
-        Image imgFondo;
-        try {
-            imgFondo = new Image("/clinicauna/resources/e.jpg");
-            imvFondo.setImage(imgFondo);
-        } catch (Exception e) {
+        int valorEntero = (int) Math.floor(Math.random() * (3 - 1 + 1) + 1);
+        if (valorEntero == 1) {
+            Image imgFondo;
+            try {
+                imgFondo = new Image("/clinicauna/resources/fondo.jpg");
+                imvFondo.setImage(imgFondo);
+            } catch (Exception e) {
+            }
+        } else if (valorEntero == 2) {
+            Image imgFondo;
+            try {
+                imgFondo = new Image("/clinicauna/resources/e.jpg");
+                imvFondo.setImage(imgFondo);
+            } catch (Exception e) {
+            }
+        } else if (valorEntero == 3) {
+            Image imgFondo;
+            try {
+                imgFondo = new Image("/clinicauna/resources/fondo2.jpg");
+                imvFondo.setImage(imgFondo);
+            } catch (Exception e) {
+            }
         }
 
         Image omg1;
@@ -151,10 +168,12 @@ public class LogIngController extends Controller {
         }
 
     }
-    public void Formato(){
-    this.txtClave1.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
-    this.txtUsuario1.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
-}
+
+    public void Formato() {
+        this.txtClave1.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        this.txtUsuario1.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
+    }
+
     @FXML
     private void restablecerContrasenna(MouseEvent event) {
         FlowController.getInstance().goViewInStage("RecuperarContrasenna", this.getStage());
