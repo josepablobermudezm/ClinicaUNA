@@ -157,7 +157,7 @@ public class AgregarCitaController extends Controller {
 
             String horaCita = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
 
-            citaDto = new CitaDto(null, version, pacienteDto, motivo, estado, telefono, correo, horaCita);
+            citaDto = new CitaDto(null, version, pacienteDto, motivo, estado, telefono, correo);
             switch (estado) {
                 case "AT": {
                     //hBox.setBackground(Background.EMPTY);

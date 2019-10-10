@@ -32,13 +32,11 @@ public class CitaDto {
     private String telefono;
     @XmlTransient
     private String correo;
-    @XmlTransient
-    private String hora;
 
     public CitaDto(){
     }
 
-    public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, String motivo, String estado, String telefono, String correo, String hora) {
+    public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, String motivo, String estado, String telefono, String correo) {
         this.CtID = CtID;
         this.CtVersion = CtVersion;
         this.paciente = paciente;
@@ -46,7 +44,6 @@ public class CitaDto {
         this.estado = estado;
         this.telefono = telefono;
         this.correo = correo;
-        this.hora = hora;
     }
 
     
@@ -89,14 +86,6 @@ public class CitaDto {
 
     public void setPaciente(PacienteDto paciente) {
         this.paciente = paciente;
-    }
-
-    public String getHora() {
-        return hora;
-    }
-
-    public void setHora(String hora) {
-        this.hora = hora;
     }
 
     public String getMotivo() {

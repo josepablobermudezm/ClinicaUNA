@@ -77,7 +77,7 @@ public class AntecedentesController extends Controller {
         });
    
         //antecedentesList = expediente.getAntecedentes();
-        COL_PARENTESCO_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntParentezco()));
+        COL_PARENTESCO_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntParentesco()));
         COL_ENFERMEDAD_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntEnfermedad()));
         items = FXCollections.observableArrayList(antecedentesList2);
         table.setItems(items);
@@ -205,7 +205,7 @@ public class AntecedentesController extends Controller {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 antecedenteDto = table.getSelectionModel().getSelectedItem();
                 txtEnfermedad.setText(antecedenteDto.getAntEnfermedad());
-                txtParentesco.setText(antecedenteDto.getAntParentezco());
+                txtParentesco.setText(antecedenteDto.getAntParentesco());
             }
         }
     }
