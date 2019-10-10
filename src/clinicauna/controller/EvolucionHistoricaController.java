@@ -45,11 +45,12 @@ public class EvolucionHistoricaController extends Controller {
     @FXML
     private JFXButton btnVolver;
     private PacienteDto paciente;
-    private ExpedienteService ExpService;
     private Respuesta resp = new Respuesta();
     private ArrayList<ControlDto> controles;
     private ControlService ContService;
     private ExpedienteDto expediente;
+    private List<ControlDto> cont;
+    private  int i;
 
     /**
      * Initializes the controller class.
@@ -60,11 +61,12 @@ public class EvolucionHistoricaController extends Controller {
         resp = ContService.getControles();
         controles = new ArrayList<>();
         controles = (ArrayList<ControlDto>) resp.getResultado("controles");
+        cont = new ArrayList<>();
         LlenarGrafico();
     }
 
     public void LlenarGrafico() {
-        List<ControlDto> cont = new ArrayList<>();
+       
 
         paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
         lblPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
@@ -76,14 +78,17 @@ public class EvolucionHistoricaController extends Controller {
         Grafico.getData().clear();
         Grafico.setTitle("IMC HISTÓRICO");
         NAxis.setLabel("Indices");
+        i=1;
         XYChart.Series<String, Double> series = new XYChart.Series<>();
-        int i = 1;
         for (ControlDto con : cont) {
+            System.out.println("Control "+i);
             series.getData().add(new XYChart.Data<>("Control " + String.valueOf(i), con.getCntImc()));
             i++;
+            
         }
         series.setName("Indice de Masa Corporal");
         Grafico.getData().add(series);
+        
     }
 
     @FXML

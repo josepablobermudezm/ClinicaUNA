@@ -159,15 +159,14 @@ public class ExpedienteMedicoController extends Controller {
                     btnSiTratamientos.setSelected(true);
                 }
                 if (expedienteDto.getAntecedentesPatologicos().equals(" ")) {
-                    btnAntecedenteSi.setSelected(true);
-                } else {
                     btnAntecedentesNo.setSelected(true);
+                } else {
+                    btnAntecedenteSi.setSelected(true);
                 }
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Busqueda de paciente", this.getStage(), "El paciente seleccionado no tiene un expediente");
             }
             lblPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
-            //AppContext.getInstance().delete("Paciente");
         }
     }
 
