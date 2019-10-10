@@ -174,8 +174,8 @@ public class AgendaController extends Controller {
                     hPane.setMinHeight(100);
                     Label label = new Label();
                     //Introduce los valores desde 1 si se ha superado ya las 24 horas
-                    if (valor > 24) {
-                        valor = 1;
+                    if (valor >= 24) {
+                        valor = 0;
                     }
 
                     label.setStyle("-fx-text-fill: gray; -fx-font-size : 12pt; -jfx-focus-color: -fx-secondary;");
