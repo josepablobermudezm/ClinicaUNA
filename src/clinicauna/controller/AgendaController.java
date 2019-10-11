@@ -142,6 +142,7 @@ public class AgendaController extends Controller {
     @FXML
     private void seleccionarMedico(ActionEvent event) {
         if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
+            initialize();
             calendarGrid.getChildren().clear();
             String medico = ComboMedico.getSelectionModel().getSelectedItem();
             medico.chars().forEach(x -> {
@@ -153,6 +154,7 @@ public class AgendaController extends Controller {
             });
 
             medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
+            
             LocalTime inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
             LocalTime finJornada = LocalTime.parse(medicoDto.getFinJornada());
             //Creo las conversiones de las horas del medico con formato
@@ -249,16 +251,8 @@ public class AgendaController extends Controller {
                 agendaDto = (AgendaDto) new AgendaService().guardarAgenda(agendaDto).getResultado("Agenda");
             }
 
-            //Cargo las citas de la agenda
-            agendaDto.getEspacioList().stream().forEach((espacio) -> {
-                calendarGrid.getChildren().stream().forEach((vCita) -> {
-                    Label hora = (Label) ((vistaCita) vCita).getChildren().get(0);
-                    if (hora.getText().equals(espacio.getEspHoraInicio())) {
-                        cargarAgenda(((vistaCita) vCita), espacio);
-                    }
-                });
-            });
-
+            //Muestra la agenda del medico
+            mostrarAgenda();
             cedulaBuscar = "";
             cedulaEncontrada = false;
             AppContext.getInstance().set("Agenda", agendaDto);
@@ -269,15 +263,25 @@ public class AgendaController extends Controller {
     @FXML
     private void Validacion(ActionEvent event) {
         if (this.DatePicker.getValue() != null) {
-            this.ComboMedico.setDisable(false);
+            if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
+                FlowController.getInstance().initialize();
+                initialize();
+            } else {
+                this.ComboMedico.setDisable(false);
+            }
         }
     }
 
-    @FXML
-    private void click(MouseEvent event) {
-        if (this.DatePicker.getValue() == null) {
-            this.ComboMedico.setDisable(true);
-        }
+    void mostrarAgenda() {
+        //Cargo las citas de la agenda
+        agendaDto.getEspacioList().stream().forEach((espacio) -> {
+            calendarGrid.getChildren().stream().forEach((vCita) -> {
+                Label hora = (Label) ((vistaCita) vCita).getChildren().get(0);
+                if (hora.getText().equals(espacio.getEspHoraInicio())) {
+                    cargarAgenda(((vistaCita) vCita), espacio);
+                }
+            });
+        });
     }
 
     private void cargarAgenda(vistaCita vCita, EspacioDto espacio) {

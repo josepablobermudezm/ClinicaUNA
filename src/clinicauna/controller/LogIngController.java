@@ -170,8 +170,8 @@ public class LogIngController extends Controller {
     }
 
     public void Formato() {
-        this.txtClave1.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
-        this.txtUsuario1.setTextFormatter(Formato.getInstance().maxLengthFormat(30));
+        this.txtClave1.setTextFormatter(Formato.getInstance().login(50));
+        this.txtUsuario1.setTextFormatter(Formato.getInstance().login(30));
     }
 
     @FXML

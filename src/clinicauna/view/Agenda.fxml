@@ -41,7 +41,7 @@
                               <Insets left="20.0" top="20.0" />
                            </padding>
                         </Label>
-                        <JFXComboBox fx:id="ComboMedico" labelFloat="true" onAction="#seleccionarMedico" onMouseClicked="#click" prefHeight="5.0" prefWidth="241.0" promptText="Seleccionar un Medico">
+                        <JFXComboBox fx:id="ComboMedico" labelFloat="true" onAction="#seleccionarMedico" prefHeight="5.0" prefWidth="241.0" promptText="Seleccionar un Medico">
                            <padding>
                               <Insets top="30.0" />
                            </padding>

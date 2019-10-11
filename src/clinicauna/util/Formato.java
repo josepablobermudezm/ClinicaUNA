@@ -173,4 +173,29 @@ public class Formato {
         });
         return maxLengthFormat;
     }
+    
+    public TextFormatter login(Integer length){
+        TextFormatter maxLengthFormat = new TextFormatter<>(c
+                -> {
+            if (c.getControlNewText().isEmpty()) {
+                return c;
+            }
+
+            if (((TextInputControl) c.getControl()).getLength() >= length && !c.isDeleted()) {
+                return null;
+            }
+            if (c.getText().length() > length && !c.isDeleted()) {
+                return null;
+            }
+            c.setText(c.getText().replace("{", ""));
+            c.setText(c.getText().replace("}", ""));
+            c.setText(c.getText().replace("´", ""));
+            c.setText(c.getText().replace("+", ""));
+            c.setText(c.getText().replace(",", ""));
+            c.setText(c.getText().replace(".", ""));
+            return c;
+        });
+        return maxLengthFormat;
+    }
+    
 }
