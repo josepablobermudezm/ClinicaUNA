@@ -315,19 +315,15 @@ public class AgregarCitaController extends Controller {
             LocalTime localTimeObj = LocalTime.parse(hora.getText());
             String horaInicio = " ";
             String horaFin = " ";
+            //Las horas de salida según cantidad de espacios por hora
             if (medicoDto.getEspacios() == 1) {
                 LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
-
                 horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
-
                 LocalTime localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1);
-
                 LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
-
                 horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
             } else if (medicoDto.getEspacios() == 2) {
                 LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
-
                 horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
                 LocalTime localTimeObje;
                 if (localTimeObj.getMinute() == 30) {
@@ -335,13 +331,10 @@ public class AgregarCitaController extends Controller {
                 } else {
                     localTimeObje = localTimeObj.withMinute(localTimeObj.getMinute() + 30);
                 }
-
                 LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
-
                 horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
             } else if (medicoDto.getEspacios() == 3) {
                 LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
-
                 horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
                 LocalTime localTimeObje;
                 if (localTimeObj.getMinute() == 40) {
@@ -349,12 +342,9 @@ public class AgregarCitaController extends Controller {
                 } else {
                     localTimeObje = localTimeObj.withMinute(localTimeObj.getMinute() + 20);
                 }
-
                 LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
-
                 horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
             } else if (medicoDto.getEspacios() == 4) {
-
                 LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
                 horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
                 LocalTime localTimeObje;
@@ -363,9 +353,7 @@ public class AgregarCitaController extends Controller {
                 } else {
                     localTimeObje = localTimeObj.withMinute(localTimeObj.getMinute() + 15);
                 }
-
                 LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
-
                 horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
             }
 
