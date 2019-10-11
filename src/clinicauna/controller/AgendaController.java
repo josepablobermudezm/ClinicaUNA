@@ -6,6 +6,8 @@
 package clinicauna.controller;
 
 import clinicauna.model.AgendaDto;
+import clinicauna.model.CitaDto;
+import clinicauna.model.EspacioDto;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.AgendaService;
@@ -34,6 +36,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -245,9 +248,17 @@ public class AgendaController extends Controller {
                 agendaDto = new AgendaDto(null, DatePicker.getValue(), new Long(1), medicoDto);
                 agendaDto = (AgendaDto) new AgendaService().guardarAgenda(agendaDto).getResultado("Agenda");
             }
-            
-            
-            
+
+            //Cargo las citas de la agenda
+            agendaDto.getEspacioList().stream().forEach((espacio) -> {
+                calendarGrid.getChildren().stream().forEach((vCita) -> {
+                    Label hora = (Label) ((vistaCita) vCita).getChildren().get(0);
+                    if (hora.getText().equals(espacio.getEspHoraInicio())) {
+                        cargarAgenda(((vistaCita) vCita), espacio);
+                    }
+                });
+            });
+
             cedulaBuscar = "";
             cedulaEncontrada = false;
             AppContext.getInstance().set("Agenda", agendaDto);
@@ -267,5 +278,42 @@ public class AgendaController extends Controller {
         if (this.DatePicker.getValue() == null) {
             this.ComboMedico.setDisable(true);
         }
+    }
+
+    private void cargarAgenda(vistaCita vCita, EspacioDto espacio) {
+        //Pregunto el estado de la cita
+        switch (espacio.getEspCita().getEstado()) {
+            //Elijo el estilo de cada cita para cargar los datos en la vistaCita
+            case "AT": {
+                String style = "-fx-background-color: #8cff8c; ";
+                cargarVistaCita(vCita, style, espacio.getEspCita());
+                break;
+            }
+            case "CA": {
+                String style = "-fx-background-color: #fa7a7a";
+                cargarVistaCita(vCita, style, espacio.getEspCita());
+                break;
+            }
+            case "PR": {
+                String style = "-fx-background-color: #fad655";
+                cargarVistaCita(vCita, style, espacio.getEspCita());
+                break;
+            }
+            case "AU": {
+                String style = "-fx-background-color: #bdbdbd";
+                cargarVistaCita(vCita, style, espacio.getEspCita());
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    private void cargarVistaCita(vistaCita vCita, String style, CitaDto cita) {
+        //Carga la vista de las citas 
+        vCita.setBackground(Background.EMPTY);
+        vCita.setStyle(style);
+        vCita.AgregarCita(cita);
+        vCita.getChildren().add(vCita.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
     }
 }

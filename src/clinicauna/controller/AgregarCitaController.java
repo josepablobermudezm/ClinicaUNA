@@ -304,12 +304,13 @@ public class AgregarCitaController extends Controller {
     }
 
     public void AgregarCita(String style) {
+        //Guardo la cita en base de datos
         resp1 = citaService.guardarCita(citaDto);
         citaDto = (CitaDto) resp1.getResultado("Cita");
-
         EspacioService service = new EspacioService();
-        System.out.println(aux.size());
+        //Seteo el medico con el formato del LocalDateTime a la agenda
         agendaDto.setAgeMedico(medicoDto);
+        //Recorro la lista de espacios seleccionados para setearles un color definido
         aux.stream().forEach(vCita -> {
             Label hora = (Label) vCita.getChildren().get(0);
             LocalTime localTimeObj = LocalTime.parse(hora.getText());
@@ -319,7 +320,13 @@ public class AgregarCitaController extends Controller {
             if (medicoDto.getEspacios() == 1) {
                 LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
                 horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
-                LocalTime localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1);
+                LocalTime localTimeObje;
+                if (localTimeObj.getHour() == 23) {
+                    localTimeObje = localTimeObj.withHour(0);
+                } else {
+                    localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1);
+                }
+
                 LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
                 horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
             } else if (medicoDto.getEspacios() == 2) {
@@ -327,7 +334,12 @@ public class AgregarCitaController extends Controller {
                 horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
                 LocalTime localTimeObje;
                 if (localTimeObj.getMinute() == 30) {
-                    localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1).withMinute(0);
+                    if (localTimeObj.getHour() == 23) {
+                        localTimeObje = localTimeObj.withHour(0).withMinute(0);
+                    } else {
+                        localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1).withMinute(0);
+                    }
+
                 } else {
                     localTimeObje = localTimeObj.withMinute(localTimeObj.getMinute() + 30);
                 }
@@ -338,7 +350,12 @@ public class AgregarCitaController extends Controller {
                 horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
                 LocalTime localTimeObje;
                 if (localTimeObj.getMinute() == 40) {
-                    localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1).withMinute(0);
+                    if (localTimeObj.getHour() == 23) {
+                        localTimeObje = localTimeObj.withHour(0).withMinute(0);
+                    } else {
+                        localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1).withMinute(0);
+                    }
+
                 } else {
                     localTimeObje = localTimeObj.withMinute(localTimeObj.getMinute() + 20);
                 }
@@ -349,7 +366,11 @@ public class AgregarCitaController extends Controller {
                 horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
                 LocalTime localTimeObje;
                 if (localTimeObj.getMinute() == 45) {
-                    localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1).withMinute(0);
+                    if (localTimeObj.getHour() == 23) {
+                        localTimeObje = localTimeObj.withHour(0).withMinute(0);
+                    } else {
+                        localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1).withMinute(0);
+                    }
                 } else {
                     localTimeObje = localTimeObj.withMinute(localTimeObj.getMinute() + 15);
                 }
@@ -359,6 +380,7 @@ public class AgregarCitaController extends Controller {
 
             Long version = new Long(1);
             service.guardarEspacio(new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto));
+            
             vCita.setBackground(Background.EMPTY);
             vCita.setStyle(style);
             vCita.AgregarCita(citaDto);
