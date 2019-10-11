@@ -357,5 +357,5 @@ public class UsuariosController extends Controller {
     private void crearMedico(ActionEvent event) {
         FlowController.getInstance().goViewInWindowModal("GuardarMedicos", this.getStage(), false);
     }
-
+    
 }

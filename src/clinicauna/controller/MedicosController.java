@@ -131,11 +131,11 @@ public class MedicosController extends Controller {
         COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCodigo()));
         COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getFolio()));
         COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCarne()));
-        COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(   (value.getValue().getEstado().equals("A"))?"Activo" : "Inactivo"));
+        COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getEstado().equals("A")) ? "Activo" : "Inactivo"));
         COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getInicioJornada()));
-        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty( value.getValue().getFinJornada()));
+        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getFinJornada()));
         COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty(value.getValue().getEspacios()));
-        this.COL_NOMBRE_MEDICOS.setCellValueFactory(value-> new SimpleStringProperty(value.getValue().getUs().getNombre()+" "+value.getValue().getUs().getpApellido()+" "+value.getValue().getUs().getsApellido()));
+        this.COL_NOMBRE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getUs().getNombre() + " " + value.getValue().getUs().getpApellido() + " " + value.getValue().getUs().getsApellido()));
         items = FXCollections.observableArrayList(medicos);
         table.setItems(items);
     }
@@ -206,7 +206,6 @@ public class MedicosController extends Controller {
 
     }
 
-
     void limpiarValores() {
         txtCarne.clear();
         txtCodigo.clear();
@@ -222,7 +221,6 @@ public class MedicosController extends Controller {
                 && !txtFolio.getText().isEmpty() && !txtEspacio.getText().isEmpty()
                 && !timePickerInicio.getValue().toString().isEmpty() && !timePickerfinal.getValue().toString().isEmpty();
     }
-
 
     @FXML
     private void DatosMedico(MouseEvent event) {
@@ -243,16 +241,17 @@ public class MedicosController extends Controller {
         }
     }
 
-
     @FXML
     private void limpiarRegistro(ActionEvent event) {
-        
         txtCarne.clear();
         txtCodigo.clear();
         txtEspacio.clear();
         txtFolio.clear();
         timePickerInicio.setValue(null);
         timePickerfinal.setValue(null);
-        
+    }
+
+    public void ValidarRepetidos() {
+
     }
 }

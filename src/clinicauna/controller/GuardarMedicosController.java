@@ -21,6 +21,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -34,7 +35,7 @@ import javafx.scene.control.Label;
  * @author Carlos Olivares
  */
 public class GuardarMedicosController extends Controller {
-    
+
     @FXML
     private JFXTextField txtFolio;
     @FXML
@@ -53,6 +54,8 @@ public class GuardarMedicosController extends Controller {
     private JFXButton btnGuardar;
     private Idioma idioma;
     private UsuarioDto usuario;
+    private ArrayList<MedicoDto> medicos;
+
     /**
      * Initializes the controller class.
      */
@@ -64,7 +67,7 @@ public class GuardarMedicosController extends Controller {
     private JFXButton btnLimpiarRegistro;
     @FXML
     private JFXButton BtnCancelar;
-    
+
     @FXML
     private void limpiarRegistro(ActionEvent event) {
         this.txtCarne.clear();
@@ -74,51 +77,56 @@ public class GuardarMedicosController extends Controller {
         this.timePickerInicio.setValue(null);
         this.timePickerfinal.setValue(null);
     }
-    
+
     @FXML
     private void guardar(ActionEvent event) {
         if (registroCorrecto()) {
-            String carne = txtCarne.getText();
-            String codigo = txtCodigo.getText();
-            String folio = txtFolio.getText();
-            Integer espacios = Integer.parseInt(txtEspacio.getText());
-            LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), timePickerInicio.getValue());
-            LocalDateTime final12 = LocalDateTime.of(LocalDate.now(), timePickerfinal.getValue());
-            String inicioJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
-            String finJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(final12);
-            //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
-            Long version = new Long(1);
-            medicoDto = new MedicoDto(null, codigo, folio, carne, "A", inicioJornada, finJornada, espacios, null, version);
-            AppContext.getInstance().set("Medico", medicoDto);
-            this.getStage().close();
+         
+                String carne = txtCarne.getText();
+                String codigo = txtCodigo.getText();
+                String folio = txtFolio.getText();
+                Integer espacios = Integer.parseInt(txtEspacio.getText());
+                LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), timePickerInicio.getValue());
+                LocalDateTime final12 = LocalDateTime.of(LocalDate.now(), timePickerfinal.getValue());
+                String inicioJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
+                String finJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(final12);
+                //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
+                Long version = new Long(1);
+                medicoDto = new MedicoDto(null, codigo, folio, carne, "A", inicioJornada, finJornada, espacios, null, version);
+                AppContext.getInstance().set("Medico", medicoDto);
+                this.getStage().close();
+          
         } else {
             new Mensaje().show(Alert.AlertType.WARNING, "Información de Registro", "Existen datos en el registro sin completar.");
         }
-        
+
     }
-    
+
     boolean registroCorrecto() {
         return !txtCarne.getText().isEmpty() && !txtCodigo.getText().isEmpty()
                 && !txtEspacio.getText().isEmpty() && !txtFolio.getText().isEmpty()
                 && timePickerInicio.getValue() != null && timePickerfinal.getValue() != null;
     }
-    
+
     @FXML
     private void cancela(ActionEvent event) {
         FlowController.getInstance().initialize();
         this.getStage().close();
     }
-    public void Formato(){
+
+    public void Formato() {
         this.txtCodigo.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
         this.txtCarne.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
         this.txtEspacio.setTextFormatter(Formato.getInstance().integerFormat(1));
         this.txtFolio.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
-       
+
     }
+
     @Override
     public void initialize() {
         Formato();
         medicoService = new MedicoService();
+        resp = new Respuesta();
         ms = new Mensaje();
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
@@ -134,5 +142,4 @@ public class GuardarMedicosController extends Controller {
             this.timePickerfinal.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
         }
     }
-    
 }
