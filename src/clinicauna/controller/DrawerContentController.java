@@ -46,7 +46,7 @@ public class DrawerContentController extends Controller {
     @FXML
     private void exit(ActionEvent event) {
          FlowController.getInstance().salir();
-         FlowController.getInstance().goViewInWindow("LogIn");
+         FlowController.getInstance().goViewInWindowTransparent("LogIn");
      //    this.getStage().close();
      
     }

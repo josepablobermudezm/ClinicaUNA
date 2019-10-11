@@ -46,6 +46,7 @@ import javafx.scene.input.MouseEvent;
  */
 public class MedicosController extends Controller {
 
+    @FXML
     private Label Titulo;
     @FXML
     private TableView<MedicoDto> table;
@@ -94,7 +95,7 @@ public class MedicosController extends Controller {
     @FXML
     private ImageView omg;
     @FXML
-    private ImageView omg1;
+    private TableColumn<MedicoDto, String> COL_NOMBRE_MEDICOS;
 
     @Override
     public void initialize() {
@@ -127,13 +128,14 @@ public class MedicosController extends Controller {
         resp = medicoService.getMedicos();
         medicos = ((ArrayList<MedicoDto>) resp.getResultado("Medicos"));
 
-        COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCodigo() != null) ? value.getValue().getCodigo() : "Sin Asignar"));
-        COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFolio() != null) ? value.getValue().getFolio() : "Sin Asignar"));
-        COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getCarne() != null) ? value.getValue().getCarne() : "Sin Asignar"));
-        COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado()));
-        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getInicioJornada() != null) ? value.getValue().getInicioJornada() : "NULO"));
-        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty((value.getValue().getFinJornada() != null) ? value.getValue().getFinJornada() : "NULO"));
-        COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty((value.getValue().getEspacios() != null) ? value.getValue().getEspacios() : 0));
+        COL_CODIGO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCodigo()));
+        COL_FOLIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getFolio()));
+        COL_CARNE_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCarne()));
+        COL_ESTADO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(   (value.getValue().getEstado().equals("A"))?"Activo" : "Inactivo"));
+        COL_INICIO_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getInicioJornada()));
+        COL_FINAL_MEDICOS.setCellValueFactory(value -> new SimpleStringProperty( value.getValue().getFinJornada()));
+        COL_ESPACIOS_MEDICOS.setCellValueFactory(value -> new SimpleIntegerProperty(value.getValue().getEspacios()));
+        this.COL_NOMBRE_MEDICOS.setCellValueFactory(value-> new SimpleStringProperty(value.getValue().getUs().getNombre()+" "+value.getValue().getUs().getpApellido()+" "+value.getValue().getUs().getsApellido()));
         items = FXCollections.observableArrayList(medicos);
         table.setItems(items);
     }

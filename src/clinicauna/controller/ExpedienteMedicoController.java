@@ -18,8 +18,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
 import java.util.ArrayList;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -115,6 +113,10 @@ public class ExpedienteMedicoController extends Controller {
 
     @Override
     public void initialize() {
+        this.txtTratamientos.setDisable(true);
+        this.txtAlergias.setDisable(true);
+        this.txtAntecedentesPatologicos.setDisable(true);
+        this.txtOperaciones.setDisable(true);
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
@@ -362,6 +364,82 @@ public class ExpedienteMedicoController extends Controller {
         } else {
             ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
 
+        }
+    }
+
+    @FXML
+    private void NoTratamientos(ActionEvent event) {
+        if (this.btnNoTratamientos.isSelected()) {
+            this.txtTratamientos.clear();
+            this.txtTratamientos.setDisable(true);
+        } else {
+            this.txtTratamientos.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void NoOperaciones(ActionEvent event) {
+        if (this.btnNoOperaciones.isSelected()) {
+            this.txtOperaciones.clear();
+            this.txtOperaciones.setDisable(true);
+        } else {
+            this.txtOperaciones.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void NoAntecedentes(ActionEvent event) {
+        if (this.btnAntecedentesNo.isSelected()) {
+            this.txtAntecedentesPatologicos.clear();
+            this.txtAntecedentesPatologicos.setDisable(true);
+        } else {
+            this.txtAntecedentesPatologicos.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void NoAlergias(ActionEvent event) {
+        if (this.btnNoAlergias.isSelected()) {
+            this.txtAlergias.clear();
+            this.txtAlergias.setDisable(true);
+        } else {
+            this.txtAlergias.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void SItratamiento(ActionEvent event) {
+        if (this.btnSiTratamientos.isSelected()) {
+            this.txtTratamientos.setDisable(false);
+        } else {
+            this.txtTratamientos.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void SIOperacion(ActionEvent event) {
+        if (this.btnSiOperaciones.isSelected()) {
+            this.txtOperaciones.setDisable(false);
+        } else {
+            this.txtOperaciones.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void SIAntecedente(ActionEvent event) {
+        if (this.btnAntecedenteSi.isSelected()) {
+            this.txtAntecedentesPatologicos.setDisable(false);
+        } else {
+            this.txtAntecedentesPatologicos.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void SIAlergia(ActionEvent event) {
+        if (this.btnSiAlergias.isSelected()) {
+            this.txtAlergias.setDisable(false);
+        } else {
+            this.txtAlergias.setDisable(true);
         }
     }
 

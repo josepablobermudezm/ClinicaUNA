@@ -37,7 +37,7 @@
                         <Insets left="-75.0" />
                      </HBox.margin>
                   </Label>
-                  <JFXRadioButton fx:id="btnSiTratamientos" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
+                  <JFXRadioButton fx:id="btnSiTratamientos" onAction="#SItratamiento" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
                      <toggleGroup>
                         <ToggleGroup fx:id="Tratamientos" />
                      </toggleGroup>
@@ -45,7 +45,7 @@
                         <Insets left="45.0" />
                      </HBox.margin>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnNoTratamientos" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Tratamientos">
+                  <JFXRadioButton fx:id="btnNoTratamientos" onAction="#NoTratamientos" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Tratamientos">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
@@ -64,7 +64,7 @@
                         <Insets left="-80.0" />
                      </HBox.margin>
                   </Label>
-                  <JFXRadioButton fx:id="btnSiOperaciones" prefHeight="17.0" prefWidth="36.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
+                  <JFXRadioButton fx:id="btnSiOperaciones" onAction="#SIOperacion" prefHeight="17.0" prefWidth="36.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
                      <toggleGroup>
                         <ToggleGroup fx:id="Operaciones" />
                      </toggleGroup>
@@ -72,7 +72,7 @@
                         <Insets left="47.0" />
                      </HBox.margin>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnNoOperaciones" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Operaciones">
+                  <JFXRadioButton fx:id="btnNoOperaciones" onAction="#NoOperaciones" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Operaciones">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
@@ -94,7 +94,7 @@
                         <Insets left="-35.0" />
                      </HBox.margin>
                   </Label>
-                  <JFXRadioButton fx:id="btnAntecedenteSi" prefHeight="17.0" prefWidth="38.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
+                  <JFXRadioButton fx:id="btnAntecedenteSi" onAction="#SIAntecedente" prefHeight="17.0" prefWidth="38.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
                      <HBox.margin>
                         <Insets left="15.0" />
                      </HBox.margin>
@@ -102,7 +102,7 @@
                         <ToggleGroup fx:id="Antecedentes" />
                      </toggleGroup>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnAntecedentesNo" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Antecedentes">
+                  <JFXRadioButton fx:id="btnAntecedentesNo" onAction="#NoAntecedentes" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Antecedentes">
                      <HBox.margin>
                         <Insets left="15.0" />
                      </HBox.margin>
@@ -121,7 +121,7 @@
                         <Insets left="-80.0" />
                      </HBox.margin>
                   </Label>
-                  <JFXRadioButton fx:id="btnSiAlergias" prefHeight="17.0" prefWidth="36.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
+                  <JFXRadioButton fx:id="btnSiAlergias" onAction="#SIAlergia" prefHeight="17.0" prefWidth="36.0" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Si">
                      <HBox.margin>
                         <Insets left="45.0" />
                      </HBox.margin>
@@ -129,7 +129,7 @@
                         <ToggleGroup fx:id="Alergias" />
                      </toggleGroup>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="btnNoAlergias" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Alergias">
+                  <JFXRadioButton fx:id="btnNoAlergias" onAction="#NoAlergias" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Alergias">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
