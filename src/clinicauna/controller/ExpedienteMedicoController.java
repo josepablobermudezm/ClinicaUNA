@@ -148,7 +148,7 @@ public class ExpedienteMedicoController extends Controller {
                 } else {
                     btnSiOperaciones.setSelected(true);
                 }
-                if (expedienteDto.getHospitalizaciones().equals(" ")) {
+                if (expedienteDto.getHospitalizaciones().equals("N")) {
                     btnNoHospitalizaciones.setSelected(true);
                 } else {
                     btnSiHospitalizaciones.setSelected(true);
@@ -263,7 +263,7 @@ public class ExpedienteMedicoController extends Controller {
                 && (btnNoHospitalizaciones.isSelected() || btnSiHospitalizaciones.isSelected())
                 && (btnNoOperaciones.isSelected() || btnSiOperaciones.isSelected())
                 && (btnNoTratamientos.isSelected() || btnSiTratamientos.isSelected())
-                && Value1 && Value2 && Value3 && Value4 && !txtAntecedentesPatologicos.getText().isEmpty();
+                && Value1 && Value2 && Value3 && Value4;
     }
 
     @FXML

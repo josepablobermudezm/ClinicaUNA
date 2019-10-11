@@ -50,13 +50,16 @@ public class Formato {
         throw new CloneNotSupportedException();
     }
 
-    public TextFormatter twoDecimalFormat() {
+    public TextFormatter twoDecimalFormat(Integer n) {
         TextFormatter numericFormat = new TextFormatter<>(c
                 -> {
             if (c.getControlNewText().isEmpty()) {
                 return c;
             }
-            if (c.getControlNewText().contains(",")) {
+            if( c.getText().length() > n && !c.isDeleted()){
+                return null;
+            }
+            if (c.getControlNewText().contains(",") ) {
                 ParsePosition parsePosition = new ParsePosition(0);
                 Object object = decimalFormat.parse(c.getControlNewText(), parsePosition);
 

@@ -150,9 +150,18 @@ public class AgendaController extends Controller {
             });
 
             medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
-
             LocalTime inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
             LocalTime finJornada = LocalTime.parse(medicoDto.getFinJornada());
+            //Creo las conversiones de las horas del medico con formato
+            LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
+            LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
+
+            String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
+            String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
+
+            medicoDto.setInicioJornada(inicioS);
+            medicoDto.setFinJornada(finS);
+
             int EspaciosPorHora = medicoDto.getEspacios();
             Integer horas = 0;
             //Calcula la cantidad de espacios por hora que tendra la agenda
@@ -218,37 +227,30 @@ public class AgendaController extends Controller {
                     GridPane.setVgrow(hPane, Priority.NEVER);
                     hPane.setStyle("-fx-background-color: #FFFF;");
                     calendarGrid.add(hPane, j, i);
-                    
+
                 }
                 valor++;
             }
             AppContext.getInstance().set("Grid", calendarGrid);
+
             //Agenda
             /*
             Si la Agenda del medico con el dia seleccionado no se ha creado, entonces la creamos 
              */
-            resp = new AgendaService().getAgenda(DatePicker.getValue().toString(),medicoDto.getID());
-            System.out.println(resp.getMensaje());
+            resp = new AgendaService().getAgenda(DatePicker.getValue().toString(), medicoDto.getID());
             if (resp.getEstado()) {
                 agendaDto = (AgendaDto) resp.getResultado("Agenda");
             } else {
-                //Creo las conversiones de las horas del medico con formato
-                LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
-                LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
-
-                String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
-                String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
-                
-                medicoDto.setInicioJornada(inicioS);
-                medicoDto.setFinJornada(finS);
                 //Creo la agenda 
                 agendaDto = new AgendaDto(null, DatePicker.getValue(), new Long(1), medicoDto);
                 agendaDto = (AgendaDto) new AgendaService().guardarAgenda(agendaDto).getResultado("Agenda");
-                medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
             }
+            
+            
             
             cedulaBuscar = "";
             cedulaEncontrada = false;
+            AppContext.getInstance().set("Agenda", agendaDto);
             AppContext.getInstance().set("MedicoDto", medicoDto);
         }
     }

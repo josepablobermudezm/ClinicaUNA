@@ -5,11 +5,14 @@
  */
 package clinicauna.controller;
 
+import clinicauna.model.AgendaDto;
 import clinicauna.model.CitaDto;
+import clinicauna.model.EspacioDto;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.CitaService;
+import clinicauna.service.EspacioService;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
@@ -78,6 +81,10 @@ public class AgregarCitaController extends Controller {
     private JFXButton btnLimpiarRegistro;
     @FXML
     private JFXButton btnCancelar;
+    @FXML
+    private JFXTextField txtEspacios;
+    private GridPane grid;
+    private vistaCita hBox;
     private Respuesta resp;
     private Respuesta resp1;
     private PacienteService pacienteService;
@@ -89,17 +96,15 @@ public class AgregarCitaController extends Controller {
     private UsuarioDto usuario;
     private ArrayList<PacienteDto> lista;
     private MedicoDto medicoDto;
-    @FXML
-    private JFXTextField txtEspacios;
-    private GridPane grid;
-    private vistaCita hBox;
+    private AgendaDto agendaDto;
 
     @Override
     public void initialize() {
-        
+
         hBox = (vistaCita) AppContext.getInstance().get("hBox");
         grid = (GridPane) AppContext.getInstance().get("Grid");
         medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
+        agendaDto = (AgendaDto) AppContext.getInstance().get("Agenda");
         if (AppContext.getInstance().get("Cita") != null) {
             citaDto = (CitaDto) AppContext.getInstance().get("Cita");
             txtCorreo.setText(citaDto.getCorreo());
@@ -137,7 +142,6 @@ public class AgregarCitaController extends Controller {
                 + " " + x.getpApellido() + " " + x.getsApellido() + " Ced:" + x.getCedula())
                 .collect(Collectors.toList()));
         ComboPacientes.setItems(items);
-        txtEspacios.setText("1");
     }
 
     @FXML
@@ -151,54 +155,42 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1);
             String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
             //Obtengo el primer el Hbox que contiene el Label con la hora
+            citaDto = new CitaDto(null, version, pacienteDto, motivo, estado, telefono, correo, "N");
 
-            Label hora = (Label) hBox.getChildren().get(0);
-            LocalTime localTimeObj = LocalTime.parse(hora.getText());
-
-            LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
-
-            String horaCita = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
-
-            citaDto = new CitaDto(null, version, pacienteDto, motivo, estado, telefono, correo,"N");
-            switch (estado) {
-                case "AT": {
-                    //hBox.setBackground(Background.EMPTY);
-                    String style = "-fx-background-color: #8cff8c; ";
-                    // hBox.setStyle(style);
-                    ValidarEspacios(style);
-                    break;
-                }
-                case "CA": {
-                    // hBox.setBackground(Background.EMPTY);
-                    String style = "-fx-background-color: #fa7a7a";
-                    // hBox.setStyle(style);
-                    ValidarEspacios(style);
-                    break;
-                }
-                case "PR": {
-                    //hBox.setBackground(Background.EMPTY);
-                    String style = "-fx-background-color: #fad655";
-                    // hBox.setStyle(style);
-                    ValidarEspacios(style);
-                    break;
-                }
-                case "AU": {
-                    //hBox.setBackground(Background.EMPTY);
-                    String style = "-fx-background-color: #bdbdbd";
-                    // hBox.setStyle(style);
-                    ValidarEspacios(style);
-                    break;
-                }
-                default:
-                    break;
-            }
             try {
+                switch (estado) {
+                    case "AT": {
+                        //hBox.setBackground(Background.EMPTY);
+                        String style = "-fx-background-color: #8cff8c; ";
+                        // hBox.setStyle(style);
+                        ValidarEspacios(style);
+                        break;
+                    }
+                    case "CA": {
+                        // hBox.setBackground(Background.EMPTY);
+                        String style = "-fx-background-color: #fa7a7a";
+                        // hBox.setStyle(style);
+                        ValidarEspacios(style);
+                        break;
+                    }
+                    case "PR": {
+                        //hBox.setBackground(Background.EMPTY);
+                        String style = "-fx-background-color: #fad655";
+                        // hBox.setStyle(style);
+                        ValidarEspacios(style);
+                        break;
+                    }
+                    case "AU": {
+                        //hBox.setBackground(Background.EMPTY);
+                        String style = "-fx-background-color: #bdbdbd";
+                        // hBox.setStyle(style);
+                        ValidarEspacios(style);
+                        break;
+                    }
+                    default:
+                        break;
+                }
 
-                resp1 = citaService.guardarCita(citaDto);
-                citaDto = (CitaDto) resp1.getResultado("Cita");
-
-                // hBox.AgregarCita(citaDto);
-                // hBox.getChildren().add(hBox.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
                 limpiarValores();
                 AppContext.getInstance().set("hBox", null);
                 FlowController.getInstance().initialize();
@@ -206,7 +198,6 @@ public class AgregarCitaController extends Controller {
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente..." + e.getMessage());
             }
-
         } else {
             ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
         }
@@ -313,11 +304,77 @@ public class AgregarCitaController extends Controller {
     }
 
     public void AgregarCita(String style) {
-        aux.stream().forEach(l -> {
-            l.setBackground(Background.EMPTY);
-            l.setStyle(style);
-            l.AgregarCita(citaDto);
-            l.getChildren().add(((vistaCita) l).get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
+        resp1 = citaService.guardarCita(citaDto);
+        citaDto = (CitaDto) resp1.getResultado("Cita");
+
+        EspacioService service = new EspacioService();
+        System.out.println(aux.size());
+        agendaDto.setAgeMedico(medicoDto);
+        aux.stream().forEach(vCita -> {
+            Label hora = (Label) vCita.getChildren().get(0);
+            LocalTime localTimeObj = LocalTime.parse(hora.getText());
+            String horaInicio = " ";
+            String horaFin = " ";
+            if (medicoDto.getEspacios() == 1) {
+                LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
+
+                horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+
+                LocalTime localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1);
+
+                LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
+
+                horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
+            } else if (medicoDto.getEspacios() == 2) {
+                LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
+
+                horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+                LocalTime localTimeObje;
+                if (localTimeObj.getMinute() == 30) {
+                    localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1).withMinute(0);
+                } else {
+                    localTimeObje = localTimeObj.withMinute(localTimeObj.getMinute() + 30);
+                }
+
+                LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
+
+                horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
+            } else if (medicoDto.getEspacios() == 3) {
+                LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
+
+                horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+                LocalTime localTimeObje;
+                if (localTimeObj.getMinute() == 40) {
+                    localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1).withMinute(0);
+                } else {
+                    localTimeObje = localTimeObj.withMinute(localTimeObj.getMinute() + 20);
+                }
+
+                LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
+
+                horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
+            } else if (medicoDto.getEspacios() == 4) {
+
+                LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
+                horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+                LocalTime localTimeObje;
+                if (localTimeObj.getMinute() == 45) {
+                    localTimeObje = localTimeObj.withHour(localTimeObj.getHour() + 1).withMinute(0);
+                } else {
+                    localTimeObje = localTimeObj.withMinute(localTimeObj.getMinute() + 15);
+                }
+
+                LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
+
+                horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
+            }
+
+            Long version = new Long(1);
+            service.guardarEspacio(new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto));
+            vCita.setBackground(Background.EMPTY);
+            vCita.setStyle(style);
+            vCita.AgregarCita(citaDto);
+            vCita.getChildren().add(((vistaCita) vCita).get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
         });
         limpiarValores();
     }

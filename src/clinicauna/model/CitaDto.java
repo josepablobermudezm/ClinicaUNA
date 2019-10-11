@@ -5,6 +5,7 @@
  */
 package clinicauna.model;
 
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,11 +36,13 @@ public class CitaDto {
     private String correo;
     @XmlTransient
     private String correoEnviado;
+    @XmlTransient
+    private List<EspacioDto> espacios;
 
     public CitaDto() {
     }
 
-    public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, String motivo, String estado, String telefono, String correo,String correoEnviado) {
+    public CitaDto(Long CtID, Long CtVersion, PacienteDto paciente, String motivo, String estado, String telefono, String correo, String correoEnviado) {
         this.CtID = CtID;
         this.CtVersion = CtVersion;
         this.paciente = paciente;
@@ -114,9 +117,17 @@ public class CitaDto {
         this.estado = estado;
     }
 
+    public List<EspacioDto> getEspacios() {
+        return espacios;
+    }
+
+    public void setEspacios(List<EspacioDto> espacios) {
+        this.espacios = espacios;
+    }
+    
     @Override
     public String toString() {
         return "CitaDto{" + "CtID=" + CtID + ", CtVersion=" + CtVersion + ", paciente=" + paciente + ", motivo=" + motivo + ", estado=" + estado + ", telefono=" + telefono + ", correo=" + correo + '}';
     }
-
+    
 }

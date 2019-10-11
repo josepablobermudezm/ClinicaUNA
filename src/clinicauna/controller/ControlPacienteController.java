@@ -253,14 +253,14 @@ public class ControlPacienteController extends Controller {
     public void Formato() {
         this.txtAnotaciones.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
         this.txtExamenFisico.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
-        this.txtFrecuenciaCardiaca.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+        this.txtFrecuenciaCardiaca.setTextFormatter(Formato.getInstance().twoDecimalFormat(5));
         this.txtObservaciones.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
-        this.txtPeso.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+        this.txtPeso.setTextFormatter(Formato.getInstance().twoDecimalFormat(5));
         this.txtPlanAtencion.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
-        this.txtPresion.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+        this.txtPresion.setTextFormatter(Formato.getInstance().twoDecimalFormat(5));
         this.txtRazonConsulta.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
-        this.txtTalla.setTextFormatter(Formato.getInstance().twoDecimalFormat());
-        this.txtTemperatura.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+        this.txtTalla.setTextFormatter(Formato.getInstance().twoDecimalFormat(5));
+        this.txtTemperatura.setTextFormatter(Formato.getInstance().twoDecimalFormat(5));
         this.txtTratamiento.setTextFormatter(Formato.getInstance().maxLengthFormat(150));
     }
 

@@ -27,20 +27,23 @@ public class EspacioDto {
     @XmlTransient
     private Long espVersion;
     @XmlTransient
-    private List<CitaPorEspacioDto> citasPorEspacioList;
+    private CitaDto espCita;
     @XmlTransient
     private AgendaDto espAgenda;
 
     public EspacioDto(){
     }
 
-    public EspacioDto(Long espId, String espHoraFin, String espHoraInicio, Long espVersion, AgendaDto espAgenda) {
+    public EspacioDto(Long espId, String espHoraFin, String espHoraInicio, Long espVersion, CitaDto espCita, AgendaDto espAgenda) {
         this.espId = espId;
         this.espHoraFin = espHoraFin;
         this.espHoraInicio = espHoraInicio;
         this.espVersion = espVersion;
+        this.espCita = espCita;
         this.espAgenda = espAgenda;
     }
+
+    
     
     public String getEspHoraFin() {
         return espHoraFin;
@@ -75,13 +78,14 @@ public class EspacioDto {
         this.espId = espId;
     }
 
-    public List<CitaPorEspacioDto> getCitasPorEspacioList() {
-        return citasPorEspacioList;
+    public CitaDto getEspCita() {
+        return espCita;
     }
 
-    public void setCitasPorEspacioList(List<CitaPorEspacioDto> citasPorEspacioList) {
-        this.citasPorEspacioList = citasPorEspacioList;
+    public void setEspCita(CitaDto espCita) {
+        this.espCita = espCita;
     }
+
 
     public AgendaDto getEspAgenda() {
         return espAgenda;
