@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.VistaCargandoController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="175.0" prefWidth="280.0">
+         <children>
+            <Label fx:id="lblCorreos" styleClass="lbl" stylesheets="@newCascadeStyleSheet.css" text="Enviando Correos">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <JFXSpinner />
+         </children>
+      </VBox>
+   </children>
+</VBox>

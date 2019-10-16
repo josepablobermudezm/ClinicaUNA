@@ -33,9 +33,16 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -231,6 +238,42 @@ public class AgendaController extends Controller {
                     hPane.setAlignment(Pos.BASELINE_LEFT);
                     GridPane.setVgrow(hPane, Priority.NEVER);
                     hPane.setStyle("-fx-background-color: #FFFF;");
+                    
+                    
+                    //Metodos de Drag and Drop
+                                
+            hPane.setOnDragDetected(e->{
+                
+                Dragboard db = hPane.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                WritableImage wi = hPane.snapshot(new SnapshotParameters(), null);
+                WritableImage wii = new WritableImage(wi.getPixelReader(),0, 0, ((int)wi.getWidth()), ((int)wi.getHeight()));
+                
+                content.put(DataFormat.IMAGE, wii);
+                hPane.setCursor(Cursor.CLOSED_HAND);
+                db.setContent(content);
+            });
+            
+            hPane.setOnDragOver(f -> {
+                
+                f.acceptTransferModes(TransferMode.ANY);
+                
+               /* if(node != null && !this.getItem().getActId().equals(node.getItem().getActId())){
+                    
+                }*/
+            });
+
+            hPane.setOnDragDropped(e -> {
+                
+                
+            });
+
+            hPane.setOnDragDone(e -> {
+                hPane.setCursor(Cursor.OPEN_HAND);
+                
+            });
+                    
+                    
                     calendarGrid.add(hPane, j, i);
 
                 }
