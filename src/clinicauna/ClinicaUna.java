@@ -6,7 +6,9 @@
  */
 package clinicauna;
 
+import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
+import clinicauna.util.hiloCorreo;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
@@ -26,6 +28,8 @@ public class ClinicaUna extends Application {
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         FlowController.getInstance().InitializeFlow(stage, null);
         FlowController.getInstance().goViewInWindowTransparent("VistaCargando");
+        Correos.getInstance().recuperarContrasenna("josepablobermudezm@gmail.com", "una");
+        hiloCorreo.finalizado = true;
 //FlowController.getInstance().goViewInWindowTransparent("LogIn"); 
     }
 
