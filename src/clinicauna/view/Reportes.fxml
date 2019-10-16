@@ -17,7 +17,7 @@
          <children>
             <Label fx:id="Titulo" layoutX="418.0" prefHeight="56.0" prefWidth="194.0" text="Reportes" textAlignment="CENTER" />
             <JFXTextField fx:id="txtCedulaMedico" layoutX="14.0" layoutY="195.0" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Cédula" />
-            <TableView fx:id="TvMedico" layoutX="429.0" layoutY="122.0" prefHeight="203.0" prefWidth="562.0">
+            <TableView fx:id="TvMedico" layoutX="416.0" layoutY="122.0" prefHeight="203.0" prefWidth="575.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="Cédula" />
                 <TableColumn prefWidth="75.0" text="Nombre" />
@@ -30,15 +30,15 @@
             <JFXComboBox fx:id="CmbTipoReoprte" layoutX="14.0" layoutY="126.0" opacity="0.67" prefHeight="25.0" prefWidth="375.0" promptText="Tipo de Reporte" />
             <JFXTextField fx:id="txtApellidoMedico" layoutX="14.0" layoutY="294.0" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Apellido" />
             <JFXTextField fx:id="txtNombreMedico" layoutX="14.0" layoutY="242.0" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Nombre" />
-            <JFXDatePicker fx:id="DateDiaEspecífico" layoutX="83.0" layoutY="371.0" />
+            <JFXDatePicker fx:id="DateDiaEspecífico" defaultColor="#0e0e86" layoutX="83.0" layoutY="371.0" />
             <Label fx:id="lblDía" layoutX="22.0" layoutY="375.0" prefHeight="17.0" prefWidth="31.0" text="Día:" />
-            <Label fx:id="lblDel" layoutX="429.0" layoutY="375.0" prefHeight="17.0" prefWidth="28.0" text="Del:" />
-            <JFXDatePicker fx:id="DateFechaInicio" layoutX="467.0" layoutY="371.0" />
-            <Label fx:id="lblFechaFin" layoutX="682.0" layoutY="375.0" prefHeight="17.0" prefWidth="17.0" text="Al:" />
-            <JFXDatePicker fx:id="DateFechaFin" layoutX="710.0" layoutY="371.0" />
-            <JFXButton fx:id="btnGenerarReporteMed" layoutX="904.0" layoutY="371.0" onAction="#GenerarReporteMedico" prefHeight="25.0" prefWidth="84.0" text="Generar" />
+            <Label fx:id="lblDel" layoutX="416.0" layoutY="376.0" prefHeight="17.0" prefWidth="28.0" text="Del:" />
+            <JFXDatePicker fx:id="DateFechaInicio" defaultColor="#0e0e86" layoutX="454.0" layoutY="372.0" />
+            <Label fx:id="lblFechaFin" layoutX="669.0" layoutY="376.0" prefHeight="17.0" prefWidth="17.0" text="Al:" />
+            <JFXDatePicker fx:id="DateFechaFin" defaultColor="#0e0e86" layoutX="697.0" layoutY="372.0" />
+            <JFXButton fx:id="btnGenerarReporteMed" layoutX="911.0" layoutY="371.0" onAction="#GenerarReporteMedico" prefHeight="31.0" prefWidth="77.0" text="Generar" />
             <Separator layoutX="14.0" layoutY="428.0" prefHeight="8.0" prefWidth="987.0" />
-            <TableView fx:id="TvPaciente" layoutX="429.0" layoutY="462.0" prefHeight="203.0" prefWidth="562.0">
+            <TableView fx:id="TvPaciente" layoutX="417.0" layoutY="462.0" prefHeight="203.0" prefWidth="575.0">
                <columns>
                   <TableColumn fx:id="ColCedPac" prefWidth="75.0" text="Cédula" />
                   <TableColumn fx:id="ColNomPac" prefWidth="75.0" text="Nombre" />
