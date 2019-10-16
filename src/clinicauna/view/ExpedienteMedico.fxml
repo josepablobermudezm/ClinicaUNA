@@ -32,7 +32,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="102.0" prefWidth="1030.0">
                <children>
-                  <Label fx:id="lblTratamiento" prefHeight="21.0" prefWidth="95.0" text="Tratamientos">
+                  <Label fx:id="lblTratamiento" prefHeight="30.0" prefWidth="125.0" styleClass="lbl" text="Tratamientos">
                      <HBox.margin>
                         <Insets left="-75.0" />
                      </HBox.margin>
@@ -42,7 +42,7 @@
                         <ToggleGroup fx:id="Tratamientos" />
                      </toggleGroup>
                      <HBox.margin>
-                        <Insets left="45.0" />
+                        <Insets left="35.0" />
                      </HBox.margin>
                   </JFXRadioButton>
                   <JFXRadioButton fx:id="btnNoTratamientos" onAction="#NoTratamientos" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Tratamientos">
@@ -59,7 +59,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="lblOperaciones" prefHeight="21.0" prefWidth="94.0" text=" Operaciones:">
+                  <Label fx:id="lblOperaciones" prefHeight="30.0" prefWidth="123.0" styleClass="lbl" text=" Operaciones:">
                      <HBox.margin>
                         <Insets left="-80.0" />
                      </HBox.margin>
@@ -69,7 +69,7 @@
                         <ToggleGroup fx:id="Operaciones" />
                      </toggleGroup>
                      <HBox.margin>
-                        <Insets left="47.0" />
+                        <Insets left="35.0" />
                      </HBox.margin>
                   </JFXRadioButton>
                   <JFXRadioButton fx:id="btnNoOperaciones" onAction="#NoOperaciones" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="No" toggleGroup="$Operaciones">
@@ -89,7 +89,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="140.0" prefWidth="1030.0" spacing="10.0">
                <children>
-                  <Label fx:id="lblAntecedente" prefHeight="21.0" prefWidth="116.0" text=" Antecedentes:">
+                  <Label fx:id="lblAntecedente" prefHeight="30.0" prefWidth="136.0" styleClass="lbl" text=" Antecedentes:">
                      <HBox.margin>
                         <Insets left="-35.0" />
                      </HBox.margin>
@@ -116,7 +116,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="lblOperaciones1" prefHeight="21.0" prefWidth="93.0" text=" Alergias">
+                  <Label fx:id="lblOperaciones1" prefHeight="30.0" prefWidth="112.0" styleClass="lbl" text=" Alergias">
                      <HBox.margin>
                         <Insets left="-80.0" />
                      </HBox.margin>
@@ -143,7 +143,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="22.0" prefWidth="1030.0">
                <children>
-                  <Label fx:id="lblHospitalizaciones" prefHeight="21.0" prefWidth="142.0" text="Hospitalizaciones:">
+                  <Label fx:id="lblHospitalizaciones" prefHeight="30.0" prefWidth="158.0" styleClass="lbl" text="Hospitalizaciones:">
                      <HBox.margin>
                         <Insets left="-10.0" />
                      </HBox.margin>

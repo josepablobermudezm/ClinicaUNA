@@ -32,30 +32,28 @@
                   <Label fx:id="Titulo" text="Mantenimiento de Médicos" GridPane.columnIndex="1" />
                </children>
             </GridPane>
-            <GridPane layoutY="148.0" prefHeight="281.0" prefWidth="1030.0" AnchorPane.bottomAnchor="371.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="148.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="0.0" prefWidth="6.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1030.0" minWidth="10.0" prefWidth="1019.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="994.0" minWidth="0.0" prefWidth="5.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+            <HBox layoutY="148.0" prefHeight="281.0" prefWidth="1030.0" AnchorPane.bottomAnchor="371.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="148.0">
                <children>
-                  <TableView fx:id="table" onMouseReleased="#DatosMedico" prefHeight="280.0" prefWidth="1017.0" GridPane.columnIndex="1">
+                  <TableView fx:id="table" onMouseReleased="#DatosMedico" prefHeight="280.0" prefWidth="990.0">
                      <columns>
-                        <TableColumn fx:id="COL_NOMBRE_MEDICOS" prefWidth="258.0" text="Nombre Completo" />
-                        <TableColumn fx:id="COL_CODIGO_MEDICOS" prefWidth="123.0" text="Código" />
+                        <TableColumn fx:id="COL_NOMBRE_MEDICOS" prefWidth="243.0" text="Nombre Completo" />
+                        <TableColumn fx:id="COL_CODIGO_MEDICOS" prefWidth="138.0" text="Código" />
                         <TableColumn fx:id="COL_FOLIO_MEDICOS" prefWidth="136.0" text="Folio" />
                         <TableColumn fx:id="COL_CARNE_MEDICOS" prefWidth="101.0" text="Carné" />
                         <TableColumn fx:id="COL_ESTADO_MEDICOS" prefWidth="86.0" text="Estado" />
                         <TableColumn fx:id="COL_INICIO_MEDICOS" prefWidth="86.0" text="Inicio Jornada" />
-                        <TableColumn fx:id="COL_FINAL_MEDICOS" prefWidth="113.0" text="Final de la Jornada" />
+                        <TableColumn fx:id="COL_FINAL_MEDICOS" prefWidth="113.0" text="Final Jornada" />
                         <TableColumn fx:id="COL_ESPACIOS_MEDICOS" prefWidth="115.0" text="Espacio por Hora" />
                      </columns>
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
                   </TableView>
                </children>
-            </GridPane>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </HBox>
             <GridPane layoutY="452.0" prefHeight="62.0" prefWidth="1033.0" AnchorPane.bottomAnchor="286.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="452.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="30.0" />
