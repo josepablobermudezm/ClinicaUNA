@@ -9,8 +9,12 @@ package clinicauna;
 import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
 import clinicauna.util.hiloCorreo;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -27,10 +31,11 @@ public class ClinicaUna extends Application {
         stage.setTitle("Clinica UNA");
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         FlowController.getInstance().InitializeFlow(stage, null);
-        FlowController.getInstance().goViewInWindowTransparent("VistaCargando");
-        Correos.getInstance().recuperarContrasenna("josepablobermudezm@gmail.com", "una");
-        hiloCorreo.finalizado = true;
-//FlowController.getInstance().goViewInWindowTransparent("LogIn"); 
+        
+        
+        FlowController.getInstance().goViewInWindowTransparent("LogIn"); 
+       /* FlowController.getInstance().goViewInWindowTransparent("VistaCargando");
+        correrHilo();*/
     }
 
     /**
@@ -62,4 +67,53 @@ public class ClinicaUna extends Application {
         launch(args);
     }
 
+    private Timer timer = new Timer();
+    private int tic = 1;
+    private Label label;
+    public static boolean finalizado = false;
+    private Stage stage;
+
+    /*public hiloCorreo(Label label, Stage stage) {
+        this.label = label;
+        this.stage = stage;
+
+    }*/
+    TimerTask task = new TimerTask() {
+        @Override
+        public void run() {
+            Platform.runLater(() -> {
+                /*
+                switch (tic) {
+                    case 1:
+                        label.setText("Enviando Correos.");
+                        tic++;
+                        break;
+                    case 2:
+                        label.setText("Enviando Correos..");
+                        tic++;
+                        break;
+                    case 3:
+                        label.setText("Enviando Correos...");
+                        tic = 1;
+                        break;
+                }*/
+                
+                Correos.getInstance().run();
+                
+                hiloCorreo.finalizado = true;
+                timer.cancel();
+                task.cancel();
+                /*if (finalizado) {
+
+                    //stage.close();
+                    //finalizado = false;
+                }*/
+            });
+
+        }
+    };
+
+    public void correrHilo() {
+        timer.schedule(task, 10, 1000);
+    }
 }

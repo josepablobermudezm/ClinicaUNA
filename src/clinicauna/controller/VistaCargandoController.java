@@ -18,20 +18,17 @@ import javafx.scene.control.Label;
  *
  * @author JORDI RODRIGUEZ
  */
-public class VistaCargandoController extends Controller implements Initializable {
+public class VistaCargandoController extends Controller{
 
     @FXML
     private Label lblCorreos;
 
     @Override
     public void initialize() {
-        
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        hiloCorreo hilo = new hiloCorreo(lblCorreos,this.stage);
-        hilo.correrHilo();
+        if (this.getStage() != null) {
+            hiloCorreo hilo = new hiloCorreo(lblCorreos, this.stage);
+            hilo.correrHilo();
+        }
     }
 
 }

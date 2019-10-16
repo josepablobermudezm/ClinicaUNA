@@ -7,6 +7,7 @@ package clinicauna.util;
 
 import java.io.IOException;
 import java.util.Properties;
+import javafx.stage.Stage;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,9 +22,10 @@ import javax.mail.internet.MimeMultipart;
  *
  * @author JORDI RODRIGUEZ
  */
-public class Correos {
+public class Correos extends Thread implements Runnable {
 
     private static Correos INSTANCE = null;
+    private Stage stage;
 
     private static void createInstance() {
         if (INSTANCE == null) {
@@ -40,6 +42,23 @@ public class Correos {
             createInstance();
         }
         return INSTANCE;
+    }
+
+    @Override
+    public void run() {
+
+        esperarXsegundos(1000);
+
+    }
+
+    private void esperarXsegundos(int segundos) {
+        try {
+            Thread.sleep(segundos * 1000);
+            Respuesta resp = recuperarContrasenna("josepablobermudezm@gmail.com", "una");
+            System.out.println(resp.getMensaje());
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     public Respuesta mensajeActivacion(String usuario, String Destinatario, String url) {
@@ -66,9 +85,9 @@ public class Correos {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
-            return new Respuesta(true,"Mensaje de Activación enviado exitosamente","");
+            return new Respuesta(true, "Mensaje de Activación enviado exitosamente", "");
         } catch (MessagingException e) {
-            return new Respuesta(false,"Hubo un error al enviar el correo de activación al usuario.","");
+            return new Respuesta(false, "Hubo un error al enviar el correo de activación al usuario.", "");
         }
 
     }
@@ -98,9 +117,9 @@ public class Correos {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
-            return new Respuesta(true,"","");
+            return new Respuesta(true, "", "");
         } catch (MessagingException e) {
-            return new Respuesta(false,"No se ha enviado un correo de recuperación debido a un problema de red.",e.getLocalizedMessage());
+            return new Respuesta(false, "No se ha enviado un correo de recuperación debido a un problema de red.", e.getLocalizedMessage());
         }
 
     }
