@@ -18,12 +18,12 @@
             <Label fx:id="Titulo" text="Expediente Médico" />
             <HBox prefHeight="33.0" prefWidth="1030.0">
                <children>
-                  <Label prefHeight="24.0" prefWidth="48.0" text="Paciente:">
+                  <Label prefHeight="30.0" prefWidth="88.0" styleClass="lbl" text="Paciente:">
                      <HBox.margin>
                         <Insets left="35.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="lblPaciente" prefHeight="0.0" prefWidth="257.0">
+                  <Label fx:id="lblPaciente" prefHeight="30.0" prefWidth="308.0" styleClass="lbl">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>

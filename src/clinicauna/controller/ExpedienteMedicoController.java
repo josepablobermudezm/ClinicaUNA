@@ -110,6 +110,7 @@ public class ExpedienteMedicoController extends Controller {
     private ToggleGroup Antecedentes;
     @FXML
     private ToggleGroup Alergias;
+    private boolean valor = false;
 
     @Override
     public void initialize() {
@@ -142,13 +143,17 @@ public class ExpedienteMedicoController extends Controller {
                 txtTratamientos.setText((expedienteDto.getTratamientos() != null) ? expedienteDto.getTratamientos() : "");
                 if (expedienteDto.getAlergias().equals(" ")) {
                     btnNoAlergias.setSelected(true);
+                    txtAlergias.setDisable(true);
                 } else {
                     btnSiAlergias.setSelected(true);
+                    txtAlergias.setDisable(false);
                 }
                 if (expedienteDto.getOperaciones().equals(" ")) {
                     btnNoOperaciones.setSelected(true);
+                    txtOperaciones.setDisable(true);
                 } else {
                     btnSiOperaciones.setSelected(true);
+                    txtOperaciones.setDisable(false);
                 }
                 if (expedienteDto.getHospitalizaciones().equals("N")) {
                     btnNoHospitalizaciones.setSelected(true);
@@ -157,16 +162,22 @@ public class ExpedienteMedicoController extends Controller {
                 }
                 if (expedienteDto.getTratamientos().equals(" ")) {
                     btnNoTratamientos.setSelected(true);
+                    txtTratamientos.setDisable(true);
                 } else {
                     btnSiTratamientos.setSelected(true);
+                    txtTratamientos.setDisable(false);
                 }
                 if (expedienteDto.getAntecedentesPatologicos().equals(" ")) {
                     btnAntecedentesNo.setSelected(true);
+                    txtAntecedentesPatologicos.setDisable(true);
                 } else {
                     btnAntecedenteSi.setSelected(true);
+                    txtAntecedentesPatologicos.setDisable(false);
                 }
+                valor = false;
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Busqueda de paciente", this.getStage(), "El paciente seleccionado no tiene un expediente");
+                valor = true;
             }
             lblPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
         }
@@ -201,6 +212,7 @@ public class ExpedienteMedicoController extends Controller {
                 resp = expedienteService.guardarExpediente(expedienteDto);
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
                 Limpiar();
+                this.lblPaciente.setText(null);
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el expediente.");
             }
@@ -229,7 +241,7 @@ public class ExpedienteMedicoController extends Controller {
         this.btnSiOperaciones.setSelected(false);
         this.btnSiTratamientos.setSelected(false);
         this.btnAntecedenteSi.setSelected(false);
-        this.lblPaciente.setText(null);
+        //this.lblPaciente.setText(null);
         AppContext.getInstance().delete("Paciente");
     }
 
@@ -322,6 +334,7 @@ public class ExpedienteMedicoController extends Controller {
                         if (resp.getEstado()) {
                             ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                             Limpiar();
+                            this.lblPaciente.setText(null);
                         } else {
                             ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                         }
@@ -344,6 +357,13 @@ public class ExpedienteMedicoController extends Controller {
     private void BuscarPaciente(ActionEvent event) {
         FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
         initialize();
+        if (valor) {
+            this.txtTratamientos.setDisable(true);
+            this.txtAlergias.setDisable(true);
+            this.txtAntecedentesPatologicos.setDisable(true);
+            this.txtOperaciones.setDisable(true);
+            Limpiar();
+        }
     }
 
     @FXML
