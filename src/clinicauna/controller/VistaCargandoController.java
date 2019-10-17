@@ -29,9 +29,9 @@ public class VistaCargandoController extends Controller {
 
     @Override
     public void initialize() {
+        //Limpio de nuevo la vista para que se pueda cargar la vista nuevamente
+        FlowController.getInstance().initialize();
         if (this.getStage() != null) {
-            //Limpio de nuevo la vista para que se pueda cargar la vista nuevamente
-            FlowController.getInstance().initialize();
             hiloCorreo hilo = new hiloCorreo(lblCorreos, this.stage);
             hilo.correrHilo();
         }

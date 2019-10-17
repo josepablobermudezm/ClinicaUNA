@@ -46,7 +46,6 @@ public class Correos extends Thread {
         }
         
         hiloCorreo.finalizado = true;
-        System.out.println("Finalizado");
 
     }
 
