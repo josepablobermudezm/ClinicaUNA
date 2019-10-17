@@ -33,87 +33,16 @@ public class ClinicaUna extends Application {
         FlowController.getInstance().InitializeFlow(stage, null);
         
         
+        
         FlowController.getInstance().goViewInWindowTransparent("LogIn"); 
-       /* FlowController.getInstance().goViewInWindowTransparent("VistaCargando");
-        correrHilo();*/
+        //FlowController.getInstance().goViewInWindowTransparent("VistaCargando");
+        //Correos.getInstance().start();
+        //correrHilo();
     }
 
-    /**
-     */
-    public final static EventHandler<KeyEvent> aceptaCaracteres = (KeyEvent event) -> {
-        if (Character.isDigit(event.getCharacter().charAt(0))) {
-            event.consume();
-        }
-    };
-
-    public final static EventHandler<KeyEvent> aceptaNumeros = (KeyEvent event) -> {
-        if (!Character.isDigit(event.getCharacter().charAt(0))) {
-            event.consume();
-        }
-    };
-
-    public final static EventHandler<KeyEvent> noEscribir = (KeyEvent event) -> {
-        event.consume();
-    };
-
-    public final static EventHandler<KeyEvent> sinEspacios = (KeyEvent event) -> {
-        if (event.getCode() == event.getCode().SPACE) {
-            event.consume();
-        }
-
-    };
+    
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    private Timer timer = new Timer();
-    private int tic = 1;
-    private Label label;
-    public static boolean finalizado = false;
-    private Stage stage;
-
-    /*public hiloCorreo(Label label, Stage stage) {
-        this.label = label;
-        this.stage = stage;
-
-    }*/
-    TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            Platform.runLater(() -> {
-                /*
-                switch (tic) {
-                    case 1:
-                        label.setText("Enviando Correos.");
-                        tic++;
-                        break;
-                    case 2:
-                        label.setText("Enviando Correos..");
-                        tic++;
-                        break;
-                    case 3:
-                        label.setText("Enviando Correos...");
-                        tic = 1;
-                        break;
-                }*/
-                
-                Correos.getInstance().run();
-                
-                hiloCorreo.finalizado = true;
-                timer.cancel();
-                task.cancel();
-                /*if (finalizado) {
-
-                    //stage.close();
-                    //finalizado = false;
-                }*/
-            });
-
-        }
-    };
-
-    public void correrHilo() {
-        timer.schedule(task, 10, 1000);
     }
 }

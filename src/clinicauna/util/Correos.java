@@ -5,9 +5,8 @@
  */
 package clinicauna.util;
 
-import java.io.IOException;
+
 import java.util.Properties;
-import javafx.stage.Stage;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -22,47 +21,54 @@ import javax.mail.internet.MimeMultipart;
  *
  * @author JORDI RODRIGUEZ
  */
-public class Correos extends Thread implements Runnable {
+public class Correos extends Thread {
 
-    private static Correos INSTANCE = null;
-    private Stage stage;
-
-    private static void createInstance() {
-        if (INSTANCE == null) {
-            synchronized (Correos.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new Correos();
-                }
-            }
-        }
+    public Correos() {
+        super();
     }
 
-    public static Correos getInstance() {
-        if (INSTANCE == null) {
-            createInstance();
-        }
-        return INSTANCE;
-    }
+    private String caso;
+    private String usuario;
+    private String destinatario;
+    private String url;
+    private String contrasena;
+    private Respuesta resp;
 
     @Override
     public void run() {
-
-        esperarXsegundos(1000);
-
-    }
-
-    private void esperarXsegundos(int segundos) {
-        try {
-            Thread.sleep(segundos * 1000);
-            Respuesta resp = recuperarContrasenna("josepablobermudezm@gmail.com", "una");
-            System.out.println(resp.getMensaje());
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
+        switch (caso) {
+            case "Activacion":
+                mensajeActivacion(usuario, destinatario, url);
+                break;
+            case "Contrasenna":
+                recuperarContrasenna(destinatario, contrasena);
+                break;
         }
+        
+        hiloCorreo.finalizado = true;
+        System.out.println("Finalizado");
+
     }
 
-    public Respuesta mensajeActivacion(String usuario, String Destinatario, String url) {
+    public void mensajeActivacionHilo(String usuario, String Destinatario, String url) {
+        this.usuario = usuario;
+        this.destinatario = Destinatario;
+        this.url = url;
+        this.caso = "Activacion";
+        start();
+    }
+
+    public Respuesta getResp() {
+        return resp;
+    }
+
+    public void setResp(Respuesta resp) {
+        this.resp = resp;
+    }
+
+    public void mensajeActivacion(String usuario, String Destinatario, String url) {
         try {
+
             Properties prop = new Properties();
             prop.setProperty("mail.smtp.auth", "true");
             prop.setProperty("mail.smtp.starttls.enable", "true");
@@ -85,14 +91,22 @@ public class Correos extends Thread implements Runnable {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
-            return new Respuesta(true, "Mensaje de Activación enviado exitosamente", "");
+            resp = new Respuesta(true, "Mensaje de Activación enviado exitosamente", "");
         } catch (MessagingException e) {
-            return new Respuesta(false, "Hubo un error al enviar el correo de activación al usuario.", "");
+            resp = new Respuesta(false, "Hubo un error al enviar el correo de activación al usuario.", "");
         }
 
     }
 
-    public Respuesta recuperarContrasenna(String Destinatario, String contrasenna) {
+    public void recuperarContrasennaHilo(String Destinatario, String contrasenna) {
+        this.destinatario = Destinatario;
+        this.contrasena = contrasenna;
+        this.caso = "Contrasenna";
+        start();
+
+    }
+
+    public void recuperarContrasenna(String Destinatario, String contrasenna) {
         try {
             // Propiedades necesarias
             Properties prop = new Properties();
@@ -117,9 +131,9 @@ public class Correos extends Thread implements Runnable {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
-            return new Respuesta(true, "", "");
+            resp = new Respuesta(true, "Correo enviado exitosamente.", "");
         } catch (MessagingException e) {
-            return new Respuesta(false, "No se ha enviado un correo de recuperación debido a un problema de red.", e.getLocalizedMessage());
+            resp = new Respuesta(false, "No se ha enviado un correo de recuperación debido a un problema de red.", e.getLocalizedMessage());
         }
 
     }
