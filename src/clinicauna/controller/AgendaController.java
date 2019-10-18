@@ -13,6 +13,7 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.service.AgendaService;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
+import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
 import clinicauna.util.Idioma;
 import clinicauna.util.Respuesta;

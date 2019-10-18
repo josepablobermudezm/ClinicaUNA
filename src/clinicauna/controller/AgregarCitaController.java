@@ -15,6 +15,7 @@ import clinicauna.service.CitaService;
 import clinicauna.service.EspacioService;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
+import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
 import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
@@ -98,6 +99,8 @@ public class AgregarCitaController extends Controller {
     private ArrayList<PacienteDto> lista;
     private MedicoDto medicoDto;
     private AgendaDto agendaDto;
+    private Correos correo;
+    private PacienteDto paciente;
 
     @Override
     public void initialize() {
@@ -197,7 +200,7 @@ public class AgregarCitaController extends Controller {
                 FlowController.getInstance().initialize();
                 this.getStage().close();
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente..." + e.getMessage());
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita..." + e.getMessage());
             }
         } else {
             ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
@@ -219,6 +222,7 @@ public class AgregarCitaController extends Controller {
                 }
             });
             pacienteDto = lista.stream().filter(x -> x.getCedula().equals(cedulaBuscar)).findAny().get();
+            AppContext.getInstance().set("PacienteDto", pacienteDto);
             cedulaBuscar = "";
             cedulaEncontrada = false;
         }
@@ -286,12 +290,14 @@ public class AgregarCitaController extends Controller {
         if (val) {
             if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
                 AgregarCita(style);
+
             } else {
                 limpiarValores();
             }
         } else {
             if (j == espacio) {
                 AgregarCita(style);
+
             } else {
                 if (!val) {
                     if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
@@ -382,13 +388,30 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1);
             espacioDto = new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto);
             service.guardarEspacio(espacioDto);
-            
+
             vCita.setBackground(Background.EMPTY);
             vCita.setStyle(style);
             vCita.AgregarCita(espacioDto);
             vCita.getChildren().add(((vistaCita) vCita).get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
         });
+        
+        AppContext.getInstance().set("aux", aux);
+        AppContext.getInstance().set("CitaDto", citaDto);
+
+        correo = new Correos();
+        paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
+        correo.CorreoCitaHilo(this.txtCorreo.getText());
+        FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
+        
+        
+        resp = correo.getResp();
+        if (resp.getEstado()) {
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+        }
         limpiarValores();
+
     }
 
 }

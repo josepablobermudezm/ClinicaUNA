@@ -190,7 +190,32 @@ public class FlowController {
 
     }
 
+    
+    
     public void goViewInWindowModal(String viewName, Stage parentStage, Boolean resizable) {
+        FXMLLoader loader = getLoader(viewName);
+        Controller controller = loader.getController();
+        controller.initialize();
+        Stage stage = new Stage();
+
+        stage.setResizable(resizable);
+        stage.setOnHidden((WindowEvent event) -> {
+            controller.getStage().getScene().setRoot(new Pane());
+            controller.setStage(null);
+        });
+
+        controller.setStage(stage);
+        Parent root = loader.getRoot();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(parentStage);
+        stage.centerOnScreen();
+        stage.showAndWait();
+
+    }
+    
+    public void goViewInWindowModalCorreo(String viewName, Stage parentStage, Boolean resizable) {
         FXMLLoader loader = getLoader(viewName);
         Controller controller = loader.getController();
         Stage stage = new Stage();
@@ -216,6 +241,7 @@ public class FlowController {
 
     }
 
+    
     public Controller getController(String viewName) {
         return getLoader(viewName).getController();
     }

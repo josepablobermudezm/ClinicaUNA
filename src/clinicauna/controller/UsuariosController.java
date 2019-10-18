@@ -283,7 +283,7 @@ public class UsuariosController extends Controller {
                         //Envia correo de activacion
                         Correos mail = new Correos();
                         mail.mensajeActivacionHilo(nombreusuario, correo, resp2.getMensaje());
-                        FlowController.getInstance().goViewInWindowModal("VistaCargando",this.getStage(),false);
+                        FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando",this.getStage(),false);
                         resp = mail.getResp();
                         if (resp.getEstado()) {
                             ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());

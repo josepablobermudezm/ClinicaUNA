@@ -5,7 +5,12 @@
  */
 package clinicauna.util;
 
-
+import clinicauna.model.AgendaDto;
+import clinicauna.model.CitaDto;
+import clinicauna.model.MedicoDto;
+import clinicauna.model.PacienteDto;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import javax.mail.BodyPart;
 import javax.mail.Message;
@@ -33,6 +38,11 @@ public class Correos extends Thread {
     private String url;
     private String contrasena;
     private Respuesta resp;
+    private CitaDto cita;
+    private MedicoDto medico;
+    private AgendaDto agenda;
+    private PacienteDto paciente;
+    private List<vistaCita> aux = new ArrayList<>();
 
     @Override
     public void run() {
@@ -43,8 +53,11 @@ public class Correos extends Thread {
             case "Contrasenna":
                 recuperarContrasenna(destinatario, contrasena);
                 break;
+            case "cita":
+                CorreoCita(destinatario);
+                break;
         }
-        
+
         hiloCorreo.finalizado = true;
 
     }
@@ -105,6 +118,51 @@ public class Correos extends Thread {
 
     }
 
+    public void CorreoCitaHilo(String Destinatario) {
+        this.destinatario = Destinatario;
+        this.caso = "cita";
+        cita = (CitaDto) AppContext.getInstance().get("CitaDto");
+        medico = (MedicoDto) AppContext.getInstance().get("MedicoDto");
+        aux = (List) AppContext.getInstance().get("aux");
+        paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
+        agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
+        start();
+
+    }
+
+    public void CorreoCita(String Destinatario) {
+        try {
+
+            // Propiedades necesarias
+            Properties prop = new Properties();
+            prop.setProperty("mail.smtp.auth", "true");
+            prop.setProperty("mail.smtp.starttls.enable", "true");
+            prop.put("mail.smtp.host", "smtp.gmail.com");
+            prop.setProperty("mail.smtp.port", "587");
+            prop.setProperty("mail.smtp.user", "clinica.una.cr@gmail.com");
+
+            Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
+            BodyPart link = new MimeBodyPart();
+            link.setContent(htmlCorreoCita(cita), "text/html");
+            MimeMultipart m = new MimeMultipart();
+            m.addBodyPart(link);
+            MimeMessage mensaje = new MimeMessage(session);
+            mensaje.setFrom(new InternetAddress("clinica.una.cr@gmail.com"));// Aqui se define el usuario que enviará el correo
+            mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(Destinatario));// Destinatario
+            mensaje.setSubject("Información de Cita");// Aqui podemos escribir el asunto que necesitemos en el correo
+            mensaje.setContent(m); // aqui seteamos nuestro archivo
+            // Aqui se conecta con nuestro usuario y contraseña se procede a enviar y se cierra la conexión
+            Transport t = session.getTransport("smtp");
+            t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
+            t.sendMessage(mensaje, mensaje.getAllRecipients());
+            t.close();
+            resp = new Respuesta(true, "Correo enviado exitosamente.", "");
+        } catch (MessagingException e) {
+            resp = new Respuesta(false, "No se ha enviado un correo de información de cita debido a un problema de red.", e.getLocalizedMessage());
+        }
+
+    }
+
     public void recuperarContrasenna(String Destinatario, String contrasenna) {
         try {
             // Propiedades necesarias
@@ -116,7 +174,7 @@ public class Correos extends Thread {
             prop.setProperty("mail.smtp.user", "clinica.una.cr@gmail.com");
 
             Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
-            BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
+            BodyPart link = new MimeBodyPart();
             link.setContent(htmlRecuperarContrasenna(contrasenna), "text/html");
             MimeMultipart m = new MimeMultipart();
             m.addBodyPart(link);
@@ -135,6 +193,40 @@ public class Correos extends Thread {
             resp = new Respuesta(false, "No se ha enviado un correo de recuperación debido a un problema de red.", e.getLocalizedMessage());
         }
 
+    }
+
+    public String htmlCorreoCita(CitaDto cita) {
+
+        return "<!DOCTYPE html>\n"
+                + "<html lang=\"es\">\n"
+                + "<head>\n"
+                + "	<meta charset=\"utf-8\">\n"
+                + "	<title>holi</title>\n"
+                + "</head>\n"
+                + "<body style=\"background-color: white \">\n"
+                + "\n"
+                + "<!--Copia desde aquí-->\n"
+                + "<table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n"
+                + "	<tr>\n"
+                + "		<td style=\"background-color: white\">\n"
+                + " <div id=\"imagenLogo\" style=\"width: 150px; heigth: 150px;  padding: 11px 23px\">"
+                + "<img width=\"150px\" style=\"display:block; margin: 1.5% 3%;\" \" src=\"https://i.postimg.cc/P5p8msw5/logo.png\" heigth=\"150px\"></div>\n"
+                + "			<div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n"
+                + "				<h2 style=\"color: #3e3e7d; margin: 0 0 7px\">Información de Cita</h2>\n"
+                + "				<p style=\"margin: 2px; font-size: 15px\">\n"
+                + "					Su cita ha sido registrada exitosamente: " + "  " + "<br>" + " Información sobre cita: " + "<br>"
+                + "Médico: " + medico.getUs().getNombre()+ " "+ medico.getUs().getpApellido() + "<br>" + "Fecha: " + agenda.getAgeFecha().toString() +  "<br>" + "Hora de inicio: " + aux.get(0).getEspacio().getEspHoraInicio()+
+                 "<br>" + "Hora Final:" + aux.get(aux.size() - 1).getEspacio().getEspHoraFin() + "<br>" + "Paciente: " + paciente.getNombre() + " " + paciente.getpApellido() +" "+ paciente.getsApellido()+ "<br>" + "Cédula: " + paciente.getCedula()
+                + "                             <p style=\"margin: 2px; font-size: 15px\">\n"
+                + "				<p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">ClínicaUNA 2019</p>\n"
+                + "			</div>\n"
+                + "		</td>\n"
+                + "	</tr>\n"
+                + "</table>\n"
+                + "<!--hasta aquí-->\n"
+                + "\n"
+                + "</body>\n"
+                + "</html>";
     }
 
     public String htmlRecuperarContrasenna(String contrasenna) {
@@ -168,7 +260,6 @@ public class Correos extends Thread {
                 + "\n"
                 + "</body>\n"
                 + "</html>";
-
     }
 
     public String activarUsuario(String usuario, String url) {

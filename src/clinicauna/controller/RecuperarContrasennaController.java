@@ -103,7 +103,7 @@ public class RecuperarContrasennaController extends Controller {
                         String contrassena = usuario.getContrasennaTemp();
                         Correos mail = new Correos();
                         mail.recuperarContrasennaHilo(correo, contrassena);
-                        FlowController.getInstance().goViewInWindowModal("VistaCargando",this.getStage(),false);
+                        FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando",this.getStage(),false);
                         resp = mail.getResp();
                         if (resp.getEstado()) {
                             txtCorreoElectronico.clear();
