@@ -15,6 +15,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 /**
@@ -26,15 +28,24 @@ public class VistaCargandoController extends Controller {
 
     @FXML
     private Label lblCorreos;
+    @FXML
+    private ImageView omg11;
 
     @Override
     public void initialize() {
         //Limpio de nuevo la vista para que se pueda cargar la vista nuevamente
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/clinicauna/resources/fondo.jpg");
+            omg11.setImage(imgLogo);
+        } catch (Exception e) {
+        }
         FlowController.getInstance().initialize();
         if (this.getStage() != null) {
             hiloCorreo hilo = new hiloCorreo(lblCorreos, this.stage);
             hilo.correrHilo();
         }
+        
     }
 
 }
