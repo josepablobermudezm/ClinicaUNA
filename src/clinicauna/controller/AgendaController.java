@@ -124,7 +124,7 @@ public class AgendaController extends Controller {
     private EventHandler<MouseEvent> citasReleased = (event) -> {
         vistaCita hCita = (vistaCita) event.getSource();
         AppContext.getInstance().set("hBox", hCita);
-        AppContext.getInstance().set("Cita", hCita.getCita());
+        AppContext.getInstance().set("Cita", hCita.getEspacio());
         FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
         AppContext.getInstance().delete("Cita");
     };
@@ -333,22 +333,22 @@ public class AgendaController extends Controller {
             //Elijo el estilo de cada cita para cargar los datos en la vistaCita
             case "AT": {
                 String style = "-fx-background-color: #8cff8c; ";
-                cargarVistaCita(vCita, style, espacio.getEspCita());
+                cargarVistaCita(vCita, style, espacio);
                 break;
             }
             case "CA": {
                 String style = "-fx-background-color: #fa7a7a";
-                cargarVistaCita(vCita, style, espacio.getEspCita());
+                cargarVistaCita(vCita, style, espacio);
                 break;
             }
             case "PR": {
                 String style = "-fx-background-color: #fad655";
-                cargarVistaCita(vCita, style, espacio.getEspCita());
+                cargarVistaCita(vCita, style, espacio);
                 break;
             }
             case "AU": {
                 String style = "-fx-background-color: #bdbdbd";
-                cargarVistaCita(vCita, style, espacio.getEspCita());
+                cargarVistaCita(vCita, style, espacio);
                 break;
             }
             default:
@@ -356,11 +356,11 @@ public class AgendaController extends Controller {
         }
     }
 
-    private void cargarVistaCita(vistaCita vCita, String style, CitaDto cita) {
+    private void cargarVistaCita(vistaCita vCita, String style, EspacioDto espacio) {
         //Carga la vista de las citas 
         vCita.setBackground(Background.EMPTY);
         vCita.setStyle(style);
-        vCita.AgregarCita(cita);
+        vCita.AgregarCita(espacio);
         vCita.getChildren().add(vCita.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
     }
 }

@@ -91,6 +91,7 @@ public class AgregarCitaController extends Controller {
     private CitaService citaService;
     private PacienteDto pacienteDto;
     private CitaDto citaDto;
+    private EspacioDto espacioDto;
     private Mensaje ms;
     private Idioma idioma;
     private UsuarioDto usuario;
@@ -272,7 +273,7 @@ public class AgregarCitaController extends Controller {
             if (grid.getChildren().indexOf(l) >= x) {
                 i++;
                 if (i <= espacio && !bandera) {
-                    if (((vistaCita) l).getCita() == null) {
+                    if (((vistaCita) l).getEspacio() == null) {
                         aux.add((vistaCita) l);
                         j++;
                     } else {
@@ -379,11 +380,12 @@ public class AgregarCitaController extends Controller {
             }
 
             Long version = new Long(1);
-            service.guardarEspacio(new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto));
+            espacioDto = new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto);
+            service.guardarEspacio(espacioDto);
             
             vCita.setBackground(Background.EMPTY);
             vCita.setStyle(style);
-            vCita.AgregarCita(citaDto);
+            vCita.AgregarCita(espacioDto);
             vCita.getChildren().add(((vistaCita) vCita).get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
         });
         limpiarValores();

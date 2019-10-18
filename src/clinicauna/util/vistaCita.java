@@ -6,6 +6,7 @@
 package clinicauna.util;
 
 import clinicauna.model.CitaDto;
+import clinicauna.model.EspacioDto;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -21,17 +22,17 @@ public class vistaCita extends HBox {
     private Label Nombre = new Label();
     private Label Correo = new Label();
     private Label Telefono = new Label();
-    private CitaDto cita;
+    private EspacioDto espacio;
 
     public vistaCita() {
 
     }
 
 
-    public void AgregarCita(CitaDto cita) {
-        this.Nombre.setText(cita.getPaciente().getNombre() + " " + cita.getPaciente().getpApellido() + " " + cita.getPaciente().getsApellido());
-        this.Correo.setText(cita.getCorreo());
-        this.Telefono.setText(cita.getTelefono());
+    public void AgregarCita(EspacioDto espacio) {
+        this.Nombre.setText(espacio.getEspCita().getPaciente().getNombre() + " " + espacio.getEspCita().getPaciente().getpApellido() + " " + espacio.getEspCita().getPaciente().getsApellido());
+        this.Correo.setText(espacio.getEspCita().getCorreo());
+        this.Telefono.setText(espacio.getEspCita().getTelefono());
         this.vBox.getChildren().clear();
         this.vBox.getChildren().addAll(Nombre, Correo, Telefono);
         this.vBox.setAlignment(Pos.CENTER);
@@ -40,7 +41,7 @@ public class vistaCita extends HBox {
         this.Nombre.setStyle(style);
         this.Correo.setStyle(style);
         this.Telefono.setStyle(style);
-        this.cita = cita;
+        this.espacio = espacio;
     }
 
     public VBox get(double Width) {
@@ -81,12 +82,12 @@ public class vistaCita extends HBox {
         this.Telefono = Telefono;
     }
 
-    public CitaDto getCita() {
-        return cita;
+    public EspacioDto getEspacio() {
+        return espacio;
     }
 
-    public void setCita(CitaDto cita) {
-        this.cita = cita;
+    public void setEspacio(EspacioDto espacio) {
+        this.espacio = espacio;
     }
     
 }
