@@ -77,7 +77,6 @@ public class UsuariosController extends Controller {
     private JFXTextField txtSApellido;
     @FXML
     private JFXTextField txtNombreUsuario;
-    private JFXTextField txtFiltroUsuario;
     @FXML
     private ToggleGroup idiomagroup;
     @FXML
@@ -140,7 +139,7 @@ public class UsuariosController extends Controller {
             this.txtCedula.setPromptText("ID");
             this.txtClave.setPromptText(idioma.getProperty("Contraseña"));
             this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
-            this.txtFiltroUsuario.setPromptText(idioma.getProperty("Filtro") + " " + idioma.getProperty("porBy") + " " + "ID");
+            
             this.txtNombre.setPromptText(idioma.getProperty("Nombre"));
             this.txtPApellido.setPromptText(idioma.getProperty("Primero") + " " + idioma.getProperty("Apellido"));
             this.txtSApellido.setPromptText(idioma.getProperty("Segundo") + " " + idioma.getProperty("Apellido"));
@@ -282,8 +281,10 @@ public class UsuariosController extends Controller {
 
                         Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
                         //Envia correo de activacion
-                        resp = Correos.getInstance().mensajeActivacion(nombreusuario, correo, resp2.getMensaje());
-
+                        Correos mail = new Correos();
+                        mail.mensajeActivacionHilo(nombreusuario, correo, resp2.getMensaje());
+                        FlowController.getInstance().goViewInWindowModal("VistaCargando",this.getStage(),false);
+                        resp = mail.getResp();
                         if (resp.getEstado()) {
                             ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                             limpiarRegistro();
@@ -292,6 +293,7 @@ public class UsuariosController extends Controller {
                             items = FXCollections.observableArrayList(usuarios);
                             table.setItems(items);
                         }else{
+                            usuarioService.eliminarUsuario(usuarioDto.getID());
                             ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                         }
                     } else {

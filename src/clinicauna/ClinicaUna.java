@@ -6,9 +6,15 @@
  */
 package clinicauna;
 
+import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
+import clinicauna.util.hiloCorreo;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -25,37 +31,18 @@ public class ClinicaUna extends Application {
         stage.setTitle("Clinica UNA");
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         FlowController.getInstance().InitializeFlow(stage, null);
-        FlowController.getInstance().goViewInWindowTransparent("VistaCargando");
-//FlowController.getInstance().goViewInWindowTransparent("LogIn"); 
+        
+        
+        
+        FlowController.getInstance().goViewInWindowTransparent("LogIn"); 
+        //FlowController.getInstance().goViewInWindowTransparent("VistaCargando");
+        //Correos.getInstance().start();
+        //correrHilo();
     }
 
-    /**
-     */
-    public final static EventHandler<KeyEvent> aceptaCaracteres = (KeyEvent event) -> {
-        if (Character.isDigit(event.getCharacter().charAt(0))) {
-            event.consume();
-        }
-    };
-
-    public final static EventHandler<KeyEvent> aceptaNumeros = (KeyEvent event) -> {
-        if (!Character.isDigit(event.getCharacter().charAt(0))) {
-            event.consume();
-        }
-    };
-
-    public final static EventHandler<KeyEvent> noEscribir = (KeyEvent event) -> {
-        event.consume();
-    };
-
-    public final static EventHandler<KeyEvent> sinEspacios = (KeyEvent event) -> {
-        if (event.getCode() == event.getCode().SPACE) {
-            event.consume();
-        }
-
-    };
+    
 
     public static void main(String[] args) {
         launch(args);
     }
-
 }

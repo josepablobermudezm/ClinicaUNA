@@ -80,7 +80,6 @@ public class RecuperarContrasennaController extends Controller {
         } catch (Exception e) {
         }
     }
-    
 
     @FXML
     private void cancelar(ActionEvent event) {
@@ -102,14 +101,17 @@ public class RecuperarContrasennaController extends Controller {
                     UsuarioDto usuario = (UsuarioDto) resp.getResultado("Usuario");
                     if (usuario.getEstado().equals("A")) {
                         String contrassena = usuario.getContrasennaTemp();
-                        resp = Correos.getInstance().recuperarContrasenna(correo, contrassena);
+                        Correos mail = new Correos();
+                        mail.recuperarContrasennaHilo(correo, contrassena);
+                        FlowController.getInstance().goViewInWindowModal("VistaCargando",this.getStage(),false);
+                        resp = mail.getResp();
                         if (resp.getEstado()) {
                             txtCorreoElectronico.clear();
                             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Recuperando contraseña", this.getStage(), "Se envió una contraseña temporal a este correo");
                         } else {
                             usuario.setContrasennaTemp(null);
                             usService.guardarUsuario(usuario);
-                            new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(),resp.getMensaje());
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(), resp.getMensaje());
                         }
                     } else {
                         new Mensaje().showModal(Alert.AlertType.WARNING, "Recuperando contraseña", this.getStage(), "Este usuario no ha sido activado");

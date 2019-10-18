@@ -161,7 +161,7 @@ public class AgendaController extends Controller {
             });
 
             medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
-            
+
             LocalTime inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
             LocalTime finJornada = LocalTime.parse(medicoDto.getFinJornada());
             //Creo las conversiones de las horas del medico con formato
@@ -238,42 +238,38 @@ public class AgendaController extends Controller {
                     hPane.setAlignment(Pos.BASELINE_LEFT);
                     GridPane.setVgrow(hPane, Priority.NEVER);
                     hPane.setStyle("-fx-background-color: #FFFF;");
-                    
-                    
+
                     //Metodos de Drag and Drop
-                                
-            hPane.setOnDragDetected(e->{
-                
-                Dragboard db = hPane.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                WritableImage wi = hPane.snapshot(new SnapshotParameters(), null);
-                WritableImage wii = new WritableImage(wi.getPixelReader(),0, 0, ((int)wi.getWidth()), ((int)wi.getHeight()));
-                
-                content.put(DataFormat.IMAGE, wii);
-                hPane.setCursor(Cursor.CLOSED_HAND);
-                db.setContent(content);
-            });
-            
-            hPane.setOnDragOver(f -> {
-                
-                f.acceptTransferModes(TransferMode.ANY);
-                
-               /* if(node != null && !this.getItem().getActId().equals(node.getItem().getActId())){
+                    hPane.setOnDragDetected(e -> {
+
+                        Dragboard db = hPane.startDragAndDrop(TransferMode.ANY);
+                        ClipboardContent content = new ClipboardContent();
+                        WritableImage wi = hPane.snapshot(new SnapshotParameters(), null);
+                        WritableImage wii = new WritableImage(wi.getPixelReader(), 0, 0, ((int) wi.getWidth()), ((int) wi.getHeight()));
+
+                        content.put(DataFormat.IMAGE, wii);
+                        hPane.setCursor(Cursor.CLOSED_HAND);
+                        db.setContent(content);
+                    });
+
+                    hPane.setOnDragOver(f -> {
+
+                        f.acceptTransferModes(TransferMode.ANY);
+
+                        /* if(node != null && !this.getItem().getActId().equals(node.getItem().getActId())){
                     
                 }*/
-            });
+                    });
 
-            hPane.setOnDragDropped(e -> {
-                
-                
-            });
+                    hPane.setOnDragDropped(e -> {
 
-            hPane.setOnDragDone(e -> {
-                hPane.setCursor(Cursor.OPEN_HAND);
-                
-            });
-                    
-                    
+                    });
+
+                    hPane.setOnDragDone(e -> {
+                        hPane.setCursor(Cursor.OPEN_HAND);
+
+                    });
+
                     calendarGrid.add(hPane, j, i);
 
                 }

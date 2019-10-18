@@ -9,6 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  *
@@ -19,9 +20,13 @@ public class hiloCorreo {
     private Timer timer = new Timer();
     private int tic = 1;
     private Label label;
+    public static boolean finalizado = false;
+    private Stage stage;
 
-    public hiloCorreo(Label label) {
+    public hiloCorreo(Label label, Stage stage) {
         this.label = label;
+        this.stage = stage;
+
     }
 
     TimerTask task = new TimerTask() {
@@ -43,14 +48,15 @@ public class hiloCorreo {
                         tic = 1;
                         break;
                 }
-
+                
+                if (finalizado) {
+                    timer.cancel();
+                    task.cancel();
+                    stage.close();
+                    finalizado = false;
+                }
             });
 
-            if (tic % 10 == 0) {
-                timer.cancel();
-                task.cancel();
-                System.out.println("TEN TICS!");
-            }
         }
     };
 

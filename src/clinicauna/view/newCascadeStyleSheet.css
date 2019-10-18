@@ -25,6 +25,10 @@
     -fx-font-size : 15pt;
     -fx-text-fill : gray;
 }
+.lbl1{
+    -fx-font-size : 15pt;
+    -fx-text-fill : white;
+}
 .root{
     -fx-background-color: white;
 }
@@ -293,3 +297,20 @@
     -fx-cell-vertical-margin:10.0;
     -fx-vertical-gap: 10;
 }*/
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-body-color: yellow;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-body-color: ladder(#444, yellow 0%, red 100%);
+}
+
+.spinner .increment-arrow-button:hover:pressed,
+.spinner .decrement-arrow-button:hover:pressed,
+.spinner .increment-arrow-button:pressed,
+.spinner .decrement-arrow-button:pressed {
+    -fx-body-color: ladder(#AAA, yellow 0%, red 100%);
+}

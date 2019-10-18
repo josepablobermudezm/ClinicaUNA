@@ -36,7 +36,7 @@ public class FlowController {
     private static ResourceBundle idioma;
     private static HashMap<String, FXMLLoader> loaders = new HashMap<>();
     private Stage stage;
-    
+
     private FlowController() {
     }
 
@@ -105,7 +105,6 @@ public class FlowController {
         goView(viewName, "Center", accion);
     }
 
-    
     public void goViewInWindowTransparent(String viewName) {
         FXMLLoader loader = getLoader(viewName);
         Controller controller = loader.getController();
@@ -125,7 +124,7 @@ public class FlowController {
         stage.centerOnScreen();
         stage.show();
     }
-    
+
     public void goView(String viewName, String location, String accion) {
         FXMLLoader loader = getLoader(viewName);
         Controller controller = loader.getController();//clase abstracta
@@ -194,22 +193,24 @@ public class FlowController {
     public void goViewInWindowModal(String viewName, Stage parentStage, Boolean resizable) {
         FXMLLoader loader = getLoader(viewName);
         Controller controller = loader.getController();
-        controller.initialize();
         Stage stage = new Stage();
         stage.getIcons().add(new Image("/clinicauna/resources/medicine.png"));
         stage.setTitle("Clinica UNA");
         stage.setResizable(resizable);
+        
         stage.setOnHidden((WindowEvent event) -> {
             controller.getStage().getScene().setRoot(new Pane());
             controller.setStage(null);
         });
 
         controller.setStage(stage);
+        controller.initialize();
         Parent root = loader.getRoot();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(parentStage);
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.centerOnScreen();
         stage.showAndWait();
 
