@@ -125,9 +125,10 @@ public class AgendaController extends Controller {
     private EventHandler<MouseEvent> citasReleased = (event) -> {
         vistaCita hCita = (vistaCita) event.getSource();
         AppContext.getInstance().set("hBox", hCita);
-        AppContext.getInstance().set("Cita", hCita.getEspacio());
+        AppContext.getInstance().set("Espacio", hCita.getEspacio());
         FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
         AppContext.getInstance().delete("Cita");
+        Inicio();
     };
 
     @FXML

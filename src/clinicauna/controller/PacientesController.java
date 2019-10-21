@@ -289,7 +289,6 @@ public class PacientesController extends Controller {
         btnHombre.setSelected(false);
         FechaDeNacimiento.setValue(null);
         table.getSelectionModel().clearSelection();
-        AppContext.getInstance().delete("Expediente");
     }
 
     @FXML

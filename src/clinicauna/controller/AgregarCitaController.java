@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clinicauna.controller;
 
 import clinicauna.model.AgendaDto;
@@ -87,7 +82,6 @@ public class AgregarCitaController extends Controller {
     private GridPane grid;
     private vistaCita hBox;
     private Respuesta resp;
-    private Respuesta resp1;
     private PacienteService pacienteService;
     private CitaService citaService;
     private PacienteDto pacienteDto;
@@ -105,25 +99,76 @@ public class AgregarCitaController extends Controller {
     @Override
     public void initialize() {
 
-        hBox = (vistaCita) AppContext.getInstance().get("hBox");
-        grid = (GridPane) AppContext.getInstance().get("Grid");
-        medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
-        agendaDto = (AgendaDto) AppContext.getInstance().get("Agenda");
-        if (AppContext.getInstance().get("Cita") != null) {
-            citaDto = (CitaDto) AppContext.getInstance().get("Cita");
-            txtCorreo.setText(citaDto.getCorreo());
-            txtTelefono.setText(citaDto.getTelefono());
-            txtmotivo.setText(citaDto.getMotivo());
-
-        }
-
         formato();
         pacienteService = new PacienteService();
         resp = pacienteService.getPacientes();
         ms = new Mensaje();
         citaService = new CitaService();
-        resp1 = citaService.getCitas();
 
+        hBox = (vistaCita) AppContext.getInstance().get("hBox");
+        grid = (GridPane) AppContext.getInstance().get("Grid");
+        medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
+        agendaDto = (AgendaDto) AppContext.getInstance().get("Agenda");
+
+        lista = (ArrayList<PacienteDto>) resp.getResultado("Pacientes");
+
+        ObservableList<String> items = FXCollections.observableArrayList(lista.stream().map(x -> x.getNombre()
+                + " " + x.getpApellido() + " " + x.getsApellido() + " Ced:" + x.getCedula())
+                .collect(Collectors.toList()));
+        ComboPacientes.setItems(items);
+        //si el appcontext de espacio no está vacío, de prepara para la edición
+        if (AppContext.getInstance().get("Espacio") != null) {
+            btnAtendida.setDisable(false);
+            btnAusente.setDisable(false);
+            btnCancelada.setDisable(false);
+            espacioDto = (EspacioDto) AppContext.getInstance().get("Espacio");
+            txtCorreo.setText(espacioDto.getEspCita().getCorreo());
+            txtTelefono.setText(espacioDto.getEspCita().getTelefono());
+            txtmotivo.setText(espacioDto.getEspCita().getMotivo());
+            ComboPacientes.setValue(espacioDto.getEspCita().getPaciente().getNombre() + " " + espacioDto.getEspCita().getPaciente().getpApellido() + " " + espacioDto.getEspCita().getPaciente().getsApellido() + " Ced:" + espacioDto.getEspCita().getPaciente().getCedula());
+            String paciente = espacioDto.getEspCita().getPaciente().getNombre() + " " + espacioDto.getEspCita().getPaciente().getpApellido() + " " + espacioDto.getEspCita().getPaciente().getsApellido() + " Ced:" + espacioDto.getEspCita().getPaciente().getCedula();
+            paciente.chars().forEach(x -> {
+                if (((char) x) == ':') {
+                    cedulaEncontrada = true;
+                } else if (cedulaEncontrada) {
+                    cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
+                }
+            });
+            pacienteDto = lista.stream().filter(x -> x.getCedula().equals(cedulaBuscar)).findAny().get();
+            AppContext.getInstance().set("PacienteDto", pacienteDto);
+            cedulaBuscar = "";
+            cedulaEncontrada = false;
+            txtEspacios.setText(String.valueOf(agendaDto.getEspacioList().stream().filter(x -> x.getEspCita().getID().equals(espacioDto.getEspCita().getID())).count()));
+            if (espacioDto.getEspCita().getEstado().equals("PR")) {
+                btnProgramada.setSelected(true);
+            } else {
+                btnProgramada.setSelected(false);
+            }
+            if (espacioDto.getEspCita().getEstado().equals("AT")) {
+                btnAtendida.setSelected(true);
+            } else {
+                btnAtendida.setSelected(false);
+            }
+            if (espacioDto.getEspCita().getEstado().equals("AU")) {
+                btnAusente.setSelected(true);
+            } else {
+                btnAusente.setSelected(false);
+            }
+            if (espacioDto.getEspCita().getEstado().equals("CA")) {
+                btnCancelada.setSelected(true);
+            } else {
+                btnCancelada.setSelected(false);
+            }
+        } else {
+            //es la primera vez que la selecciona por lo tanto no debe de poder elegir otro tipo de estado
+            btnAtendida.setSelected(false);
+            btnAusente.setSelected(false);
+            btnCancelada.setSelected(false);
+            btnProgramada.setSelected(true);
+            btnAtendida.setDisable(true);
+            btnAusente.setDisable(true);
+            btnCancelada.setDisable(true);
+        }
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
@@ -141,11 +186,7 @@ public class AgregarCitaController extends Controller {
             this.txtTelefono.setPromptText(idioma.getProperty("Telefono"));
             this.txtmotivo.setPromptText(idioma.getProperty("Motivo"));
         }
-        lista = (ArrayList<PacienteDto>) resp.getResultado("Pacientes");
-        ObservableList<String> items = FXCollections.observableArrayList(lista.stream().map(x -> x.getNombre()
-                + " " + x.getpApellido() + " " + x.getsApellido() + " Ced:" + x.getCedula())
-                .collect(Collectors.toList()));
-        ComboPacientes.setItems(items);
+
     }
 
     @FXML
@@ -164,37 +205,28 @@ public class AgregarCitaController extends Controller {
             try {
                 switch (estado) {
                     case "AT": {
-                        //hBox.setBackground(Background.EMPTY);
                         String style = "-fx-background-color: #8cff8c; ";
-                        // hBox.setStyle(style);
                         ValidarEspacios(style);
                         break;
                     }
                     case "CA": {
-                        // hBox.setBackground(Background.EMPTY);
                         String style = "-fx-background-color: #fa7a7a";
-                        // hBox.setStyle(style);
                         ValidarEspacios(style);
                         break;
                     }
                     case "PR": {
-                        //hBox.setBackground(Background.EMPTY);
                         String style = "-fx-background-color: #fad655";
-                        // hBox.setStyle(style);
                         ValidarEspacios(style);
                         break;
                     }
                     case "AU": {
-                        //hBox.setBackground(Background.EMPTY);
                         String style = "-fx-background-color: #bdbdbd";
-                        // hBox.setStyle(style);
                         ValidarEspacios(style);
                         break;
                     }
                     default:
                         break;
                 }
-
                 limpiarValores();
                 AppContext.getInstance().set("hBox", null);
                 FlowController.getInstance().initialize();
@@ -212,6 +244,7 @@ public class AgregarCitaController extends Controller {
 
     @FXML
     private void seleccionarPaciente(ActionEvent event) {
+        //este método lo que hace es buscar el nombre a partir de la cédula
         if (ComboPacientes.getSelectionModel() != null && ComboPacientes.getSelectionModel().getSelectedItem() != null) {
             String paciente = ComboPacientes.getSelectionModel().getSelectedItem();
             paciente.chars().forEach(x -> {
@@ -271,6 +304,7 @@ public class AgregarCitaController extends Controller {
     private static List<vistaCita> aux = new ArrayList<>();
 
     private void ValidarEspacios(String style) {
+        //revizo que si hayan espacio vacíos más adelante de la cita, en el caso que no hayan le voy ell valor de espacios al usuario y le pregunto si quiere continuar
         int x = grid.getChildren().indexOf(hBox);
         int espacio = Integer.parseInt(txtEspacios.getText());
         grid.getChildren().stream().forEach(l -> {
@@ -312,8 +346,8 @@ public class AgregarCitaController extends Controller {
 
     public void AgregarCita(String style) {
         //Guardo la cita en base de datos
-        resp1 = citaService.guardarCita(citaDto);
-        citaDto = (CitaDto) resp1.getResultado("Cita");
+        resp = citaService.guardarCita(citaDto);
+        citaDto = (CitaDto) resp.getResultado("Cita");
         EspacioService service = new EspacioService();
         //Seteo el medico con el formato del LocalDateTime a la agenda
         agendaDto.setAgeMedico(medicoDto);
@@ -387,14 +421,14 @@ public class AgregarCitaController extends Controller {
 
             Long version = new Long(1);
             espacioDto = new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto);
-            service.guardarEspacio(espacioDto);
-
+            resp = service.guardarEspacio(espacioDto);
+            //agendaDto.getEspacioList().add(espacioDto); GENERA UN LOOP INFINITO; NI IDEA DE PORQUE, HAY QUE VER OTRA FORMA DE ACTUALIZAR
             vCita.setBackground(Background.EMPTY);
             vCita.setStyle(style);
             vCita.AgregarCita(espacioDto);
             vCita.getChildren().add(((vistaCita) vCita).get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
         });
-        
+
         AppContext.getInstance().set("aux", aux);
         AppContext.getInstance().set("CitaDto", citaDto);
 
@@ -402,8 +436,7 @@ public class AgregarCitaController extends Controller {
         paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
         correo.CorreoCitaHilo(this.txtCorreo.getText());
         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
-        
-        
+
         resp = correo.getResp();
         if (resp.getEstado()) {
             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
@@ -411,7 +444,75 @@ public class AgregarCitaController extends Controller {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
         }
         limpiarValores();
+    }
 
+    @FXML
+    private void editar(ActionEvent event) {
+
+        if (registroCorrecto()) {
+            String telefono = txtTelefono.getText();
+            String correo = txtCorreo.getText();
+            String motivo = txtmotivo.getText();
+            Long version = new Long(1) + 1;
+            String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
+            String correoEnviado = espacioDto.getEspCita().getCorreoEnviado();
+            //Obtengo el primer el Hbox que contiene el Label con la hora
+
+            citaDto = new CitaDto(espacioDto.getEspCita().getID(), version, pacienteDto, motivo, estado, telefono, correo, correoEnviado);
+            try {
+                if (estado != "CA") {
+                    resp = citaService.guardarCita(citaDto);
+                }else{
+                    resp = citaService.eliminarCita(espacioDto.getEspCita().getID());
+                }
+                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
+                limpiarValores();
+                this.getStage().close();
+            } catch (Exception e) {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el usuario.");
+            }
+//            try {
+//                switch (estado) {
+//                    case "AT": {
+//                        String style = "-fx-background-color: #8cff8c; ";
+//                        ValidarEspacios(style);
+//                        break;
+//                    }
+//                    case "CA": {
+//                        String style = "-fx-background-color: #fa7a7a";
+//                        ValidarEspacios(style);
+//                        break;
+//                    }
+//                    case "PR": {
+//                        String style = "-fx-background-color: #fad655";
+//                        ValidarEspacios(style);
+//                        break;
+//                    }
+//                    case "AU": {
+//                        String style = "-fx-background-color: #bdbdbd";
+//                        ValidarEspacios(style);
+//                        break;
+//                    }
+//                    default:
+//                        break;
+//                }
+//
+//                limpiarValores();
+//                AppContext.getInstance().set("hBox", null);
+//                FlowController.getInstance().initialize();
+//                this.getStage().close();
+//            } catch (Exception e) {
+//                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita..." + e.getMessage());
+//            }
+        } else {
+            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
+        }
+
+    }
+
+    @FXML
+    private void agregarPaciente(ActionEvent event) {
+        FlowController.getInstance().goViewInStage("AgregarPaciente", this.getStage());
     }
 
 }
