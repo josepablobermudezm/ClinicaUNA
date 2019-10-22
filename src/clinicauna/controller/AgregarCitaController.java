@@ -95,6 +95,7 @@ public class AgregarCitaController extends Controller {
     private AgendaDto agendaDto;
     private Correos correo;
     private PacienteDto paciente;
+    private String estado1;
 
     @Override
     public void initialize() {
@@ -122,6 +123,7 @@ public class AgregarCitaController extends Controller {
             btnAusente.setDisable(false);
             btnCancelada.setDisable(false);
             espacioDto = (EspacioDto) AppContext.getInstance().get("Espacio");
+            citaDto = espacioDto.getEspCita();
             txtCorreo.setText(espacioDto.getEspCita().getCorreo());
             txtTelefono.setText(espacioDto.getEspCita().getTelefono());
             txtmotivo.setText(espacioDto.getEspCita().getMotivo());
@@ -161,6 +163,7 @@ public class AgregarCitaController extends Controller {
             }
         } else {
             //es la primera vez que la selecciona por lo tanto no debe de poder elegir otro tipo de estado
+            estado1 = "PR";
             btnAtendida.setSelected(false);
             btnAusente.setSelected(false);
             btnCancelada.setSelected(false);
@@ -198,29 +201,33 @@ public class AgregarCitaController extends Controller {
             String correo = txtCorreo.getText();
             String motivo = txtmotivo.getText();
             Long version = new Long(1);
-            String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
+            if (AppContext.getInstance().get("Espacio") != null) {
+                estado1 = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
+            }else{
+                estado1 = "PR";
+            }
             //Obtengo el primer el Hbox que contiene el Label con la hora
-            citaDto = new CitaDto(null, version, pacienteDto, motivo, estado, telefono, correo, "N");
+            citaDto = new CitaDto(null, version, pacienteDto, motivo, estado1, telefono, correo, "N");
 
             try {
-                switch (estado) {
+                switch (estado1) {
                     case "AT": {
-                        String style = "-fx-background-color: #8cff8c; ";
+                        String style = "-fx-background-color: #fad655; ";
                         ValidarEspacios(style);
                         break;
                     }
                     case "CA": {
-                        String style = "-fx-background-color: #fa7a7a";
+                        String style = "-fx-background-color: #fa7a7a;";
                         ValidarEspacios(style);
                         break;
                     }
                     case "PR": {
-                        String style = "-fx-background-color: #fad655";
+                        String style = "-fx-background-color: #8cff8c;";
                         ValidarEspacios(style);
                         break;
                     }
                     case "AU": {
-                        String style = "-fx-background-color: #bdbdbd";
+                        String style = "-fx-background-color: #bdbdbd;";
                         ValidarEspacios(style);
                         break;
                     }
@@ -425,7 +432,7 @@ public class AgregarCitaController extends Controller {
             //agendaDto.getEspacioList().add(espacioDto); GENERA UN LOOP INFINITO; NI IDEA DE PORQUE, HAY QUE VER OTRA FORMA DE ACTUALIZAR
             vCita.setBackground(Background.EMPTY);
             vCita.setStyle(style);
-            vCita.AgregarCita(espacioDto);
+            vCita.AgregarCita((EspacioDto) resp.getResultado("Espacio"));
             vCita.getChildren().add(((vistaCita) vCita).get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
         });
 
@@ -454,16 +461,21 @@ public class AgregarCitaController extends Controller {
             String correo = txtCorreo.getText();
             String motivo = txtmotivo.getText();
             Long version = new Long(1) + 1;
-            String estado = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
+            if (AppContext.getInstance().get("Espacio") != null) {
+                estado1 = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
+            }else{
+                estado1 = "PR";
+            }
             String correoEnviado = espacioDto.getEspCita().getCorreoEnviado();
             //Obtengo el primer el Hbox que contiene el Label con la hora
 
-            citaDto = new CitaDto(espacioDto.getEspCita().getID(), version, pacienteDto, motivo, estado, telefono, correo, correoEnviado);
+            citaDto = new CitaDto(citaDto.getID(), version, pacienteDto, motivo, estado1, telefono, correo, correoEnviado);
             try {
-                if (estado != "CA") {
+                if (estado1 != "CA") {
                     resp = citaService.guardarCita(citaDto);
                 }else{
-                    resp = citaService.eliminarCita(espacioDto.getEspCita().getID());
+                    resp = new EspacioService().eliminarEspacio(espacioDto.getEspId());
+                    //resp = citaService.eliminarCita(citaDto.getID());
                 }
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
                 limpiarValores();

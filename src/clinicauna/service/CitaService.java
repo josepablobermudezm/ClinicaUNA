@@ -133,7 +133,7 @@ public class CitaService {
             return new Respuesta(true, "", "");
         } catch (Exception ex) {
             Logger.getLogger(CitaService.class.getName()).log(Level.SEVERE, "Error eliminando el Cita.", ex);
-            return new Respuesta(false, "Error eliminando el Cita.", "eliminarCita " + ex.getMessage());
+            return new Respuesta(false, "Error eliminando la Cita.", "eliminarCita " + ex.getMessage());
         }
     }
 

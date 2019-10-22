@@ -330,7 +330,7 @@ public class AgendaController extends Controller {
         switch (espacio.getEspCita().getEstado()) {
             //Elijo el estilo de cada cita para cargar los datos en la vistaCita
             case "AT": {
-                String style = "-fx-background-color: #8cff8c; ";
+                String style = "-fx-background-color: #fad655;";
                 cargarVistaCita(vCita, style, espacio);
                 break;
             }
@@ -340,7 +340,7 @@ public class AgendaController extends Controller {
                 break;
             }
             case "PR": {
-                String style = "-fx-background-color: #fad655";
+                String style = "-fx-background-color: #8cff8c;";
                 cargarVistaCita(vCita, style, espacio);
                 break;
             }
