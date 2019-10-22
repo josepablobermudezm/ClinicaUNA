@@ -451,6 +451,7 @@ public class AgregarCitaController extends Controller {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
         }
         limpiarValores();
+        initialize();
     }
 
     @FXML
@@ -469,13 +470,13 @@ public class AgregarCitaController extends Controller {
             String correoEnviado = espacioDto.getEspCita().getCorreoEnviado();
             //Obtengo el primer el Hbox que contiene el Label con la hora
 
-            citaDto = new CitaDto(citaDto.getID(), version, pacienteDto, motivo, estado1, telefono, correo, correoEnviado);
+            citaDto = new CitaDto(espacioDto.getEspCita().getID(), version, pacienteDto, motivo, estado1, telefono, correo, correoEnviado);
             try {
                 if (estado1 != "CA") {
                     resp = citaService.guardarCita(citaDto);
                 }else{
-                    resp = new EspacioService().eliminarEspacio(espacioDto.getEspId());
-                    //resp = citaService.eliminarCita(citaDto.getID());
+                    //resp = new EspacioService().eliminarEspacio(espacioDto.getEspId());
+                    resp = citaService.eliminarCita(espacioDto.getEspCita().getID());
                 }
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
                 limpiarValores();
