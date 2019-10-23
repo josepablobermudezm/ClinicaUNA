@@ -6,8 +6,11 @@
 package clinicauna.controller;
 
 import clinicauna.model.PacienteDto;
+import clinicauna.model.UsuarioDto;
 import clinicauna.service.PacienteService;
+import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -59,12 +62,26 @@ public class AgregarPacienteController extends Controller {
     private PacienteService pacienteService;
     private Mensaje ms;
     private Respuesta resp;
+    private Idioma idioma;
+    private UsuarioDto usuario;
     /**
      * Initializes the controller class.
      */ 
-
     @Override
     public void initialize() {
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if(usuario.getIdioma().equals("I")){
+            this.lblGenero.setText(idioma.getProperty("Genero"));
+            this.btnHombre1.setText(idioma.getProperty("Masculino"));
+            this.btnMujer1.setText(idioma.getProperty("Femenino"));
+            this.txtCedula.setPromptText(idioma.getProperty("Cedula"));
+            this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
+            this.txtNombre.setPromptText(idioma.getProperty("Nombre"));
+            this.txtPApellido.setPromptText(idioma.getProperty("Primero")+" "+idioma.getProperty("Apellido"));
+            this.txtSApellido.setPromptText(idioma.getProperty("Segundo")+" "+idioma.getProperty("Apellido"));
+            this.Titulo.setText(idioma.getProperty("Agregar")+" "+idioma.getProperty("Paciente"));          
+        }
         pacienteDto = new PacienteDto();
         pacienteService = new PacienteService();
         ms = new Mensaje();
