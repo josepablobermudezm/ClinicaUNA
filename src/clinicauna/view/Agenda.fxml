@@ -7,36 +7,35 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1030.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.AgendaController">
-   <children>
-      <BorderPane layoutX="5.0" layoutY="5.0">
-         <center>
-            <AnchorPane id="AnchorPane" prefHeight="629.0" prefWidth="1024.0" stylesheets="@newCascadeStyleSheet.css">
+<BorderPane accessibleRole="NODE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1030.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.AgendaController">
+   <center>
+      <VBox alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" fillWidth="false" prefHeight="141.0" prefWidth="1030.0">
                <children>
-                  <ScrollPane fx:id="ScrollPane" layoutY="104.0" prefHeight="550.0" prefWidth="1024.0">
-                    <content>
-                        <FlowPane fx:id="FlowPane" prefHeight="579.0" prefWidth="1022.0">
-                           <children>
-                              <GridPane fx:id="calendarGrid" gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="552.0" prefWidth="1021.0" style="-fx-cursor: hand;">
-                                 <rowConstraints>
-                                    <RowConstraints />
-                                    <RowConstraints />
-                                    <RowConstraints />
-                                 </rowConstraints>
-                              </GridPane>
-                           </children>
-                        </FlowPane>
-                    </content>
-                  </ScrollPane>
-                  <HBox prefHeight="70.0" prefWidth="1024.0" spacing="150.0">
+                  <HBox alignment="CENTER" fillHeight="false" prefWidth="1030.0" spacing="45.0">
+                     <children>
+                        <Label fx:id="lblAnno" styleClass="lbl" text="Año:">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="labelyear" prefHeight="21.0" prefWidth="74.0" styleClass="lbl" />
+                        <Label fx:id="lblMes" styleClass="lbl" text="Mes:" />
+                        <Label fx:id="labelmes" prefHeight="21.0" prefWidth="117.0" styleClass="lbl" />
+                        <Label fx:id="lblDia" styleClass="lbl" text="Día:" />
+                        <Label fx:id="labelSemana" prefHeight="30.0" prefWidth="103.0" styleClass="lbl" />
+                        <JFXDatePicker fx:id="DatePicker" defaultColor="#0d008f" onAction="#Validacion" onHiding="#Fecha" prefHeight="29.0" prefWidth="256.0" promptText="Seleccionar Fecha" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" fillHeight="false" prefHeight="23.0" prefWidth="1030.0" spacing="150.0">
                      <children>
                         <Label fx:id="lblHora" styleClass="lbl" text="Hora:">
                            <padding>
@@ -53,7 +52,7 @@
                         </JFXComboBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="106.0" layoutY="61.0" onDragOver="#arriba" onMousePressed="#clickArriba" prefHeight="43.0" prefWidth="813.0">
+                  <HBox alignment="CENTER" onDragOver="#arriba" onMousePressed="#clickArriba" prefHeight="43.0" prefWidth="1030.0">
                      <children>
                         <ImageView fx:id="AbajoScroll1" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -63,62 +62,67 @@
                      </children>
                   </HBox>
                </children>
-            </AnchorPane>
-         </center>
-         <top>
-            <HBox spacing="45.0" BorderPane.alignment="CENTER">
+            </VBox>
+            <VBox alignment="CENTER" fillWidth="false" maxHeight="800.0">
                <children>
-                  <Label fx:id="lblAnno" styleClass="lbl" text="Año:">
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </Label>
-                  <Label fx:id="labelyear" prefHeight="21.0" prefWidth="74.0" styleClass="lbl" />
-                  <Label fx:id="lblMes" styleClass="lbl" text="Mes:" />
-                  <Label fx:id="labelmes" prefHeight="21.0" prefWidth="117.0" styleClass="lbl" />
-                  <Label fx:id="lblDia" styleClass="lbl" text="Día:" />
-                  <Label fx:id="labelSemana" prefHeight="30.0" prefWidth="103.0" styleClass="lbl" />
-                  <JFXDatePicker fx:id="DatePicker" defaultColor="#0d008f" onAction="#Validacion" onHiding="#Fecha" prefHeight="29.0" prefWidth="256.0" promptText="Seleccionar Fecha" />
+                  <ScrollPane fx:id="ScrollPane" maxHeight="800.0" prefHeight="550.0" prefWidth="1030.0">
+                     <content>
+                        <GridPane fx:id="calendarGrid" alignment="CENTER" gridLinesVisible="true" maxHeight="0.0" maxWidth="1.7976931348623157E308" prefHeight="552.0" prefWidth="1021.0" style="-fx-cursor: hand;">
+                           <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                           </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </VBox>
+            <HBox alignment="CENTER" fillHeight="false" onMouseReleased="#clickDerecha" prefHeight="43.0" prefWidth="1030.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefWidth="343.33">
+                     <children>
+                        <ImageView fx:id="izquierdaFecha" fitHeight="43.0" fitWidth="102.0" onDragOver="#izquierda" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/izquierda.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefWidth="343.33">
+                     <children>
+                        <ImageView fx:id="AbajoScroll" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/down.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefWidth="343.33">
+                     <children>
+                        <ImageView fx:id="DerechaFecha" fitHeight="43.0" fitWidth="102.0" onDragOver="#derecha" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/derecha.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
-         </top>
-      </BorderPane>
-      <HBox alignment="CENTER" layoutY="737.0" prefHeight="60.0" prefWidth="1030.0" spacing="20.0">
-         <children>
-            <Label text="Programada:" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8cff8c" height="43.0" stroke="#8cff8c" strokeType="INSIDE" width="40.0" />
-            <Label text="Atendida:" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fad655" height="43.0" stroke="#fad655" strokeType="INSIDE" width="40.0" />
-            <Label text="Ausente:" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bdbdbd" height="43.0" stroke="#bdbdbd" strokeType="INSIDE" width="40.0" />
+            <HBox alignment="CENTER" fillHeight="false" prefHeight="67.0" prefWidth="1030.0" spacing="20.0">
+               <children>
+                  <Label text="Programada:" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8cff8c" height="43.0" stroke="#8cff8c" strokeType="INSIDE" width="40.0" />
+                  <Label text="Atendida:" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fad655" height="43.0" stroke="#fad655" strokeType="INSIDE" width="40.0" />
+                  <Label text="Ausente:" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bdbdbd" height="43.0" stroke="#bdbdbd" strokeType="INSIDE" width="40.0" />
+               </children>
+            </HBox>
          </children>
-      </HBox>
-      <HBox alignment="CENTER" layoutX="5.0" layoutY="689.0" onMouseReleased="#clickIzquierda" prefHeight="43.0" prefWidth="101.0">
-         <children>
-            <ImageView fx:id="izquierdaFecha" fitHeight="43.0" fitWidth="102.0" onDragOver="#izquierda" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/izquierda.png" />
-               </image>
-            </ImageView>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" layoutX="920.0" layoutY="689.0" onMouseReleased="#clickDerecha" prefHeight="43.0" prefWidth="109.0">
-         <children>
-            <ImageView fx:id="DerechaFecha" fitHeight="43.0" fitWidth="102.0" onDragOver="#derecha" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/derecha.png" />
-               </image>
-            </ImageView>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" layoutX="109.0" layoutY="689.0" onDragOver="#abajo" onMousePressed="#clickAbajo" prefHeight="43.0" prefWidth="813.0">
-         <children>
-            <ImageView fx:id="AbajoScroll" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/down.png" />
-               </image>
-            </ImageView>
-         </children>
-      </HBox>
-   </children>
-</AnchorPane>
+      </VBox>
+   </center>
+</BorderPane>

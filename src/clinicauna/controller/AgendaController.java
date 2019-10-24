@@ -6,14 +6,12 @@
 package clinicauna.controller;
 
 import clinicauna.model.AgendaDto;
-import clinicauna.model.CitaDto;
 import clinicauna.model.EspacioDto;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.AgendaService;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
-import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
 import clinicauna.util.Idioma;
 import clinicauna.util.Respuesta;
@@ -106,7 +104,7 @@ public class AgendaController extends Controller {
         //DatePicker.setValue(LocalDate.now());
 
         usuarioDto = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-        if (usuarioDto.getTipoUsuario().equals("A") || usuarioDto.getTipoUsuario().equals("R")) {
+        if (!usuarioDto.getTipoUsuario().equals("M")) {
             Inicio();
             if (this.DatePicker.getValue() != null) {
                 this.ComboMedico.setDisable(false);
@@ -198,7 +196,7 @@ public class AgendaController extends Controller {
                     cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
                 }
             });
-
+            //Revisar condicion
             medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
         }
 
@@ -276,7 +274,8 @@ public class AgendaController extends Controller {
 
                 hPane.getChildren().add(label);
                 hPane.setAlignment(Pos.BASELINE_LEFT);
-                GridPane.setVgrow(hPane, Priority.NEVER);
+                GridPane.setHgrow(hPane, Priority.ALWAYS);
+                //GridPane.setVgrow(hPane, Priority.ALWAYS);
                 hPane.setStyle("-fx-background-color: #FFFF;");
 
                 //Metodos de Drag and Drop

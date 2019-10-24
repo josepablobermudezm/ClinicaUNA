@@ -43,41 +43,63 @@ public class InicioController extends Controller {
     private JFXHamburger hamburger;
     @FXML
     private ImageView omg;
-    private BorderPane Panel = new BorderPane();
-    private AnchorPane an;
     /**/
+    private VBox vBoxCentral;
     @FXML
     private StackPane st;
 
     @Override
     public void initialize() {
-        omg.fitHeightProperty().bind(st.heightProperty());//  para que la imagen tenga el tamaño de toda la vista
-        omg.fitWidthProperty().bind(st.widthProperty());
+        
+        
+        
         AppContext.getInstance().set("Border", borderPane);
+        
+        borderPane.heightProperty().addListener((observable) -> {
+           /* borderPane.set
+            System.out.println("HeigProperti "+ borderPane.getHeight());*/
+        });
+        borderPane.prefHeightProperty().bindBidirectional(((VBox) borderPane.getCenter()).prefHeightProperty());
+        borderPane.prefHeightProperty().addListener((observable) -> {
+            //System.out.println("PrefHeigProperti "+ borderPane.getHeight());
+            //borderPane.
+        });
+//borderPane.prefWidthProperty().bindBidirectional(other);
         Image omg1;
         try {
             omg1 = new Image("/clinicauna/resources/background2.jpg");
+            
             omg.setImage(omg1);
         } catch (Exception e) {
         }
+        omg.fitHeightProperty().bind(st.heightProperty());//  para que la imagen tenga el tamaño de toda la vista
+        omg.fitWidthProperty().bind(st.widthProperty());
+        
+        st.heightProperty().addListener((observable) -> {
+            
+            omg.getImage();
+        });
+        
         VBox box = null;
         try {
             UsuarioDto usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-            switch(usuario.getTipoUsuario()){
+            switch (usuario.getTipoUsuario()) {
                 case "A": {
-                      box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent.fxml"));
-                      break;
+                    box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent.fxml"));
+                    break;
                 }
-                case "M":{
-                      box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent_Medico.fxml"));
-                      break;
+                case "M": {
+                    box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent_Medico.fxml"));
+                    break;
                 }
-                case "R":{
+                case "R": {
                     box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent_Recepcionista.fxml"));
                     break;
                 }
             }
+            
             drawer.setSidePane(box);
+            
             HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             burgerTask2.setRate(-1);
             drawer.open();
@@ -95,7 +117,7 @@ public class InicioController extends Controller {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+/*
     public void SetBorderPane(BorderPane pane) {
         this.Panel = pane;
         Listener();
@@ -109,5 +131,5 @@ public class InicioController extends Controller {
         Panel.heightProperty().addListener(v -> {
 
         });
-    }
+    }*/
 }
