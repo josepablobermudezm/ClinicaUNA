@@ -19,8 +19,8 @@
                   <VBox prefHeight="352.0" prefWidth="296.0" spacing="70.0">
                      <children>
                         <JFXTextField fx:id="txtCedula" labelFloat="true" onKeyReleased="#ReleasedCedula" promptText="Cédula" />
-                        <JFXTextField fx:id="txtApellido" labelFloat="true" onKeyReleased="#ReleasedApellido" promptText="Apellido" />
                         <JFXTextField fx:id="txtNombre" labelFloat="true" onKeyReleased="#ReleasedNombre" promptText="Nombre" />
+                        <JFXTextField fx:id="txtApellido" labelFloat="true" onKeyReleased="#ReleasedApellido" promptText="Apellido" />
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" />
@@ -54,11 +54,11 @@
       </VBox>
    </center>
    <top>
-      <HBox prefHeight="98.0" prefWidth="695.0" BorderPane.alignment="TOP_CENTER">
+      <HBox alignment="CENTER" prefHeight="98.0" prefWidth="695.0" BorderPane.alignment="TOP_CENTER">
          <children>
-            <Label fx:id="lblTitulo" prefHeight="17.0" prefWidth="146.0" stylesheets="@newCascadeStyleSheet.css" text="Busqueda de Pacientes">
+            <Label fx:id="Titulo" prefHeight="69.0" prefWidth="478.0" stylesheets="@newCascadeStyleSheet.css" text="Seleccione un Paciente">
                <HBox.margin>
-                  <Insets left="300.0" />
+                  <Insets />
                </HBox.margin></Label>
          </children>
       </HBox>

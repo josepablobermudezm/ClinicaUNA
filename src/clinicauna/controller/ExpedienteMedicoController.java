@@ -17,10 +17,13 @@ import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -34,7 +37,7 @@ import javafx.scene.input.MouseEvent;
  *
  * @author Jose Pablo Bermudez
  */
-public class ExpedienteMedicoController extends Controller {
+public class ExpedienteMedicoController extends Controller implements Initializable{
 
     @FXML
     private Label Titulo;
@@ -114,10 +117,14 @@ public class ExpedienteMedicoController extends Controller {
 
     @Override
     public void initialize() {
-        this.txtTratamientos.setDisable(true);
+        
+    }
+    
+    public void inicio(){
+        /*this.txtTratamientos.setDisable(true);
         this.txtAlergias.setDisable(true);
         this.txtAntecedentesPatologicos.setDisable(true);
-        this.txtOperaciones.setDisable(true);
+        this.txtOperaciones.setDisable(true);*/
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
@@ -128,7 +135,10 @@ public class ExpedienteMedicoController extends Controller {
         ms = new Mensaje();
         resp = expedienteService.getExpedientes();
         expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
-        DatosPaciente();
+        FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
+        if(AppContext.getInstance().get("Paciente")!=null){
+            DatosPaciente();
+        }
     }
 
     private void DatosPaciente() {
@@ -241,6 +251,7 @@ public class ExpedienteMedicoController extends Controller {
         this.btnSiOperaciones.setSelected(false);
         this.btnSiTratamientos.setSelected(false);
         this.btnAntecedenteSi.setSelected(false);
+        this.lblPaciente.setText(" ");
         //this.lblPaciente.setText(null);
         AppContext.getInstance().delete("Paciente");
     }
@@ -355,8 +366,12 @@ public class ExpedienteMedicoController extends Controller {
 
     @FXML
     private void BuscarPaciente(ActionEvent event) {
+        BuscarPaciente();
+    }
+    
+    public void BuscarPaciente(){
         FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
-        initialize();
+        DatosPaciente();
         if (valor) {
             this.txtTratamientos.setDisable(true);
             this.txtAlergias.setDisable(true);
@@ -461,6 +476,11 @@ public class ExpedienteMedicoController extends Controller {
         } else {
             this.txtAlergias.setDisable(true);
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        inicio();
     }
 
 }

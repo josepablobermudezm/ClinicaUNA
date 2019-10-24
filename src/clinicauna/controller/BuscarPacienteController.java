@@ -69,16 +69,18 @@ public class BuscarPacienteController extends Controller {
     private void MostrarDatos(MouseEvent event) {
         if(Table_Buscar.getSelectionModel()!= null && Table_Buscar.getSelectionModel().getSelectedItem()!=null){
             AppContext.getInstance().set("Paciente", Table_Buscar.getSelectionModel().getSelectedItem());
+            //PacienteDto paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
             FlowController.getInstance().initialize();
             this.getStage().close();
         }
-        
     }
 
     @Override
     public void initialize() {
         Col_Nombre.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre() + " " + value.getValue().getpApellido() + " " + value.getValue().getsApellido()));
         Col_Cedula.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCedula()));
+        Buscar();
+        //FlowController.getInstance().getController("ExpedienteMedicoController").initialize();
     }
 
     private void Buscar() {
@@ -93,7 +95,6 @@ public class BuscarPacienteController extends Controller {
             pacientes = (ArrayList<PacienteDto>) resp.getResultado("Pacientes");
             items = FXCollections.observableArrayList(pacientes);
             Table_Buscar.setItems(items);
-            
         }else{
             System.out.println(resp.getMensaje());
         }

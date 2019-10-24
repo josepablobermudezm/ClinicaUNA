@@ -133,7 +133,8 @@ public class DrawerContentController extends Controller {
     @FXML
     private void btnExpediente(ActionEvent event) {
         FlowController.getInstance().goView("ExpedienteMedico");
-
+        /*ExpedienteMedicoController exp = new ExpedienteMedicoController();
+        exp.BuscarPaciente();*/
     }
 
     @FXML

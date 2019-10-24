@@ -134,6 +134,7 @@ public class DrawerContentControllerMedico extends Controller {
     @FXML
     private void btnExpediente(ActionEvent event) {
         FlowController.getInstance().goView("ExpedienteMedico");
+        FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
 
     }
 
