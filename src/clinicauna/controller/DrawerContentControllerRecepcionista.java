@@ -33,15 +33,11 @@ public class DrawerContentControllerRecepcionista extends Controller {
     private JFXButton btnExit;
     @FXML
     private JFXButton btnPacientes;
-    @FXML
     private JFXButton btnMedicos;
     @FXML
     private JFXButton btnAgenda;
-    @FXML
     private JFXButton btnExpediente;
-    @FXML
     private JFXButton btnReportes;
-    @FXML
     private JFXButton btnUsuarios;
     private Idioma idioma;
     private UsuarioDto usuario;
@@ -112,35 +108,12 @@ public class DrawerContentControllerRecepcionista extends Controller {
     }
 
     @FXML
-    private void Usuarios(ActionEvent event) {
-        FlowController.getInstance().goView("Usuarios");
-    }
-
-    @FXML
     private void btnPacientes(ActionEvent event) {
         FlowController.getInstance().goView("Pacientes");
     }
-
-    @FXML
-    private void btnMedicos(ActionEvent event) {
-        FlowController.getInstance().goView("Medicos");
-    }
-
+    
     @FXML
     private void btnAgenda(ActionEvent event) {
         FlowController.getInstance().goView("Agenda");
     }
-
-    @FXML
-    private void btnExpediente(ActionEvent event) {
-        FlowController.getInstance().goView("ExpedienteMedico");
-
-    }
-
-    @FXML
-    private void btnReportes(ActionEvent event) {
-        FlowController.getInstance().goView("Reportes");
-
-    }
-
 }
