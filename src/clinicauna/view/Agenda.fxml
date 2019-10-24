@@ -5,6 +5,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
@@ -17,13 +19,13 @@
    <children>
       <BorderPane layoutX="5.0" layoutY="5.0">
          <center>
-            <AnchorPane id="AnchorPane" prefHeight="699.0" prefWidth="768.0" stylesheets="@newCascadeStyleSheet.css">
+            <AnchorPane id="AnchorPane" prefHeight="629.0" prefWidth="1024.0" stylesheets="@newCascadeStyleSheet.css">
                <children>
-                  <ScrollPane fx:id="ScrollPane" layoutY="70.0" prefHeight="632.0" prefWidth="1024.0">
+                  <ScrollPane fx:id="ScrollPane" layoutY="104.0" prefHeight="550.0" prefWidth="1024.0">
                     <content>
-                        <FlowPane fx:id="FlowPane" prefHeight="588.0" prefWidth="1000.0">
+                        <FlowPane fx:id="FlowPane" prefHeight="579.0" prefWidth="1022.0">
                            <children>
-                              <GridPane fx:id="calendarGrid" gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="625.0" prefWidth="1000.0" style="-fx-cursor: hand;">
+                              <GridPane fx:id="calendarGrid" gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="552.0" prefWidth="1021.0" style="-fx-cursor: hand;">
                                  <rowConstraints>
                                     <RowConstraints />
                                     <RowConstraints />
@@ -49,6 +51,15 @@
                               <Insets left="485.0" />
                            </HBox.margin>
                         </JFXComboBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="106.0" layoutY="61.0" onDragOver="#arriba" onMousePressed="#clickArriba" prefHeight="43.0" prefWidth="813.0">
+                     <children>
+                        <ImageView fx:id="AbajoScroll1" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/up.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </HBox>
                </children>
@@ -80,6 +91,33 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fad655" height="43.0" stroke="#fad655" strokeType="INSIDE" width="40.0" />
             <Label text="Ausente:" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bdbdbd" height="43.0" stroke="#bdbdbd" strokeType="INSIDE" width="40.0" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="5.0" layoutY="689.0" onMouseReleased="#clickIzquierda" prefHeight="43.0" prefWidth="101.0">
+         <children>
+            <ImageView fx:id="izquierdaFecha" fitHeight="43.0" fitWidth="102.0" onDragOver="#izquierda" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/izquierda.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="920.0" layoutY="689.0" onMouseReleased="#clickDerecha" prefHeight="43.0" prefWidth="109.0">
+         <children>
+            <ImageView fx:id="DerechaFecha" fitHeight="43.0" fitWidth="102.0" onDragOver="#derecha" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/derecha.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="109.0" layoutY="689.0" onDragOver="#abajo" onMousePressed="#clickAbajo" prefHeight="43.0" prefWidth="813.0">
+         <children>
+            <ImageView fx:id="AbajoScroll" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/down.png" />
+               </image>
+            </ImageView>
          </children>
       </HBox>
    </children>

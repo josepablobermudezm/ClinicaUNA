@@ -38,9 +38,11 @@ import javafx.scene.Cursor;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
@@ -89,16 +91,38 @@ public class AgendaController extends Controller {
     private Idioma idioma;
     private AgendaDto agendaDto;
     private ObservableList<String> items;
+    @FXML
+    private ImageView izquierdaFecha;
+    @FXML
+    private ImageView DerechaFecha;
+    @FXML
+    private ImageView AbajoScroll;
+    @FXML
+    private ImageView AbajoScroll1;
+    private UsuarioDto usuarioDto = new UsuarioDto();
 
     @Override
     public void initialize() {
-        Inicio();
+        //DatePicker.setValue(LocalDate.now());
 
-        if (this.DatePicker.getValue() != null) {
-            this.ComboMedico.setDisable(false);
-        } else {
-            this.ComboMedico.setDisable(true);
+        usuarioDto = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if (usuarioDto.getTipoUsuario().equals("A") || usuarioDto.getTipoUsuario().equals("R")) {
+            Inicio();
+            if (this.DatePicker.getValue() != null) {
+                this.ComboMedico.setDisable(false);
+            } else {
+                this.ComboMedico.setDisable(true);
+            }
+        } else if (usuarioDto.getTipoUsuario().equals("M")) {
+            DatePicker.setValue(LocalDate.now());
+            ComboMedico.setVisible(false);
+            medicoService = new MedicoService();
+            resp = medicoService.getMedicos();
+            lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
+            medicoDto = lista.stream().filter(x -> x.getUs().getID().equals(usuarioDto.getID())).findAny().get();
+            SeleccionarMedico();
         }
+        fecha();
     }
 
     public void Inicio() {
@@ -133,6 +157,13 @@ public class AgendaController extends Controller {
 
     @FXML
     private void Fecha(Event event) {
+        fecha();
+        if (usuarioDto.getTipoUsuario().equals("M")) {
+            SeleccionarMedico();
+        }
+    }
+
+    public void fecha() {
         try {
             mes = (DatePicker.getValue().getMonth() != null) ? DatePicker.getValue().getMonth().toString() : " ";
             year = (String.valueOf(DatePicker.getValue().getYear()) != null) ? String.valueOf(DatePicker.getValue().getYear()) : " ";
@@ -144,7 +175,6 @@ public class AgendaController extends Controller {
 
         }
     }
-
     private static boolean cedulaEncontrada = false;
     private static String cedulaBuscar = "";
 
@@ -152,7 +182,14 @@ public class AgendaController extends Controller {
     private void seleccionarMedico(ActionEvent event) {
         if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
             initialize();
-            calendarGrid.getChildren().clear();
+            SeleccionarMedico();
+        }
+    }
+
+    public void SeleccionarMedico() {
+        calendarGrid.getChildren().clear();
+        //si el usuario es médico no es necesario buscarlo con los datos del combo box.
+        if (usuarioDto.getTipoUsuario().equals("A") || usuarioDto.getTipoUsuario().equals("R")) {
             String medico = ComboMedico.getSelectionModel().getSelectedItem();
             medico.chars().forEach(x -> {
                 if (((char) x) == ':') {
@@ -163,142 +200,142 @@ public class AgendaController extends Controller {
             });
 
             medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
+        }
 
-            LocalTime inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
-            LocalTime finJornada = LocalTime.parse(medicoDto.getFinJornada());
-            //Creo las conversiones de las horas del medico con formato
-            LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
-            LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
+        LocalTime inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
+        LocalTime finJornada = LocalTime.parse(medicoDto.getFinJornada());
+        //Creo las conversiones de las horas del medico con formato
+        LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
+        LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
 
-            String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
-            String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
+        String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
+        String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
 
-            medicoDto.setInicioJornada(inicioS);
-            medicoDto.setFinJornada(finS);
+        medicoDto.setInicioJornada(inicioS);
+        medicoDto.setFinJornada(finS);
 
-            int EspaciosPorHora = medicoDto.getEspacios();
-            Integer horas = 0;
-            //Calcula la cantidad de espacios por hora que tendra la agenda
-            if (inicioJornada.isBefore(finJornada)) {
-                horas = -(inicioJornada.getHour() - finJornada.getHour());
+        int EspaciosPorHora = medicoDto.getEspacios();
+        Integer horas = 0;
+        //Calcula la cantidad de espacios por hora que tendra la agenda
+        if (inicioJornada.isBefore(finJornada)) {
+            horas = -(inicioJornada.getHour() - finJornada.getHour());
 
-            } else {
-                horas = ((24 - inicioJornada.getHour()) + inicioJornada.getHour()) - finJornada.getHour();
-            }
+        } else {
+            horas = ((24 - inicioJornada.getHour()) + inicioJornada.getHour()) - finJornada.getHour();
+        }
 
-            int valor = inicioJornada.getHour();
+        int valor = inicioJornada.getHour();
 
-            for (int i = 0; i < horas; i++) {
-                for (int j = 0; j < EspaciosPorHora; j++) {
-                    vistaCita hPane = new vistaCita();
-                    hPane.getStyleClass().add("calendar_pane");
-                    hPane.setOnMouseReleased(citasReleased);
-                    hPane.setMinWidth((EspaciosPorHora == 4) ? 250 : (EspaciosPorHora == 3) ? 333 : (EspaciosPorHora == 2) ? 500 : 1000);
-                    hPane.setMinHeight(100);
-                    Label label = new Label();
-                    //Introduce los valores desde 1 si se ha superado ya las 24 horas
-                    if (valor >= 24) {
-                        valor = 0;
-                    }
+        for (int i = 0; i < horas; i++) {
+            for (int j = 0; j < EspaciosPorHora; j++) {
+                vistaCita hPane = new vistaCita();
+                hPane.getStyleClass().add("calendar_pane");
+                hPane.setOnMouseReleased(citasReleased);
+                hPane.setMinWidth((EspaciosPorHora == 4) ? 250 : (EspaciosPorHora == 3) ? 333 : (EspaciosPorHora == 2) ? 500 : 1000);
+                hPane.setMinHeight(100);
+                Label label = new Label();
+                //Introduce los valores desde 1 si se ha superado ya las 24 horas
+                if (valor >= 24) {
+                    valor = 0;
+                }
 
-                    label.setStyle("-fx-text-fill: gray; -fx-font-size : 12pt; -jfx-focus-color: -fx-secondary;");
-                    switch (EspaciosPorHora) {
-                        case 1:
-                            if (valor >= 10) {
-                                label.setText(valor + ":00");
-                            } else {
-                                label.setText("0" + valor + ":00");
-                            }
+                label.setStyle("-fx-text-fill: gray; -fx-font-size : 12pt; -jfx-focus-color: -fx-secondary;");
+                switch (EspaciosPorHora) {
+                    case 1:
+                        if (valor >= 10) {
+                            label.setText(valor + ":00");
+                        } else {
+                            label.setText("0" + valor + ":00");
+                        }
 
-                            break;
-                        case 2:
-                            if (valor >= 10) {
-                                label.setText((j == 0) ? (valor + ":00") : (valor + ":30"));
-                            } else {
-                                label.setText((j == 0) ? "0" + valor + ":00" : "0" + valor + ":30");
-                            }
+                        break;
+                    case 2:
+                        if (valor >= 10) {
+                            label.setText((j == 0) ? (valor + ":00") : (valor + ":30"));
+                        } else {
+                            label.setText((j == 0) ? "0" + valor + ":00" : "0" + valor + ":30");
+                        }
 
-                            break;
-                        case 3:
+                        break;
+                    case 3:
 
-                            if (valor >= 10) {
-                                label.setText((j == 0) ? valor + ":00" : (j == 1) ? valor + ":20" : valor + ":40");
-                            } else {
-                                label.setText((j == 0) ? "0" + valor + ":00" : (j == 1) ? "0" + valor + ":20" : "0" + valor + ":40");
-                            }
-                            break;
-                        case 4:
-                            if (valor >= 10) {
-                                label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":15") : (j == 2) ? (valor + ":30") : (j == 3) ? (valor + ":45") : (valor + ":00"));
-                            } else {
-                                label.setText((j == 0) ? "0" + valor + ":00" : (j == 1) ? "0" + valor + ":15" : (j == 2) ? "0" + valor + ":30" : (j == 3) ? "0" + valor + ":45" : "0" + valor + ":00");
-                            }
-                            break;
-                    }
+                        if (valor >= 10) {
+                            label.setText((j == 0) ? valor + ":00" : (j == 1) ? valor + ":20" : valor + ":40");
+                        } else {
+                            label.setText((j == 0) ? "0" + valor + ":00" : (j == 1) ? "0" + valor + ":20" : "0" + valor + ":40");
+                        }
+                        break;
+                    case 4:
+                        if (valor >= 10) {
+                            label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":15") : (j == 2) ? (valor + ":30") : (j == 3) ? (valor + ":45") : (valor + ":00"));
+                        } else {
+                            label.setText((j == 0) ? "0" + valor + ":00" : (j == 1) ? "0" + valor + ":15" : (j == 2) ? "0" + valor + ":30" : (j == 3) ? "0" + valor + ":45" : "0" + valor + ":00");
+                        }
+                        break;
+                }
 
-                    hPane.getChildren().add(label);
-                    hPane.setAlignment(Pos.BASELINE_LEFT);
-                    GridPane.setVgrow(hPane, Priority.NEVER);
-                    hPane.setStyle("-fx-background-color: #FFFF;");
+                hPane.getChildren().add(label);
+                hPane.setAlignment(Pos.BASELINE_LEFT);
+                GridPane.setVgrow(hPane, Priority.NEVER);
+                hPane.setStyle("-fx-background-color: #FFFF;");
 
-                    //Metodos de Drag and Drop
-                    hPane.setOnDragDetected(e -> {
+                //Metodos de Drag and Drop
+                hPane.setOnDragDetected(e -> {
 
-                        Dragboard db = hPane.startDragAndDrop(TransferMode.ANY);
-                        ClipboardContent content = new ClipboardContent();
-                        WritableImage wi = hPane.snapshot(new SnapshotParameters(), null);
-                        WritableImage wii = new WritableImage(wi.getPixelReader(), 0, 0, ((int) wi.getWidth()), ((int) wi.getHeight()));
+                    Dragboard db = hPane.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    WritableImage wi = hPane.snapshot(new SnapshotParameters(), null);
+                    WritableImage wii = new WritableImage(wi.getPixelReader(), 0, 0, ((int) wi.getWidth()), ((int) wi.getHeight()));
 
-                        content.put(DataFormat.IMAGE, wii);
-                        hPane.setCursor(Cursor.CLOSED_HAND);
-                        db.setContent(content);
-                    });
+                    content.put(DataFormat.IMAGE, wii);
+                    hPane.setCursor(Cursor.CLOSED_HAND);
+                    db.setContent(content);
+                });
 
-                    hPane.setOnDragOver(f -> {
+                hPane.setOnDragOver(f -> {
 
-                        f.acceptTransferModes(TransferMode.ANY);
+                    f.acceptTransferModes(TransferMode.ANY);
 
-                        /* if(node != null && !this.getItem().getActId().equals(node.getItem().getActId())){
+                    /* if(node != null && !this.getItem().getActId().equals(node.getItem().getActId())){
                     
                 }*/
-                    });
+                });
 
-                    hPane.setOnDragDropped(e -> {
+                hPane.setOnDragDropped(e -> {
 
-                    });
+                });
 
-                    hPane.setOnDragDone(e -> {
-                        hPane.setCursor(Cursor.OPEN_HAND);
+                hPane.setOnDragDone(e -> {
+                    hPane.setCursor(Cursor.OPEN_HAND);
 
-                    });
+                });
 
-                    calendarGrid.add(hPane, j, i);
+                calendarGrid.add(hPane, j, i);
 
-                }
-                valor++;
             }
-            AppContext.getInstance().set("Grid", calendarGrid);
-
-            //Agenda
-            /*
-            Si la Agenda del medico con el dia seleccionado no se ha creado, entonces la creamos 
-             */
-            resp = new AgendaService().getAgenda(DatePicker.getValue().toString(), medicoDto.getID());
-            if (resp.getEstado()) {
-                agendaDto = (AgendaDto) resp.getResultado("Agenda");
-            } else {
-                //Creo la agenda 
-                agendaDto = new AgendaDto(null, DatePicker.getValue(), new Long(1), medicoDto);
-                agendaDto = (AgendaDto) new AgendaService().guardarAgenda(agendaDto).getResultado("Agenda");
-            }
-
-            //Muestra la agenda del medico
-            mostrarAgenda();
-            cedulaBuscar = "";
-            cedulaEncontrada = false;
-            AppContext.getInstance().set("Agenda", agendaDto);
-            AppContext.getInstance().set("MedicoDto", medicoDto);
+            valor++;
         }
+        AppContext.getInstance().set("Grid", calendarGrid);
+
+        //Agenda
+        /*
+            Si la Agenda del medico con el dia seleccionado no se ha creado, entonces la creamos 
+         */
+        resp = new AgendaService().getAgenda(DatePicker.getValue().toString(), medicoDto.getID());
+        if (resp.getEstado()) {
+            agendaDto = (AgendaDto) resp.getResultado("Agenda");
+        } else {
+            //Creo la agenda 
+            agendaDto = new AgendaDto(null, DatePicker.getValue(), new Long(1), medicoDto);
+            agendaDto = (AgendaDto) new AgendaService().guardarAgenda(agendaDto).getResultado("Agenda");
+        }
+
+        //Muestra la agenda del medico
+        mostrarAgenda();
+        cedulaBuscar = "";
+        cedulaEncontrada = false;
+        AppContext.getInstance().set("Agenda", agendaDto);
+        AppContext.getInstance().set("MedicoDto", medicoDto);
     }
 
     @FXML
@@ -360,5 +397,96 @@ public class AgendaController extends Controller {
         vCita.setStyle(style);
         vCita.AgregarCita(espacio);
         vCita.getChildren().add(vCita.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
+    }
+
+    /*
+    Estos metodos facilitan el movimiento del dia entre las agendas en los eventos del mouse
+     */
+    @FXML
+    private void izquierda(DragEvent event) {
+        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null) {
+            if (DatePicker.getValue().getDayOfMonth() == 1 && DatePicker.getValue().getMonth().getValue() == 1) {
+                Integer ano = DatePicker.getValue().getYear() - 1;
+                LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(12).withDayOfMonth(31);
+                DatePicker.setValue(fecha);
+            } else {
+                DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() - 1));
+            }
+            Inicio();
+            fecha();
+        }
+    }
+
+    @FXML
+    private void derecha(DragEvent event) {
+        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null) {
+            if (DatePicker.getValue().getDayOfMonth() == 31 && DatePicker.getValue().getMonth().getValue() == 12) {
+                Integer ano = DatePicker.getValue().getYear() + 1;
+                LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(1).withDayOfMonth(1);
+                DatePicker.setValue(fecha);
+            } else {
+                DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() + 1));
+            }
+            Inicio();
+            fecha();
+        }
+    }
+
+    @FXML
+    private void clickIzquierda(MouseEvent event) {
+        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null) {
+            if (DatePicker.getValue().getDayOfMonth() == 1 && DatePicker.getValue().getMonth().getValue() == 1) {
+                Integer ano = DatePicker.getValue().getYear() - 1;
+                LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(12).withDayOfMonth(31);
+                DatePicker.setValue(fecha);
+            } else {
+                DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() - 1));
+            }
+            Inicio();
+            fecha();
+        }
+    }
+
+    @FXML
+    private void clickDerecha(MouseEvent event) {
+        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null) {
+            if (DatePicker.getValue().getDayOfMonth() == 31 && DatePicker.getValue().getMonth().getValue() == 12) {
+                Integer ano = DatePicker.getValue().getYear() + 1;
+                LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(1).withDayOfMonth(1);
+                DatePicker.setValue(fecha);
+            } else {
+                DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() + 1));
+            }
+            SeleccionarMedico();
+            Inicio();
+            fecha();
+        }
+    }
+
+    /*
+        Facilita el manejo de las citas para bajar el ScrollPane por medio de los eventos del mouse 
+     */
+    @FXML
+    private void clickAbajo(MouseEvent event) {
+        ScrollPane.setVvalue(ScrollPane.getVvalue() + 0.01);
+    }
+
+    @FXML
+    private void clickArriba(MouseEvent event) {
+        if (ScrollPane.getVvalue() > 0) {
+            ScrollPane.setVvalue(ScrollPane.getVvalue() - 0.01);
+        }
+    }
+
+    @FXML
+    private void arriba(DragEvent event) {
+        if (ScrollPane.getVvalue() > 0) {
+            ScrollPane.setVvalue(ScrollPane.getVvalue() - 0.01);
+        }
+    }
+
+    @FXML
+    private void abajo(DragEvent event) {
+        ScrollPane.setVvalue(ScrollPane.getVvalue() + 0.01);
     }
 }
