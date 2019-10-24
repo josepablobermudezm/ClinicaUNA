@@ -99,7 +99,24 @@ public class AgregarCitaController extends Controller {
 
     @Override
     public void initialize() {
-
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if (usuario.getIdioma().equals("I")) {
+            this.txtEspacios.setPromptText(idioma.getProperty("Agenda")+" "+idioma.getProperty("Espacios"));
+            this.btnGuardar.setText(idioma.getProperty("Guardar"));
+            this.btnAtendida.setText(idioma.getProperty("Atendida"));
+            this.btnAusente.setText(idioma.getProperty("Ausente"));
+            this.btnCancelada.setText(idioma.getProperty("Cancelada"));
+            this.btnCancelar.setText(idioma.getProperty("Cancelar"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
+            this.btnProgramada.setText(idioma.getProperty("Programada"));
+            this.Titulo.setText(idioma.getProperty("Agendar") + " " + idioma.getProperty("ACita"));
+            this.ComboPacientes.setPromptText(idioma.getProperty("Pacientes"));
+            this.lblEstado.setText(idioma.getProperty("Estado"));
+            this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
+            this.txtTelefono.setPromptText(idioma.getProperty("Telefono"));
+            this.txtmotivo.setPromptText(idioma.getProperty("Motivo"));
+        }
         formato();
         pacienteService = new PacienteService();
         resp = pacienteService.getPacientes();
@@ -172,23 +189,7 @@ public class AgregarCitaController extends Controller {
             btnAusente.setDisable(true);
             btnCancelada.setDisable(true);
         }
-        idioma = (Idioma) AppContext.getInstance().get("idioma");
-        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-        if (usuario.getIdioma().equals("I")) {
-            this.btnGuardar.setText(idioma.getProperty("Guardar"));
-            this.btnAtendida.setText(idioma.getProperty("Atendida"));
-            this.btnAusente.setText(idioma.getProperty("Ausente"));
-            this.btnCancelada.setText(idioma.getProperty("Cancelada"));
-            this.btnCancelar.setText(idioma.getProperty("Cancelar"));
-            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
-            this.btnProgramada.setText(idioma.getProperty("Programada"));
-            this.Titulo.setText(idioma.getProperty("Agendar") + " " + idioma.getProperty("ACita"));
-            this.ComboPacientes.setPromptText(idioma.getProperty("Pacientes"));
-            this.lblEstado.setText(idioma.getProperty("Estado"));
-            this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
-            this.txtTelefono.setPromptText(idioma.getProperty("Telefono"));
-            this.txtmotivo.setPromptText(idioma.getProperty("Motivo"));
-        }
+        
 
     }
 
