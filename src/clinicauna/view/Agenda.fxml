@@ -22,7 +22,7 @@
                <children>
                   <Label fx:id="Titulo" text="Agenda">
                      <VBox.margin>
-                        <Insets top="-80.0" />
+                        <Insets top="-100.0" />
                      </VBox.margin>
                   </Label>
                   <HBox alignment="CENTER" fillHeight="false" prefHeight="47.0" prefWidth="1030.0" spacing="45.0">
