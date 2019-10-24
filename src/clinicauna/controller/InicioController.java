@@ -41,8 +41,6 @@ public class InicioController extends Controller {
     private Label Titulo;
     @FXML
     private JFXHamburger hamburger;
-    @FXML
-    private ImageView omg;
     /**/
     private VBox vBoxCentral;
     @FXML
@@ -50,7 +48,6 @@ public class InicioController extends Controller {
 
     @Override
     public void initialize() {
-        
         
         
         AppContext.getInstance().set("Border", borderPane);
@@ -67,17 +64,17 @@ public class InicioController extends Controller {
 //borderPane.prefWidthProperty().bindBidirectional(other);
         Image omg1;
         try {
-            omg1 = new Image("/clinicauna/resources/background2.jpg");
+/*            omg1 = new Image("/clinicauna/resources/background2.jpg");
             
-            omg.setImage(omg1);
+            omg.setImage(omg1);*/
         } catch (Exception e) {
         }
-        omg.fitHeightProperty().bind(st.heightProperty());//  para que la imagen tenga el tamaño de toda la vista
-        omg.fitWidthProperty().bind(st.widthProperty());
+        /*omg.fitHeightProperty().bind(st.heightProperty());//  para que la imagen tenga el tamaño de toda la vista
+        omg.fitWidthProperty().bind(st.widthProperty());*/
         
         st.heightProperty().addListener((observable) -> {
             
-            omg.getImage();
+//            omg.getImage();
         });
         
         VBox box = null;
