@@ -106,9 +106,9 @@ public class PacientesController extends Controller {
     @Override
     public void initialize() {
         Formato();
-        btnAgregar1.setCursor(Cursor.HAND);
+        /*btnAgregar1.setCursor(Cursor.HAND);
         btnEditar1.setCursor(Cursor.HAND);
-        btnEliminar1.setCursor(Cursor.HAND);
+        btnEliminar1.setCursor(Cursor.HAND);*/
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {

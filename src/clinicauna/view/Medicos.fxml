@@ -7,20 +7,18 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.MedicosController">
+<BorderPane stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.MedicosController">
    <center>
-      <AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1030.0" stylesheets="@newCascadeStyleSheet.css">
+      <VBox spacing="80.0">
          <children>
-            <ImageView fx:id="omg" fitHeight="800.0" fitWidth="1030.0" pickOnBounds="true" preserveRatio="true" />
-            <GridPane layoutY="43.0" prefHeight="62.0" prefWidth="1030.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">
+            <GridPane prefHeight="62.0" prefWidth="1030.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="769.0" />
@@ -32,7 +30,7 @@
                   <Label fx:id="Titulo" text="Mantenimiento de Médicos" GridPane.columnIndex="1" />
                </children>
             </GridPane>
-            <HBox layoutY="148.0" prefHeight="281.0" prefWidth="1030.0" AnchorPane.bottomAnchor="371.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="148.0">
+            <HBox alignment="CENTER" prefHeight="281.0" prefWidth="1030.0">
                <children>
                   <TableView fx:id="table" onMouseReleased="#DatosMedico" prefHeight="280.0" prefWidth="990.0">
                      <columns>
@@ -54,61 +52,23 @@
                   <Insets left="20.0" right="20.0" />
                </padding>
             </HBox>
-            <GridPane layoutY="452.0" prefHeight="62.0" prefWidth="1033.0" AnchorPane.bottomAnchor="286.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="452.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="30.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="86.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="251.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="60.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="254.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="71.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+            <HBox alignment="CENTER" spacing="80.0">
                <children>
-                  <JFXTextField fx:id="txtFolio" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Folio" GridPane.columnIndex="3" />
-                  <JFXTextField fx:id="txtCarne" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Carné" GridPane.columnIndex="5" />
-                  <JFXTextField fx:id="txtCodigo" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Código" GridPane.columnIndex="1" />
+                  <JFXTextField fx:id="txtFolio" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Folio" />
+                  <JFXTextField fx:id="txtCarne" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Carné" />
+                  <JFXTextField fx:id="txtCodigo" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Código" />
                </children>
-            </GridPane>
-            <GridPane layoutY="537.0" prefHeight="62.0" prefWidth="1033.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="537.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="30.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" prefWidth="261.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="86.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="251.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="60.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="297.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="32.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+            </HBox>
+            <HBox alignment="CENTER" spacing="80.0">
                <children>
-                  <JFXTimePicker fx:id="timePickerInicio" defaultColor="#042f86" prefHeight="29.0" prefWidth="250.0" promptText="Inicio Jornada" GridPane.columnIndex="3" />
-                  <JFXTimePicker fx:id="timePickerfinal" defaultColor="#042f86" prefHeight="29.0" prefWidth="250.0" promptText="Final Jornada" GridPane.columnIndex="5" />
-                  <JFXTextField fx:id="txtEspacio" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Espacio por Hora" GridPane.columnIndex="1" />
+                  <JFXTimePicker fx:id="timePickerInicio" defaultColor="#042f86" prefHeight="29.0" prefWidth="250.0" promptText="Inicio Jornada" />
+                  <JFXTimePicker fx:id="timePickerfinal" defaultColor="#042f86" prefHeight="29.0" prefWidth="250.0" promptText="Final Jornada" />
+                  <JFXTextField fx:id="txtEspacio" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Espacio por Hora" />
                </children>
-            </GridPane>
-            <GridPane layoutY="618.0" prefHeight="62.0" prefWidth="1033.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="618.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="0.0" prefWidth="8.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="0.0" prefWidth="24.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="269.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="78.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="357.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="297.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="0.0" prefWidth="0.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="79.0" prefWidth="1030.0">
                <children>
-                  <HBox prefHeight="72.0" prefWidth="443.0" spacing="20.0" GridPane.columnIndex="4">
+                  <HBox alignment="TOP_CENTER" prefHeight="55.0" prefWidth="443.0" spacing="20.0">
                      <padding>
                         <Insets left="20.0" right="20.0" top="40.0" />
                      </padding>
@@ -119,8 +79,8 @@
                      </children>
                   </HBox>
                </children>
-            </GridPane>
+            </HBox>
          </children>
-      </AnchorPane>
+      </VBox>
    </center>
 </BorderPane>

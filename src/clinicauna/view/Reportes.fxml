@@ -8,51 +8,112 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.ReportesController">
+<BorderPane stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.ReportesController">
    <center>
-      <AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1030.0" stylesheets="@newCascadeStyleSheet.css">
+      <VBox spacing="30.0">
          <children>
-            <Label fx:id="Titulo" layoutX="418.0" prefHeight="56.0" prefWidth="194.0" text="Reportes" textAlignment="CENTER" />
-            <JFXTextField fx:id="txtCedulaMedico" layoutX="14.0" layoutY="195.0" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Cédula" />
-            <TableView fx:id="TvMedico" layoutX="416.0" layoutY="122.0" prefHeight="203.0" prefWidth="575.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="Cédula" />
-                <TableColumn prefWidth="75.0" text="Nombre" />
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-            <Label fx:id="Titulo1" layoutX="14.0" layoutY="68.0" prefHeight="29.0" prefWidth="194.0" styleClass="lbl" text="Reporte de Médicos" textAlignment="CENTER" />
-            <JFXComboBox fx:id="CmbTipoReoprte" layoutX="14.0" layoutY="126.0" opacity="0.67" prefHeight="25.0" prefWidth="375.0" promptText="Tipo de Reporte" />
-            <JFXTextField fx:id="txtApellidoMedico" layoutX="14.0" layoutY="294.0" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Apellido" />
-            <JFXTextField fx:id="txtNombreMedico" layoutX="14.0" layoutY="242.0" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Nombre" />
-            <JFXDatePicker fx:id="DateDiaEspecífico" defaultColor="#0e0e86" layoutX="83.0" layoutY="371.0" />
-            <Label fx:id="lblDía" layoutX="22.0" layoutY="375.0" prefHeight="17.0" prefWidth="31.0" text="Día:" />
-            <Label fx:id="lblDel" layoutX="416.0" layoutY="376.0" prefHeight="17.0" prefWidth="28.0" text="Del:" />
-            <JFXDatePicker fx:id="DateFechaInicio" defaultColor="#0e0e86" layoutX="454.0" layoutY="372.0" />
-            <Label fx:id="lblFechaFin" layoutX="669.0" layoutY="376.0" prefHeight="17.0" prefWidth="17.0" text="Al:" />
-            <JFXDatePicker fx:id="DateFechaFin" defaultColor="#0e0e86" layoutX="697.0" layoutY="372.0" />
-            <JFXButton fx:id="btnGenerarReporteMed" layoutX="911.0" layoutY="371.0" onAction="#GenerarReporteMedico" prefHeight="31.0" prefWidth="77.0" text="Generar" />
-            <Separator layoutX="14.0" layoutY="428.0" prefHeight="8.0" prefWidth="987.0" />
-            <TableView fx:id="TvPaciente" layoutX="417.0" layoutY="462.0" prefHeight="203.0" prefWidth="575.0">
-               <columns>
-                  <TableColumn fx:id="ColCedPac" prefWidth="75.0" text="Cédula" />
-                  <TableColumn fx:id="ColNomPac" prefWidth="75.0" text="Nombre" />
-               </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-            <JFXTextField fx:id="txtCedulaPaciente" layoutX="14.0" layoutY="515.0" onKeyReleased="#ReleasedCedulaPac" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Cédula" />
-            <JFXTextField fx:id="txtApellidoPaciente" layoutX="14.0" layoutY="617.0" onKeyReleased="#ReleasedApellidoPac" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Apellido" />
-            <JFXTextField fx:id="txtNombrePaciente" layoutX="14.0" layoutY="564.0" onKeyReleased="#ReleasedNombrePac" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Nombre" />
-            <JFXButton fx:id="btnGenerarReportePac" layoutX="11.0" layoutY="665.0" onAction="#GenerarReportePaciente" prefHeight="25.0" prefWidth="84.0" text="Generar" />
-            <Label fx:id="Titulo11" layoutX="14.0" layoutY="447.0" prefHeight="29.0" prefWidth="194.0" styleClass="lbl" text="Reporte de Pacientes" textAlignment="CENTER" />
+            <HBox alignment="CENTER" prefHeight="69.0" prefWidth="1030.0">
+               <children>
+                  <Label fx:id="Titulo" prefHeight="56.0" prefWidth="194.0" text="Reportes" textAlignment="CENTER" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="1030.0">
+               <children>
+                  <Label fx:id="Titulo11" prefHeight="29.0" prefWidth="194.0" styleClass="lbl" text="Reporte de Pacientes" textAlignment="CENTER" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="203.0" prefWidth="1030.0" spacing="30.0">
+               <children>
+                  <VBox spacing="25.0">
+                     <children>
+                        <JFXComboBox fx:id="CmbTipoReoprte" opacity="0.67" prefHeight="25.0" prefWidth="375.0" promptText="Tipo de Reporte" />
+                        <JFXTextField fx:id="txtCedulaMedico" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Cédula" />
+                        <JFXTextField fx:id="txtNombreMedico" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Nombre" />
+                        <JFXTextField fx:id="txtApellidoMedico" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Apellido" />
+                     </children>
+                  </VBox>
+                  <TableView fx:id="TvMedico" prefHeight="203.0" prefWidth="575.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="Cédula" />
+                      <TableColumn prefWidth="75.0" text="Nombre" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="1030.0">
+               <children>
+                  <Label fx:id="Titulo1" prefHeight="29.0" prefWidth="194.0" styleClass="lbl" text="Reporte de Médicos" textAlignment="CENTER" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="31.0" prefWidth="1030.0" spacing="160.0">
+               <children>
+                  <HBox spacing="10.0">
+                     <children>
+                        <Label fx:id="lblDía" prefHeight="17.0" prefWidth="31.0" text="Día:" />
+                        <JFXDatePicker fx:id="DateDiaEspecífico" defaultColor="#0e0e86" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="10.0">
+                     <children>
+                        <HBox spacing="10.0">
+                           <children>
+                              <HBox spacing="10.0">
+                                 <children>
+                                    <Label fx:id="lblDel" prefHeight="17.0" prefWidth="28.0" text="Del:" />
+                                    <JFXDatePicker fx:id="DateFechaInicio" defaultColor="#0e0e86" />
+                                 </children>
+                              </HBox>
+                              <HBox spacing="10.0">
+                                 <children>
+                                    <Label fx:id="lblFechaFin" prefHeight="17.0" prefWidth="17.0" text="Al:" />
+                                    <JFXDatePicker fx:id="DateFechaFin" defaultColor="#0e0e86" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <JFXButton fx:id="btnGenerarReporteMed" onAction="#GenerarReporteMedico" prefHeight="31.0" prefWidth="77.0" text="Generar" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <Separator prefHeight="8.0" prefWidth="987.0" />
+            <HBox alignment="CENTER" prefHeight="249.0" prefWidth="1030.0" spacing="30.0">
+               <children>
+                  <VBox spacing="25.0">
+                     <children>
+                        <JFXTextField fx:id="txtCedulaPaciente" onKeyReleased="#ReleasedCedulaPac" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Cédula" />
+                        <JFXTextField fx:id="txtNombrePaciente" onKeyReleased="#ReleasedNombrePac" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Nombre" />
+                        <JFXTextField fx:id="txtApellidoPaciente" onKeyReleased="#ReleasedApellidoPac" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Apellido" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="228.0" prefWidth="575.0" spacing="20.0">
+                     <children>
+                        <TableView fx:id="TvPaciente" prefHeight="203.0" prefWidth="575.0">
+                           <columns>
+                              <TableColumn fx:id="ColCedPac" prefWidth="75.0" text="Cédula" />
+                              <TableColumn fx:id="ColNomPac" prefWidth="75.0" text="Nombre" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <HBox alignment="TOP_RIGHT">
+                           <children>
+                              <JFXButton fx:id="btnGenerarReportePac" onAction="#GenerarReportePaciente" prefHeight="25.0" prefWidth="84.0" text="Generar" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
-      </AnchorPane>
+      </VBox>
    </center>
 </BorderPane>
