@@ -80,47 +80,35 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </HBox>
-            <HBox alignment="CENTER" fillHeight="false" onMouseReleased="#clickDerecha" prefHeight="43.0" prefWidth="1030.0">
+            <HBox alignment="CENTER" fillHeight="false" prefHeight="43.0" prefWidth="1030.0">
                <children>
-                  <VBox>
+                  <HBox alignment="CENTER" onDragOver="#izquierda" onMouseReleased="#clickIzquierda" prefHeight="100.0" prefWidth="343.33">
                      <children>
-                        <HBox alignment="CENTER" focusTraversable="true" onDragOver="#izquierda" onMouseClicked="#clickIzquierda" prefWidth="343.33">
-                           <children>
-                              <ImageView fx:id="izquierdaFecha" fitHeight="43.0" fitWidth="102.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/izquierda.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
+                        <ImageView fx:id="ArribaScroll1" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/izquierda.png" />
+                           </image>
+                        </ImageView>
                      </children>
-                  </VBox>
-                  <VBox>
+                  </HBox>
+                  <HBox alignment="CENTER" onDragOver="#abajo" onMouseReleased="#clickAbajo" prefHeight="100.0" prefWidth="343.33">
                      <children>
-                        <HBox alignment="CENTER" focusTraversable="true" onDragOver="#abajo" onMouseReleased="#clickAbajo" prefWidth="343.33">
-                           <children>
-                              <ImageView fx:id="AbajoScroll" fitHeight="43.0" fitWidth="58.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/down.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
+                        <ImageView fx:id="ArribaScroll2" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/down.png" />
+                           </image>
+                        </ImageView>
                      </children>
-                  </VBox>
-                  <VBox>
+                  </HBox>
+                  <HBox alignment="CENTER" onDragOver="#derecha" onMouseReleased="#clickDerecha" prefHeight="100.0" prefWidth="343.33">
                      <children>
-                        <HBox alignment="CENTER" focusTraversable="true" onDragOver="#derecha" onMouseClicked="#clickDerecha" onMouseMoved="#move" prefWidth="343.33">
-                           <children>
-                              <ImageView fx:id="DerechaFecha" fitHeight="43.0" fitWidth="102.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/derecha.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
+                        <ImageView fx:id="ArribaScroll3" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/derecha.png" />
+                           </image>
+                        </ImageView>
                      </children>
-                  </VBox>
+                  </HBox>
                </children>
             </HBox>
             <HBox alignment="CENTER" fillHeight="false" prefHeight="67.0" prefWidth="1030.0" spacing="20.0">

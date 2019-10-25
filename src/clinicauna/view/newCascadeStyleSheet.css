@@ -2,6 +2,16 @@
     -fx-background-image: url(../resources/background2.jpg);
     -fx-background-position: center center;  
 }
+
+#borde-Abajo{
+    -fx-image: url(../resources/down.png);
+}
+#borde-Derecha{
+    -fx-background-image: url(../resources/derecha.png);
+}
+#borde-izquierda{
+    -fx-background-image: url(../resources/izquierda.png);
+}
 #Titulo{
     -fx-text-fill: gray;
     -fx-font-size : 35pt;
