@@ -16,14 +16,20 @@ import clinicauna.util.FlowController;
 import clinicauna.util.Idioma;
 import clinicauna.util.Respuesta;
 import clinicauna.util.vistaCita;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,17 +37,22 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Background;
@@ -52,9 +63,9 @@ import javafx.scene.layout.Priority;
 /**
  * FXML Controller class
  *
- * @author Jose Pablo Bermudez
+ * @author Carlos Olivares
  */
-public class AgendaController extends Controller {
+public class AgendaMedicaController extends Controller implements Initializable {
 
     @FXML
     private GridPane calendarGrid;
@@ -62,8 +73,6 @@ public class AgendaController extends Controller {
     private JFXDatePicker DatePicker;
     @FXML
     private ScrollPane ScrollPane;
-    @FXML
-    private FlowPane FlowPane;
     @FXML
     private Label labelyear;
     @FXML
@@ -78,7 +87,6 @@ public class AgendaController extends Controller {
     private Label lblMes;
     @FXML
     private Label lblDia;
-    @FXML
     private Label lblHora;
     private MedicoDto medicoDto;
     private MedicoService medicoService;
@@ -95,32 +103,15 @@ public class AgendaController extends Controller {
     private ImageView DerechaFecha;
     @FXML
     private ImageView AbajoScroll;
-    @FXML
-    private ImageView AbajoScroll1;
     private UsuarioDto usuarioDto = new UsuarioDto();
+    @FXML
+    private Label Titulo;
+    @FXML
+    private ImageView ArribaScroll;
 
     @Override
     public void initialize() {
         //DatePicker.setValue(LocalDate.now());
-
-        usuarioDto = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-        if (!usuarioDto.getTipoUsuario().equals("M")) {
-            Inicio();
-            if (this.DatePicker.getValue() != null) {
-                this.ComboMedico.setDisable(false);
-            } else {
-                this.ComboMedico.setDisable(true);
-            }
-        } else if (usuarioDto.getTipoUsuario().equals("M")) {
-            DatePicker.setValue(LocalDate.now());
-            ComboMedico.setVisible(false);
-            medicoService = new MedicoService();
-            resp = medicoService.getMedicos();
-            lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
-            medicoDto = lista.stream().filter(x -> x.getUs().getID().equals(usuarioDto.getID())).findAny().get();
-            SeleccionarMedico();
-        }
-        fecha();
     }
 
     public void Inicio() {
@@ -156,6 +147,7 @@ public class AgendaController extends Controller {
     @FXML
     private void Fecha(Event event) {
         fecha();
+        System.out.println("XD");
         if (usuarioDto.getTipoUsuario().equals("M")) {
             SeleccionarMedico();
         }
@@ -175,11 +167,13 @@ public class AgendaController extends Controller {
     }
     private static boolean cedulaEncontrada = false;
     private static String cedulaBuscar = "";
+    private LocalTime inicioJornada;
+    private LocalTime finJornada;
 
     @FXML
     private void seleccionarMedico(ActionEvent event) {
         if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
-            initialize();
+            initialize(null,null);
             SeleccionarMedico();
         }
     }
@@ -187,7 +181,7 @@ public class AgendaController extends Controller {
     public void SeleccionarMedico() {
         calendarGrid.getChildren().clear();
         //si el usuario es médico no es necesario buscarlo con los datos del combo box.
-        if (usuarioDto.getTipoUsuario().equals("A") || usuarioDto.getTipoUsuario().equals("R")) {
+        if (!usuarioDto.getTipoUsuario().equals("M") && AppContext.getInstance().get("MedicoDto") == null) {
             String medico = ComboMedico.getSelectionModel().getSelectedItem();
             medico.chars().forEach(x -> {
                 if (((char) x) == ':') {
@@ -198,20 +192,21 @@ public class AgendaController extends Controller {
             });
             //Revisar condicion
             medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
+            inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
+            finJornada = LocalTime.parse(medicoDto.getFinJornada());
+            //Creo las conversiones de las horas del medico con formato
+            LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
+            LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
+
+            String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
+            String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
+
+            medicoDto.setInicioJornada(inicioS);
+            medicoDto.setFinJornada(finS);
         }
 
-        LocalTime inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
-        LocalTime finJornada = LocalTime.parse(medicoDto.getFinJornada());
-        //Creo las conversiones de las horas del medico con formato
-        LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
-        LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
-
-        String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
-        String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
-
-        medicoDto.setInicioJornada(inicioS);
-        medicoDto.setFinJornada(finS);
-
+        /*     LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
+        LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);*/
         int EspaciosPorHora = medicoDto.getEspacios();
         Integer horas = 0;
         //Calcula la cantidad de espacios por hora que tendra la agenda
@@ -342,7 +337,7 @@ public class AgendaController extends Controller {
         if (this.DatePicker.getValue() != null) {
             if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
                 FlowController.getInstance().initialize();
-                initialize();
+                initialize(null,null);
             } else {
                 this.ComboMedico.setDisable(false);
             }
@@ -403,7 +398,7 @@ public class AgendaController extends Controller {
      */
     @FXML
     private void izquierda(DragEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null) {
+        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             if (DatePicker.getValue().getDayOfMonth() == 1 && DatePicker.getValue().getMonth().getValue() == 1) {
                 Integer ano = DatePicker.getValue().getYear() - 1;
                 LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(12).withDayOfMonth(31);
@@ -411,14 +406,18 @@ public class AgendaController extends Controller {
             } else {
                 DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() - 1));
             }
-            Inicio();
+            AppContext.getInstance().delete("MedicoDto");
             fecha();
+            Inicio();
+            SeleccionarMedico();
+        } else {
+            DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() - 1));
         }
     }
 
     @FXML
     private void derecha(DragEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null) {
+        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             if (DatePicker.getValue().getDayOfMonth() == 31 && DatePicker.getValue().getMonth().getValue() == 12) {
                 Integer ano = DatePicker.getValue().getYear() + 1;
                 LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(1).withDayOfMonth(1);
@@ -426,29 +425,38 @@ public class AgendaController extends Controller {
             } else {
                 DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() + 1));
             }
-            Inicio();
+            AppContext.getInstance().delete("MedicoDto");
             fecha();
+            Inicio();
+            SeleccionarMedico();
         }
     }
 
     @FXML
     private void clickIzquierda(MouseEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null) {
+        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             if (DatePicker.getValue().getDayOfMonth() == 1 && DatePicker.getValue().getMonth().getValue() == 1) {
                 Integer ano = DatePicker.getValue().getYear() - 1;
                 LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(12).withDayOfMonth(31);
                 DatePicker.setValue(fecha);
             } else {
+                System.out.println(DatePicker.getValue());
                 DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() - 1));
+                System.out.println(DatePicker.getValue());
             }
-            Inicio();
+
+            AppContext.getInstance().delete("MedicoDto");
             fecha();
+            Inicio();
+            SeleccionarMedico();
         }
+
     }
 
     @FXML
     private void clickDerecha(MouseEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null) {
+        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
+            System.out.println("Derecha");
             if (DatePicker.getValue().getDayOfMonth() == 31 && DatePicker.getValue().getMonth().getValue() == 12) {
                 Integer ano = DatePicker.getValue().getYear() + 1;
                 LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(1).withDayOfMonth(1);
@@ -456,9 +464,11 @@ public class AgendaController extends Controller {
             } else {
                 DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() + 1));
             }
-            SeleccionarMedico();
-            Inicio();
+            AppContext.getInstance().delete("MedicoDto");
             fecha();
+            Inicio();
+            SeleccionarMedico();
+
         }
     }
 
@@ -467,25 +477,57 @@ public class AgendaController extends Controller {
      */
     @FXML
     private void clickAbajo(MouseEvent event) {
-        ScrollPane.setVvalue(ScrollPane.getVvalue() + 0.01);
+        if (ScrollPane.getVvalue() < 1) {
+            ScrollPane.setVvalue(ScrollPane.getVvalue() + 0.05);
+        }
     }
 
     @FXML
     private void clickArriba(MouseEvent event) {
         if (ScrollPane.getVvalue() > 0) {
-            ScrollPane.setVvalue(ScrollPane.getVvalue() - 0.01);
+            ScrollPane.setVvalue(ScrollPane.getVvalue() - 0.05);
         }
     }
 
     @FXML
     private void arriba(DragEvent event) {
         if (ScrollPane.getVvalue() > 0) {
-            ScrollPane.setVvalue(ScrollPane.getVvalue() - 0.01);
+            ScrollPane.setVvalue(ScrollPane.getVvalue() - 0.05);
         }
     }
 
     @FXML
     private void abajo(DragEvent event) {
-        ScrollPane.setVvalue(ScrollPane.getVvalue() + 0.01);
+        if (ScrollPane.getVvalue() < 1) {
+            ScrollPane.setVvalue(ScrollPane.getVvalue() + 0.05);
+        }
     }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        usuarioDto = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if (!usuarioDto.getTipoUsuario().equals("M")) {
+            Inicio();
+            if (this.DatePicker.getValue() != null) {
+                this.ComboMedico.setDisable(false);
+            } else {
+                this.ComboMedico.setDisable(true);
+            }
+        } else if (usuarioDto.getTipoUsuario().equals("M")) {
+            DatePicker.setValue(LocalDate.now());
+            ComboMedico.setVisible(false);
+            medicoService = new MedicoService();
+            resp = medicoService.getMedicos();
+            lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
+            medicoDto = lista.stream().filter(x -> x.getUs().getID().equals(usuarioDto.getID())).findAny().get();
+            SeleccionarMedico();
+        }
+        fecha();
+    }
+
+    @FXML
+    private void move(MouseEvent event) {
+        //System.out.println("CD");
+    }
+
 }

@@ -22,7 +22,7 @@
                   <Label fx:id="Titulo" text="Mantenimiento de Usuarios" />
                </children>
                <VBox.margin>
-                  <Insets top="40.0" />
+                  <Insets />
                </VBox.margin>
             </HBox>
             <HBox alignment="CENTER">

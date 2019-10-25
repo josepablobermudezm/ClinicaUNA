@@ -127,7 +127,7 @@ public class DrawerContentController extends Controller {
 
     @FXML
     private void btnAgenda(ActionEvent event) {
-        FlowController.getInstance().goView("Agenda");
+        FlowController.getInstance().goView("AgendaMedica");
     }
 
     @FXML

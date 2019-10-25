@@ -67,44 +67,7 @@ public class DrawerContentControllerRecepcionista extends Controller {
             image.setImage(img);
         } catch (Exception e) {
         }
-        /*
-        Image img7;
-        try {
-            img7 = new Image("/horarios/resources/user2.png");
-            img1.setImage(img7);
-        } catch (Exception e) {
-
-        }
-        Image img8;
-        try {
-            img8 = new Image("/horarios/resources/resume.png");
-            img2.setImage(img8);
-        } catch (Exception e) {
-        }
-        Image img9;
-        try {
-            img9 = new Image("/horarios/resources/portfolio.png");
-            img3.setImage(img9);
-        } catch (Exception e) {
-        }
-        Image img10;
-        try {
-            img10 = new Image("/horarios/resources/hiring.png");
-            img4.setImage(img10);
-        } catch (Exception e) {
-        }
-        Image img11;
-        try {
-            img11 = new Image("/horarios/resources/calendar.png");
-            img5.setImage(img11);
-        } catch (Exception e) {
-        }
-        Image img12;
-        try {
-            img12 = new Image("/horarios/resources/logout.png");
-            img6.setImage(img12);
-        } catch (Exception e) {
-        }*/
+        
     }
 
     @FXML
@@ -114,6 +77,6 @@ public class DrawerContentControllerRecepcionista extends Controller {
     
     @FXML
     private void btnAgenda(ActionEvent event) {
-        FlowController.getInstance().goView("Agenda");
+        FlowController.getInstance().goView("AgendaMedica");
     }
 }
