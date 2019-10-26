@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -13,7 +14,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <BorderPane prefHeight="800.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.ControlPacienteController">
    <center>
       <VBox spacing="20.0">
@@ -23,11 +23,11 @@
                   <Label fx:id="Titulo" text="Control de Paciente" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="33.0" prefWidth="1030.0">
+            <HBox alignment="CENTER" prefHeight="33.0" prefWidth="1030.0" spacing="20.0">
                <children>
                   <Label prefHeight="21.0" prefWidth="67.0" text="Paciente:">
                      <HBox.margin>
-                        <Insets left="-590.0" />
+                        <Insets left="-0.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="lblPaciente" prefHeight="21.0" prefWidth="257.0">
@@ -35,6 +35,12 @@
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Label>
+                  <Label fx:id="lblMedico" text="Médico a realizar control:">
+                     <HBox.margin>
+                        <Insets left="150.0" />
+                     </HBox.margin>
+                  </Label>
+                  <JFXComboBox fx:id="ComboMedico" onAction="#seleccionarMedico" prefHeight="31.0" prefWidth="206.0" promptText="Seleccionar un Medico" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="232.0" prefWidth="1030.0">
@@ -58,10 +64,9 @@
                   </HBox>
                   <HBox alignment="CENTER" spacing="90.0">
                      <children>
-                        <JFXTextField fx:id="txtTratamiento" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Tratamiento" />
                         <JFXTextField fx:id="txtTalla" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Talla">
                            <HBox.margin>
-                              <Insets />
+                              <Insets left="-350.0" />
                            </HBox.margin>
                         </JFXTextField>
                         <JFXTextField fx:id="txtTemperatura" labelFloat="true" prefHeight="29.0" prefWidth="250.0" promptText="Temperatura" />
@@ -78,14 +83,12 @@
                      <children>
                         <JFXTextArea fx:id="txtObservaciones" labelFloat="true" prefHeight="40.0" prefWidth="250.0" promptText="Observaciones">
                            <HBox.margin>
-                              <Insets left="-390.0" />
+                              <Insets />
                            </HBox.margin>
                         </JFXTextArea>
                         <JFXTextArea fx:id="txtExamenFisico" labelFloat="true" prefHeight="40.0" prefWidth="250.0" promptText="Examen Físico" />
+                        <JFXTextArea fx:id="txtTratamiento" prefHeight="40.0" prefWidth="250.0" promptText="Tratamiento" />
                      </children>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
                   </HBox>
                </children>
             </VBox>
