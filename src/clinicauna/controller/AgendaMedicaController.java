@@ -91,7 +91,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
     private Label lblMes;
     @FXML
     private Label lblDia;
-   //private Label lblHora;
+    //private Label lblHora;
     private MedicoDto medicoDto;
     private MedicoService medicoService;
     private Respuesta resp;
@@ -340,30 +340,32 @@ public class AgendaMedicaController extends Controller implements Initializable 
                     });
 
                     hPane.setOnDragDropped(e -> {
-                        String style = "";
-                        System.out.println(hCita2.getCorreo());
-                        EspacioDto espacio = (EspacioDto) AppContext.getInstance().get("Espacio");
-                        hCita3 = (vistaCita) e.getSource();
-                        hCita3.setStyle(hCita2.getStyle());
-                        hCita3.setvBox(hCita2.getvBox());
-                        hCita3.setCorreo(hCita2.getCorreo());
-                        hCita3.setEspacio(hCita2.getEspacio());
-                        hCita3.setNombre(hCita2.getNombre());
-                        hCita3.setTelefono(hCita2.getTelefono());
-                        hCita3.AgregarCita(espacio);
-                        //hCita3.AgregarCita(espacio);
-                        VBox vBox = new VBox();
-                        vBox.getChildren().addAll(hCita2.getNombre(), hCita2.getCorreo(), hCita2.getTelefono());
-                        vBox.setAlignment(Pos.CENTER);
-                        vBox.setSpacing(10);
-                        String style1 = "-fx-text-fill: #636361;";
-                        hCita2.getNombre().setStyle(style1);
-                        hCita2.getCorreo().setStyle(style1);
-                        hCita2.getTelefono().setStyle(style1);
-                        hCita3.getChildren().addAll(vBox);
-                        hCita2.setStyle("-fx-background-color: white");
+                        if (hCita2.getChildren().size() <= 2) {
+                            String style = "";
+                            System.out.println(hCita2.getCorreo());
+                            EspacioDto espacio = (EspacioDto) AppContext.getInstance().get("Espacio");
+                            hCita3 = (vistaCita) e.getSource();
+                            hCita3.setStyle(hCita2.getStyle());
+                            hCita3.setvBox(hCita2.getvBox());
+                            hCita3.setCorreo(hCita2.getCorreo());
+                            hCita3.setEspacio(hCita2.getEspacio());
+                            hCita3.setNombre(hCita2.getNombre());
+                            hCita3.setTelefono(hCita2.getTelefono());
+                            hCita3.AgregarCita(espacio);
+                            //hCita3.AgregarCita(espacio);
+                            VBox vBox = new VBox();
+                            vBox.getChildren().addAll(hCita2.getNombre(), hCita2.getCorreo(), hCita2.getTelefono());
+                            vBox.setAlignment(Pos.CENTER);
+                            vBox.setSpacing(10);
+                            String style1 = "-fx-text-fill: #636361;";
+                            hCita2.getNombre().setStyle(style1);
+                            hCita2.getCorreo().setStyle(style1);
+                            hCita2.getTelefono().setStyle(style1);
+                            hCita3.getChildren().addAll(vBox);
+                            hCita2.setStyle("-fx-background-color: white");
+                            hCita2.getChildren().remove(1);
+                        }
                     });
-
                     hPane.setOnDragDone(e -> {
                         hPane.setCursor(Cursor.OPEN_HAND);
 
