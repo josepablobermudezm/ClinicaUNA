@@ -202,8 +202,9 @@ public class FlowController {
         stage.setOnHidden((WindowEvent event) -> {
             controller.getStage().getScene().setRoot(new Pane());
             controller.setStage(null);
+            AppContext.getInstance().delete("Espacio");
+            FlowController.getInstance().initialize();
         });
-
         controller.setStage(stage);
         Parent root = loader.getRoot();
         Scene scene = new Scene(root);

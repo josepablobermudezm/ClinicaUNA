@@ -495,10 +495,8 @@ public class AgendaMedicaController extends Controller implements Initializable 
             fecha();
             Inicio();
             SeleccionarMedico();
-
         }
     }
-
     /*
         Facilita el manejo de las citas para bajar el ScrollPane por medio de los eventos del mouse 
      */

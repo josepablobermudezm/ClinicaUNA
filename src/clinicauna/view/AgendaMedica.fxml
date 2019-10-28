@@ -119,6 +119,8 @@
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fad655" height="43.0" stroke="#fad655" strokeType="INSIDE" width="40.0" />
                   <Label text="Ausente:" />
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bdbdbd" height="43.0" stroke="#bdbdbd" strokeType="INSIDE" width="40.0" />
+                  <Label text="Cancelada:" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fa7a7a" height="43.0" stroke="#bdbdbd" strokeType="INSIDE" width="40.0" />
                </children>
             </HBox>
          </children>

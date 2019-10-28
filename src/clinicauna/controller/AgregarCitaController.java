@@ -25,8 +25,10 @@ import com.jfoenix.controls.JFXTextField;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -96,13 +98,15 @@ public class AgregarCitaController extends Controller {
     private Correos correo;
     private PacienteDto paciente;
     private String estado1;
+    private static boolean valor1 = false;
+    private static String valor = "";
 
     @Override
     public void initialize() {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
-            this.txtEspacios.setPromptText(idioma.getProperty("Agenda")+" "+idioma.getProperty("Espacios"));
+            this.txtEspacios.setPromptText(idioma.getProperty("Agenda") + " " + idioma.getProperty("Espacios"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
             this.btnAtendida.setText(idioma.getProperty("Atendida"));
             this.btnAusente.setText(idioma.getProperty("Ausente"));
@@ -157,7 +161,10 @@ public class AgregarCitaController extends Controller {
             AppContext.getInstance().set("PacienteDto", pacienteDto);
             cedulaBuscar = "";
             cedulaEncontrada = false;
+            //LocalDateTime inicioJornada = LocalDateTime.parse(espacioDto.getEspHoraInicio(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            //Date date = Date.from(inicioJornada.atZone(ZoneId.systemDefault()).toInstant());
             txtEspacios.setText(String.valueOf(agendaDto.getEspacioList().stream().filter(x -> x.getEspCita().getID().equals(espacioDto.getEspCita().getID())).count()));
+            //if(espacioDto.getEspCita().getEstado().equals("CA") /*&& (espacioDto.getEspAgenda().getAgeFecha().isBefore(LocalDate.now()))*/ /*&& date.before(Dat)*/){
             if (espacioDto.getEspCita().getEstado().equals("PR")) {
                 btnProgramada.setSelected(true);
             } else {
@@ -173,10 +180,30 @@ public class AgregarCitaController extends Controller {
             } else {
                 btnAusente.setSelected(false);
             }
+            //obtengo el valor de la hora del padre HBOX
+            Label label = (Label) hBox.getvBox().getParent().getChildrenUnmodifiable().get(0);
+            //conversión de string a localTime
+            LocalTime isoTime = LocalTime.parse(label.getText() + ":00",
+                    DateTimeFormatter.ISO_LOCAL_TIME);
+            System.out.println(isoTime);
             if (espacioDto.getEspCita().getEstado().equals("CA")) {
-                btnCancelada.setSelected(true);
-            } else {
-                btnCancelada.setSelected(false);
+                if (((agendaDto.getAgeFecha().isEqual(LocalDate.now()) && isoTime.isAfter(LocalTime.now()))
+                        || (agendaDto.getAgeFecha().isAfter(LocalDate.now()) && isoTime.isAfter(LocalTime.now())))) {
+                    btnCancelada.setSelected(true);
+                    btnProgramada.setDisable(false);
+                    btnAtendida.setDisable(true);
+                    btnCancelada.setDisable(false);
+                    btnAusente.setDisable(true);
+                    System.out.println("hora legal");
+                } else {
+                    btnCancelada.setSelected(true);
+                    btnProgramada.setDisable(true);
+                    btnAtendida.setDisable(true);
+                    btnCancelada.setDisable(false);
+                    btnAusente.setDisable(true);
+                    System.out.println("hora ilegal");
+                }
+                System.out.println("está cancelada");
             }
         } else {
             //es la primera vez que la selecciona por lo tanto no debe de poder elegir otro tipo de estado
@@ -189,7 +216,6 @@ public class AgregarCitaController extends Controller {
             btnAusente.setDisable(true);
             btnCancelada.setDisable(true);
         }
-        
 
     }
 
@@ -204,7 +230,7 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1);
             if (AppContext.getInstance().get("Espacio") != null) {
                 estado1 = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
-            }else{
+            } else {
                 estado1 = "PR";
             }
             //Obtengo el primer el Hbox que contiene el Label con la hora
@@ -297,6 +323,7 @@ public class AgregarCitaController extends Controller {
     private void cancela(ActionEvent event) {
         FlowController.getInstance().initialize();
         limpiarValores();
+        AppContext.getInstance().delete("Espacio");
         this.getStage().close();
     }
 
@@ -465,14 +492,18 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1) + 1;
             if (AppContext.getInstance().get("Espacio") != null) {
                 estado1 = (btnProgramada.isSelected()) ? "PR" : (btnAtendida.isSelected()) ? "AT" : (btnAusente.isSelected()) ? "AU" : "CA";
-            }else{
+            } else {
                 estado1 = "PR";
             }
             String correoEnviado = espacioDto.getEspCita().getCorreoEnviado();
             //Obtengo el primer el Hbox que contiene el Label con la hora
 
             citaDto = new CitaDto(espacioDto.getEspCita().getID(), version, pacienteDto, motivo, estado1, telefono, correo, correoEnviado);
-            try {
+            resp = citaService.guardarCita(citaDto);
+            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
+            limpiarValores();
+            this.getStage().close();
+            /*try {
                 if (estado1 != "CA") {
                     resp = citaService.guardarCita(citaDto);
                 }else{
@@ -484,7 +515,7 @@ public class AgregarCitaController extends Controller {
                 this.getStage().close();
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el usuario.");
-            }
+            }*/
 //            try {
 //                switch (estado) {
 //                    case "AT": {
