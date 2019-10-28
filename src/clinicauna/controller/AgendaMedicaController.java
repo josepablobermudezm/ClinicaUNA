@@ -107,11 +107,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
     @FXML
     private ImageView ArribaScroll;
     @FXML
-    private ImageView ArribaScroll1;
-    @FXML
     private ImageView ArribaScroll2;
-    @FXML
-    private ImageView ArribaScroll3;
     private boolean inicio = true;
     private vistaCita hCita2;
     private vistaCita hCita3;
@@ -469,7 +465,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
      */
     @FXML
     private void izquierda(DragEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
+        /*if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             if (DatePicker.getValue().getDayOfMonth() == 1 && DatePicker.getValue().getMonth().getValue() == 1) {
                 Integer ano = DatePicker.getValue().getYear() - 1;
                 LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(12).withDayOfMonth(31);
@@ -483,12 +479,12 @@ public class AgendaMedicaController extends Controller implements Initializable 
             SeleccionarMedico();
         } else {
             DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() - 1));
-        }
+        }*/
     }
 
     @FXML
     private void derecha(DragEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
+        /*if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             if (DatePicker.getValue().getDayOfMonth() == 31 && DatePicker.getValue().getMonth().getValue() == 12) {
                 Integer ano = DatePicker.getValue().getYear() + 1;
                 LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(1).withDayOfMonth(1);
@@ -500,12 +496,12 @@ public class AgendaMedicaController extends Controller implements Initializable 
             fecha();
             Inicio();
             SeleccionarMedico();
-        }
+        }*/
     }
 
     @FXML
     private void clickIzquierda(MouseEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
+        /*if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             if (DatePicker.getValue().getDayOfMonth() == 1 && DatePicker.getValue().getMonth().getValue() == 1) {
                 Integer ano = DatePicker.getValue().getYear() - 1;
                 LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(12).withDayOfMonth(31);
@@ -520,13 +516,13 @@ public class AgendaMedicaController extends Controller implements Initializable 
             fecha();
             Inicio();
             SeleccionarMedico();
-        }
+        }*/
 
     }
 
     @FXML
     private void clickDerecha(MouseEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
+        /*if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             System.out.println("Derecha");
             if (DatePicker.getValue().getDayOfMonth() == 31 && DatePicker.getValue().getMonth().getValue() == 12) {
                 Integer ano = DatePicker.getValue().getYear() + 1;
@@ -539,7 +535,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             fecha();
             Inicio();
             SeleccionarMedico();
-        }
+        }*/
     }
 
     /*
