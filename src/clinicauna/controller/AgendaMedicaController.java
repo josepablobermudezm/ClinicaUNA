@@ -91,7 +91,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
     private Label lblMes;
     @FXML
     private Label lblDia;
-    private Label lblHora;
+   //private Label lblHora;
     private MedicoDto medicoDto;
     private MedicoService medicoService;
     private Respuesta resp;
@@ -116,6 +116,14 @@ public class AgendaMedicaController extends Controller implements Initializable 
     private vistaCita hCita2;
     private vistaCita hCita3;
     private vistaCita hCita;
+    @FXML
+    private Label lblProgramada;
+    @FXML
+    private Label lblAtendida;
+    @FXML
+    private Label lblAusente;
+    @FXML
+    private Label lblCancelada;
 
     @Override
     public void initialize() {
@@ -154,8 +162,12 @@ public class AgendaMedicaController extends Controller implements Initializable 
             this.DatePicker.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
             this.lblAnno.setText(idioma.getProperty("Año"));
             this.lblDia.setText(idioma.getProperty("Dia"));
-            this.lblHora.setText(idioma.getProperty("Hora"));
             this.lblMes.setText(idioma.getProperty("Mes"));
+            this.Titulo.setText(idioma.getProperty("Agenda"));
+            this.lblProgramada.setText(idioma.getProperty("Programada"));
+            this.lblAusente.setText(idioma.getProperty("Ausente"));
+            this.lblCancelada.setText(idioma.getProperty("Cancelada"));
+            this.lblAtendida.setText(idioma.getProperty("Atendida"));
         }
 
         lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");

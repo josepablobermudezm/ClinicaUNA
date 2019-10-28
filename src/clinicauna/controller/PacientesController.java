@@ -43,6 +43,7 @@ import javafx.scene.input.MouseEvent;
  */
 public class PacientesController extends Controller {
 
+    @FXML
     private Label Titulo;
     @FXML
     private TableView<PacienteDto> table;
@@ -52,12 +53,6 @@ public class PacientesController extends Controller {
     private JFXTextField txtCedula;
     @FXML
     private JFXTextField txtCorreo;
-    @FXML
-    private JFXButton btnEditar1;
-    @FXML
-    private JFXButton btnEliminar1;
-    @FXML
-    private JFXButton btnAgregar1;
     @FXML
     private ToggleGroup genero;
     private JFXTextField txtFiltroEmpleado;
@@ -94,14 +89,19 @@ public class PacientesController extends Controller {
     private JFXRadioButton btnHombre;
     private Idioma idioma;
     private UsuarioDto usuario;
-    @FXML
     private JFXButton btnLimpiarRegistro;
     @FXML
     private Label lblGenero;
     private ExpedienteDto expedienteDto;
     private ExpedienteService expedienteService;
     @FXML
-    private ImageView omg;
+    private JFXButton btnEditar11;
+    @FXML
+    private JFXButton btnEliminar11;
+    @FXML
+    private JFXButton btnLimpiarRegistro1;
+    @FXML
+    private JFXButton btnAgregar11;
 
     @Override
     public void initialize() {
@@ -112,13 +112,12 @@ public class PacientesController extends Controller {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
-            this.btnEditar1.setText(idioma.getProperty("Editar"));
-            this.btnBuscar.setText(idioma.getProperty("Buscar"));
-            this.btnAgregar1.setText(idioma.getProperty("Agregar"));
+            this.btnEditar11.setText(idioma.getProperty("Editar"));
+            this.btnAgregar11.setText(idioma.getProperty("Agregar"));
             this.btnHombre.setText(idioma.getProperty("Masculino"));
             this.btnMujer.setText(idioma.getProperty("Femenino"));
-            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
-            this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
+            this.btnLimpiarRegistro1.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
+            this.btnEliminar11.setText(idioma.getProperty("Eliminar"));
             this.COL_CEDULA_PAC.setText("ID");
             this.COL_CORREO_PAC.setText(idioma.getProperty("Correo"));
             this.COL_FECHANACIMIENTO_PAC.setText(idioma.getProperty("Fecha") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Nacimiento"));
@@ -126,7 +125,6 @@ public class PacientesController extends Controller {
             this.COL_PAPELLIDO_PAC.setText(idioma.getProperty("Primero") + " " + idioma.getProperty("Apellido"));
             this.COL_NOMBRE_PAC.setText(idioma.getProperty("Nombre"));
             this.COL_SAPELLIDO_PAC.setText(idioma.getProperty("Segundo") + " " + idioma.getProperty("Apellido"));
-            this.txtFiltroEmpleado.setPromptText(idioma.getProperty("Filtro") + " " + idioma.getProperty("porBy") + " " + "ID");
             this.txtNombre.setPromptText(idioma.getProperty("Nombre"));
             this.txtPApellido.setPromptText(idioma.getProperty("Primero") + " " + idioma.getProperty("Apellido"));
             this.txtSApellido.setPromptText(idioma.getProperty("Segundo") + " " + idioma.getProperty("Apellido"));
