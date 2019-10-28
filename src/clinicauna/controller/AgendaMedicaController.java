@@ -353,7 +353,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                         hCita2.getCorreo().setStyle(style1);
                         hCita2.getTelefono().setStyle(style1);
                         hCita3.getChildren().addAll(vBox);
-                        //hCita.setStyle("-fx-text-fill: #636361;");
+                        hCita2.setStyle("-fx-background-color: white");
                     });
 
                     hPane.setOnDragDone(e -> {
