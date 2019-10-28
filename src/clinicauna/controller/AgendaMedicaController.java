@@ -6,8 +6,10 @@
 package clinicauna.controller;
 
 import clinicauna.model.AgendaDto;
+import clinicauna.model.CitaDto;
 import clinicauna.model.EspacioDto;
 import clinicauna.model.MedicoDto;
+import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.AgendaService;
 import clinicauna.service.MedicoService;
@@ -109,6 +111,8 @@ public class AgendaMedicaController extends Controller implements Initializable 
     @FXML
     private ImageView ArribaScroll3;
     private boolean inicio = true;
+    private vistaCita hCita2;
+    private vistaCita hCita3;
 
     @Override
     public void initialize() {
@@ -172,7 +176,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
         fecha();
         if (usuarioDto.getTipoUsuario().equals("M")) {
             SeleccionarMedico();
-        }else{
+        } else {
             inicio = false;
         }
     }
@@ -300,7 +304,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
                     //Metodos de Drag and Drop
                     hPane.setOnDragDetected(e -> {
-
                         Dragboard db = hPane.startDragAndDrop(TransferMode.ANY);
                         ClipboardContent content = new ClipboardContent();
                         WritableImage wi = hPane.snapshot(new SnapshotParameters(), null);
@@ -309,19 +312,34 @@ public class AgendaMedicaController extends Controller implements Initializable 
                         content.put(DataFormat.IMAGE, wii);
                         hPane.setCursor(Cursor.CLOSED_HAND);
                         db.setContent(content);
+                        //cuando se detecta un drag entonces guardo los datos de ese hBox en appcontext
+                        hCita2 = (vistaCita) e.getSource();
+                        AppContext.getInstance().set("hBox", hCita2);
+                        AppContext.getInstance().set("Espacio", hCita2.getEspacio());
+                        //FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
+                        AppContext.getInstance().delete("Cita");
+                        //guardo la cita que agarra
                     });
 
                     hPane.setOnDragOver(f -> {
-
                         f.acceptTransferModes(TransferMode.ANY);
-
                         /* if(node != null && !this.getItem().getActId().equals(node.getItem().getActId())){
-                    
                 }*/
+                        
                     });
 
                     hPane.setOnDragDropped(e -> {
-
+                        String style = "";
+                        System.out.println(hCita2.getCorreo());
+                        EspacioDto espacio = (EspacioDto) AppContext.getInstance().get("Espacio");
+                        hCita3 = (vistaCita) e.getSource();
+                        hCita3.setStyle(hCita2.getStyle());
+                        hCita3.setvBox(hCita2.getvBox());
+                        hCita3.setCorreo(hCita2.getCorreo());
+                        hCita3.setEspacio(hCita2.getEspacio());
+                        hCita3.setNombre(hCita2.getNombre());
+                        hCita3.setTelefono(hCita2.getTelefono());
+                        hCita3.AgregarCita(espacio);
                     });
 
                     hPane.setOnDragDone(e -> {
@@ -497,6 +515,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             SeleccionarMedico();
         }
     }
+
     /*
         Facilita el manejo de las citas para bajar el ScrollPane por medio de los eventos del mouse 
      */
