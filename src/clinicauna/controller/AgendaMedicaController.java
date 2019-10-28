@@ -60,7 +60,9 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -113,6 +115,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
     private boolean inicio = true;
     private vistaCita hCita2;
     private vistaCita hCita3;
+    private vistaCita hCita;
 
     @Override
     public void initialize() {
@@ -163,7 +166,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
     }
 
     private EventHandler<MouseEvent> citasReleased = (event) -> {
-        vistaCita hCita = (vistaCita) event.getSource();
+        hCita = (vistaCita) event.getSource();
         AppContext.getInstance().set("hBox", hCita);
         AppContext.getInstance().set("Espacio", hCita.getEspacio());
         FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
@@ -325,7 +328,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                         f.acceptTransferModes(TransferMode.ANY);
                         /* if(node != null && !this.getItem().getActId().equals(node.getItem().getActId())){
                 }*/
-                        
+
                     });
 
                     hPane.setOnDragDropped(e -> {
@@ -340,6 +343,17 @@ public class AgendaMedicaController extends Controller implements Initializable 
                         hCita3.setNombre(hCita2.getNombre());
                         hCita3.setTelefono(hCita2.getTelefono());
                         hCita3.AgregarCita(espacio);
+                        //hCita3.AgregarCita(espacio);
+                        VBox vBox = new VBox();
+                        vBox.getChildren().addAll(hCita2.getNombre(), hCita2.getCorreo(), hCita2.getTelefono());
+                        vBox.setAlignment(Pos.CENTER);
+                        vBox.setSpacing(10);
+                        String style1 = "-fx-text-fill: #636361;";
+                        hCita2.getNombre().setStyle(style1);
+                        hCita2.getCorreo().setStyle(style1);
+                        hCita2.getTelefono().setStyle(style1);
+                        hCita3.getChildren().addAll(vBox);
+                        //hCita.setStyle("-fx-text-fill: #636361;");
                     });
 
                     hPane.setOnDragDone(e -> {
