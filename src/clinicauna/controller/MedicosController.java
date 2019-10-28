@@ -103,7 +103,7 @@ public class MedicosController extends Controller {
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
             this.btnEditar1.setText(idioma.getProperty("Editar"));
-            this.btnBuscar.setText(idioma.getProperty("Buscar"));
+           //this.btnBuscar.setText(idioma.getProperty("Buscar"));
             this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
             this.COL_CODIGO_MEDICOS.setText(idioma.getProperty("Código"));
             this.COL_CARNE_MEDICOS.setText(idioma.getProperty("Carné"));
@@ -111,7 +111,7 @@ public class MedicosController extends Controller {
             this.COL_INICIO_MEDICOS.setText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Jornada"));
             this.COL_FINAL_MEDICOS.setText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
             this.COL_ESPACIOS_MEDICOS.setText(idioma.getProperty("Espacio") + " " + idioma.getProperty("por") + " " + idioma.getProperty("Hora"));
-            this.txtFiltroEmpleado.setPromptText(idioma.getProperty("Filtro") + " " + idioma.getProperty("porBy") + " " + "ID");
+            this.COL_NOMBRE_MEDICOS.setText(idioma.getProperty("Completo")+" " + idioma.getProperty("Nombre"));
             this.timePickerInicio.setPromptText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Jornada"));
             this.timePickerfinal.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
             this.txtCarne.setPromptText(idioma.getProperty("Carné"));
