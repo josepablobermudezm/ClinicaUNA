@@ -28,25 +28,40 @@ public class vistaCita extends HBox {
 
     }
 
-
     public void AgregarCita(EspacioDto espacio) {
-        this.Nombre.setText(espacio.getEspCita().getPaciente().getNombre() + " " + espacio.getEspCita().getPaciente().getpApellido() + " " + espacio.getEspCita().getPaciente().getsApellido());
-        this.Correo.setText(espacio.getEspCita().getCorreo());
-        this.Telefono.setText(espacio.getEspCita().getTelefono());
         this.vBox.getChildren().clear();
-        this.vBox.getChildren().addAll(Nombre, Correo, Telefono);
-        this.vBox.setAlignment(Pos.CENTER);
-        this.vBox.setSpacing(10);
-        String style = "-fx-text-fill: #636361;";
-        this.Nombre.setStyle(style);
-        this.Correo.setStyle(style);
-        this.Telefono.setStyle(style);
+        if (espacio != null) {
+            this.Nombre.setText(espacio.getEspCita().getPaciente().getNombre() + " " + espacio.getEspCita().getPaciente().getpApellido() + " " + espacio.getEspCita().getPaciente().getsApellido());
+            this.Correo.setText(espacio.getEspCita().getCorreo());
+            this.Telefono.setText(espacio.getEspCita().getTelefono());
+            this.vBox.getChildren().addAll(Nombre, Correo, Telefono);
+            this.vBox.setAlignment(Pos.CENTER);
+            this.vBox.setSpacing(10);
+            String style = "-fx-text-fill: #636361;";
+            this.Nombre.setStyle(style);
+            this.Correo.setStyle(style);
+            this.Telefono.setStyle(style);
+        }
         this.espacio = espacio;
+    }
+
+    public void intercambiarCita(vistaCita vCita) {
+        this.getChildren().remove(vBox);
+        vCita.getChildren().remove(vCita.getvBox());
+        String style = vCita.getStyle();
+        vCita.setStyle(getStyle());
+        this.setStyle(style);
+        
+        VBox vAux = vCita.getvBox();
+        vCita.setvBox(vBox);
+        vBox = vAux;
+        this.getChildren().add(vBox);
+        vCita.getChildren().add(vCita.getvBox());
+       
     }
 
     public VBox get(double Width) {
         this.vBox.setPrefWidth(Width);
-        
         return this.vBox;
     }
 
@@ -89,5 +104,5 @@ public class vistaCita extends HBox {
     public void setEspacio(EspacioDto espacio) {
         this.espacio = espacio;
     }
-    
+
 }

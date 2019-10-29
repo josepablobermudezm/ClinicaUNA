@@ -326,10 +326,10 @@ public class AgendaMedicaController extends Controller implements Initializable 
                         db.setContent(content);
                         //cuando se detecta un drag entonces guardo los datos de ese hBox en appcontext
                         hCita2 = (vistaCita) e.getSource();
-                        AppContext.getInstance().set("hBox", hCita2);
+                        /*AppContext.getInstance().set("hBox", hCita2);
                         AppContext.getInstance().set("Espacio", hCita2.getEspacio());
                         //FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
-                        AppContext.getInstance().delete("Cita");
+                        AppContext.getInstance().delete("Cita");*/
                         //guardo la cita que agarra
                     });
 
@@ -341,11 +341,26 @@ public class AgendaMedicaController extends Controller implements Initializable 
                     });
 
                     hPane.setOnDragDropped(e -> {
+                        hCita3 = (vistaCita) e.getSource();
+                        if (hCita2 != null && hCita3 != hCita2) {
+                            hCita2.intercambiarCita(hCita3);
+                            EspacioService espacioService = new EspacioService();
+                            if (hCita2.getEspacio() != null) {
+                                espacioService.guardarEspacio(hCita2.getEspacio());
+                            }
+                            if (hCita3.getEspacio() != null) {
+                                espacioService.guardarEspacio(hCita3.getEspacio());
+                            }
+                        } else {
+
+                        }
                         if (hCita2.getChildren().size() <= 2) {
-                            String style = "";
+
+                            /* String style = "";
                             System.out.println(hCita2.getCorreo());
                             EspacioDto espacio = (EspacioDto) AppContext.getInstance().get("Espacio");
                             hCita3 = (vistaCita) e.getSource();
+                            hCita3.AgregarCita(espacio);
                             hCita3.setStyle(hCita2.getStyle());
                             hCita3.setvBox(hCita2.getvBox());
                             hCita3.setCorreo(hCita2.getCorreo());
@@ -379,8 +394,9 @@ public class AgendaMedicaController extends Controller implements Initializable 
                             
                             espacioDto = new EspacioDto(hCita2.getEspacio().getEspId(), horaFin,
                                     horaInicio, hCita2.getEspacio().getEspVersion(), hCita2.getEspacio().getEspCita(), agendaDto);
-                            resp = espacioService.guardarEspacio(espacioDto);
+                            resp = espacioService.guardarEspacio(espacioDto);*/
                         }
+
                     });
                     hPane.setOnDragDone(e -> {
                         hPane.setCursor(Cursor.OPEN_HAND);
@@ -474,6 +490,16 @@ public class AgendaMedicaController extends Controller implements Initializable 
         //Carga la vista de las citas 
         vCita.setBackground(Background.EMPTY);
         vCita.setStyle(style);
+        
+        LocalTime horaF = LocalTime.parse(espacio.getEspHoraFin());
+        LocalTime horaIni = LocalTime.parse(espacio.getEspHoraInicio());
+        LocalDateTime horaCitaInicio = LocalDateTime.of(LocalDate.now(), horaIni);
+        String horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaInicio);
+        LocalDateTime horaCitaFin = LocalDateTime.of(LocalDate.now(), horaF);
+        String horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaFin);
+        espacio.setEspHoraInicio(horaInicio);
+        espacio.setEspHoraFin(horaFin);
+        espacio.setEspAgenda(agendaDto);
         vCita.AgregarCita(espacio);
         vCita.getChildren().add(vCita.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
     }
