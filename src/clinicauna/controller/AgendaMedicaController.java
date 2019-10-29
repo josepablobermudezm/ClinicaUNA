@@ -215,7 +215,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
                         cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
                     }
                 });
-                //Revisar condicion
                 medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
                 inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
                 finJornada = LocalTime.parse(medicoDto.getFinJornada());

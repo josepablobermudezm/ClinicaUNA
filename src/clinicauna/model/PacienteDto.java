@@ -125,5 +125,11 @@ public class PacienteDto {
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+
+    @Override
+    public String toString() {
+        return "PacienteDto{" + "ID=" + ID + ", nombre=" + nombre + ", pApellido=" + pApellido + ", sApellido=" + sApellido + ", cedula=" + cedula + ", correo=" + correo + ", genero=" + genero + ", fechaNacimiento=" + fechaNacimiento + ", pacVersion=" + pacVersion + '}';
+    }
+    
     
 }

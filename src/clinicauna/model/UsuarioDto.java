@@ -164,6 +164,11 @@ public class UsuarioDto {
     public void setUsVersion(Long usVersion) {
         this.usVersion = usVersion;
     }
+
+    @Override
+    public String toString() {
+        return "UsuarioDto{" + "ID=" + ID + ", nombre=" + nombre + ", pApellido=" + pApellido + ", estado=" + estado + ", sApellido=" + sApellido + ", cedula=" + cedula + ", correo=" + correo + ", nombreUsuario=" + nombreUsuario + ", contrasennaTemp=" + contrasennaTemp + ", contrasenna=" + contrasenna + ", tipoUsuario=" + tipoUsuario + ", idioma=" + idioma + ", usVersion=" + usVersion + '}';
+    }
     
     
 }

@@ -119,6 +119,7 @@ public class ControlPacienteController extends Controller implements Initializab
         controles2 = new ArrayList();
         expedienteDto = (ExpedienteDto) AppContext.getInstance().get("Expediente");
         pacienteDto = (PacienteDto) AppContext.getInstance().get("Paciente");
+        System.out.println("Paciente "+pacienteDto);
         controlService = new ControlService();
         controlDto = new ControlDto();
         ms = new Mensaje();
@@ -254,12 +255,21 @@ public class ControlPacienteController extends Controller implements Initializab
             LocalDate fecha = Fecha.getValue();
             Long version = new Long(1);
             controlDto = new ControlDto(null, fecha, hora, presion, frecuenciaCardiaca, peso, talla, temperatura, imc, anotaciones, razon, planAtencion, observaciones, Examen, tratamiento, version, expedienteDto);
-            try {
-                resp = controlService.guardarControl(controlDto);
-                FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
+            AppContext.getInstance().set("Control",controlDto);
+            Correos correo = new Correos();
+            correo.CorreoControlHilo(pacienteDto.getCorreo());
+            FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
+            resp = correo.getResp();
+            if (resp.getEstado()) {
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+            }
+
+            resp = controlService.guardarControl(controlDto);
+            if (resp.getEstado()) {
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                 limpiarRegistro();
-                AppContext.getInstance().set("Control", resp.getResultado("Control"));
                 controles = (ArrayList) controlService.getControles().getResultado("controles");
                 controles2.clear();
                 controles.stream().filter(x -> x.getCntExpediente().getExpID().equals(expedienteDto.getExpID())).forEach(x -> {
@@ -268,16 +278,8 @@ public class ControlPacienteController extends Controller implements Initializab
                 table.getItems().clear();
                 items = FXCollections.observableArrayList(controles2);
                 table.setItems(items);
-            } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el control....");
-            }
-            Correos correo = new Correos();
-            correo.CorreoControl(pacienteDto.getCorreo());
-            resp = correo.getResp();
-            if (resp.getEstado()) {
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
             }
         } else {
             ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
@@ -353,8 +355,8 @@ public class ControlPacienteController extends Controller implements Initializab
     private void seleccionarMedico(ActionEvent event) {
         SeleccionarMedico();
     }
-    
-    public void SeleccionarMedico(){
+
+    public void SeleccionarMedico() {
         if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
             //buscamos el médico a partir de su cédula
             String medico = ComboMedico.getSelectionModel().getSelectedItem();
@@ -382,6 +384,7 @@ public class ControlPacienteController extends Controller implements Initializab
             Hora.setDisable(false);
             cedulaBuscar = "";
             cedulaEncontrada = false;
+            System.out.println(medicoDto);
             AppContext.getInstance().set("MedicoDto", medicoDto);
         }
     }
