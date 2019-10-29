@@ -89,7 +89,7 @@ public class BuscarPacienteController extends Controller {
             this.txtApellido.setPromptText(idioma.getProperty("Apellido"));
             this.Col_Cedula.setText(idioma.getProperty("Cedula"));
             this.Col_Nombre.setText(idioma.getProperty("Nombre"));
-            this.Titulo.setText(idioma.getProperty("Seleccione")+" "+idioma.getProperty("un")+" "+idioma.getProperty("Paciente"));
+            this.Titulo.setText(idioma.getProperty("Seleccione")+" "+idioma.getProperty("un")+" "+idioma.getProperty("PacienteB"));
         }
         Col_Nombre.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre() + " " + value.getValue().getpApellido() + " " + value.getValue().getsApellido()));
         Col_Cedula.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCedula()));
