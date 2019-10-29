@@ -6,9 +6,11 @@
 package clinicauna.controller;
 
 import clinicauna.model.PacienteDto;
+import clinicauna.model.UsuarioDto;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import clinicauna.util.Idioma;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -33,8 +35,6 @@ import javafx.scene.input.MouseEvent;
 public class BuscarPacienteController extends Controller {
 
     @FXML
-    private Label lblTitulo;
-    @FXML
     private JFXTextField txtCedula;
     @FXML
     private JFXTextField txtApellido;
@@ -49,6 +49,10 @@ public class BuscarPacienteController extends Controller {
     private PacienteService service;
     private ArrayList<PacienteDto> pacientes;
     private ObservableList items;
+    private UsuarioDto usuario;
+    private Idioma idioma;
+    @FXML
+    private Label Titulo;
 
     @FXML
     private void ReleasedCedula(KeyEvent event) {
@@ -77,6 +81,16 @@ public class BuscarPacienteController extends Controller {
 
     @Override
     public void initialize() {
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if(usuario.getIdioma().equals("I")){
+            this.txtNombre.setPromptText(idioma.getProperty("Nombre"));
+            this.txtCedula.setPromptText(idioma.getProperty("Cedula"));
+            this.txtApellido.setPromptText(idioma.getProperty("Apellido"));
+            this.Col_Cedula.setText(idioma.getProperty("Cedula"));
+            this.Col_Nombre.setText(idioma.getProperty("Nombre"));
+            this.Titulo.setText(idioma.getProperty("Seleccione")+" "+idioma.getProperty("un")+" "+idioma.getProperty("PacienteB"));
+        }
         Col_Nombre.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre() + " " + value.getValue().getpApellido() + " " + value.getValue().getsApellido()));
         Col_Cedula.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCedula()));
         Buscar();

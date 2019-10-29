@@ -106,14 +106,20 @@ public class ExpedienteMedicoController extends Controller implements Initializa
     private JFXButton btnBuscar;
     @FXML
     private Label lblPaciente;
-    @FXML
-    private Label lblOperaciones1;
     private PacienteDto paciente;
     @FXML
     private ToggleGroup Antecedentes;
     @FXML
     private ToggleGroup Alergias;
     private boolean valor = false;
+    @FXML
+    private Label lblAlergias;
+    @FXML
+    private JFXButton btnExamenes;
+    @FXML
+    private JFXButton btnEvolucion;
+    @FXML
+    private Label lblNomPaciente;
 
     @Override
     public void initialize() {
@@ -129,6 +135,29 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
             this.Titulo.setText(idioma.getProperty("MedExp") + " " + idioma.getProperty("Expediente"));
+            this.lblPaciente.setText(idioma.getProperty("Paciente"));
+            this.lblAlergias.setText(idioma.getProperty("Alergias"));
+            this.lblAntecedente.setText(idioma.getProperty("Antecedentes"));
+            this.lblHospitalizaciones.setText(idioma.getProperty("Hospitalizaciones"));
+            this.lblOperaciones.setText(idioma.getProperty("Operaciones"));
+            this.lblTratamiento.setText(idioma.getProperty("Tratamientos"));
+            this.btnAntecedentes.setText(idioma.getProperty("Antecedentes"));
+            this.btnBuscar.setText(idioma.getProperty("Buscar"));
+            this.btnEditar1.setText(idioma.getProperty("Editar"));
+            this.btnGuardar.setText(idioma.getProperty("Guardar"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+" "+idioma.getProperty("Registro"));
+            this.btnSiAlergias.setText(idioma.getProperty("Si"));
+            this.btnSiHospitalizaciones.setText(idioma.getProperty("Si"));
+            this.btnSiTratamientos.setText(idioma.getProperty("Si"));
+            this.btnSiOperaciones.setText(idioma.getProperty("Si"));
+            this.btnAntecedenteSi.setText(idioma.getProperty("Si"));
+            this.btnControles.setText(idioma.getProperty("Controles"));
+            this.btnEvolucion.setText(idioma.getProperty("Evolucion"));
+            this.btnExamenes.setText(idioma.getProperty("Examenes"));
+            this.txtAntecedentesPatologicos.setPromptText(idioma.getProperty("Antecedentes"));
+            this.txtAlergias.setPromptText(idioma.getProperty("Alergias"));
+            this.txtOperaciones.setPromptText(idioma.getProperty("Operaciones"));
+            this.txtTratamientos.setPromptText(idioma.getProperty("Tratamientos"));
         }
 
         expedienteService = new ExpedienteService();
@@ -144,7 +173,6 @@ public class ExpedienteMedicoController extends Controller implements Initializa
     private void DatosPaciente() {
         if (AppContext.getInstance().get("Paciente") != null) {
             paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
-
             if (expedientes.stream().filter(x -> x.getPaciente().getID() == paciente.getID()).findAny().isPresent()) {
                 expedienteDto = expedientes.stream().filter(x -> x.getPaciente().getID() == paciente.getID()).findAny().get();
                 txtAlergias.setText((expedienteDto.getAlergias() != null) ? expedienteDto.getAlergias() : "");
@@ -189,7 +217,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
                 ms.showModal(Alert.AlertType.WARNING, "Busqueda de paciente", this.getStage(), "El paciente seleccionado no tiene un expediente");
                 valor = true;
             }
-            lblPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
+            lblNomPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
         }
     }
 
@@ -222,7 +250,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
                 resp = expedienteService.guardarExpediente(expedienteDto);
                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
                 Limpiar();
-                this.lblPaciente.setText(null);
+                this.lblNomPaciente.setText(null);
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el expediente.");
             }

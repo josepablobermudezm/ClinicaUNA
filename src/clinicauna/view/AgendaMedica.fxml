@@ -30,7 +30,7 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="242.0" spacing="25.0">
                      <children>
-                        <JFXDatePicker fx:id="DatePicker" defaultColor="#4059a9" onAction="#Validacion" onHiding="#Fecha" promptText="Seleccionar Fecha" />
+                        <JFXDatePicker fx:id="DatePicker" defaultColor="#4059a9" onAction="#Validacion" onHiding="#Fecha" prefHeight="25.0" prefWidth="208.0" promptText="Seleccionar Fecha" />
                         <JFXComboBox fx:id="ComboMedico" onAction="#seleccionarMedico" prefHeight="31.0" prefWidth="206.0" promptText="Seleccionar un Medico" />
                      </children>
                   </VBox>
@@ -82,15 +82,7 @@
             </HBox>
             <HBox alignment="CENTER" fillHeight="false" prefHeight="43.0" prefWidth="1030.0">
                <children>
-                  <HBox alignment="CENTER" onDragOver="#izquierda" onMouseReleased="#clickIzquierda" prefHeight="100.0" prefWidth="343.33">
-                     <children>
-                        <ImageView fx:id="ArribaScroll1" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/izquierda.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER" onDragOver="#izquierda" onMouseReleased="#clickIzquierda" prefHeight="100.0" prefWidth="343.33" />
                   <HBox alignment="CENTER" onDragOver="#abajo" onMouseReleased="#clickAbajo" prefHeight="100.0" prefWidth="343.33">
                      <children>
                         <ImageView fx:id="ArribaScroll2" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
@@ -100,25 +92,19 @@
                         </ImageView>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" onDragOver="#derecha" onMouseReleased="#clickDerecha" prefHeight="100.0" prefWidth="343.33">
-                     <children>
-                        <ImageView fx:id="ArribaScroll3" fitHeight="43.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/derecha.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER" onDragOver="#derecha" onMouseReleased="#clickDerecha" prefHeight="100.0" prefWidth="343.33" />
                </children>
             </HBox>
             <HBox alignment="CENTER" fillHeight="false" prefHeight="67.0" prefWidth="1030.0" spacing="20.0">
                <children>
-                  <Label text="Programada:" />
+                  <Label fx:id="lblProgramada" text="Programada:" />
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8cff8c" height="43.0" stroke="#8cff8c" strokeType="INSIDE" width="40.0" />
-                  <Label text="Atendida:" />
+                  <Label fx:id="lblAtendida" text="Atendida:" />
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fad655" height="43.0" stroke="#fad655" strokeType="INSIDE" width="40.0" />
-                  <Label text="Ausente:" />
+                  <Label fx:id="lblAusente" text="Ausente:" />
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bdbdbd" height="43.0" stroke="#bdbdbd" strokeType="INSIDE" width="40.0" />
+                  <Label fx:id="lblCancelada" text="Cancelada:" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fa7a7a" height="43.0" stroke="#bdbdbd" strokeType="INSIDE" width="40.0" />
                </children>
             </HBox>
          </children>

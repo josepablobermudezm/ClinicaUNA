@@ -6,10 +6,14 @@
 package clinicauna.controller;
 
 import clinicauna.model.AgendaDto;
+import clinicauna.model.CitaDto;
 import clinicauna.model.EspacioDto;
 import clinicauna.model.MedicoDto;
+import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.AgendaService;
+import clinicauna.service.CitaService;
+import clinicauna.service.EspacioService;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
@@ -58,7 +62,9 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -87,7 +93,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
     private Label lblMes;
     @FXML
     private Label lblDia;
-    private Label lblHora;
+    //private Label lblHora;
     private MedicoDto medicoDto;
     private MedicoService medicoService;
     private Respuesta resp;
@@ -103,12 +109,19 @@ public class AgendaMedicaController extends Controller implements Initializable 
     @FXML
     private ImageView ArribaScroll;
     @FXML
-    private ImageView ArribaScroll1;
-    @FXML
     private ImageView ArribaScroll2;
-    @FXML
-    private ImageView ArribaScroll3;
     private boolean inicio = true;
+    private vistaCita hCita2;
+    private vistaCita hCita3;
+    private vistaCita hCita;
+    @FXML
+    private Label lblProgramada;
+    @FXML
+    private Label lblAtendida;
+    @FXML
+    private Label lblAusente;
+    @FXML
+    private Label lblCancelada;
 
     @Override
     public void initialize() {
@@ -147,8 +160,12 @@ public class AgendaMedicaController extends Controller implements Initializable 
             this.DatePicker.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
             this.lblAnno.setText(idioma.getProperty("Año"));
             this.lblDia.setText(idioma.getProperty("Dia"));
-            this.lblHora.setText(idioma.getProperty("Hora"));
             this.lblMes.setText(idioma.getProperty("Mes"));
+            this.Titulo.setText(idioma.getProperty("Agenda"));
+            this.lblProgramada.setText(idioma.getProperty("Programada"));
+            this.lblAusente.setText(idioma.getProperty("Ausente"));
+            this.lblCancelada.setText(idioma.getProperty("Cancelada"));
+            this.lblAtendida.setText(idioma.getProperty("Atendida"));
         }
 
         lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
@@ -159,7 +176,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
     }
 
     private EventHandler<MouseEvent> citasReleased = (event) -> {
-        vistaCita hCita = (vistaCita) event.getSource();
+        hCita = (vistaCita) event.getSource();
         AppContext.getInstance().set("hBox", hCita);
         AppContext.getInstance().set("Espacio", hCita.getEspacio());
         FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
@@ -172,7 +189,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
         fecha();
         if (usuarioDto.getTipoUsuario().equals("M")) {
             SeleccionarMedico();
-        }else{
+        } else {
             inicio = false;
         }
     }
@@ -299,7 +316,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
                     //Metodos de Drag and Drop
                     hPane.setOnDragDetected(e -> {
-
                         Dragboard db = hPane.startDragAndDrop(TransferMode.ANY);
                         ClipboardContent content = new ClipboardContent();
                         WritableImage wi = hPane.snapshot(new SnapshotParameters(), null);
@@ -308,21 +324,64 @@ public class AgendaMedicaController extends Controller implements Initializable 
                         content.put(DataFormat.IMAGE, wii);
                         hPane.setCursor(Cursor.CLOSED_HAND);
                         db.setContent(content);
+                        //cuando se detecta un drag entonces guardo los datos de ese hBox en appcontext
+                        hCita2 = (vistaCita) e.getSource();
+                        AppContext.getInstance().set("hBox", hCita2);
+                        AppContext.getInstance().set("Espacio", hCita2.getEspacio());
+                        //FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
+                        AppContext.getInstance().delete("Cita");
+                        //guardo la cita que agarra
                     });
 
                     hPane.setOnDragOver(f -> {
-
                         f.acceptTransferModes(TransferMode.ANY);
-
                         /* if(node != null && !this.getItem().getActId().equals(node.getItem().getActId())){
-                    
                 }*/
+
                     });
 
                     hPane.setOnDragDropped(e -> {
+                        if (hCita2.getChildren().size() <= 2) {
+                            String style = "";
+                            System.out.println(hCita2.getCorreo());
+                            EspacioDto espacio = (EspacioDto) AppContext.getInstance().get("Espacio");
+                            hCita3 = (vistaCita) e.getSource();
+                            hCita3.setStyle(hCita2.getStyle());
+                            hCita3.setvBox(hCita2.getvBox());
+                            hCita3.setCorreo(hCita2.getCorreo());
+                            hCita3.setEspacio(hCita2.getEspacio());
+                            hCita3.setNombre(hCita2.getNombre());
+                            hCita3.setTelefono(hCita2.getTelefono());
+                            hCita3.AgregarCita(espacio);
+                            //hCita3.AgregarCita(espacio);
+                            VBox vBox = new VBox();
+                            vBox.getChildren().addAll(hCita2.getNombre(), hCita2.getCorreo(), hCita2.getTelefono());
+                            vBox.setAlignment(Pos.CENTER);
+                            vBox.setSpacing(10);
+                            String style1 = "-fx-text-fill: #636361;";
+                            hCita2.getNombre().setStyle(style1);
+                            hCita2.getCorreo().setStyle(style1);
+                            hCita2.getTelefono().setStyle(style1);
+                            hCita3.getChildren().addAll(vBox);
+                            hCita2.setStyle("-fx-background-color: white");
+                            hCita2.getChildren().remove(1);
+                            EspacioDto espacioDto;
+                            EspacioService espacioService = new EspacioService();
+                            LocalTime localTimeObj = LocalTime.parse(hCita2.getEspacio().getEspHoraInicio());
+                            LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
+                            String horaInicio = " ";
+                            horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
 
+                            LocalTime localTimeObj1 = LocalTime.parse(hCita2.getEspacio().getEspHoraFin());
+                            LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObj1);
+                            String horaFin = " ";
+                            horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+                            
+                            espacioDto = new EspacioDto(hCita2.getEspacio().getEspId(), horaFin,
+                                    horaInicio, hCita2.getEspacio().getEspVersion(), hCita2.getEspacio().getEspCita(), agendaDto);
+                            resp = espacioService.guardarEspacio(espacioDto);
+                        }
                     });
-
                     hPane.setOnDragDone(e -> {
                         hPane.setCursor(Cursor.OPEN_HAND);
 
@@ -424,7 +483,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
      */
     @FXML
     private void izquierda(DragEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
+        /*if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             if (DatePicker.getValue().getDayOfMonth() == 1 && DatePicker.getValue().getMonth().getValue() == 1) {
                 Integer ano = DatePicker.getValue().getYear() - 1;
                 LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(12).withDayOfMonth(31);
@@ -438,12 +497,12 @@ public class AgendaMedicaController extends Controller implements Initializable 
             SeleccionarMedico();
         } else {
             DatePicker.setValue(DatePicker.getValue().withDayOfYear(DatePicker.getValue().getDayOfYear() - 1));
-        }
+        }*/
     }
 
     @FXML
     private void derecha(DragEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
+        /*if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             if (DatePicker.getValue().getDayOfMonth() == 31 && DatePicker.getValue().getMonth().getValue() == 12) {
                 Integer ano = DatePicker.getValue().getYear() + 1;
                 LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(1).withDayOfMonth(1);
@@ -455,12 +514,12 @@ public class AgendaMedicaController extends Controller implements Initializable 
             fecha();
             Inicio();
             SeleccionarMedico();
-        }
+        }*/
     }
 
     @FXML
     private void clickIzquierda(MouseEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
+        /*if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             if (DatePicker.getValue().getDayOfMonth() == 1 && DatePicker.getValue().getMonth().getValue() == 1) {
                 Integer ano = DatePicker.getValue().getYear() - 1;
                 LocalDate fecha = DatePicker.getValue().withYear(ano).withMonth(12).withDayOfMonth(31);
@@ -475,13 +534,13 @@ public class AgendaMedicaController extends Controller implements Initializable 
             fecha();
             Inicio();
             SeleccionarMedico();
-        }
+        }*/
 
     }
 
     @FXML
     private void clickDerecha(MouseEvent event) {
-        if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
+        /*if (ComboMedico.getSelectionModel().getSelectedItem() != null && DatePicker.getValue() != null || DatePicker.getValue() != null && usuarioDto.getTipoUsuario().equals("M")) {
             System.out.println("Derecha");
             if (DatePicker.getValue().getDayOfMonth() == 31 && DatePicker.getValue().getMonth().getValue() == 12) {
                 Integer ano = DatePicker.getValue().getYear() + 1;
@@ -494,8 +553,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             fecha();
             Inicio();
             SeleccionarMedico();
-
-        }
+        }*/
     }
 
     /*
