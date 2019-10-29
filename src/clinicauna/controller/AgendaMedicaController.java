@@ -12,6 +12,8 @@ import clinicauna.model.MedicoDto;
 import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.AgendaService;
+import clinicauna.service.CitaService;
+import clinicauna.service.EspacioService;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
@@ -364,6 +366,21 @@ public class AgendaMedicaController extends Controller implements Initializable 
                             hCita3.getChildren().addAll(vBox);
                             hCita2.setStyle("-fx-background-color: white");
                             hCita2.getChildren().remove(1);
+                            EspacioDto espacioDto;
+                            EspacioService espacioService = new EspacioService();
+                            LocalTime localTimeObj = LocalTime.parse(hCita2.getEspacio().getEspHoraInicio());
+                            LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
+                            String horaInicio = " ";
+                            horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+
+                            LocalTime localTimeObj1 = LocalTime.parse(hCita2.getEspacio().getEspHoraFin());
+                            LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObj1);
+                            String horaFin = " ";
+                            horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+                            
+                            espacioDto = new EspacioDto(hCita2.getEspacio().getEspId(), horaFin,
+                                    horaInicio, hCita2.getEspacio().getEspVersion(), hCita2.getEspacio().getEspCita(), agendaDto);
+                            resp = espacioService.guardarEspacio(espacioDto);
                         }
                     });
                     hPane.setOnDragDone(e -> {
