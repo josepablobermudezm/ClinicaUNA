@@ -373,7 +373,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
                         if (resp.getEstado()) {
                             ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                             Limpiar();
-                            this.lblPaciente.setText(null);
+                            this.lblNomPaciente.setText(null);
                         } else {
                             ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                         }

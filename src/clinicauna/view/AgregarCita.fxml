@@ -52,8 +52,6 @@
          </rowConstraints>
          <children>
             <JFXTextArea fx:id="txtmotivo" promptText="Motivo..." GridPane.columnIndex="1" />
-            <Label text="Estado:" GridPane.columnIndex="3" />
-            <Label fx:id="lblEstado" text="Estado:" GridPane.columnIndex="3" />
             <JFXRadioButton fx:id="btnProgramada" selected="true" style="-fx-cursor: Hand;" styleClass="custom-jfx-radio-button-white" text="Programada" GridPane.columnIndex="3">
                <GridPane.margin>
                   <Insets left="40.0" />
@@ -77,6 +75,7 @@
                   <Insets left="365.0" />
                </GridPane.margin>
             </JFXRadioButton>
+            <Label fx:id="lblEst" prefHeight="17.0" prefWidth="47.0" text="Estado:" GridPane.columnIndex="3" />
          </children>
       </GridPane>
       <GridPane layoutX="7.0" layoutY="338.0" prefHeight="62.0" prefWidth="800.0">
@@ -101,7 +100,7 @@
                   <JFXButton fx:id="btnCancelar" onAction="#cancela" style="-fx-cursor: hand;" text="Cancelar" />
                   <JFXButton onAction="#agregarPaciente" style="-fx-cursor: Hand;" text="Agregar Paciente" />
                   <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
-                  <JFXButton onAction="#editar" text="Editar" style="-fx-cursor: Hand;"/>
+                  <JFXButton onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />
                   <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Guardar" />
                </children>
                <opaqueInsets>

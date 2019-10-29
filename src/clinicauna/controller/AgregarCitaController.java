@@ -66,8 +66,6 @@ public class AgregarCitaController extends Controller {
     @FXML
     private ToggleGroup estado;
     @FXML
-    private Label lblEstado;
-    @FXML
     private JFXRadioButton btnProgramada;
     @FXML
     private JFXRadioButton btnAtendida;
@@ -100,6 +98,8 @@ public class AgregarCitaController extends Controller {
     private String estado1;
     private static boolean valor1 = false;
     private static String valor = "";
+    @FXML
+    private Label lblEst;
 
     @Override
     public void initialize() {
@@ -116,7 +116,7 @@ public class AgregarCitaController extends Controller {
             this.btnProgramada.setText(idioma.getProperty("Programada"));
             this.Titulo.setText(idioma.getProperty("Agendar") + " " + idioma.getProperty("ACita"));
             this.ComboPacientes.setPromptText(idioma.getProperty("Pacientes"));
-            this.lblEstado.setText(idioma.getProperty("Estado"));
+            this.lblEst.setText(idioma.getProperty("Estado"));
             this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
             this.txtTelefono.setPromptText(idioma.getProperty("Telefono"));
             this.txtmotivo.setPromptText(idioma.getProperty("Motivo"));
