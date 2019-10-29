@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.ExamenesController">
    <children>
       <HBox alignment="CENTER" layoutX="1.0" layoutY="14.0" prefHeight="69.0" prefWidth="1065.0">
@@ -30,9 +29,9 @@
             <Insets left="15.0" right="20.0" top="40.0" />
          </padding>
          <children>
-            <JFXButton onAction="#cancela" style="-fx-cursor: Hand;" text="Cancelar" />
+            <JFXButton fx:id="btnCancelar" onAction="#cancela" style="-fx-cursor: Hand;" text="Cancelar" />
             <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
-            <JFXButton onAction="#Eliminar" style="-fx-cursor: Hand;" text="Eliminar" />
+            <JFXButton fx:id="btnEliminar" onAction="#Eliminar" style="-fx-cursor: Hand;" text="Eliminar" />
             <JFXButton fx:id="btnEditar" onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />
             <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Agregar" />
          </children>

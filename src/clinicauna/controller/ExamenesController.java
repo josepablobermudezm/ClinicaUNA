@@ -1,17 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package clinicauna.controller;
 
 import clinicauna.model.ExamenDto;
 import clinicauna.model.ExpedienteDto;
 import clinicauna.model.PacienteDto;
+import clinicauna.model.UsuarioDto;
 import clinicauna.service.ExamenService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
 import clinicauna.util.Formato;
+import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -67,9 +65,29 @@ public class ExamenesController extends Controller {
     private JFXDatePicker Fecha;
     @FXML
     private JFXTextField txtNombreExamen;
-
+    @FXML
+    private JFXButton btnCancelar;
+    @FXML
+    private JFXButton btnEliminar;
+    private UsuarioDto usuario;
+    private Idioma idioma;
     @Override
     public void initialize() {
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if(usuario.getIdioma().equals("I")){
+            this.Titulo.setText(idioma.getProperty("Examenes"));
+            this.btnCancelar.setText(idioma.getProperty("Cancelar"));
+            this.btnEditar.setText(idioma.getProperty("Editar"));
+            this.btnEliminar.setText(idioma.getProperty("Eliminar"));
+            this.btnGuardar.setText(idioma.getProperty("Guardar"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+ " " + idioma.getProperty("Registro"));
+            this.COL_FECHA_EXA.setText(idioma.getProperty("Fecha"));
+            this.COL_NOMBRE_EXA.setText(idioma.getProperty("Examen") +" "+ idioma.getProperty("Nombre"));
+            this.txtAnotaciones.setPromptText(idioma.getProperty("Anotaciones"));
+            this.txtNombreExamen.setPromptText(idioma.getProperty("Examen") +" "+ idioma.getProperty("Nombre"));
+            this.Fecha.setPromptText(idioma.getProperty("Fecha"));
+        }
         examenes2 = new ArrayList();
         expedienteDto = (ExpedienteDto) AppContext.getInstance().get("Expediente");
         pacienteDto = (PacienteDto) AppContext.getInstance().get("Paciente");

@@ -8,9 +8,11 @@ package clinicauna.controller;
 import clinicauna.model.AntecedenteDto;
 import clinicauna.model.ExpedienteDto;
 import clinicauna.model.PacienteDto;
+import clinicauna.model.UsuarioDto;
 import clinicauna.service.AntecedenteService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
+import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -61,9 +63,29 @@ public class AntecedentesController extends Controller {
     private AntecedenteDto antecedenteDto;
     private PacienteDto paciente;
     private ExpedienteDto expediente;
-
+    private UsuarioDto usuario;
+    private Idioma idioma;
+    @FXML
+    private JFXButton btnCancelar;
+    @FXML
+    private JFXButton btnEliminar;
     @Override
     public void initialize() {
+        
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if(usuario.getIdioma().equals("I")){
+            this.txtEnfermedad.setPromptText(idioma.getProperty("Enfermedad"));
+            this.txtParentesco.setPromptText(idioma.getProperty("Parentesco"));
+            this.btnEditar.setText(idioma.getProperty("Editar"));
+            this.btnGuardar.setText(idioma.getProperty("Guardar"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+ " " + idioma.getProperty("Registro"));
+            this.btnCancelar.setText(idioma.getProperty("Cancelar"));
+            this.btnEliminar.setText(idioma.getProperty("Eliminar"));
+            this.Titulo.setText(idioma.getProperty("Familiares")+" "+ idioma.getProperty("Antecedentes"));
+            this.COL_ENFERMEDAD_ANT.setText(idioma.getProperty("Enfermedad"));
+            this.COL_PARENTESCO_ANT.setText(idioma.getProperty("Parentesco"));
+        }
         antecedentesList2 = new ArrayList();
         expediente = (ExpedienteDto) AppContext.getInstance().get("Expediente");
         paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
