@@ -25,7 +25,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="33.0" prefWidth="1030.0" spacing="20.0">
                <children>
-                  <Label prefHeight="21.0" prefWidth="67.0" text="Paciente:">
+                  <Label fx:id="lblPacienteA" prefHeight="21.0" prefWidth="67.0" text="Paciente:">
                      <HBox.margin>
                         <Insets left="-0.0" />
                      </HBox.margin>
@@ -87,7 +87,7 @@
                            </HBox.margin>
                         </JFXTextArea>
                         <JFXTextArea fx:id="txtExamenFisico" labelFloat="true" prefHeight="40.0" prefWidth="250.0" promptText="Examen Físico" />
-                        <JFXTextArea fx:id="txtTratamiento" prefHeight="40.0" prefWidth="250.0" promptText="Tratamiento" />
+                        <JFXTextArea fx:id="txtTratamiento" labelFloat="true" prefHeight="40.0" prefWidth="250.0" promptText="Tratamiento" />
                      </children>
                   </HBox>
                </children>
@@ -107,7 +107,7 @@
                   <Insets left="20.0" right="20.0" />
                </padding>
                <children>
-                  <JFXButton onAction="#cancela" style="-fx-cursor: Hand;" text="Volver" />
+                  <JFXButton fx:id="btnVolver" onAction="#cancela" style="-fx-cursor: Hand;" text="Volver" />
                   <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
                   <JFXButton fx:id="btnEditar" onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />
                   <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Agregar" />

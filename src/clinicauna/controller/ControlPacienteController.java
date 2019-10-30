@@ -16,6 +16,7 @@ import clinicauna.util.AppContext;
 import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
 import clinicauna.util.Formato;
+import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
@@ -111,15 +112,49 @@ public class ControlPacienteController extends Controller implements Initializab
     private JFXComboBox<String> ComboMedico;
     @FXML
     private Label lblMedico;
+    private UsuarioDto usuarioActivo;
+    private Idioma idioma;
+    @FXML
+    private Label lblPacienteA;
+    @FXML
+    private JFXButton btnVolver;
 
     @Override
     public void initialize() {
+        usuarioActivo = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        if (usuarioActivo.getIdioma().equals("I")) {
+            this.COL_FECHA_CONTROL.setText(idioma.getProperty("Fecha"));
+            this.COL_HORA_CONTROL.setText(idioma.getProperty("Hora"));
+            this.lblMedico.setText(idioma.getProperty("MedicoA"));
+            this.lblPacienteA.setText(idioma.getProperty("Paciente"));
+            this.ComboMedico.setPromptText(idioma.getProperty("Seleccione") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
+            this.Titulo.setText(idioma.getProperty("PacienteA") + " " + "Control");
+            this.txtPeso.setPromptText(idioma.getProperty("Peso"));
+            this.txtPresion.setPromptText(idioma.getProperty("Presion"));
+            this.txtTalla.setPromptText(idioma.getProperty("Altura"));
+            this.txtAnotaciones.setPromptText(idioma.getProperty("Anotaciones"));
+            this.txtObservaciones.setPromptText(idioma.getProperty("Observaciones"));
+            this.txtTemperatura.setPromptText(idioma.getProperty("Temperatura"));
+            this.txtTratamiento.setPromptText(idioma.getProperty("Tratamiento"));
+            this.txtRazonConsulta.setPromptText(idioma.getProperty("Razon") + " " + idioma.getProperty("de") + " " + idioma.getProperty("la") + " " + idioma.getProperty("Consulta"));
+            this.txtExamenFisico.setPromptText(idioma.getProperty("Fisico") + " " + idioma.getProperty("CExamen"));
+            this.txtPlanAtencion.setPromptText(idioma.getProperty("Atencion") + " " + "Plan");
+            this.txtFrecuenciaCardiaca.setPromptText(idioma.getProperty("Frecuencia")+" "+idioma.getProperty("Cardiaca"));
+            this.Fecha.setPromptText(idioma.getProperty("Fecha"));
+            this.Hora.setPromptText(idioma.getProperty("Hora"));
+            this.btnEditar.setText(idioma.getProperty("Editar"));
+            this.btnGuardar.setText(idioma.getProperty("Guardar"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+" "+ idioma.getProperty("Registro"));
+            this.btnVolver.setText(idioma.getProperty("Volver"));
+
+        }
         ms = new Mensaje();
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         controles2 = new ArrayList();
         expedienteDto = (ExpedienteDto) AppContext.getInstance().get("Expediente");
         pacienteDto = (PacienteDto) AppContext.getInstance().get("Paciente");
-        System.out.println("Paciente "+pacienteDto);
+        System.out.println("Paciente " + pacienteDto);
         controlService = new ControlService();
         controlDto = new ControlDto();
         ms = new Mensaje();
@@ -255,7 +290,7 @@ public class ControlPacienteController extends Controller implements Initializab
             LocalDate fecha = Fecha.getValue();
             Long version = new Long(1);
             controlDto = new ControlDto(null, fecha, hora, presion, frecuenciaCardiaca, peso, talla, temperatura, imc, anotaciones, razon, planAtencion, observaciones, Examen, tratamiento, version, expedienteDto);
-            AppContext.getInstance().set("Control",controlDto);
+            AppContext.getInstance().set("Control", controlDto);
             Correos correo = new Correos();
             correo.CorreoControlHilo(pacienteDto.getCorreo());
             FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
