@@ -6,6 +6,8 @@
 package clinicauna.controller;
 
 import clinicauna.model.UsuarioDto;
+import clinicauna.report.ReportManager;
+import clinicauna.service.AgendaService;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
@@ -55,12 +57,19 @@ public class LogIngController extends Controller {
     private JFXButton button2;
     @FXML
     private AnchorPane root1;
-
+    private AgendaService agenda;
+    private Respuesta r;
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize() {
+    public void initialize(){
+            
+        //2019-10-06/2019-10-19    
+       /* agenda = new AgendaService();
+        r = agenda.getAgendas("2019-10-06", "2019-10-19");
+        ReportManager reporte = (ReportManager) r.getResultado("Reporte");
+        reporte.getJv().setVisible(true);*/
         Formato();
         Image imgLogo;
         try {

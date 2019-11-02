@@ -6,6 +6,7 @@
 package clinicauna.service;
 
 import clinicauna.model.AgendaDto;
+import clinicauna.report.ReportManager;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.util.HashMap;
@@ -39,27 +40,25 @@ public class AgendaService {
         }
     }
     
-    /*
-    public Respuesta getAgendas(String cedula, String nombre, String pApellido) {
+    
+    public Respuesta getAgendas(String FechaInicio, String FechaFinal) {
         try {
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("cedula", cedula);
-            parametros.put("nombre", nombre);
-            parametros.put("pApellido", pApellido);
-            Request request = new Request("AgendaController/Agendas", "/{cedula}/{nombre}/{pApellido}", parametros);
+            parametros.put("fechaInicio", FechaInicio);
+            parametros.put("fechaFinal", FechaFinal);
+            Request request = new Request("AgendaController/agendas", "/{fechaInicio}/{fechaFinal}", parametros);
             request.get();
 
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            List<AgendaDto> Agendas = (List<AgendaDto>) request.readEntity(new GenericType<List<AgendaDto>>() {
-            });
-            return new Respuesta(true, "", "", "Agendas", Agendas);
+            ReportManager reporte = (ReportManager) request.readEntity(ReportManager.class);
+            return new Respuesta(true, "", "", "Reporte", reporte);
         } catch (Exception ex) {
             Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo Agendas.", ex);
             return new Respuesta(false, "Error obteniendo Agendas.", "getAgendas " + ex.getMessage());
         }
-    }*/
+    }
 
     public Respuesta getAgendas() {
         try {
