@@ -8,9 +8,11 @@ package clinicauna.controller;
 import clinicauna.model.ControlDto;
 import clinicauna.model.ExpedienteDto;
 import clinicauna.model.PacienteDto;
+import clinicauna.model.UsuarioDto;
 import clinicauna.service.ControlService;
 import clinicauna.service.ExpedienteService;
 import clinicauna.util.AppContext;
+import clinicauna.util.Idioma;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
@@ -50,13 +52,23 @@ public class EvolucionHistoricaController extends Controller {
     private ControlService ContService;
     private ExpedienteDto expediente;
     private List<ControlDto> cont;
-    private  int i;
+    private int i;
+    private UsuarioDto usuario;
+    private Idioma idioma;
+    @FXML
+    private Label lblTitulo;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize() {
+        usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
+        if (usuario.getIdioma().equals("I")) {
+            this.lblTitulo.setText(idioma.getProperty("Paciente"));
+            this.btnVolver.setText(idioma.getProperty("Volver"));
+        }
         ContService = new ControlService();
         resp = ContService.getControles();
         controles = new ArrayList<>();
@@ -66,29 +78,35 @@ public class EvolucionHistoricaController extends Controller {
     }
 
     public void LlenarGrafico() {
-       
-
         paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
         lblPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
         expediente = (ExpedienteDto) AppContext.getInstance().get("Expediente");
         controles.stream().filter(x -> x.getCntExpediente().getExpID().equals(expediente.getExpID())).forEach(s -> {
             cont.add(s);
         });
-
         Grafico.getData().clear();
-        Grafico.setTitle("IMC HISTÓRICO");
-        NAxis.setLabel("Indices");
-        i=1;
+        if (usuario.getIdioma().equals("I")) {
+            Grafico.setTitle(idioma.getProperty("IMC"));
+            NAxis.setLabel(idioma.getProperty("Indices"));
+        } else {
+            Grafico.setTitle("IMC HISTÓRICO");
+            NAxis.setLabel("Indices");
+        }
+
+        i = 1;
         XYChart.Series<String, Double> series = new XYChart.Series<>();
         for (ControlDto con : cont) {
-            System.out.println("Control "+i);
             series.getData().add(new XYChart.Data<>("Control " + String.valueOf(i), con.getCntImc()));
             i++;
-            
+
         }
-        series.setName("Indice de Masa Corporal");
+        if (usuario.getIdioma().equals("I")) {
+            series.setName(idioma.getProperty("IDMC"));
+        } else {
+            series.setName("Indice de Masa Corporal");
+        }
         Grafico.getData().add(series);
-        
+
     }
 
     @FXML
