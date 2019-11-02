@@ -81,22 +81,25 @@ public class GuardarMedicosController extends Controller {
     @FXML
     private void guardar(ActionEvent event) {
         if (registroCorrecto()) {
-         
-                String carne = txtCarne.getText();
-                String codigo = txtCodigo.getText();
-                String folio = txtFolio.getText();
-                Integer espacios = Integer.parseInt(txtEspacio.getText());
-                LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), timePickerInicio.getValue());
-                LocalDateTime final12 = LocalDateTime.of(LocalDate.now(), timePickerfinal.getValue());
-                String inicioJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
-                String finJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(final12);
-                //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
-                Long version = new Long(1);
-                medicoDto = new MedicoDto(null, codigo, folio, carne, "A", inicioJornada, finJornada, espacios, null, version);
-                AppContext.getInstance().set("Medico", medicoDto);
-                this.getStage().close();
-          
+
+            String carne = txtCarne.getText();
+            String codigo = txtCodigo.getText();
+            String folio = txtFolio.getText();
+            Integer espacios = Integer.parseInt(txtEspacio.getText());
+            LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), timePickerInicio.getValue());
+            LocalDateTime final12 = LocalDateTime.of(LocalDate.now(), timePickerfinal.getValue());
+            String inicioJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
+            String finJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(final12);
+            //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
+            Long version = new Long(1);
+            medicoDto = new MedicoDto(null, codigo, folio, carne, "A", inicioJornada, finJornada, espacios, null, version);
+            AppContext.getInstance().set("Medico", medicoDto);
+            this.getStage().close();
+
         } else {
+            if (usuario.getIdioma().equals("I")) {
+                new Mensaje().show(Alert.AlertType.WARNING, "Register Information", "Incomplete data");
+            }
             new Mensaje().show(Alert.AlertType.WARNING, "Información de Registro", "Existen datos en el registro sin completar.");
         }
 

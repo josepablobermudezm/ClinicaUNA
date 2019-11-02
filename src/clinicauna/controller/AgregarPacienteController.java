@@ -80,7 +80,7 @@ public class AgregarPacienteController extends Controller {
             this.txtNombre.setPromptText(idioma.getProperty("Nombre"));
             this.txtPApellido.setPromptText(idioma.getProperty("Primero")+" "+idioma.getProperty("Apellido"));
             this.txtSApellido.setPromptText(idioma.getProperty("Segundo")+" "+idioma.getProperty("Apellido"));
-            this.Titulo.setText(idioma.getProperty("Agregar")+" "+idioma.getProperty("Paciente"));          
+            this.Titulo.setText(idioma.getProperty("Agregar")+" "+idioma.getProperty("PacienteB"));          
         }
         pacienteDto = new PacienteDto();
         pacienteService = new PacienteService();
