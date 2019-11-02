@@ -355,14 +355,14 @@ public class PacientesController extends Controller {
                 FechaDeNacimiento.setValue(pacienteDto.getFechaNacimiento());
             } else {
                 if (usuario.getIdioma().equals("I")) {
-                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select a patiente");
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patiente");
                 } else {
                     ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
                 }
             }
         } else {
             if (usuario.getIdioma().equals("I")) {
-                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select a patiente");
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patiente");
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
             }
