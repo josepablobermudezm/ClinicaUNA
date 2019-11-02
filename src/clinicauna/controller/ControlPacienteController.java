@@ -140,12 +140,12 @@ public class ControlPacienteController extends Controller implements Initializab
             this.txtRazonConsulta.setPromptText(idioma.getProperty("Razon") + " " + idioma.getProperty("de") + " " + idioma.getProperty("la") + " " + idioma.getProperty("Consulta"));
             this.txtExamenFisico.setPromptText(idioma.getProperty("Fisico") + " " + idioma.getProperty("CExamen"));
             this.txtPlanAtencion.setPromptText(idioma.getProperty("Atencion") + " " + "Plan");
-            this.txtFrecuenciaCardiaca.setPromptText(idioma.getProperty("Frecuencia")+" "+idioma.getProperty("Cardiaca"));
+            this.txtFrecuenciaCardiaca.setPromptText(idioma.getProperty("Frecuencia") + " " + idioma.getProperty("Cardiaca"));
             this.Fecha.setPromptText(idioma.getProperty("Fecha"));
             this.Hora.setPromptText(idioma.getProperty("Hora"));
             this.btnEditar.setText(idioma.getProperty("Editar"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
-            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+" "+ idioma.getProperty("Registro"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
             this.btnVolver.setText(idioma.getProperty("Volver"));
 
         }
@@ -191,7 +191,6 @@ public class ControlPacienteController extends Controller implements Initializab
             txtTratamiento.setDisable(true);
             Fecha.setDisable(true);
             Hora.setDisable(true);
-            System.out.println("asdfa");
             medicoService = new MedicoService();
             resp = medicoService.getMedicos();
             lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
@@ -243,7 +242,11 @@ public class ControlPacienteController extends Controller implements Initializab
                             razon, plan, observacion, examen, tratamiento, version, expedienteDto);
                     try {
                         resp = controlService.guardarControl(controlDto);
-                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        if (usuarioActivo.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        }
                         limpiarRegistro();
                         controles = (ArrayList) controlService.getControles().getResultado("controles");
                         controles2.clear();
@@ -254,17 +257,34 @@ public class ControlPacienteController extends Controller implements Initializab
                         items = FXCollections.observableArrayList(controles2);
                         table.setItems(items);
                     } catch (Exception e) {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                        if (usuarioActivo.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the control");
+                        } else {
+                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el control");
+                        }
                     }
                 } else {
-                    ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
-                            + "verifica que todos los datos esten llenos.");
+                    if (usuarioActivo.getIdioma().equals("I")) {
+                        ms.showModal(Alert.AlertType.ERROR, "User Information", this.getStage(), "There are erroneous data in the registry, "
+                                + "Verify that all data is full");
+                    } else {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                                + "verifica que todos los datos esten llenos.");
+                    }
                 }
+            } else {
+                if (usuarioActivo.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the control");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+                }
+            }
+        } else {
+            if (usuarioActivo.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the control");
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
             }
-        } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
         }
     }
 
@@ -283,7 +303,6 @@ public class ControlPacienteController extends Controller implements Initializab
             Double talla = Double.parseDouble(txtTalla.getText());
             Double temperatura = Double.parseDouble(txtTemperatura.getText());
             String tratamiento = txtTratamiento.getText();
-
             LocalDateTime horaLocal = LocalDateTime.of(LocalDate.now(), Hora.getValue());
             String hora = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaLocal);
             Double imc = peso / Math.pow(talla, 2);
@@ -296,14 +315,25 @@ public class ControlPacienteController extends Controller implements Initializab
             FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
             resp = correo.getResp();
             if (resp.getEstado()) {
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+                if (usuarioActivo.getIdioma().equals("I")) {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "Mail sent successfully");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+                }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+                if (usuarioActivo.getIdioma().equals("I")) {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "There was an error sending the mail");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+                }
             }
-
             resp = controlService.guardarControl(controlDto);
             if (resp.getEstado()) {
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                if (usuarioActivo.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                }
                 limpiarRegistro();
                 controles = (ArrayList) controlService.getControles().getResultado("controles");
                 controles2.clear();
@@ -314,11 +344,20 @@ public class ControlPacienteController extends Controller implements Initializab
                 items = FXCollections.observableArrayList(controles2);
                 table.setItems(items);
             } else {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                if (usuarioActivo.getIdioma().equals("I")) {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "There was an error sending the mail");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
-                    + "verifica que todos los datos esten llenos.");
+            if (usuarioActivo.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "User Information", this.getStage(), "There are erroneous data in the registry, "
+                        + "Verify that all data is full");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                        + "verifica que todos los datos esten llenos.");
+            }
         }
 
     }

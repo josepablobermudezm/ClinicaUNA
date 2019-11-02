@@ -414,7 +414,6 @@ public class AgregarCitaController extends Controller {
         //Seteo el medico con el formato del LocalDateTime a la agenda
         agendaDto.setAgeMedico(medicoDto);
         //Recorro la lista de espacios seleccionados para setearles un color definido
-        System.out.println(aux.size());
         aux.stream().forEach(vCita -> {
             Label hora = (Label) vCita.getChildren().get(0);
             LocalTime localTimeObj = LocalTime.parse(hora.getText());
@@ -485,7 +484,6 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1);
             espacioDto = new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto);
             resp = service.guardarEspacio(espacioDto);
-            System.out.println("Respuesta " + resp.getMensaje());
             //agendaDto.getEspacioList().add(espacioDto); GENERA UN LOOP INFINITO; NI IDEA DE PORQUE, HAY QUE VER OTRA FORMA DE ACTUALIZAR
             vCita.setBackground(Background.EMPTY);
             vCita.setStyle(style);
@@ -539,7 +537,11 @@ public class AgregarCitaController extends Controller {
 
             citaDto = new CitaDto(espacioDto.getEspCita().getID(), version, pacienteDto, motivo, estado1, telefono, correo, correoEnviado);
             resp = citaService.guardarCita(citaDto);
-            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.INFORMATION, "Edition Information", this.getStage(), resp.getMensaje());
+            } else {
+                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
+            }
             limpiarValores();
             this.getStage().close();
             /*try {
@@ -589,7 +591,11 @@ public class AgregarCitaController extends Controller {
 //                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita..." + e.getMessage());
 //            }
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Incomplete Data");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
+            }
         }
 
     }
