@@ -148,6 +148,7 @@ public class AgregarCitaController extends Controller {
             txtCorreo.setText(espacioDto.getEspCita().getCorreo());
             txtTelefono.setText(espacioDto.getEspCita().getTelefono());
             txtmotivo.setText(espacioDto.getEspCita().getMotivo());
+            txtEspacios.setText(String.valueOf(espacioDto.getEspCita().getEspacios().size()));
             ComboPacientes.setValue(espacioDto.getEspCita().getPaciente().getNombre() + " " + espacioDto.getEspCita().getPaciente().getpApellido() + " " + espacioDto.getEspCita().getPaciente().getsApellido() + " Ced:" + espacioDto.getEspCita().getPaciente().getCedula());
             String paciente = espacioDto.getEspCita().getPaciente().getNombre() + " " + espacioDto.getEspCita().getPaciente().getpApellido() + " " + espacioDto.getEspCita().getPaciente().getsApellido() + " Ced:" + espacioDto.getEspCita().getPaciente().getCedula();
             paciente.chars().forEach(x -> {
@@ -263,7 +264,6 @@ public class AgregarCitaController extends Controller {
                 }
                 limpiarValores();
                 AppContext.getInstance().set("hBox", null);
-                FlowController.getInstance().initialize();
                 this.getStage().close();
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita..." + e.getMessage());
@@ -387,6 +387,7 @@ public class AgregarCitaController extends Controller {
         //Seteo el medico con el formato del LocalDateTime a la agenda
         agendaDto.setAgeMedico(medicoDto);
         //Recorro la lista de espacios seleccionados para setearles un color definido
+        System.out.println(aux.size());
         aux.stream().forEach(vCita -> {
             Label hora = (Label) vCita.getChildren().get(0);
             LocalTime localTimeObj = LocalTime.parse(hora.getText());
@@ -457,6 +458,7 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1);
             espacioDto = new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto);
             resp = service.guardarEspacio(espacioDto);
+            System.out.println("Respuesta " + resp.getMensaje());
             //agendaDto.getEspacioList().add(espacioDto); GENERA UN LOOP INFINITO; NI IDEA DE PORQUE, HAY QUE VER OTRA FORMA DE ACTUALIZAR
             vCita.setBackground(Background.EMPTY);
             vCita.setStyle(style);
@@ -471,7 +473,7 @@ public class AgregarCitaController extends Controller {
         paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
         correo.CorreoCitaHilo(this.txtCorreo.getText());
         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
-
+        AppContext.getInstance().delete("aux");
         resp = correo.getResp();
         if (resp.getEstado()) {
             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
@@ -479,7 +481,8 @@ public class AgregarCitaController extends Controller {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
         }
         limpiarValores();
-        initialize();
+        FlowController.getInstance().initialize();
+        //initialize();
     }
 
     @FXML

@@ -110,9 +110,9 @@ public class EspacioService {
                 return new Respuesta(false, request.getError(), "");
             }
 
-            Espacio = (EspacioDto) request.readEntity(EspacioDto.class);
+            EspacioDto espacio = (EspacioDto) request.readEntity(EspacioDto.class);
 
-            return new Respuesta(true, "", "", "Espacio", Espacio);
+            return new Respuesta(true, "", "", "Espacio", espacio);
         } catch (Exception ex) {
             Logger.getLogger(EspacioService.class.getName()).log(Level.SEVERE, "Error guardando el Espacio.", ex);
             return new Respuesta(false, "Error guardando el Espacio.", "guardarEspacio " + ex.getMessage());

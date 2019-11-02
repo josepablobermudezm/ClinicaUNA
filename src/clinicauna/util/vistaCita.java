@@ -5,8 +5,10 @@
  */
 package clinicauna.util;
 
+import clinicauna.model.AgendaDto;
 import clinicauna.model.CitaDto;
 import clinicauna.model.EspacioDto;
+import clinicauna.service.EspacioService;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -46,18 +48,62 @@ public class vistaCita extends HBox {
     }
 
     public void intercambiarCita(vistaCita vCita) {
+        /*
+            se hace el intercambio de la cita visualmente
+        */
+        EspacioDto espacio = vCita.getEspacio();
+        EspacioDto espacio2 = this.getEspacio();
+        this.setEspacio(espacio);
+        vCita.setEspacio(espacio2);
         this.getChildren().remove(vBox);
         vCita.getChildren().remove(vCita.getvBox());
         String style = vCita.getStyle();
         vCita.setStyle(getStyle());
         this.setStyle(style);
+
         
         VBox vAux = vCita.getvBox();
         vCita.setvBox(vBox);
         vBox = vAux;
         this.getChildren().add(vBox);
         vCita.getChildren().add(vCita.getvBox());
-       
+        /*
+            hacemos el intercambio de la base de datos de cita
+        */
+        
+        
+        
+        /*AgendaDto agenda;
+        agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
+        String horaInicio = this.getEspacio().getEspHoraInicio();
+        String horaFinal = this.getEspacio().getEspHoraFin();
+        this.getEspacio().setEspHoraFin(vCita.getEspacio().getEspHoraFin());
+        this.getEspacio().setEspHoraInicio(vCita.getEspacio().getEspHoraInicio());
+        vCita.getEspacio().setEspHoraInicio(horaInicio);
+        vCita.getEspacio().setEspHoraFin(horaFinal);
+        this.getEspacio().setEspAgenda(agenda);
+        vCita.getEspacio().setEspAgenda(agenda);
+        
+        EspacioService espacioService = new EspacioService();
+        
+        espacioService.guardarEspacio(this.getEspacio());*/
+        
+        
+        
+        
+        //espacioService.guardarEspacio(vCita.getEspacio());
+        /*if (vCita.getEspacio() != null && this.getEspacio() != null) {
+
+            EspacioDto espacioDto3 = new EspacioDto(vCita.getEspacio().getEspId(), vCita.getEspacio().getEspHoraInicio(), vCita.getEspacio().getEspHoraFin(),
+                    vCita.getEspacio().getEspVersion() + 1, this.getEspacio().getEspCita(), vCita.getEspacio().getEspAgenda());
+
+            espacioService.guardarEspacio(espacioDto3);
+
+            EspacioDto espacioDto2 = new EspacioDto(this.getEspacio().getEspId(), this.getEspacio().getEspHoraInicio(), this.getEspacio().getEspHoraFin(),
+                    this.getEspacio().getEspVersion() + 1, vCita.getEspacio().getEspCita(), this.getEspacio().getEspAgenda());
+
+            espacioService.guardarEspacio(espacioDto2);
+        }*/
     }
 
     public VBox get(double Width) {
