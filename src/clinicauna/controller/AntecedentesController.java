@@ -69,20 +69,21 @@ public class AntecedentesController extends Controller {
     private JFXButton btnCancelar;
     @FXML
     private JFXButton btnEliminar;
+
     @Override
     public void initialize() {
-        
+
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-        if(usuario.getIdioma().equals("I")){
+        if (usuario.getIdioma().equals("I")) {
             this.txtEnfermedad.setPromptText(idioma.getProperty("Enfermedad"));
             this.txtParentesco.setPromptText(idioma.getProperty("Parentesco"));
             this.btnEditar.setText(idioma.getProperty("Editar"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
-            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+ " " + idioma.getProperty("Registro"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
             this.btnCancelar.setText(idioma.getProperty("Cancelar"));
             this.btnEliminar.setText(idioma.getProperty("Eliminar"));
-            this.Titulo.setText(idioma.getProperty("Familiares")+" "+ idioma.getProperty("Antecedentes"));
+            this.Titulo.setText(idioma.getProperty("Familiares") + " " + idioma.getProperty("Antecedentes"));
             this.COL_ENFERMEDAD_ANT.setText(idioma.getProperty("Enfermedad"));
             this.COL_PARENTESCO_ANT.setText(idioma.getProperty("Parentesco"));
         }
@@ -97,7 +98,7 @@ public class AntecedentesController extends Controller {
         antecedentesList.stream().filter(x -> x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x -> {
             antecedentesList2.add(x);
         });
-   
+
         //antecedentesList = expediente.getAntecedentes();
         COL_PARENTESCO_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntParentesco()));
         COL_ENFERMEDAD_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntEnfermedad()));
@@ -129,7 +130,11 @@ public class AntecedentesController extends Controller {
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 resp = antecedenteService.eliminarUsuario(antecedenteDto.getAntId());
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                }
                 limpiarValores();
                 antecedentesList = (ArrayList) antecedenteService.getAntecedentes().getResultado("Antecedentes");
                 antecedentesList2.clear();
@@ -140,10 +145,18 @@ public class AntecedentesController extends Controller {
                 items = FXCollections.observableArrayList(antecedentesList2);
                 table.setItems(items);
             } else {
-                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the background");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the background");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+            }
         }
 
     }
@@ -160,7 +173,11 @@ public class AntecedentesController extends Controller {
                     antecedenteDto = new AntecedenteDto(id, enfermedad, parentesco, version, expediente);
                     try {
                         resp = antecedenteService.guardarAntecedente(antecedenteDto);
-                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        }
                         limpiarValores();
                         antecedentesList = (ArrayList) antecedenteService.getAntecedentes().getResultado("Antecedentes");
                         antecedentesList2.clear();
@@ -171,17 +188,34 @@ public class AntecedentesController extends Controller {
                         items = FXCollections.observableArrayList(antecedentesList2);
                         table.setItems(items);
                     } catch (Exception e) {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the background");
+                        } else {
+                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el antecedente");
+                        }
                     }
                 } else {
-                    ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
-                            + "verifica que todos los datos esten llenos.");
+                    if (usuario.getIdioma().equals("I")) {
+                        ms.showModal(Alert.AlertType.ERROR, "User Information", this.getStage(), "There are erroneous data in the registry, "
+                                + "Verify that all data is full");
+                    } else {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                                + "verifica que todos los datos esten llenos.");
+                    }
                 }
+            } else {
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the background");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+                }
+            }
+        } else {
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the background");
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
             }
-        } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
         }
     }
 
@@ -201,8 +235,12 @@ public class AntecedentesController extends Controller {
             antecedenteDto = new AntecedenteDto(null, enfermedad, parentesco, version, expediente);
             try {
                 resp = antecedenteService.guardarAntecedente(antecedenteDto);
-                
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                }
                 limpiarValores();
                 antecedentesList = (ArrayList) antecedenteService.getAntecedentes().getResultado("Antecedentes");
                 antecedentesList2.clear();
@@ -213,11 +251,20 @@ public class AntecedentesController extends Controller {
                 items = FXCollections.observableArrayList(antecedentesList2);
                 table.setItems(items);
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the background");
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el antecedente");
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
-                    + "verifica que todos los datos esten llenos.");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "User Information", this.getStage(), "There are erroneous data in the registry, "
+                        + "Verify that all data is full");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                        + "verifica que todos los datos esten llenos.");
+            }
         }
     }
 
