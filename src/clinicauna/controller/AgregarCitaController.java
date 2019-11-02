@@ -266,10 +266,18 @@ public class AgregarCitaController extends Controller {
                 AppContext.getInstance().set("hBox", null);
                 this.getStage().close();
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita..." + e.getMessage());
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the appointment");
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita..." + e.getMessage());
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Data to enter is missing");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Información de Guardado", this.getStage(), "Faltan Datos por ingresar");
+            }
         }
     }
 
@@ -357,11 +365,20 @@ public class AgregarCitaController extends Controller {
             }
         });
         if (val) {
-            if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
-                AgregarCita(style);
+            if (usuario.getIdioma().equals("I")) {
+                if (new Mensaje().showConfirmation("Appointment spaces", this.getStage(), "There are Available" + String.valueOf(j) + " Spaces, Do you want to add them?")) {
+                    AgregarCita(style);
 
+                } else {
+                    limpiarValores();
+                }
             } else {
-                limpiarValores();
+                if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
+                    AgregarCita(style);
+
+                } else {
+                    limpiarValores();
+                }
             }
         } else {
             if (j == espacio) {
@@ -369,10 +386,20 @@ public class AgregarCitaController extends Controller {
 
             } else {
                 if (!val) {
-                    if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
-                        AgregarCita(style);
+                    if (usuario.getIdioma().equals("I")) {
+                        if (new Mensaje().showConfirmation("Appointment spaces", this.getStage(), "There are Available" + String.valueOf(j) + " Spaces, Do you want to add them?")) {
+                            AgregarCita(style);
+
+                        } else {
+                            limpiarValores();
+                        }
                     } else {
-                        limpiarValores();
+                        if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
+                            AgregarCita(style);
+
+                        } else {
+                            limpiarValores();
+                        }
                     }
                 }
             }
@@ -476,9 +503,17 @@ public class AgregarCitaController extends Controller {
         AppContext.getInstance().delete("aux");
         resp = correo.getResp();
         if (resp.getEstado()) {
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+            if (usuario.getIdioma().equals("I")) {
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Mail Delivery", this.getStage(), "Mail sent successfully");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+            }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+            if (usuario.getIdioma().equals("I")) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Mail Delivery", this.getStage(), "There was an error sending the mail");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+            }
         }
         limpiarValores();
         FlowController.getInstance().initialize();
@@ -486,7 +521,8 @@ public class AgregarCitaController extends Controller {
     }
 
     @FXML
-    private void editar(ActionEvent event) {
+    private void editar(ActionEvent event
+    ) {
 
         if (registroCorrecto()) {
             String telefono = txtTelefono.getText();
@@ -559,7 +595,8 @@ public class AgregarCitaController extends Controller {
     }
 
     @FXML
-    private void agregarPaciente(ActionEvent event) {
+    private void agregarPaciente(ActionEvent event
+    ) {
         FlowController.getInstance().goViewInStage("AgregarPaciente", this.getStage());
     }
 
