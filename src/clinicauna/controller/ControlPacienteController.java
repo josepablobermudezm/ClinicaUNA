@@ -322,7 +322,7 @@ public class ControlPacienteController extends Controller implements Initializab
                 }
             } else {
                 if (usuarioActivo.getIdioma().equals("I")) {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "There was an error sending the mail");
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Send Mail", this.getStage(), "There was an error sending the mail");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
                 }
@@ -345,7 +345,7 @@ public class ControlPacienteController extends Controller implements Initializab
                 table.setItems(items);
             } else {
                 if (usuarioActivo.getIdioma().equals("I")) {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "There was an error sending the mail");
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Send Mail", this.getStage(), "There was an error sending the mail");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
                 }
