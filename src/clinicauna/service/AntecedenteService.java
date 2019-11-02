@@ -7,6 +7,8 @@ package clinicauna.service;
 
 import clinicauna.model.AntecedenteDto;
 import clinicauna.model.ExpedienteDto;
+import clinicauna.model.UsuarioDto;
+import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.net.ConnectException;
@@ -22,9 +24,12 @@ import javax.ws.rs.core.GenericType;
  * @author Carlos Olivares
  */
 public class AntecedenteService {
+
+    private UsuarioDto usuario;
+
     public Respuesta guardarAntecedente(AntecedenteDto antecedente) {
         try {
-
+            usuario = usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Request request = new Request("AntecedenteController/guardar");
             request.post(antecedente);
 
@@ -33,15 +38,24 @@ public class AntecedenteService {
             }
 
             antecedente = (AntecedenteDto) request.readEntity(AntecedenteDto.class);
-
-            return new Respuesta(true, "Guardado Exitosamente", request.toString(), "Antecedente", antecedente);
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(true, "Saved successfully", request.toString(), "Antecedente", antecedente);
+            } else {
+                return new Respuesta(true, "Guardado Exitosamente", request.toString(), "Antecedente", antecedente);
+            }
         } catch (Exception ex) {
             Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error guardando el Antecedente.", ex);
-            return new Respuesta(false, "Error guardando el Antecedente.", "guardarAntecedente " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error saving the background", "guardarAntecedente " + ex.getMessage());
+            } else {
+                return new Respuesta(false, "Error guardando el Antecedente.", "guardarAntecedente " + ex.getMessage());
+            }
         }
     }
-     public Respuesta eliminarUsuario(Long id) {
+
+    public Respuesta eliminarUsuario(Long id) {
         try {
+            usuario = usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
             Request request = new Request("AntecedenteController/eliminar", "/{id}", parametros);
@@ -50,16 +64,26 @@ public class AntecedenteService {
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            return new Respuesta(true, "Antecedente eliminado exitosamente", "");
+
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(true, "Successfully removed", "");
+            } else {
+                return new Respuesta(true, "Antecedente eliminado exitosamente", "");
+            }
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error eliminando el Antecedente.", ex);
-            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+            if (ex.getCause() != null && ex.getCause().getClass() == ConnectException.class) {
                 return new Respuesta(false, "No se ha podido conectar con el servidor.", "eliminarAntecedente " + ex.getMessage());
             }
-            return new Respuesta(false, "Error eliminando el Antecedente.", "eliminarAntecedente " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error deleting the background.", "eliminarAntecedente " + ex.getMessage());
+            } else {
+                return new Respuesta(false, "Error eliminando el Antecedente.", "eliminarAntecedente " + ex.getMessage());
+            }
         }
     }
-     public Respuesta getAntecedentes() {
+
+    public Respuesta getAntecedentes() {
         try {
             Request request = new Request("AntecedenteController/antecedentes");
             request.get();
@@ -76,7 +100,8 @@ public class AntecedenteService {
             return new Respuesta(false, "", "", "Antecedentes", "getAntecedentes" + ex.getMessage());
         }
     }
-     public Respuesta getAntecedentes(ExpedienteDto expediente) {
+
+    public Respuesta getAntecedentes(ExpedienteDto expediente) {
         try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", expediente.getExpID());

@@ -6,6 +6,7 @@
 package clinicauna.service;
 
 import clinicauna.model.UsuarioDto;
+import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.net.ConnectException;
@@ -23,6 +24,8 @@ import javax.ws.rs.core.GenericType;
  * @author Carlos Olivares
  */
 public class UsuarioService {
+
+    private UsuarioDto usuario;
 
     public Respuesta getUsuario(String usuario, String clave) {
         try {
@@ -42,7 +45,7 @@ public class UsuarioService {
 
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo el usuario [" + usuario + "]", ex);
-            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+            if (ex.getCause() != null && ex.getCause().getClass() == ConnectException.class) {
                 return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuario " + ex.getMessage());
             }
             return new Respuesta(false, "Error obteniendo el usuario.", "getUsuario " + ex.getMessage());
@@ -64,7 +67,7 @@ public class UsuarioService {
             return new Respuesta(true, "", "", "Usuario", Usuario);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo el Usuario [" + id + "]", ex);
-            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+            if (ex.getCause() != null && ex.getCause().getClass() == ConnectException.class) {
                 return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuario " + ex.getMessage());
             }
             return new Respuesta(false, "Error obteniendo el Usuario.", "getUsuario " + ex.getMessage());
@@ -88,7 +91,7 @@ public class UsuarioService {
             return new Respuesta(true, "", "", "Usuarios", Usuarios);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo Usuarios.", ex);
-            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+            if (ex.getCause() != null && ex.getCause().getClass() == ConnectException.class) {
                 return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuario " + ex.getMessage());
             }
             return new Respuesta(false, "Error obteniendo Usuarios.", "getUsuarios " + ex.getMessage());
@@ -110,7 +113,7 @@ public class UsuarioService {
             return new Respuesta(true, "", "", "Usuarios", Usuarios);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo Usuarios.", ex);
-            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+            if (ex.getCause() != null && ex.getCause().getClass() == ConnectException.class) {
                 return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuarioS " + ex.getMessage());
             }
             return new Respuesta(false, "", "", "Usuarios", "getUsuarios " + ex.getMessage());
@@ -119,7 +122,7 @@ public class UsuarioService {
 
     public Respuesta guardarUsuario(UsuarioDto Usuario) {
         try {
-
+            usuario = usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Request request = new Request("UsuarioController/guardar");
             request.post(Usuario);
 
@@ -128,19 +131,29 @@ public class UsuarioService {
             }
 
             Usuario = (UsuarioDto) request.readEntity(UsuarioDto.class);
-
-            return new Respuesta(true, "Guardado exitosamente", request.toString(), "Usuario", Usuario);
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(true, "Saved Successfully", request.toString(), "Usuario", Usuario);
+            } else {
+                return new Respuesta(true, "Guardado exitosamente", request.toString(), "Usuario", Usuario);
+            }
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error guardando el Usuario.", ex);
-            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+            if (ex.getCause() != null && ex.getCause().getClass() == ConnectException.class) {
                 return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuario " + ex.getMessage());
             }
-            return new Respuesta(false, "Error guardando el Usuario.", "guardarUsuario " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error saving the User", "guardarUsuario " + ex.getMessage());
+
+            } else {
+                return new Respuesta(false, "Error guardando el Usuario.", "guardarUsuario " + ex.getMessage());
+
+            }
         }
     }
 
     public Respuesta eliminarUsuario(Long id) {
         try {
+            usuario = usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
             Request request = new Request("UsuarioController/eliminar", "/{id}", parametros);
@@ -149,20 +162,30 @@ public class UsuarioService {
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            return new Respuesta(true, "Usuario eliminado exitosamente", "");
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(true, "User successfully deleted", "");
+            } else {
+                return new Respuesta(true, "Usuario eliminado exitosamente", "");
+            }
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error eliminando el Usuario.", ex);
-            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+            if (ex.getCause() != null && ex.getCause().getClass() == ConnectException.class) {
                 return new Respuesta(false, "No se ha podido conectar con el servidor.", "eliminarUsuario " + ex.getMessage());
             }
-            return new Respuesta(false, "Error eliminando el Usuario.", "eliminarUsuario " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error deleting the user", "eliminarUsuario " + ex.getMessage());
+
+            } else {
+                return new Respuesta(false, "Error eliminando el Usuario.", "eliminarUsuario " + ex.getMessage());
+
+            }
         }
     }
 
     public Respuesta activarUsuario(String codigo) {
         try {
             InetAddress address = InetAddress.getLocalHost();
-            return new Respuesta(true, "http://"+address.getHostAddress() + ":8989/WsClinicaUNA/ws/UsuarioController/activar/" + codigo, "");
+            return new Respuesta(true, "http://" + address.getHostAddress() + ":8989/WsClinicaUNA/ws/UsuarioController/activar/" + codigo, "");
         } catch (UnknownHostException ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error activando al usuario.", ex);
             return new Respuesta(false, "Error en la direccion IP.", "activarUsuario " + ex.getMessage());
@@ -183,7 +206,7 @@ public class UsuarioService {
             return new Respuesta(true, "", "", "Usuario", Usuario);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error obteniendo Usuarios.", ex);
-            if(ex.getCause() != null && ex.getCause().getClass() == ConnectException.class){
+            if (ex.getCause() != null && ex.getCause().getClass() == ConnectException.class) {
                 return new Respuesta(false, "No se ha podido conectar con el servidor.", "getUsuarios " + ex.getMessage());
             }
             return new Respuesta(false, "Error obteniendo Usuarios.", "getUsuarios " + ex.getMessage());

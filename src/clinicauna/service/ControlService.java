@@ -7,6 +7,8 @@ package clinicauna.service;
 
 import clinicauna.model.ControlDto;
 import clinicauna.model.ExpedienteDto;
+import clinicauna.model.UsuarioDto;
+import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.util.HashMap;
@@ -21,6 +23,8 @@ import javax.ws.rs.core.GenericType;
  * @author Jose Pablo Bermudez
  */
 public class ControlService {
+
+    private UsuarioDto usuario;
 
     public Respuesta getControl(String Control, String clave) {
         try {
@@ -82,7 +86,6 @@ public class ControlService {
             return new Respuesta(false, "Error obteniendo Controls.", "getControls " + ex.getMessage());
         }
     }*/
-
     public Respuesta getControles() {
         try {
             Request request = new Request("ControlController/controles");
@@ -117,13 +120,13 @@ public class ControlService {
 
             return new Respuesta(true, "", "", "Controles", Controls);
         } catch (Exception ex) {
-            return new Respuesta(false,"getControles " + ex.getMessage(),"");
+            return new Respuesta(false, "getControles " + ex.getMessage(), "");
         }
     }
 
     public Respuesta guardarControl(ControlDto Control) {
         try {
-
+            usuario = usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Request request = new Request("ControlController/guardar");
             request.post(Control);
 
@@ -132,16 +135,24 @@ public class ControlService {
             }
 
             Control = (ControlDto) request.readEntity(ControlDto.class);
-
-            return new Respuesta(true,"Guardado Exitosamente", request.toString(), "Control", Control);
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(true, "Saved Successfully", request.toString(), "Control", Control);
+            } else {
+                return new Respuesta(true, "Guardado Exitosamente", request.toString(), "Control", Control);
+            }
         } catch (Exception ex) {
             Logger.getLogger(ControlService.class.getName()).log(Level.SEVERE, "Error guardando el Control.", ex);
-            return new Respuesta(false, "Error guardando el Control.", "guardarControl " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error saving the control.", "guardarControl " + ex.getMessage());
+            } else {
+                return new Respuesta(false, "Error guardando el Control.", "guardarControl " + ex.getMessage());
+            }
         }
     }
 
     public Respuesta eliminarControl(Long id) {
         try {
+            usuario = usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
             Request request = new Request("ControlController/eliminar", "/{id}", parametros);
@@ -153,7 +164,11 @@ public class ControlService {
             return new Respuesta(true, "", "");
         } catch (Exception ex) {
             Logger.getLogger(ControlService.class.getName()).log(Level.SEVERE, "Error eliminando el Control.", ex);
-            return new Respuesta(false, "Error eliminando el Control.", "eliminarControl " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error deleting the control", "eliminarControl " + ex.getMessage());
+            } else {
+                return new Respuesta(false, "Error eliminando el Control.", "eliminarControl " + ex.getMessage());
+            }
         }
     }
 
