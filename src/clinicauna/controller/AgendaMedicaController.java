@@ -18,6 +18,7 @@ import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
 import clinicauna.util.Idioma;
+import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import clinicauna.util.vistaCita;
 import com.jfoenix.controls.JFXButton;
@@ -45,6 +46,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
@@ -122,9 +124,11 @@ public class AgendaMedicaController extends Controller implements Initializable 
     private Label lblAusente;
     @FXML
     private Label lblCancelada;
+    private Mensaje ms;
 
     @Override
     public void initialize() {
+        ms = new Mensaje();
         usuarioDto = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (!usuarioDto.getTipoUsuario().equals("M")) {
             if (this.DatePicker.getValue() != null) {
@@ -177,12 +181,20 @@ public class AgendaMedicaController extends Controller implements Initializable 
     }
 
     private EventHandler<MouseEvent> citasReleased = (event) -> {
-        hCita = (vistaCita) event.getSource();
-        AppContext.getInstance().set("hBox", hCita);
-        AppContext.getInstance().set("Espacio", hCita.getEspacio());
-        FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
-        AppContext.getInstance().delete("Cita");
-        initialize();
+        /*
+        *    Valido que no pueda editar o guardar ninguna cita a menos que sea de un día igual o mayor que el día de hoy,
+        *    no se debería de poder guardar citas en días anteriores, no tiene sentido
+        */
+        if (DatePicker.getValue().isAfter(LocalDate.now()) || DatePicker.getValue().isEqual(LocalDate.now())) {
+            hCita = (vistaCita) event.getSource();
+            AppContext.getInstance().set("hBox", hCita);
+            AppContext.getInstance().set("Espacio", hCita.getEspacio());
+            FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
+            AppContext.getInstance().delete("Cita");
+            initialize();
+        }else{
+            ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "No se puede agregar una cita en esta fecha");
+        }
     };
 
     @FXML
@@ -327,7 +339,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                         db.setContent(content);
 
                         //cuando se detecta un drag entonces guardo los datos de ese hBox en appcontext
-                         hCita2 = (vistaCita) e.getSource();
+                        hCita2 = (vistaCita) e.getSource();
                         /*AppContext.getInstance().set("hBox", hCita2);
                         AppContext.getInstance().set("Espacio", hCita2.getEspacio());
                         //FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
@@ -347,7 +359,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                         if (hCita2 != null && hCita3 != hCita2) {
                             hCita2.intercambiarCita(hCita3);
                         }
-                            /*EspacioService espacioService = new EspacioService();
+                        /*EspacioService espacioService = new EspacioService();
                             if (hCita2.getEspacio() != null) {
                                 Respuesta resp = espacioService.guardarEspacio(hCita2.getEspacio());
                                 System.out.println(resp);
@@ -497,7 +509,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
         vCita.setStyle(style);
         /*
             se setea formato para la conversión entre cliente y webservice
-        */
+         */
         LocalTime horaF = LocalTime.parse(espacio.getEspHoraFin());
         LocalTime horaIni = LocalTime.parse(espacio.getEspHoraInicio());
         LocalDateTime horaCitaInicio = LocalDateTime.of(LocalDate.now(), horaIni);
@@ -623,6 +635,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
+
     }
 }
