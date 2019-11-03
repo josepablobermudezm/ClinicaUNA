@@ -72,11 +72,13 @@ public class DrawerContentControllerRecepcionista extends Controller {
 
     @FXML
     private void btnPacientes(ActionEvent event) {
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goView("Pacientes");
     }
     
     @FXML
     private void btnAgenda(ActionEvent event) {
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goView("AgendaMedica");
     }
 }

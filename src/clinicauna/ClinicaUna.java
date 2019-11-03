@@ -7,6 +7,7 @@
 package clinicauna;
 
 import clinicauna.util.FlowController;
+import java.time.LocalDate;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -19,7 +20,7 @@ public class ClinicaUna extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
+        System.out.println("LocalDate "+  LocalDate.now());
         stage.setTitle("Clinica UNA");
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         

@@ -112,26 +112,31 @@ public class DrawerContentController extends Controller {
 
     @FXML
     private void Usuarios(ActionEvent event) {
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goView("Usuarios");
     }
 
     @FXML
     private void btnPacientes(ActionEvent event) {
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goView("Pacientes");
     }
 
     @FXML
     private void btnMedicos(ActionEvent event) {
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goView("Medicos");
     }
 
     @FXML
     private void btnAgenda(ActionEvent event) {
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goView("AgendaMedica");
     }
 
     @FXML
     private void btnExpediente(ActionEvent event) {
+    FlowController.getInstance().initialize();
         FlowController.getInstance().goView("ExpedienteMedico");
         /*ExpedienteMedicoController exp = new ExpedienteMedicoController();
         exp.BuscarPaciente();*/
@@ -139,6 +144,7 @@ public class DrawerContentController extends Controller {
 
     @FXML
     private void btnReportes(ActionEvent event) {
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goView("Reportes");
 
     }

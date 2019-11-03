@@ -283,8 +283,7 @@ public class PacientesController extends Controller {
         txtSApellido.clear();
         txtCorreo.clear();
         txtCedula.clear();
-        btnMujer.setSelected(false);
-        btnHombre.setSelected(false);
+        btnHombre.setSelected(true);
         FechaDeNacimiento.setValue(null);
         table.getSelectionModel().clearSelection();
     }

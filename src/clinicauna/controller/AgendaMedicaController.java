@@ -125,7 +125,29 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
     @Override
     public void initialize() {
+        usuarioDto = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if (!usuarioDto.getTipoUsuario().equals("M")) {
+            if (this.DatePicker.getValue() != null) {
+                AppContext.getInstance().delete("MedicoDto");
+                this.ComboMedico.setDisable(false);
+            } else {
+                this.ComboMedico.setDisable(true);
+            }
+            //AppContext.getInstance().delete("MedicoDto");
+        } else if (usuarioDto.getTipoUsuario().equals("M")) {
+            inicio = false;
+            DatePicker.setValue(LocalDate.now());
+            ComboMedico.setVisible(false);
+            medicoService = new MedicoService();
+            resp = medicoService.getMedicos();
+            lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
+            medicoDto = lista.stream().filter(x -> x.getUs().getID().equals(usuarioDto.getID())).findAny().get();
+            AppContext.getInstance().set("MedicoDto", medicoDto);
+        }
 
+        Inicio();
+        SeleccionarMedico();
+        fecha();
     }
 
     public void Inicio() {
@@ -485,7 +507,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
         espacio.setEspHoraInicio(horaInicio);
         espacio.setEspHoraFin(horaFin);
         espacio.setEspAgenda(agendaDto);
-        System.out.println(espacio.getEspHoraFin() + " hora fin ");
+        //System.out.println(espacio.getEspHoraFin() + " hora fin ");
         vCita.AgregarCita(espacio);
         vCita.getChildren().add(vCita.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
     }
@@ -601,28 +623,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        usuarioDto = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-        if (!usuarioDto.getTipoUsuario().equals("M")) {
-            if (this.DatePicker.getValue() != null) {
-                AppContext.getInstance().delete("MedicoDto");
-                this.ComboMedico.setDisable(false);
-            } else {
-                this.ComboMedico.setDisable(true);
-            }
-            //AppContext.getInstance().delete("MedicoDto");
-        } else if (usuarioDto.getTipoUsuario().equals("M")) {
-            inicio = false;
-            DatePicker.setValue(LocalDate.now());
-            ComboMedico.setVisible(false);
-            medicoService = new MedicoService();
-            resp = medicoService.getMedicos();
-            lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
-            medicoDto = lista.stream().filter(x -> x.getUs().getID().equals(usuarioDto.getID())).findAny().get();
-            AppContext.getInstance().set("MedicoDto", medicoDto);
-        }
-
-        Inicio();
-        SeleccionarMedico();
-        fecha();
+        
     }
 }
