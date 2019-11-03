@@ -64,30 +64,31 @@ public class AgregarPacienteController extends Controller {
     private Respuesta resp;
     private Idioma idioma;
     private UsuarioDto usuario;
+
     /**
      * Initializes the controller class.
-     */ 
+     */
     @Override
     public void initialize() {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-        if(usuario.getIdioma().equals("I")){
+        if (usuario.getIdioma().equals("I")) {
             this.lblGenero.setText(idioma.getProperty("Genero"));
             this.btnHombre1.setText(idioma.getProperty("Masculino"));
             this.btnMujer1.setText(idioma.getProperty("Femenino"));
             this.txtCedula.setPromptText(idioma.getProperty("Cedula"));
             this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
             this.txtNombre.setPromptText(idioma.getProperty("Nombre"));
-            this.txtPApellido.setPromptText(idioma.getProperty("Primero")+" "+idioma.getProperty("Apellido"));
-            this.txtSApellido.setPromptText(idioma.getProperty("Segundo")+" "+idioma.getProperty("Apellido"));
-            this.Titulo.setText(idioma.getProperty("Agregar")+" "+idioma.getProperty("Paciente"));          
+            this.txtPApellido.setPromptText(idioma.getProperty("Primero") + " " + idioma.getProperty("Apellido"));
+            this.txtSApellido.setPromptText(idioma.getProperty("Segundo") + " " + idioma.getProperty("Apellido"));
+            this.Titulo.setText(idioma.getProperty("Agregar") + " " + idioma.getProperty("PacienteB"));
         }
         pacienteDto = new PacienteDto();
         pacienteService = new PacienteService();
         ms = new Mensaje();
         resp = new Respuesta();
     }
-    
+
     @FXML
     private void guardar(ActionEvent event) {
         if (registroCorrecto()) {
@@ -104,36 +105,56 @@ public class AgregarPacienteController extends Controller {
             try {
                 resp = pacienteService.guardarPaciente(pacienteDto);
                 if (resp.getEstado()) {
-                        pacienteDto = (PacienteDto) resp.getResultado("Paciente");
-                        if (resp.getEstado()) {
+                    pacienteDto = (PacienteDto) resp.getResultado("Paciente");
+                    if (resp.getEstado()) {
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
                             ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
-                            limpiarValores();
-                        }else{
+                        }
+                        limpiarValores();
+                    } else {
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
                             ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                         }
+                    }
+                } else {
+                    if (usuario.getIdioma().equals("I")) {
+                        ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
                     } else {
                         ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                     }
+                }
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the patient");
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Información Incompleta");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Incomplete Data");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Información Incompleta");
+            }
         }
     }
 
-    private boolean registroCorrecto(){
+    private boolean registroCorrecto() {
         return !txtNombre.getText().isEmpty() && !txtCedula.getText().isEmpty()
                 && !txtPApellido.getText().isEmpty() && !txtSApellido.getText().isEmpty()
                 && FechaDeNacimiento.getValue() != null
                 && !txtCorreo.getText().isEmpty() && (btnHombre1.isSelected() || btnMujer1.isSelected());
     }
-    
+
     @FXML
     private void limpiarRegistro(ActionEvent event) {
     }
-    
-    private void limpiarValores(){
+
+    private void limpiarValores() {
         txtNombre.clear();
         txtPApellido.clear();
         txtSApellido.clear();
@@ -149,6 +170,4 @@ public class AgregarPacienteController extends Controller {
         FlowController.getInstance().goViewInStage("AgregarCita", this.stage);
     }
 
-    
-    
 }

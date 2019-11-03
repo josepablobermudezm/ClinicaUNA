@@ -174,31 +174,51 @@ public class PacientesController extends Controller {
                     pacienteDto = new PacienteDto(id, nombre, papellido, sapellido, cedula, correo, genero1, fecha, version);
                     try {
                         resp = pacienteService.guardarPaciente(pacienteDto);
-                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        }
                         limpiarValores();
                         pacientes = (ArrayList) pacienteService.getPacientes().getResultado("Pacientes");
                         table.getItems().clear();
                         items = FXCollections.observableArrayList(pacientes);
                         table.setItems(items);
                     } catch (Exception e) {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the patient");
+                        } else {
+                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                        }
                     }
                 } else {
-                    ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
-                            + "verifica que todos los datos esten llenos.");
+                    if (usuario.getIdioma().equals("I")) {
+                        ms.showModal(Alert.AlertType.ERROR, "User Information", this.getStage(), "There are erroneous data in the registry, "
+                                + "Verify that all data is full");
+                    } else {
+                        ms.showModal(Alert.AlertType.ERROR, "User Information", this.getStage(), "Existen datos erroneos en el registro, "
+                                + "verifica que todos los datos esten llenos.");
+                    }
                 }
+            } else {
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patient");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+                }
+            }
+        } else {
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patient");
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
             }
-        } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
 
     }
 
     @FXML
     private void eliminar(ActionEvent event) {
-
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 Respuesta r = pacienteService.eliminarPaciente(table.getSelectionModel().getSelectedItem().getID());
@@ -211,10 +231,18 @@ public class PacientesController extends Controller {
                 table.setItems(items);
                 limpiarValores();
             } else {
-                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You muest select the patient to delete");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You muest select the patient");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el paciente");
+            }
         }
 
     }
@@ -246,29 +274,48 @@ public class PacientesController extends Controller {
             try {
                 resp = pacienteService.guardarPaciente(pacienteDto);
                 if (resp.getEstado()) {
-                        pacienteDto = (PacienteDto) resp.getResultado("Paciente");
-                        if (resp.getEstado()) {
+                    pacienteDto = (PacienteDto) resp.getResultado("Paciente");
+                    if (resp.getEstado()) {
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
                             ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
-                            limpiarValores();
-                            pacientes = (ArrayList) pacienteService.getPacientes().getResultado("Pacientes");
-                            table.getItems().clear();
-                            items = FXCollections.observableArrayList(pacientes);
-                            table.setItems(items);
-                        }else{
-                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                         }
+                        limpiarValores();
+                        pacientes = (ArrayList) pacienteService.getPacientes().getResultado("Pacientes");
+                        table.getItems().clear();
+                        items = FXCollections.observableArrayList(pacientes);
+                        table.setItems(items);
                     } else {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
+                            ms.showModal(Alert.AlertType.ERROR, "Informacion de Guardado", this.getStage(), resp.getMensaje());
+                        }
                     }
+                } else {
+                    if (usuario.getIdioma().equals("I")) {
+                        ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
+                    } else {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de Guardado", this.getStage(), resp.getMensaje());
+                    }
+                }
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion de Guardado", this.getStage(), "There was an error saving the patient");
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Información Incompleta");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Incomplete data");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Información Incompleta");
+            }
         }
 
     }
-
 
     boolean registroCorrecto() {
         return !txtNombre.getText().isEmpty() && !txtCedula.getText().isEmpty()
@@ -306,10 +353,18 @@ public class PacientesController extends Controller {
                 }
                 FechaDeNacimiento.setValue(pacienteDto.getFechaNacimiento());
             } else {
-                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patiente");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patiente");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+            }
         }
     }
 

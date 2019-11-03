@@ -37,7 +37,7 @@ import javafx.scene.input.MouseEvent;
  *
  * @author Jose Pablo Bermudez
  */
-public class ExpedienteMedicoController extends Controller implements Initializable{
+public class ExpedienteMedicoController extends Controller implements Initializable {
 
     @FXML
     private Label Titulo;
@@ -123,10 +123,10 @@ public class ExpedienteMedicoController extends Controller implements Initializa
 
     @Override
     public void initialize() {
-        
+
     }
-    
-    public void inicio(){
+
+    public void inicio() {
         /*this.txtTratamientos.setDisable(true);
         this.txtAlergias.setDisable(true);
         this.txtAntecedentesPatologicos.setDisable(true);
@@ -145,7 +145,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
             this.btnBuscar.setText(idioma.getProperty("Buscar"));
             this.btnEditar1.setText(idioma.getProperty("Editar"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
-            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+" "+idioma.getProperty("Registro"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
             this.btnSiAlergias.setText(idioma.getProperty("Si"));
             this.btnSiHospitalizaciones.setText(idioma.getProperty("Si"));
             this.btnSiTratamientos.setText(idioma.getProperty("Si"));
@@ -165,7 +165,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         resp = expedienteService.getExpedientes();
         expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
         FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
-        if(AppContext.getInstance().get("Paciente")!=null){
+        if (AppContext.getInstance().get("Paciente") != null) {
             DatosPaciente();
         }
     }
@@ -214,8 +214,14 @@ public class ExpedienteMedicoController extends Controller implements Initializa
                 }
                 valor = false;
             } else {
-                ms.showModal(Alert.AlertType.WARNING, "Busqueda de paciente", this.getStage(), "El paciente seleccionado no tiene un expediente");
-                valor = true;
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Patient Search", this.getStage(), "The selected patient does not have a medical record");
+                    valor = true;
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Busqueda de paciente", this.getStage(), "El paciente seleccionado no tiene un expediente");
+                    valor = true;
+                }
+
             }
             lblNomPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
         }
@@ -248,14 +254,26 @@ public class ExpedienteMedicoController extends Controller implements Initializa
             expedienteDto = new ExpedienteDto(id, version, antecedentes, hospitalizaciones, operaciones, alergias, tratamientos, paciente);
             try {
                 resp = expedienteService.guardarExpediente(expedienteDto);
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Edition Information", this.getStage(), resp.getMensaje());
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Información de edicion", this.getStage(), resp.getMensaje());
+                }
                 Limpiar();
                 this.lblNomPaciente.setText(null);
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el expediente.");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error editing the medical record");
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el expediente.");
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Existen datos en el registro sin completar.");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Incomplete Data");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Existen datos en el registro sin completar.");
+            }
         }
     }
 
@@ -325,7 +343,11 @@ public class ExpedienteMedicoController extends Controller implements Initializa
             AppContext.getInstance().set("Expediente", expedienteDto);
             FlowController.getInstance().goViewInWindowModal("Antecedentes", this.getStage(), false);
         } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patient");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+            }
         }
     }
 
@@ -335,7 +357,11 @@ public class ExpedienteMedicoController extends Controller implements Initializa
             AppContext.getInstance().set("Expediente", expedienteDto);
             FlowController.getInstance().goView("ControlPaciente");
         } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the medical record");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+            }
         }
     }
 
@@ -371,23 +397,47 @@ public class ExpedienteMedicoController extends Controller implements Initializa
                     if (resp.getEstado()) {
                         expedienteDto = (ExpedienteDto) resp.getResultado("Expediente");
                         if (resp.getEstado()) {
-                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            if (usuario.getIdioma().equals("I")) {
+                                ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                            } else {
+                                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            }
                             Limpiar();
                             this.lblNomPaciente.setText(null);
                         } else {
-                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            if (usuario.getIdioma().equals("I")) {
+                                ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                            } else {
+                                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            }
                         }
                     } else {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        }
                     }
                 } catch (Exception e) {
-                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                    if (usuario.getIdioma().equals("I")) {
+                        ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the medical record");
+                    } else {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el expediente...");
+                    }
                 }
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Información de guardado", this.getStage(), "Error al guardar el expediente");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Error saving the medical record");
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Información de guardado", this.getStage(), "Error al guardar el expediente");
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Existen datos en el registro sin completar.");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Incomplete Data");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Existen datos en el registro sin completar.");
+            }
         }
 
     }
@@ -396,8 +446,8 @@ public class ExpedienteMedicoController extends Controller implements Initializa
     private void BuscarPaciente(ActionEvent event) {
         BuscarPaciente();
     }
-    
-    public void BuscarPaciente(){
+
+    public void BuscarPaciente() {
         FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
         DatosPaciente();
         if (valor) {
@@ -415,7 +465,11 @@ public class ExpedienteMedicoController extends Controller implements Initializa
             AppContext.getInstance().set("Expediente", expedienteDto);
             FlowController.getInstance().goViewInWindowModal("Examenes", this.getStage(), false);
         } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the medical record");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+            }
         }
     }
 
@@ -425,8 +479,11 @@ public class ExpedienteMedicoController extends Controller implements Initializa
             AppContext.getInstance().set("Expediente", expedienteDto);
             FlowController.getInstance().goViewInWindowModal("evolucionHistorica", this.getStage(), false);
         } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
-
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the medical record");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un expediente");
+            }
         }
     }
 

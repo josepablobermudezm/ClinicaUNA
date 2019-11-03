@@ -9,7 +9,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="491.0" prefWidth="675.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.EvolucionHistoricaController">
    <children>
-      <Label layoutX="61.0" layoutY="16.0" prefHeight="30.0" prefWidth="294.0" styleClass="lbl" stylesheets="@newCascadeStyleSheet.css" text="Evolución Histórica del Paciente:" />
+      <Label fx:id="lblTitulo" layoutX="61.0" layoutY="16.0" prefHeight="30.0" prefWidth="294.0" styleClass="lbl" stylesheets="@newCascadeStyleSheet.css" text="Evolución Histórica del Paciente:" />
       <Label fx:id="lblPaciente" layoutX="363.0" layoutY="16.0" prefHeight="30.0" prefWidth="318.0" styleClass="lbl" stylesheets="@newCascadeStyleSheet.css" />
       <JFXButton fx:id="btnVolver" layoutX="570.0" layoutY="454.0" onAction="#Volver" stylesheets="@newCascadeStyleSheet.css" text="Volver" />
       <LineChart fx:id="Grafico" layoutX="14.0" layoutY="61.0" prefHeight="393.0" prefWidth="643.0" stylesheets="@newCascadeStyleSheet.css">

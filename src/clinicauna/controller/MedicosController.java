@@ -103,7 +103,7 @@ public class MedicosController extends Controller {
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
             this.btnEditar1.setText(idioma.getProperty("Editar"));
-           //this.btnBuscar.setText(idioma.getProperty("Buscar"));
+            //this.btnBuscar.setText(idioma.getProperty("Buscar"));
             this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
             this.COL_CODIGO_MEDICOS.setText(idioma.getProperty("Código"));
             this.COL_CARNE_MEDICOS.setText(idioma.getProperty("Carné"));
@@ -111,7 +111,7 @@ public class MedicosController extends Controller {
             this.COL_INICIO_MEDICOS.setText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Jornada"));
             this.COL_FINAL_MEDICOS.setText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
             this.COL_ESPACIOS_MEDICOS.setText(idioma.getProperty("Espacio") + " " + idioma.getProperty("por") + " " + idioma.getProperty("Hora"));
-            this.COL_NOMBRE_MEDICOS.setText(idioma.getProperty("Completo")+" " + idioma.getProperty("Nombre"));
+            this.COL_NOMBRE_MEDICOS.setText(idioma.getProperty("Completo") + " " + idioma.getProperty("Nombre"));
             this.timePickerInicio.setPromptText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Jornada"));
             this.timePickerfinal.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
             this.txtCarne.setPromptText(idioma.getProperty("Carné"));
@@ -162,24 +162,45 @@ public class MedicosController extends Controller {
                     medicoDto = new MedicoDto(id, codigo, folio, carne, "I", inicioJornada, finJornada, espacios, usuariodto, version);
                     try {
                         resp = medicoService.guardarMedico(medicoDto);
-                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        }
                         limpiarValores();
                         medicos = (ArrayList) medicoService.getMedicos().getResultado("Medicos");
                         table.getItems().clear();
                         items = FXCollections.observableArrayList(medicos);
                         table.setItems(items);
                     } catch (Exception e) {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the Doctor");
+                        } else {
+                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                        }
                     }
                 } else {
-                    ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
-                            + "verifica que todos los datos esten llenos.");
+                    if (usuario.getIdioma().equals("I")) {
+                        ms.showModal(Alert.AlertType.ERROR, "User Information", this.getStage(), "There are erroneous data in the registry, "
+                                + "Verify that all data is full");
+                    } else {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de usuario", this.getStage(), "Hay datos erroenaos en el sistema, "
+                                + "Verifica que todos los datos esten llenos");
+                    }
                 }
+            } else {
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the doctor to edit");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a editar");
+                }
+            }
+        } else {
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the doctor to edit");
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a editar");
             }
-        } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
     }
 
@@ -198,10 +219,19 @@ public class MedicosController extends Controller {
                 table.setItems(items);
                 limpiarValores();
             } else {
-                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the doctor to delete");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
+                }
             }
         } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the doctor");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+
+            }
         }
 
     }
@@ -224,7 +254,6 @@ public class MedicosController extends Controller {
 
     @FXML
     private void DatosMedico(MouseEvent event) {
-
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 medicoDto = table.getSelectionModel().getSelectedItem();
@@ -236,11 +265,9 @@ public class MedicosController extends Controller {
                 timePickerInicio.setValue(localTimeObj);
                 LocalTime localTimeObj1 = LocalTime.parse(medicoDto.getFinJornada());
                 timePickerfinal.setValue(localTimeObj1);
-
             }
         }
     }
-
     @FXML
     private void limpiarRegistro(ActionEvent event) {
         txtCarne.clear();
@@ -249,9 +276,5 @@ public class MedicosController extends Controller {
         txtFolio.clear();
         timePickerInicio.setValue(null);
         timePickerfinal.setValue(null);
-    }
-
-    public void ValidarRepetidos() {
-
     }
 }

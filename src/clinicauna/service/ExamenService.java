@@ -7,6 +7,8 @@ package clinicauna.service;
 
 import clinicauna.model.ExamenDto;
 import clinicauna.model.ExpedienteDto;
+import clinicauna.model.UsuarioDto;
+import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.util.HashMap;
@@ -21,7 +23,9 @@ import javax.ws.rs.core.GenericType;
  * @author Jose Pablo Bermudez
  */
 public class ExamenService {
-    
+
+    private UsuarioDto usuario;
+
     public Respuesta getExamen(String Examen, String clave) {
         try {
             Map<String, Object> parametros = new HashMap<>();
@@ -60,6 +64,7 @@ public class ExamenService {
             return new Respuesta(false, "Error obteniendo el Examen.", "getExamen " + ex.getMessage());
         }
     }
+
     /*
     public Respuesta getExamens(String cedula, String nombre, String pApellido) {
         try {
@@ -81,7 +86,6 @@ public class ExamenService {
             return new Respuesta(false, "Error obteniendo Examens.", "getExamens " + ex.getMessage());
         }
     }*/
-
     public Respuesta getExamenes() {
         try {
             Request request = new Request("ExamenController/Examenes");
@@ -99,12 +103,12 @@ public class ExamenService {
             return new Respuesta(false, "", "", "Examenes", "getExamenes " + ex.getMessage());
         }
     }
-    
+
     public Respuesta getExamenes(ExpedienteDto expediente) {
         try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("expId", expediente.getExpID());
-            Request request = new Request("ExamenController/Examenes","/{expId}", parametros);
+            Request request = new Request("ExamenController/Examenes", "/{expId}", parametros);
             request.get();
 
             if (request.isError()) {
@@ -113,17 +117,16 @@ public class ExamenService {
 
             List<ExamenDto> Examens = (List<ExamenDto>) request.readEntity(new GenericType<List<ExamenDto>>() {
             });
-            
+
             return new Respuesta(true, "", "", "Examenes", Examens);
         } catch (Exception ex) {
-            return new Respuesta(false, "getExamens " + ex.getMessage(),"");
+            return new Respuesta(false, "getExamens " + ex.getMessage(), "");
         }
     }
 
-    
     public Respuesta guardarExamen(ExamenDto Examen) {
         try {
-
+            usuario = usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Request request = new Request("ExamenController/guardar");
             request.post(Examen);
 
@@ -132,16 +135,24 @@ public class ExamenService {
             }
 
             Examen = (ExamenDto) request.readEntity(ExamenDto.class);
-
-            return new Respuesta(true, "Guardado Exitosamente", "Se ha guardadoo el examen exitosamente", "Examen", Examen);
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(true, "Saved Successfully", "The exam has been saved successfully", "Examen", Examen);
+            } else {
+                return new Respuesta(true, "Guardado Exitosamente", "Se ha guardado el examen exitosamente", "Examen", Examen);
+            }
         } catch (Exception ex) {
             Logger.getLogger(ExamenService.class.getName()).log(Level.SEVERE, "Error guardando el Examen.", ex);
-            return new Respuesta(false, "Error guardando el Examen.", "guardarExamen " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error saving the exam", "guardarExamen " + ex.getMessage());
+            } else {
+                return new Respuesta(false, "Error guardando el Examen.", "guardarExamen " + ex.getMessage());
+            }
         }
     }
 
     public Respuesta eliminarExamen(Long id) {
         try {
+            usuario = usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
             Request request = new Request("ExamenController/eliminar", "/{id}", parametros);
@@ -153,9 +164,12 @@ public class ExamenService {
             return new Respuesta(true, "", "");
         } catch (Exception ex) {
             Logger.getLogger(ExamenService.class.getName()).log(Level.SEVERE, "Error eliminando el Examen.", ex);
-            return new Respuesta(false, "Error eliminando el Examen.", "eliminarExamen " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error deleting the exam", "eliminarExamen " + ex.getMessage());
+            } else {
+                return new Respuesta(false, "Error eliminando el Examen.", "eliminarExamen " + ex.getMessage());
+            }
         }
     }
 
-    
 }

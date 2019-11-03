@@ -111,7 +111,7 @@ public class UsuariosController extends Controller {
     private Idioma idioma;
     @FXML
     private ImageView omg;
-    
+
     @Override
     public void initialize() {
         Formato();
@@ -139,7 +139,7 @@ public class UsuariosController extends Controller {
             this.txtCedula.setPromptText("ID");
             this.txtClave.setPromptText(idioma.getProperty("Contraseña"));
             this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
-            
+
             this.txtNombre.setPromptText(idioma.getProperty("Nombre"));
             this.txtPApellido.setPromptText(idioma.getProperty("Primero") + " " + idioma.getProperty("Apellido"));
             this.txtSApellido.setPromptText(idioma.getProperty("Segundo") + " " + idioma.getProperty("Apellido"));
@@ -148,18 +148,18 @@ public class UsuariosController extends Controller {
             this.lblidioma.setText(idioma.getProperty("Idioma"));
             this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Usuarios"));
         }
-        
+
         usuarioService = new UsuarioService();
         ms = new Mensaje();
         resp = usuarioService.getUsuarios();
         usuarios = ((ArrayList<UsuarioDto>) resp.getResultado("Usuarios"));
         medicoService = new MedicoService();
-        COL_NOMBRE_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre()+" "+value.getValue().getpApellido()+" "+value.getValue().getsApellido()));
+        COL_NOMBRE_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre() + " " + value.getValue().getpApellido() + " " + value.getValue().getsApellido()));
         COL_CEDULA_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCedula()));
         COL_CORREO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCorreo()));
-        COL_TIPO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty( value.getValue().getTipoUsuario().equals("M") ?"Médico":value.getValue().getTipoUsuario().equals("A")?"Administrador":"Recepcionista"));
-        COL_IDIOMA_USUARIO.setCellValueFactory(value -> new SimpleStringProperty( value.getValue().getIdioma().equals("I")?"Inglés":"Español" ));
-        COL_ESTADO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado().equals("A") ?"Activo":"Inactivo"));
+        COL_TIPO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getTipoUsuario().equals("M") ? "Médico" : value.getValue().getTipoUsuario().equals("A") ? "Administrador" : "Recepcionista"));
+        COL_IDIOMA_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getIdioma().equals("I") ? "Inglés" : "Español"));
+        COL_ESTADO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado().equals("A") ? "Activo" : "Inactivo"));
         items = FXCollections.observableArrayList(usuarios);
         table.setItems(items);
     }
@@ -185,24 +185,45 @@ public class UsuariosController extends Controller {
                     usuarioDto = new UsuarioDto(id, nombre, papellido, estado, sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
                     try {
                         resp = usuarioService.guardarUsuario(usuarioDto);
-                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Edtion Information", this.getStage(), resp.getMensaje());
+                        } else {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
+                        }
                         limpiarRegistro();
                         usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
                         table.getItems().clear();
                         items = FXCollections.observableArrayList(usuarios);
                         table.setItems(items);
                     } catch (Exception e) {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el usuario.");
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error editing the user");
+                        } else {
+                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de editar el usuario.");
+                        }
                     }
                 } else {
-                    ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
-                            + "verifica que todos los datos esten llenos.");
+                    if (usuario.getIdioma().equals("I")) {
+                        ms.showModal(Alert.AlertType.ERROR, "User Information", this.getStage(), "There are erroneous data in the registry, "
+                                + "Verify that all data is full");
+                    } else {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                                + "verifica que todos los datos esten llenos.");
+                    }
                 }
+            } else {
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the user to edit");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a editar");
+                }
+            }
+        } else {
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the user to edit");
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a editar");
             }
-        }else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
         }
 
     }
@@ -222,10 +243,18 @@ public class UsuariosController extends Controller {
                 table.setItems(items);
                 limpiarRegistro();
             } else {
-                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the user to delete");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
+                }
             }
-        }else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+        } else {
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patient");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
+            }
         }
     }
 
@@ -273,7 +302,11 @@ public class UsuariosController extends Controller {
                             resp = medicoService.guardarMedico(medicoDto);
                             if (!resp.getEstado()) {
                                 usuarioService.eliminarUsuario(usuarioDto.getID());
-                                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                                if (usuario.getIdioma().equals("I")) {
+                                    ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
+                                } else {
+                                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                                }
                             } else {
                                 AppContext.getInstance().delete("Medico");
                             }
@@ -283,28 +316,48 @@ public class UsuariosController extends Controller {
                         //Envia correo de activacion
                         Correos mail = new Correos();
                         mail.mensajeActivacionHilo(nombreusuario, correo, resp2.getMensaje());
-                        FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando",this.getStage(),false);
+                        FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
                         resp = mail.getResp();
                         if (resp.getEstado()) {
-                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            if (usuario.getIdioma().equals("I")) {
+                                ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                            } else {
+                                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            }
                             limpiarRegistro();
                             usuarios = (ArrayList) usuarioService.getUsuarios().getResultado("Usuarios");
                             table.getItems().clear();
                             items = FXCollections.observableArrayList(usuarios);
                             table.setItems(items);
-                        }else{
+                        } else {
                             usuarioService.eliminarUsuario(usuarioDto.getID());
-                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            if (usuario.getIdioma().equals("I")) {
+                                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
+                            } else {
+                                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            }
                         }
                     } else {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
+                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        }
                     }
 
                 } catch (Exception e) {
-                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), e.getMessage());
+                    if (usuario.getIdioma().equals("I")) {
+                        ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
+                    } else {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                    }
                 }
             } else {
-                ms.showModal(Alert.AlertType.WARNING, "Informacion de guardado", this.getStage(), "No se ha creado un médico para este usuario, debes crearlo para poder guardar.");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Saved Information", this.getStage(), "A doctor has not been created for this user, you must create it in order to save.");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Informacion de guardado", this.getStage(), "No se ha creado un médico para este usuario, debes crearlo para poder guardar.");
+                }
             }
         }
     }
@@ -354,10 +407,9 @@ public class UsuariosController extends Controller {
         }
     }
 
-
     @FXML
     private void crearMedico(ActionEvent event) {
         FlowController.getInstance().goViewInWindowModal("GuardarMedicos", this.getStage(), false);
     }
-    
+
 }

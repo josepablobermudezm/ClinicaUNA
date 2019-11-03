@@ -10,6 +10,7 @@ import clinicauna.model.CitaDto;
 import clinicauna.model.ControlDto;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.PacienteDto;
+import clinicauna.model.UsuarioDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -32,7 +33,7 @@ public class Correos extends Thread {
     public Correos() {
         super();
     }
-
+    private UsuarioDto us;
     private String caso;
     private String usuario;
     private String destinatario;
@@ -83,7 +84,7 @@ public class Correos extends Thread {
 
     public void mensajeActivacion(String usuario, String Destinatario, String url) {
         try {
-
+            us = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Properties prop = new Properties();
             prop.setProperty("mail.smtp.auth", "true");
             prop.setProperty("mail.smtp.starttls.enable", "true");
@@ -106,9 +107,17 @@ public class Correos extends Thread {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
-            resp = new Respuesta(true, "Mensaje de Activación enviado exitosamente", "");
+            if (us.getIdioma().equals("I")) {
+                resp = new Respuesta(true, "Activation Message Sent Successfully", "");
+            } else {
+                resp = new Respuesta(true, "Mensaje de Activación enviado exitosamente", "");
+            }
         } catch (MessagingException e) {
-            resp = new Respuesta(false, "Hubo un error al enviar el correo de activación al usuario.", "");
+            if (us.getIdioma().equals("I")) {
+                resp = new Respuesta(false, "There was an error sending the activation message", "");
+            } else {
+                resp = new Respuesta(false, "Hubo un error al enviar el correo de activación al usuario.", "");
+            }
         }
 
     }
@@ -131,7 +140,7 @@ public class Correos extends Thread {
         agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
         start();
     }
-    
+
     public void CorreoControlHilo(String Destinatario) {
         this.destinatario = Destinatario;
         this.caso = "control";
@@ -140,9 +149,9 @@ public class Correos extends Thread {
         start();
     }
 
-    
     public void CorreoControl(String Destinatario) {
         try {
+            us = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             // Propiedades necesarias
             Properties prop = new Properties();
             prop.setProperty("mail.smtp.auth", "true");
@@ -166,16 +175,25 @@ public class Correos extends Thread {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
-            resp = new Respuesta(true, "Correo enviado exitosamente.", "");
+            if (us.getIdioma().equals("I")) {
+                resp = new Respuesta(true, "Mail sent successfully", "");
+            } else {
+                resp = new Respuesta(true, "Correo enviado exitosamente.", "");
+            }
+
         } catch (MessagingException e) {
-            resp = new Respuesta(false, "No se ha enviado un correo de información de cita debido a un problema de red.", e.getLocalizedMessage());
+            if (us.getIdioma().equals("I")) {
+                resp = new Respuesta(false, "Mail was not sent due to a network problem", e.getLocalizedMessage());
+            } else {
+                resp = new Respuesta(false, "No se ha enviado un correo de información de cita debido a un problema de red.", e.getLocalizedMessage());
+            }
         }
 
     }
-    
+
     public void CorreoCita(String Destinatario) {
         try {
-
+            us = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             // Propiedades necesarias
             Properties prop = new Properties();
             prop.setProperty("mail.smtp.auth", "true");
@@ -199,9 +217,17 @@ public class Correos extends Thread {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
-            resp = new Respuesta(true, "Correo enviado exitosamente.", "");
+            if (us.getIdioma().equals("I")) {
+                resp = new Respuesta(true, "Mail sent successfully", "");
+            } else {
+                resp = new Respuesta(true, "Correo enviado exitosamente.", "");
+            }
         } catch (MessagingException e) {
-            resp = new Respuesta(false, "No se ha enviado un correo de información de cita debido a un problema de red.", e.getLocalizedMessage());
+            if (us.getIdioma().equals("I")) {
+                resp = new Respuesta(false, "Mail was not sent due to a network problem", e.getLocalizedMessage());
+            } else {
+                resp = new Respuesta(false, "No se ha enviado un correo de información de cita debido a un problema de red.", e.getLocalizedMessage());
+            }
         }
 
     }
@@ -231,11 +257,18 @@ public class Correos extends Thread {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
-            resp = new Respuesta(true, "Correo enviado exitosamente.", "");
+            if (us.getIdioma().equals("I")) {
+                resp = new Respuesta(true, "Mail sent successfully", "");
+            } else {
+                resp = new Respuesta(true, "Correo enviado exitosamente.", "");
+            }
         } catch (MessagingException e) {
-            resp = new Respuesta(false, "No se ha enviado un correo de recuperación debido a un problema de red.", e.getLocalizedMessage());
+            if (us.getIdioma().equals("I")) {
+                resp = new Respuesta(false, "Mail was not sent due to a network problem", e.getLocalizedMessage());
+            } else {
+                resp = new Respuesta(false, "No se ha podido enviar el correo debido a un problema de red", e.getLocalizedMessage());
+            }
         }
-
     }
 
     public String htmlCorreoCita(CitaDto cita) {
@@ -258,8 +291,8 @@ public class Correos extends Thread {
                 + "				<h2 style=\"color: #3e3e7d; margin: 0 0 7px\">Información de Cita</h2>\n"
                 + "				<p style=\"margin: 2px; font-size: 15px\">\n"
                 + "					Su cita ha sido registrada exitosamente: " + "  " + "<br>" + " Información sobre cita: " + "<br>"
-                + "Médico: " + medico.getUs().getNombre()+ " "+ medico.getUs().getpApellido() + "<br>" + "Fecha: " + agenda.getAgeFecha().toString() +  "<br>" + "Hora de inicio: " + aux.get(0).getEspacio().getEspHoraInicio()+
-                 "<br>" + "Hora Final:" + aux.get(aux.size() - 1).getEspacio().getEspHoraFin() + "<br>" + "Paciente: " + paciente.getNombre() + " " + paciente.getpApellido() +" "+ paciente.getsApellido()+ "<br>" + "Cédula: " + paciente.getCedula()
+                + "Médico: " + medico.getUs().getNombre() + " " + medico.getUs().getpApellido() + "<br>" + "Fecha: " + agenda.getAgeFecha().toString() + "<br>" + "Hora de inicio: " + aux.get(0).getEspacio().getEspHoraInicio()
+                + "<br>" + "Hora Final:" + aux.get(aux.size() - 1).getEspacio().getEspHoraFin() + "<br>" + "Paciente: " + paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido() + "<br>" + "Cédula: " + paciente.getCedula()
                 + "                             <p style=\"margin: 2px; font-size: 15px\">\n"
                 + "				<p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">ClínicaUNA 2019</p>\n"
                 + "			</div>\n"
@@ -271,7 +304,7 @@ public class Correos extends Thread {
                 + "</body>\n"
                 + "</html>";
     }
-    
+
     public String htmlCorreoControl(MedicoDto medico) {
 
         return "<!DOCTYPE html>\n"
@@ -292,10 +325,10 @@ public class Correos extends Thread {
                 + "				<h2 style=\"color: #3e3e7d; margin: 0 0 7px\">Información de Cita</h2>\n"
                 + "				<p style=\"margin: 2px; font-size: 15px\">\n"
                 + "					Control de Cita: " + "  " + "<br>" + " Información sobre control: " + "<br>"
-                + "Médico: " + medico.getUs().getNombre()+ " "+ medico.getUs().getpApellido() + "<br>" + "Fecha: " + control.getCntFecha().toString() +  "<br>" + "Hora de inicio: " + control.getCntHora()+
-                 "<br>" + "Razón de la consulta: " + control.getCntRazonConsulta()+ "<br>" + "Plan de atención: " + control.getCntPlanAtencion() +
-                 "<br>" + "Observaciones: " + control.getCntObservaciones()+ "<br>" + "Examen físico: " + control.getCntExamenFisico() + 
-                "<br>" + "Tratamiento: " + control.getCntTratamiento()
+                + "Médico: " + medico.getUs().getNombre() + " " + medico.getUs().getpApellido() + "<br>" + "Fecha: " + control.getCntFecha().toString() + "<br>" + "Hora de inicio: " + control.getCntHora()
+                + "<br>" + "Razón de la consulta: " + control.getCntRazonConsulta() + "<br>" + "Plan de atención: " + control.getCntPlanAtencion()
+                + "<br>" + "Observaciones: " + control.getCntObservaciones() + "<br>" + "Examen físico: " + control.getCntExamenFisico()
+                + "<br>" + "Tratamiento: " + control.getCntTratamiento()
                 + "                             <p style=\"margin: 2px; font-size: 15px\">\n"
                 + "				<p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">ClínicaUNA 2019</p>\n"
                 + "			</div>\n"

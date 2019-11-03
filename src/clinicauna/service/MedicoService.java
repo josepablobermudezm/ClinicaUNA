@@ -6,6 +6,8 @@
 package clinicauna.service;
 
 import clinicauna.model.MedicoDto;
+import clinicauna.model.UsuarioDto;
+import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.util.HashMap;
@@ -20,6 +22,8 @@ import javax.ws.rs.core.GenericType;
  * @author JORDI RODRIGUEZ
  */
 public class MedicoService {
+
+    private UsuarioDto usuario;
 
     public Respuesta getMedico(String Medico, String clave) {
         try {
@@ -59,6 +63,7 @@ public class MedicoService {
             return new Respuesta(false, "Error obteniendo el Medico.", "getMedico " + ex.getMessage());
         }
     }
+
     /*
     public Respuesta getMedicos(String cedula, String nombre, String pApellido) {
         try {
@@ -80,7 +85,6 @@ public class MedicoService {
             return new Respuesta(false, "Error obteniendo Medicos.", "getMedicos " + ex.getMessage());
         }
     }*/
-
     public Respuesta getMedicos() {
         try {
             Request request = new Request("MedicoController/medicos");
@@ -101,6 +105,7 @@ public class MedicoService {
 
     public Respuesta guardarMedico(MedicoDto Medico) {
         try {
+            usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Request request = new Request("MedicoController/guardar");
             request.post(Medico);
             if (request.isError()) {
@@ -108,16 +113,24 @@ public class MedicoService {
             }
 
             Medico = (MedicoDto) request.readEntity(MedicoDto.class);
-
-            return new Respuesta(true, "Medico Actualizado Correctamente", "", "Medico", Medico);
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(true, "Saved Successfully", "", "Medico", Medico);
+            } else {
+                return new Respuesta(true, "Medico Actualizado Correctamente", "", "Medico", Medico);
+            }
         } catch (Exception ex) {
             Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error guardando el Medico.", ex);
-            return new Respuesta(false, "Error guardando el Medico.", "guardarMedico " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error saving the doctor", "guardarMedico " + ex.getMessage());
+            } else {
+                return new Respuesta(false, "Error guardando el Medico.", "guardarMedico " + ex.getMessage());
+            }
         }
     }
 
     public Respuesta eliminarMedico(Long id) {
         try {
+            usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
             Request request = new Request("MedicoController/eliminar", "/{id}", parametros);
@@ -129,9 +142,12 @@ public class MedicoService {
             return new Respuesta(true, "", "");
         } catch (Exception ex) {
             Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error eliminando el Medico.", ex);
-            return new Respuesta(false, "Error eliminando el Medico.", "eliminarMedico " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error deleting the doctor.", "eliminarMedico " + ex.getMessage());
+            } else {
+                return new Respuesta(false, "Error eliminando el Medico.", "eliminarMedico " + ex.getMessage());
+            }
         }
     }
 
-    
 }

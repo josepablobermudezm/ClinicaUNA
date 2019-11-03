@@ -6,6 +6,8 @@
 package clinicauna.service;
 
 import clinicauna.model.PacienteDto;
+import clinicauna.model.UsuarioDto;
+import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.util.HashMap;
@@ -20,8 +22,10 @@ import javax.ws.rs.core.GenericType;
  * @author JORDI RODRIGUEZ
  */
 public class PacienteService {
-    
-     public Respuesta getPaciente(String usuario, String clave) {
+
+    private UsuarioDto usuario;
+
+    public Respuesta getPaciente(String usuario, String clave) {
         try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("usuario", usuario);
@@ -59,7 +63,7 @@ public class PacienteService {
             return new Respuesta(false, "Error obteniendo el Paciente.", "getPaciente " + ex.getMessage());
         }
     }
-    
+
     public Respuesta getPacientes(String cedula, String nombre, String pApellido) {
         try {
             Map<String, Object> parametros = new HashMap<>();
@@ -72,7 +76,7 @@ public class PacienteService {
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-             List<PacienteDto> Pacientes = (List<PacienteDto>) request.readEntity(new GenericType<List<PacienteDto>>() {
+            List<PacienteDto> Pacientes = (List<PacienteDto>) request.readEntity(new GenericType<List<PacienteDto>>() {
             });
             return new Respuesta(true, "", "", "Pacientes", Pacientes);
         } catch (Exception ex) {
@@ -95,34 +99,42 @@ public class PacienteService {
 
             return new Respuesta(true, "", "", "Pacientes", Pacientes);
         } catch (Exception ex) {
-            return new Respuesta(false, "", "", "Pacientes","getPacientes " + ex.getMessage());
+            return new Respuesta(false, "", "", "Pacientes", "getPacientes " + ex.getMessage());
         }
     }
 
     public Respuesta guardarPaciente(PacienteDto Paciente) {
         try {
-            
+            usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Request request = new Request("PacienteController/guardar");
             request.post(Paciente);
-            
+
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            
+
             Paciente = (PacienteDto) request.readEntity(PacienteDto.class);
-            
-            return new Respuesta(true, "Guardado exitosamente", request.toString(), "Paciente", Paciente);
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(true, "Saved Successfully", request.toString(), "Paciente", Paciente);
+            } else {
+                return new Respuesta(true, "Guardado exitosamente", request.toString(), "Paciente", Paciente);
+            }
         } catch (Exception ex) {
             Logger.getLogger(UsuarioService.class.getName()).log(Level.SEVERE, "Error guardando el Paciente.", ex);
-            return new Respuesta(false, "Error guardando el Paciente.", "guardarPaciente " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error saving the patient", "guardarPaciente " + ex.getMessage());
+            } else {
+                return new Respuesta(false, "Error guardando el Paciente.", "guardarPaciente " + ex.getMessage());
+            }
         }
     }
 
     public Respuesta eliminarPaciente(Long id) {
         try {
+            usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
-            Request request = new Request("PacienteController/eliminar","/{id}",parametros);
+            Request request = new Request("PacienteController/eliminar", "/{id}", parametros);
             request.delete();
 
             if (request.isError()) {
@@ -131,7 +143,11 @@ public class PacienteService {
             return new Respuesta(true, "", "");
         } catch (Exception ex) {
             Logger.getLogger(PacienteService.class.getName()).log(Level.SEVERE, "Error eliminando el Paciente.", ex);
-            return new Respuesta(false, "Error eliminando el Paciente.", "eliminarPaciente " + ex.getMessage());
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(false, "There was an error deleting the patient", "eliminarPaciente " + ex.getMessage());
+            } else {
+                return new Respuesta(false, "Error eliminando el Paciente.", "eliminarPaciente " + ex.getMessage());
+            }
         }
     }
 }

@@ -1,4 +1,3 @@
-
 package clinicauna.controller;
 
 import clinicauna.model.ExamenDto;
@@ -71,21 +70,22 @@ public class ExamenesController extends Controller {
     private JFXButton btnEliminar;
     private UsuarioDto usuario;
     private Idioma idioma;
+
     @Override
     public void initialize() {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-        if(usuario.getIdioma().equals("I")){
+        if (usuario.getIdioma().equals("I")) {
             this.Titulo.setText(idioma.getProperty("Examenes"));
             this.btnCancelar.setText(idioma.getProperty("Cancelar"));
             this.btnEditar.setText(idioma.getProperty("Editar"));
             this.btnEliminar.setText(idioma.getProperty("Eliminar"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
-            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar")+ " " + idioma.getProperty("Registro"));
+            this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
             this.COL_FECHA_EXA.setText(idioma.getProperty("Fecha"));
-            this.COL_NOMBRE_EXA.setText(idioma.getProperty("Examen") +" "+ idioma.getProperty("Nombre"));
+            this.COL_NOMBRE_EXA.setText(idioma.getProperty("Examen") + " " + idioma.getProperty("Nombre"));
             this.txtAnotaciones.setPromptText(idioma.getProperty("Anotaciones"));
-            this.txtNombreExamen.setPromptText(idioma.getProperty("Examen") +" "+ idioma.getProperty("Nombre"));
+            this.txtNombreExamen.setPromptText(idioma.getProperty("Examen") + " " + idioma.getProperty("Nombre"));
             this.Fecha.setPromptText(idioma.getProperty("Fecha"));
         }
         examenes2 = new ArrayList();
@@ -119,9 +119,6 @@ public class ExamenesController extends Controller {
 
     @FXML
     private void Eliminar(ActionEvent event) {
-        
-        
-        
     }
 
     @FXML
@@ -138,7 +135,11 @@ public class ExamenesController extends Controller {
                     examenDto = new ExamenDto(id, examen, fecha, anotaciones, version, expedienteDto);
                     try {
                         resp = examenService.guardarExamen(examenDto);
-                        ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                        } else {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        }
                         limpiarRegistro();
                         examenes = (ArrayList) examenService.getExamenes().getResultado("Examenes");
                         examenes2.clear();
@@ -149,17 +150,34 @@ public class ExamenesController extends Controller {
                         items = FXCollections.observableArrayList(examenes2);
                         table.setItems(items);
                     } catch (Exception e) {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el paciente...");
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the exam");
+                        } else {
+                            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el examen");
+                        }
                     }
                 } else {
-                    ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
-                            + "verifica que todos los datos esten llenos.");
+                    if (usuario.getIdioma().equals("I")) {
+                        ms.showModal(Alert.AlertType.ERROR, "User Information", this.getStage(), "There are erroneous data in the registry, "
+                                + "Verify that all data is full");
+                    } else {
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                                + "verifica que todos los datos esten llenos.");
+                    }
                 }
+            } else {
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the exam");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
+                }
+            }
+        } else {
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the exam");
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
             }
-        } else {
-            ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un antecedente");
         }
     }
 
@@ -174,8 +192,11 @@ public class ExamenesController extends Controller {
             examenDto = new ExamenDto(null, nombre, fecha, anotaciones, version, expedienteDto);
             try {
                 resp = examenService.guardarExamen(examenDto);
-
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                }
                 limpiarRegistro();
                 examenes = (ArrayList) examenService.getExamenes().getResultado("Examenes");
                 examenes2.clear();
@@ -186,12 +207,21 @@ public class ExamenesController extends Controller {
                 items = FXCollections.observableArrayList(examenes2);
                 table.setItems(items);
             } catch (Exception e) {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el examen....");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the exam");
+                } else {
+                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar el examen....");
+                }
             }
 
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
-                    + "verifica que todos los datos esten llenos.");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "User Information", this.getStage(), "There are erroneous data in the registry, "
+                        + "Verify that all data is full");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion acerca del usuario guardado", this.getStage(), "Existen datos erroneos en el registro, "
+                        + "verifica que todos los datos esten llenos.");
+            }
         }
     }
 
