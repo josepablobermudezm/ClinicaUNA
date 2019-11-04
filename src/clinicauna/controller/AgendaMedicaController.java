@@ -255,7 +255,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             *   Es necesario seleccionar un médico si el usuario no es un médico, como lo realizamos mediante un combobox, realizamos un busqueda a 
             *   partir de la cedula para obtener el medicoDto y utilizarlo posteriormente
              */
-        if ((!usuarioDto.getTipoUsuario().equals("M") && AppContext.getInstance().get("MedicoDto") == null)) {
+            if ((!usuarioDto.getTipoUsuario().equals("M") && AppContext.getInstance().get("MedicoDto") == null)) {
                 String medico = ComboMedico.getSelectionModel().getSelectedItem();
                 medico.chars().forEach(x -> {
                     if (((char) x) == ':') {
@@ -264,7 +264,19 @@ public class AgendaMedicaController extends Controller implements Initializable 
                         cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
                     }
                 });
+                
                 medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
+                inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
+                finJornada = LocalTime.parse(medicoDto.getFinJornada());
+                //Creo las conversiones de las horas del medico con formato
+                LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
+                LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
+                String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
+                String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
+                medicoDto.setInicioJornada(inicioS);
+                medicoDto.setFinJornada(finS);
+            } else{
+                medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
                 inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
                 finJornada = LocalTime.parse(medicoDto.getFinJornada());
                 //Creo las conversiones de las horas del medico con formato

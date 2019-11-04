@@ -16,6 +16,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -96,7 +97,7 @@ public class ReportesController extends Controller {
     private TableColumn<MedicoDto, String> col_codigo;
     @FXML
     private TableColumn<MedicoDto, String> Col_Carne;
-
+    private static MedicoDto m;
     @Override
     public void initialize() {
         colPacNombre.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre() + " " + value.getValue().getpApellido() + " " + value.getValue().getsApellido()));
@@ -120,8 +121,8 @@ public class ReportesController extends Controller {
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
             this.Titulo.setText(idioma.getProperty("Reportes"));
-            this.lblTituloMedico.setText(idioma.getProperty("Medico")+" "+idioma.getProperty("Reporte"));
-            this.lblTituloPaciente.setText(idioma.getProperty("PacienteB")+" "+idioma.getProperty("Reporte"));
+            this.lblTituloMedico.setText(idioma.getProperty("Medico") + " " + idioma.getProperty("Reporte"));
+            this.lblTituloPaciente.setText(idioma.getProperty("PacienteB") + " " + idioma.getProperty("Reporte"));
             this.txtApellido.setPromptText(idioma.getProperty("Apellido"));
             this.txtCarne.setPromptText(idioma.getProperty("Carné"));
             this.txtCodigo.setPromptText(idioma.getProperty("Código"));
@@ -134,10 +135,16 @@ public class ReportesController extends Controller {
             this.btnGenerarReporteMed.setText(idioma.getProperty("Agenda"));
             this.btnGenerarReportePac.setText(idioma.getProperty("Generar"));
             this.btnPorcentajeCitas.setText(idioma.getProperty("RPCitas"));
-            this.btnLimpiar.setText("Limpiar"+" "+idioma.getProperty("Registro"));
-            this.DateFechaInicio.setPromptText(idioma.getProperty("Inicio")+" "+idioma.getProperty("Fecha"));
-            this.DateFechaFin.setPromptText(idioma.getProperty("Final")+" "+idioma.getProperty("Fecha"));
-            
+            this.btnLimpiar.setText("Limpiar" + " " + idioma.getProperty("Registro"));
+            this.DateFechaInicio.setPromptText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Fecha"));
+            this.DateFechaFin.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Fecha"));
+        }
+
+        if ("M".equals(usuario.getTipoUsuario())) {
+            this.tvMedico.setVisible(false);
+            this.txtFolio.setVisible(false);
+            this.txtCodigo.setVisible(false);
+            this.txtCarne.setVisible(false);
         }
 
     }
@@ -157,7 +164,26 @@ public class ReportesController extends Controller {
                         new Mensaje().showModal(Alert.AlertType.ERROR, "Reporte", this.getStage(), resp.getMensaje());
                     }
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.WARNING, "Generacion de Reporte", this.getStage(), "Debes Seleccionar un medico primero para generar un reporte");
+                    if (usuario.getTipoUsuario().equals("M")) {
+                        Respuesta r = medService.getMedicos();
+                        ArrayList<MedicoDto> mds = (ArrayList<MedicoDto>) r.getResultado("Medicos");
+                        
+                        mds.stream().forEach(x->{
+                            if(Objects.equals(x.getUs().getID(), usuario.getID())){
+                                m = x;
+                            }
+                        });
+                        String FechaInicio = DateFechaInicio.getValue().toString();
+                        String FechaFinal = DateFechaFin.getValue().toString();
+                        Respuesta resp = new AgendaService().getAgendas(FechaInicio, FechaFinal, m.getFolio());
+                        if (resp.getEstado()) {
+                            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Reporte", this.getStage(), resp.getMensaje());
+                        } else {
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Reporte", this.getStage(), resp.getMensaje());
+                        }
+                    } else {
+                        new Mensaje().showModal(Alert.AlertType.WARNING, "Generacion de Reporte", this.getStage(), "Debes Seleccionar un medico primero para generar un reporte");
+                    }
                 }
             } else {
                 new Mensaje().showModal(Alert.AlertType.WARNING, "Reporte", this.getStage(), "La fecha fin del reporte no puede estar antes que la de inicio");
@@ -190,7 +216,7 @@ public class ReportesController extends Controller {
             PacienteDto paciente = tvPaciente.getSelectionModel().getSelectedItem();
             txtNombre.setText(paciente.getNombre());
             txtCedula.setText(paciente.getCedula());
-            txtApellido.setText(paciente.getpApellido()+" "+paciente.getsApellido());
+            txtApellido.setText(paciente.getpApellido() + " " + paciente.getsApellido());
         }
     }
 
