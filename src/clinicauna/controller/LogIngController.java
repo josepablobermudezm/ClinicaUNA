@@ -229,7 +229,7 @@ public class LogIngController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        medicoDto = new MedicoDto();
+        /*medicoDto = new MedicoDto();
         MedicoService = new MedicoService();
         resp = MedicoService.getMedicos();
         medicosList = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
@@ -240,7 +240,7 @@ public class LogIngController extends Controller implements Initializable {
         espacioList = ((ArrayList<EspacioDto>) respEspacio.getResultado("Espacios"));
         agendaList = ((ArrayList<AgendaDto>) respAgenda.getResultado("Agendas"));
         citasService = new CitaService();
-        citas = new ArrayList();
+        citas = new ArrayList();*/
 
         //Envia correos a las citas del día de mañana
         enviarCorreos();
