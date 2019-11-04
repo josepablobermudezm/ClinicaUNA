@@ -14,6 +14,7 @@ import clinicauna.service.AgendaService;
 import clinicauna.service.EspacioService;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
+import clinicauna.util.FlowController;
 import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
@@ -59,6 +60,7 @@ public class MedicosController extends Controller {
     @FXML
     private JFXButton btnEliminar1;
     private JFXTextField txtFiltroEmpleado;
+    @FXML
     private JFXButton btnBuscar;
     @FXML
     private TableColumn<MedicoDto, String> COL_CODIGO_MEDICOS;
@@ -97,9 +99,8 @@ public class MedicosController extends Controller {
     @FXML
     private JFXButton btnLimpiarRegistro;
     @FXML
-    private ImageView omg;
-    @FXML
     private TableColumn<MedicoDto, String> COL_NOMBRE_MEDICOS;
+    private MedicoDto med;
     private ArrayList<EspacioDto> espacioListAux;//en esta lista voy a guardar todos los espacios que tenga el médico
     private ArrayList<AgendaDto> agendaList;
     private ArrayList<EspacioDto> espacioList;
@@ -125,7 +126,7 @@ public class MedicosController extends Controller {
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
             this.btnEditar1.setText(idioma.getProperty("Editar"));
-            //this.btnBuscar.setText(idioma.getProperty("Buscar"));
+            this.btnBuscar.setText(idioma.getProperty("Buscar"));
             this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
             this.COL_CODIGO_MEDICOS.setText(idioma.getProperty("Código"));
             this.COL_CARNE_MEDICOS.setText(idioma.getProperty("Carné"));
@@ -165,8 +166,8 @@ public class MedicosController extends Controller {
     @FXML
     private void editar(ActionEvent event) {
 
-        if (table.getSelectionModel() != null) {
-            if (table.getSelectionModel().getSelectedItem() != null) {
+        if (table.getSelectionModel() != null || AppContext.getInstance().get("Med") != null) {
+            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Med") != null) {
                 if (registroCorrecto()) {
                     Long id = medicoDto.getID();
                     String folio = txtFolio.getText();
@@ -240,11 +241,19 @@ public class MedicosController extends Controller {
     @FXML
     private void eliminar(ActionEvent event) {
 
-        if (table.getSelectionModel() != null) {
-            if (table.getSelectionModel().getSelectedItem() != null) {
-                medicoService.eliminarMedico(table.getSelectionModel().getSelectedItem().getID());
-                ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), "Datos Eliminados correctamente");
-
+        if (table.getSelectionModel() != null || AppContext.getInstance().get("Med") != null) {
+            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Med") != null) {
+                Respuesta r;
+                if (AppContext.getInstance().get("Med") != null && table.getSelectionModel().getSelectedItem() == null) {
+                    r = medicoService.eliminarMedico(medicoDto.getID());
+                } else {
+                    r = medicoService.eliminarMedico(table.getSelectionModel().getSelectedItem().getID());
+                }
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Information", this.getStage(), r.getMensaje());
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), "Datos Eliminados correctamente");
+                }
                 Respuesta respuesta = medicoService.getMedicos();
                 items.clear();
                 medicos = (ArrayList) respuesta.getResultado("Medicos");
@@ -326,5 +335,27 @@ public class MedicosController extends Controller {
         txtFolio.clear();
         timePickerInicio.setValue(null);
         timePickerfinal.setValue(null);
+    }
+
+    @FXML
+    private void BuscarMedico(ActionEvent event) {
+        AppContext.getInstance().delete("Med");
+        FlowController.getInstance().goViewInWindowModal("BuscarMedico", this.getStage(), false);
+        DatosMedico();
+    }
+
+    private void DatosMedico() {
+        if (AppContext.getInstance().get("Med") != null) {
+            med = (MedicoDto) AppContext.getInstance().get("Med");
+            medicoDto = med;
+            this.txtCarne.setText(med.getCarne());
+            this.txtCodigo.setText(med.getCodigo());
+            this.txtEspacio.setText(String.valueOf(med.getEspacios()));
+            this.txtFolio.setText(med.getFolio());
+            LocalTime localTimeObj = LocalTime.parse(med.getInicioJornada());
+            this.timePickerInicio.setValue(localTimeObj);
+            LocalTime localTimeObj1 = LocalTime.parse(med.getFinJornada());
+            this.timePickerfinal.setValue(localTimeObj1);
+        }
     }
 }
