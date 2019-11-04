@@ -206,8 +206,14 @@ public class LogIngController extends Controller implements Initializable {
         espacioService = new EspacioService();
         respAgenda = agendaService.getAgendas();
         respEspacio = espacioService.getEspacios();
-        espacioList = ((ArrayList<EspacioDto>) respEspacio.getResultado("Espacios"));
-        agendaList = ((ArrayList<AgendaDto>) respAgenda.getResultado("Agendas"));
+        if (respEspacio.getEstado()) {
+            espacioList = ((ArrayList) respEspacio.getResultado("Espacios"));
+        } else {
+            System.out.println(respEspacio.getMensajeInterno());
+            System.out.println(respEspacio.getMensaje());
+        }
+
+        agendaList = ((ArrayList) respAgenda.getResultado("Agendas"));
         citasService = new CitaService();
         citas = new ArrayList();
 
