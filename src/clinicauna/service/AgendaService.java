@@ -58,9 +58,12 @@ public class AgendaService {
                 return new Respuesta(false, request.getError(), "");
             }
             byte[] byteArray;
-
-            File archivo = new File("reportes\\ReporteAgenda.pdf");
-
+            
+            File carpeta = new File("C:\\reporte\\");
+            carpeta.mkdir();
+            //Guardo el pdf en el archivo
+            File archivo = new File("C:\\reporte\\ReporteAgenda.pdf");
+            
             byte[] bytes = (byte[]) request.readEntity(byte[].class);
             
             System.out.println(archivo.getAbsolutePath());
