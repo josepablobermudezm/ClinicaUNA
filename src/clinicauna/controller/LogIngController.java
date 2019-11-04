@@ -165,7 +165,36 @@ public class LogIngController extends Controller implements Initializable {
             Login();
         }
     }
-
+    private void enviarCorreos(){
+        /*
+        *   Guardo en la lista de citas todas las citas que pertenezcan a la agenda del día de mañana,luego agrego los datos
+        *   que no esten ya repetidos en la lista de citas para evitar enviarle correos a la misma persona por tener varios espacios
+         */
+        agendaList.stream().forEach(agenda -> {
+            if (agenda.getAgeFecha().isEqual(LocalDate.now().plusDays(1))) {
+                espacioList.stream().forEach(espacio-> {
+                    if(!citas.isEmpty()){
+                        //Pregunto si la cita no existe en la lista 
+                        if(citas.stream().allMatch(x->x.getID().equals(espacio.getEspCita().getID()))){
+                            //Pregunto si el correo no ha sido enviado
+                            if(espacio.getEspCita().getCorreoEnviado().equals("N")){
+                                citas.add(espacio.getEspCita());
+                            }
+                        }
+                    }else{
+                        citas.add(espacio.getEspCita());
+                    }
+                });
+            }
+        });
+        //Envia los correos por medio de hilos para que no afecten al programa
+        if(!citas.isEmpty()){
+            citas.stream().forEach((cita) -> {
+                Correos correo = new Correos();
+                correo.CorreoCitaHiloRecordatorio(cita.getCorreo(),cita);
+            });
+        }
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         agendaService = new AgendaService();
@@ -176,39 +205,10 @@ public class LogIngController extends Controller implements Initializable {
         agendaList = ((ArrayList<AgendaDto>) respAgenda.getResultado("Agendas"));
         citasService = new CitaService();
         citas = new ArrayList();
-        /*
-        *   Guardo en la lista de citas todas las citas que pertenezcan a la agenda del día de mañana,luego agrego los datos
-        *   que no esten ya repetidos en la lista de citas para evitar enviarle correos a la misma persona por tener varios espacios
-         */
-        agendaList.stream().forEach(x -> {
-            if (x.getAgeFecha().equals(LocalDate.now().plusDays(1))) {
-                espacioList.stream().forEach(y -> {
-                    if (!citas.stream().filter(w -> {
-                        return Objects.equals(w.getID(), y.getEspCita().getID());
-                    }).findAny().isPresent()) {
-                        citas.add(y.getEspCita());
-                    }
-                });
-            }
-        });
-        /*
-        *   En el caso de que no le haya enviado el correo anteriormente entonces le envía el correo
-         */
-        citas.stream().forEach(x -> {
-            if (x.getCorreoEnviado().equals("N")) {
-                /*Correos mail = new Correos();
-                mail.CorreoCitaHiloRecordatorio(x.getCorreo());
-                FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
-                r = mail.getResp();*/
-                /*if (r.getEstado()) {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Recuperando contraseña", this.getStage(), "Se envió una contraseña temporal a este correo");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(), r.getMensaje());
-                }*/
-                //x.setCorreoEnviado("S");
-                //citasService.guardarCita(x);
-            }
-        });
+        
+        //Envia correos a las citas del dia de manana
+        enviarCorreos();
+       
         Formato();
         Image imgLogo;
         try {
@@ -255,4 +255,5 @@ public class LogIngController extends Controller implements Initializable {
         } catch (Exception e) {
         }
     }
+    
 }

@@ -20,7 +20,6 @@ public class ClinicaUna extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        System.out.println("LocalDate "+  LocalDate.now());
         stage.setTitle("Clinica UNA");
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         
@@ -28,9 +27,7 @@ public class ClinicaUna extends Application {
         
         
         FlowController.getInstance().goViewInWindowTransparent("LogIn"); 
-        //FlowController.getInstance().goViewInWindowTransparent("VistaCargando");
-        //Correos.getInstance().start();
-        //correrHilo();
+        
     }
 
     
