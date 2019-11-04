@@ -131,6 +131,8 @@ public class MedicosController extends Controller {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
+            this.btninactivo.setText(idioma.getProperty("Inactivo"));
+            this.btnActivo.setText(idioma.getProperty("Activo"));
             this.btnEditar1.setText(idioma.getProperty("Editar"));
             this.btnBuscar.setText(idioma.getProperty("Buscar"));
             this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
