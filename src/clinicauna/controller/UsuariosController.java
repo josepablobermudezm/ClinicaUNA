@@ -280,6 +280,7 @@ public class UsuariosController extends Controller {
         btnAdministrador.setSelected(true);
         btnEspanol.setSelected(true);
         txtClave.clear();
+        AppContext.getInstance().delete("Us");
     }
 
     @FXML
@@ -291,7 +292,7 @@ public class UsuariosController extends Controller {
             /*
                 Si el tipo de usuario es un médico tenemos que abrir la ventana de médicos para que le agregue la información necesaria
             */
-            if(tipoUsuario.equals("M")){
+            if (tipoUsuario.equals("M")) {
                 FlowController.getInstance().goViewInWindowModal("GuardarMedicos", this.getStage(), false);
             }
             //validarmos que se haya creado correctamente el médico
@@ -328,7 +329,6 @@ public class UsuariosController extends Controller {
                                 AppContext.getInstance().delete("Medico");
                             }
                         }
-
                         Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
                         //Envia correo de activación
                         Correos mail = new Correos();
@@ -398,6 +398,11 @@ public class UsuariosController extends Controller {
 
     @FXML
     private void DatosUsuario(MouseEvent event) {
+        /*
+        *   Cargo los datos cuando se seleccionan los datos desde el tableview y limpio el AppContext de Us en el caso de que se haya usado en la
+        *   vista de buscar para que no genere problemas
+        */
+        AppContext.getInstance().delete("Us");
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 usuarioDto = table.getSelectionModel().getSelectedItem();
@@ -413,12 +418,16 @@ public class UsuariosController extends Controller {
                 } else {
                     btnIngles.setSelected(true);
                 }
-                if (usuarioDto.getTipoUsuario().equals("A")) {
-                    btnAdministrador.setSelected(true);
-                } else if (usuarioDto.getTipoUsuario().equals("M")) {
-                    btnMedico.setSelected(true);
-                } else {
-                    btnRecepcionista.setSelected(true);
+                switch (usuarioDto.getTipoUsuario()) {
+                    case "A":
+                        btnAdministrador.setSelected(true);
+                        break;
+                    case "M":
+                        btnMedico.setSelected(true);
+                        break;
+                    default:
+                        btnRecepcionista.setSelected(true);
+                        break;
                 }
             }
         }
@@ -426,17 +435,21 @@ public class UsuariosController extends Controller {
 
     @FXML
     private void crearMedico(ActionEvent event) {
-        
+
     }
 
     @FXML
     private void BuscarUsuarios(ActionEvent event) {
+        table.getSelectionModel().clearSelection();
         AppContext.getInstance().delete("Us");
         FlowController.getInstance().goViewInWindowModal("BuscarUsuario", this.getStage(), false);
         DatosUsuario();
     }
 
     public void DatosUsuario() {
+        /*
+        *   Cargo los datos cuando se seleccionan desde la vista de Buscar usuarios
+        */
         if (AppContext.getInstance().get("Us") != null) {
             us = (UsuarioDto) AppContext.getInstance().get("Us");
             usuarioDto = us;
@@ -447,6 +460,22 @@ public class UsuariosController extends Controller {
             this.txtNombreUsuario.setText(us.getNombreUsuario());
             this.txtPApellido.setText(us.getpApellido());
             this.txtSApellido.setText(us.getsApellido());
+            if (us.getIdioma().equals("E")) {
+                btnEspanol.setSelected(true);
+            } else {
+                btnIngles.setSelected(true);
+            }
+            switch (us.getTipoUsuario()) {
+                case "A":
+                    btnAdministrador.setSelected(true);
+                    break;
+                case "M":
+                    btnMedico.setSelected(true);
+                    break;
+                default:
+                    btnRecepcionista.setSelected(true);
+                    break;
+            }
         }
     }
 }

@@ -296,11 +296,16 @@ public class MedicosController extends Controller {
 
     @FXML
     private void DatosMedico(MouseEvent event) {
+        /*
+        *   Cargo los datos cuando se seleccionan los datos desde el tableview y limpio el AppContext de Med en el caso de que se haya usado en la
+        *   vista de buscar para que no genere problemas
+        */
+        AppContext.getInstance().delete("Med");
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 /*
                     Seteo los datos del médico seleccionado en cada textfield
-                 */
+                */
                 medicoDto = table.getSelectionModel().getSelectedItem();
                 txtCodigo.setText(medicoDto.getCodigo());
                 txtCarne.setText(medicoDto.getCarne());
@@ -311,8 +316,8 @@ public class MedicosController extends Controller {
                 LocalTime localTimeObj1 = LocalTime.parse(medicoDto.getFinJornada());
                 timePickerfinal.setValue(localTimeObj1);
                 /*
-                    guardo todos los espacios que pertenecen al médico en esta lista
-                 */
+                    Guardo todos los espacios que pertenecen al médico en esta lista
+                */
                 espacioListAux.clear();
                 agendaList.stream().forEach(x -> {
                     if (x.getAgeMedico().getID().equals(medicoDto.getID())) {
@@ -339,12 +344,16 @@ public class MedicosController extends Controller {
 
     @FXML
     private void BuscarMedico(ActionEvent event) {
+        table.getSelectionModel().clearSelection();
         AppContext.getInstance().delete("Med");
         FlowController.getInstance().goViewInWindowModal("BuscarMedico", this.getStage(), false);
         DatosMedico();
     }
 
     private void DatosMedico() {
+        /*
+        *   Cargo los datos cuando se seleccionan desde la vista de Buscar medicos
+        */
         if (AppContext.getInstance().get("Med") != null) {
             med = (MedicoDto) AppContext.getInstance().get("Med");
             medicoDto = med;

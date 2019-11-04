@@ -77,12 +77,12 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="166.0" prefWidth="1030.0" spacing="80.0">
                      <children>
-                        <HBox prefHeight="166.0" prefWidth="433.0" spacing="20.0">
+                        <HBox prefHeight="166.0" prefWidth="535.0" spacing="20.0">
                            <padding>
                               <Insets left="20.0" right="20.0" top="40.0" />
                            </padding>
                            <children>
-                              <JFXButton fx:id="btnBuscar" onAction="#BuscarPaciente" prefHeight="25.0" prefWidth="57.0" style="-fx-cursor: hand;" text="Buscar" />
+                              <JFXButton fx:id="btnBuscar" onAction="#BuscarPaciente" prefHeight="31.0" prefWidth="68.0" style="-fx-cursor: hand;" text="Buscar" />
                               <JFXButton fx:id="btnEditar11" onAction="#editar" style="-fx-cursor: hand;" text="Editar" />
                               <JFXButton fx:id="btnEliminar11" onAction="#eliminar" style="-fx-cursor: hand;" text="Eliminar" />
                               <JFXButton fx:id="btnLimpiarRegistro1" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
