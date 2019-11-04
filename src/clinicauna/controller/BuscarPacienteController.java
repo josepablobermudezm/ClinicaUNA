@@ -72,7 +72,7 @@ public class BuscarPacienteController extends Controller {
     @FXML
     private void MostrarDatos(MouseEvent event) {
         if(Table_Buscar.getSelectionModel()!= null && Table_Buscar.getSelectionModel().getSelectedItem()!=null){
-            AppContext.getInstance().set("Paciente", Table_Buscar.getSelectionModel().getSelectedItem());
+            AppContext.getInstance().set("Pact", Table_Buscar.getSelectionModel().getSelectedItem());
             //PacienteDto paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
             FlowController.getInstance().initialize();
             this.getStage().close();

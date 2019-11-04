@@ -159,8 +159,8 @@ public class PacientesController extends Controller {
 
     @FXML
     private void editar(ActionEvent event) {
-        if (table.getSelectionModel() != null || AppContext.getInstance().get("Paciente") != null) {
-            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Paciente") != null) {
+        if (table.getSelectionModel() != null || AppContext.getInstance().get("Pact") != null) {
+            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Pact") != null) {
                 if (registroCorrecto()) {
                     Long id = pacienteDto.getID();
                     String nombre = txtNombre.getText();
@@ -219,10 +219,10 @@ public class PacientesController extends Controller {
 
     @FXML
     private void eliminar(ActionEvent event) {
-        if (table.getSelectionModel() != null || AppContext.getInstance().get("Paciente") != null) {
-            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Paciente") != null) {
+        if (table.getSelectionModel() != null || AppContext.getInstance().get("Pact") != null) {
+            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Pact") != null) {
                Respuesta r;
-                if (AppContext.getInstance().get("Paciente") != null && table.getSelectionModel().getSelectedItem() == null) {
+                if (AppContext.getInstance().get("Pact") != null && table.getSelectionModel().getSelectedItem() == null) {
                      r = pacienteService.eliminarPaciente(pacienteDto.getID());
                 } else {
                      r = pacienteService.eliminarPaciente(table.getSelectionModel().getSelectedItem().getID());
@@ -349,7 +349,7 @@ public class PacientesController extends Controller {
         *   Cargo los datos cuando se seleccionan los datos desde el tableview y limpio el AppContext de Paciente en el caso de que se haya usado en la
         *   vista de buscar para que no genere problemas
         */
-        AppContext.getInstance().delete("Paciente");
+        AppContext.getInstance().delete("Pact");
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 pacienteDto = table.getSelectionModel().getSelectedItem();
@@ -396,7 +396,7 @@ public class PacientesController extends Controller {
         *   Limpio el tableview en el caso de que tenga alguno otro objeto seleccionado
         */
         table.getSelectionModel().clearSelection();
-        AppContext.getInstance().delete("Paciente");
+        AppContext.getInstance().delete("Pact");
         FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
         DatosPaciente();
     }
@@ -405,8 +405,8 @@ public class PacientesController extends Controller {
         /*
         *   Cargo los datos cuando se seleccionan desde la vista de Buscar pacientes
         */
-        if (AppContext.getInstance().get("Paciente") != null) {
-            pac = (PacienteDto) AppContext.getInstance().get("Paciente");
+        if (AppContext.getInstance().get("Pact") != null) {
+            pac = (PacienteDto) AppContext.getInstance().get("Pact");
             pacienteDto = pac;
             this.txtCedula.setText(pac.getCedula());
             this.txtCorreo.setText(pac.getCorreo());

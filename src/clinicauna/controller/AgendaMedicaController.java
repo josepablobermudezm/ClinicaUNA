@@ -94,7 +94,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
     private Label lblMes;
     @FXML
     private Label lblDia;
-    private Label lblHora;
     private MedicoDto medicoDto;
     private MedicoService medicoService;
     private Respuesta resp;
@@ -124,8 +123,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
     @FXML
     private Label lblCancelada;
     private Mensaje ms;
-    @FXML
-    private JFXButton btnBuscar;
     private boolean combo = true;
 
     @Override
@@ -139,10 +136,8 @@ public class AgendaMedicaController extends Controller implements Initializable 
             if (this.DatePicker.getValue() != null) {
                 AppContext.getInstance().delete("MedicoDto");
                 //this.ComboMedico.setDisable(false);
-                this.btnBuscar.setDisable(false);
             } else {
                 //this.ComboMedico.setDisable(true);
-                this.btnBuscar.setDisable(true);
             }
         } else if (usuarioDto.getTipoUsuario().equals("M")) {
             inicio = false;
@@ -173,7 +168,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
             this.DatePicker.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
             this.lblAnno.setText(idioma.getProperty("Año"));
             this.lblDia.setText(idioma.getProperty("Dia"));
-            this.lblHora.setText(idioma.getProperty("Hora"));
             this.lblMes.setText(idioma.getProperty("Mes"));
             this.Titulo.setText(idioma.getProperty("Agenda"));
             this.lblProgramada.setText(idioma.getProperty("Programada"));
@@ -661,13 +655,4 @@ public class AgendaMedicaController extends Controller implements Initializable 
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    @FXML
-    private void Buscar(ActionEvent event) {
-        //ComboMedico.setSelectionModel(null);
-        /*AppContext.getInstance().delete("Med");
-        FlowController.getInstance().goViewInWindowModal("BuscarMedico", this.getStage(), false);
-        medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
-        initialize();
-        SeleccionarMedico();*/
-    }
 }
