@@ -10,6 +10,11 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,6 +153,35 @@ public class PacienteService {
             } else {
                 return new Respuesta(false, "Error eliminando el Paciente.", "eliminarPaciente " + ex.getMessage());
             }
+        }
+    }
+
+    public Respuesta getReporteControl(String cedula) {
+        try {
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("cedula", cedula);
+            Request request = new Request("PacienteController/reporte", "/{cedula}", parametros);
+            request.get();
+
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+
+            File carpeta = new File("C:\\reporte\\");
+            carpeta.mkdir();
+            //Guardo el pdf en el archivo
+            File archivo = new File("C:\\reporte\\ReporteControl.pdf");
+
+            byte[] bytes = (byte[]) request.readEntity(byte[].class);
+
+            Path path = Paths.get(archivo.getAbsolutePath());
+            Files.write(path, bytes);
+
+            Runtime.getRuntime().exec("cmd /c start " + archivo);
+            return new Respuesta(true, "Reporte Generado Exitosamente", "");
+        } catch (IOException ex) {
+            Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo Agendas.", ex);
+            return new Respuesta(false, "Error obteniendo Agendas.", "getAgendas " + ex.getMessage());
         }
     }
 }

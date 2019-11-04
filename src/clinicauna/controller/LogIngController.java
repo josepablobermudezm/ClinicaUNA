@@ -6,7 +6,6 @@
 package clinicauna.controller;
 
 import clinicauna.model.UsuarioDto;
-import clinicauna.report.ReportManager;
 import clinicauna.service.AgendaService;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;

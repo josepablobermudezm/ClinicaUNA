@@ -6,7 +6,6 @@
 package clinicauna.service;
 
 import clinicauna.model.AgendaDto;
-import clinicauna.report.ReportManager;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.io.File;
@@ -57,7 +56,6 @@ public class AgendaService {
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            byte[] byteArray;
             
             File carpeta = new File("C:\\reporte\\");
             carpeta.mkdir();
@@ -66,13 +64,11 @@ public class AgendaService {
             
             byte[] bytes = (byte[]) request.readEntity(byte[].class);
             
-            System.out.println(archivo.getAbsolutePath());
-            
             Path path = Paths.get(archivo.getAbsolutePath());
             Files.write(path, bytes);
             
             Runtime.getRuntime().exec("cmd /c start " +archivo);
-            return new Respuesta(true, "", "");
+            return new Respuesta(true, "Reporte Generado Exitosamente", "");
         } catch (IOException ex) {
             Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo Agendas.", ex);
             return new Respuesta(false, "Error obteniendo Agendas.", "getAgendas " + ex.getMessage());

@@ -64,27 +64,6 @@ public class MedicoService {
         }
     }
 
-    /*
-    public Respuesta getMedicos(String cedula, String nombre, String pApellido) {
-        try {
-            Map<String, Object> parametros = new HashMap<>();
-            parametros.put("cedula", cedula);
-            parametros.put("nombre", nombre);
-            parametros.put("pApellido", pApellido);
-            Request request = new Request("MedicoController/Medicos", "/{cedula}/{nombre}/{pApellido}", parametros);
-            request.get();
-
-            if (request.isError()) {
-                return new Respuesta(false, request.getError(), "");
-            }
-            List<MedicoDto> Medicos = (List<MedicoDto>) request.readEntity(new GenericType<List<MedicoDto>>() {
-            });
-            return new Respuesta(true, "", "", "Medicos", Medicos);
-        } catch (Exception ex) {
-            Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error obteniendo Medicos.", ex);
-            return new Respuesta(false, "Error obteniendo Medicos.", "getMedicos " + ex.getMessage());
-        }
-    }*/
     public Respuesta getMedicos() {
         try {
             Request request = new Request("MedicoController/medicos");
