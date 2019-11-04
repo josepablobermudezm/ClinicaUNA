@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="root1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinicauna.controller.CambiarContrasennaController">
    <children>
       <StackPane layoutX="115.0" layoutY="110.0" prefHeight="189.0" prefWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -39,7 +38,7 @@
                      </rowConstraints>
                      <children>
                         <ImageView fx:id="imguser" fitHeight="38.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <JFXPasswordField fx:id="txtXontrasenna" promptText="Nueva Contraseña" GridPane.columnIndex="2" />
+                        <JFXPasswordField fx:id="txtXontrasenna" labelFloat="true" promptText="Nueva Contraseña" GridPane.columnIndex="2" />
                      </children>
                   </GridPane>
                   <GridPane prefHeight="55.0" prefWidth="500.0">
@@ -57,7 +56,7 @@
                      </rowConstraints>
                      <children>
                         <ImageView fx:id="imgPassword" fitHeight="39.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <JFXPasswordField fx:id="txtConfirmarContrasenna" promptText="Confirmar Contraseña" GridPane.columnIndex="2" />
+                        <JFXPasswordField fx:id="txtConfirmarContrasenna" labelFloat="true" promptText="Confirmar Contraseña" GridPane.columnIndex="2" />
                      </children>
                   </GridPane>
                   <GridPane prefHeight="85.0" prefWidth="505.0">

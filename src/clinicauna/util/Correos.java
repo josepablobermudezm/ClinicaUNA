@@ -346,17 +346,20 @@ public class Correos extends Thread {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
-            if (us.getIdioma().equals("I")) {
+             resp = new Respuesta(true, "Correo enviado exitosamente.", "");
+          /*  if (us.getIdioma().equals("I")) {
                 resp = new Respuesta(true, "Mail sent successfully", "");
             } else {
                 resp = new Respuesta(true, "Correo enviado exitosamente.", "");
-            }
+            }*/
         } catch (MessagingException e) {
-            if (us.getIdioma().equals("I")) {
+            resp = new Respuesta(false, "No se ha podido enviar el correo debido a un problema de red", e.getLocalizedMessage());
+            /*if (aus.getIdioma().equals("I")) {
+            
                 resp = new Respuesta(false, "Mail was not sent due to a network problem", e.getLocalizedMessage());
             } else {
                 resp = new Respuesta(false, "No se ha podido enviar el correo debido a un problema de red", e.getLocalizedMessage());
-            }
+            }*/
         }
     }
 
