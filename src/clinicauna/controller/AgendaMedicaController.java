@@ -280,8 +280,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
                 medicoDto.setInicioJornada(inicioS);
                 medicoDto.setFinJornada(finS);
-            } 
-            else if(usuarioDto.getTipoUsuario().equals("M") && AppContext.getInstance().get("Medi") == null){
+            } else if (usuarioDto.getTipoUsuario().equals("M") && AppContext.getInstance().get("Medi") == null) {
                 medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
                 inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
                 finJornada = LocalTime.parse(medicoDto.getFinJornada());
@@ -292,7 +291,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
                 medicoDto.setInicioJornada(inicioS);
                 medicoDto.setFinJornada(finS);
-                AppContext.getInstance().set("Medi",medicoDto);
+                AppContext.getInstance().set("Medi", medicoDto);
             }
 
             int EspaciosPorHora = medicoDto.getEspacios();//cantidad de espacios que posee un médico por hora
@@ -381,18 +380,20 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
                     //Metodos de Drag and Drop
                     hPane.setOnDragDetected(e -> {
-                        Dragboard db = hPane.startDragAndDrop(TransferMode.ANY);
-                        ClipboardContent content = new ClipboardContent();
-                        WritableImage wi = hPane.snapshot(new SnapshotParameters(), null);
-                        WritableImage wii = new WritableImage(wi.getPixelReader(), 0, 0, ((int) wi.getWidth()), ((int) wi.getHeight()));
-                        content.put(DataFormat.IMAGE, wii);
-                        hPane.setCursor(Cursor.CLOSED_HAND);
-                        db.setContent(content);
-                        //cuando se detecta un drag entonces guardo los datos de ese hBox en appcontext
-                        hCita2 = (vistaCita) e.getSource();
-                        AppContext.getInstance().set("hBox", hCita2);
-                        AppContext.getInstance().set("Espacio", hCita2.getEspacio());
-                        AppContext.getInstance().delete("Cita");
+                        if (medicoDto.getEstado().equals("A")) {
+                            Dragboard db = hPane.startDragAndDrop(TransferMode.ANY);
+                            ClipboardContent content = new ClipboardContent();
+                            WritableImage wi = hPane.snapshot(new SnapshotParameters(), null);
+                            WritableImage wii = new WritableImage(wi.getPixelReader(), 0, 0, ((int) wi.getWidth()), ((int) wi.getHeight()));
+                            content.put(DataFormat.IMAGE, wii);
+                            hPane.setCursor(Cursor.CLOSED_HAND);
+                            db.setContent(content);
+                            //cuando se detecta un drag entonces guardo los datos de ese hBox en appcontext
+                            hCita2 = (vistaCita) e.getSource();
+                            AppContext.getInstance().set("hBox", hCita2);
+                            AppContext.getInstance().set("Espacio", hCita2.getEspacio());
+                            AppContext.getInstance().delete("Cita");
+                        }
                     });
 
                     hPane.setOnDragOver(f -> {
@@ -400,9 +401,11 @@ public class AgendaMedicaController extends Controller implements Initializable 
                     });
 
                     hPane.setOnDragDropped(e -> {
-                        hCita3 = (vistaCita) e.getSource();
-                        if (hCita2 != null && hCita3 != hCita2) {
-                            hCita2.intercambiarCita(hCita3);
+                        if (medicoDto.getEstado().equals("A")) {
+                            hCita3 = (vistaCita) e.getSource();
+                            if (hCita2 != null && hCita3 != hCita2) {
+                                hCita2.intercambiarCita(hCita3);
+                            }
                         }
                     });
 
@@ -416,7 +419,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             AppContext.getInstance().set("Grid", calendarGrid);
             /*
                 Si la Agenda del medico con el dia seleccionado no se ha creado, entonces la creamos 
-            */
+             */
             resp = new AgendaService().getAgenda(DatePicker.getValue().toString(), medicoDto.getID());
             if (resp.getEstado()) {
                 agendaDto = (AgendaDto) resp.getResultado("Agenda");
