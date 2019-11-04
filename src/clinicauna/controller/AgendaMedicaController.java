@@ -191,12 +191,16 @@ public class AgendaMedicaController extends Controller implements Initializable 
         *    no se debería de poder guardar citas en días anteriores, no tiene sentido
          */
         if (DatePicker.getValue().isAfter(LocalDate.now()) || DatePicker.getValue().isEqual(LocalDate.now())) {
-            hCita = (vistaCita) event.getSource();
-            AppContext.getInstance().set("hBox", hCita);
-            AppContext.getInstance().set("Espacio", hCita.getEspacio());
-            FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
-            AppContext.getInstance().delete("Cita");
-            Inicio();
+            if (medicoDto.getEstado().equals("A")) {
+                hCita = (vistaCita) event.getSource();
+                AppContext.getInstance().set("hBox", hCita);
+                AppContext.getInstance().set("Espacio", hCita.getEspacio());
+                FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
+                AppContext.getInstance().delete("Cita");
+                Inicio();
+            }else{
+                ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "El médico se encuentra inactivo");
+            }
         } else {
             ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "No se puede agregar una cita en esta fecha");
         }
@@ -219,7 +223,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
         try {
             /*
             *   Cargamos la fecha en los labels
-             */
+            */
             mes = (DatePicker.getValue().getMonth() != null) ? DatePicker.getValue().getMonth().toString() : " ";
             year = (String.valueOf(DatePicker.getValue().getYear()) != null) ? String.valueOf(DatePicker.getValue().getYear()) : " ";
             semana = (String.valueOf(DatePicker.getValue().getDayOfMonth()) != null) ? String.valueOf(DatePicker.getValue().getDayOfMonth()) : " ";
@@ -311,7 +315,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                     hPane.setOnMouseReleased(citasReleased);
                     /*
                     *   Dependiendo de la cantidad de espacios por hora que se dan entonces hacemos el tamaño del hBox
-                     */
+                    */
                     hPane.setMinWidth((EspaciosPorHora == 4) ? 250 : (EspaciosPorHora == 3) ? 333 : (EspaciosPorHora == 2) ? 500 : 1000);
                     hPane.setMinHeight(100);
                     Label label = new Label();

@@ -134,6 +134,11 @@ public class AgregarCitaController extends Controller {
         citaService = new CitaService();
 
         hBox = (vistaCita) AppContext.getInstance().get("hBox");
+        if(hBox.getEspacio() != null){
+            btnGuardar.setDisable(true);
+        }else{
+            btnGuardar.setDisable(false);
+        }
         grid = (GridPane) AppContext.getInstance().get("Grid");
         medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
         agendaDto = (AgendaDto) AppContext.getInstance().get("Agenda");

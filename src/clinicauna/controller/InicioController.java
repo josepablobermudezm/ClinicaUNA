@@ -39,8 +39,6 @@ public class InicioController extends Controller {
     private JFXDrawer drawer;
     @FXML
     private Label Titulo;
-    @FXML
-    private JFXHamburger hamburger;
     /**/
     private VBox vBoxCentral;
     @FXML
@@ -48,38 +46,15 @@ public class InicioController extends Controller {
 
     @Override
     public void initialize() {
-        
-        
+
         AppContext.getInstance().set("Border", borderPane);
-        
-        borderPane.heightProperty().addListener((observable) -> {
-           /* borderPane.set
-            System.out.println("HeigProperti "+ borderPane.getHeight());*/
-        });
-        borderPane.prefHeightProperty().bindBidirectional(((VBox) borderPane.getCenter()).prefHeightProperty());
-        borderPane.prefHeightProperty().addListener((observable) -> {
-            //System.out.println("PrefHeigProperti "+ borderPane.getHeight());
-            //borderPane.
-        });
-//borderPane.prefWidthProperty().bindBidirectional(other);
-        Image omg1;
-        try {
-/*            omg1 = new Image("/clinicauna/resources/background2.jpg");
-            
-            omg.setImage(omg1);*/
-        } catch (Exception e) {
-        }
-        /*omg.fitHeightProperty().bind(st.heightProperty());//  para que la imagen tenga el tamaño de toda la vista
-        omg.fitWidthProperty().bind(st.widthProperty());*/
-        
-        st.heightProperty().addListener((observable) -> {
-            
-//            omg.getImage();
-        });
-        
+
         VBox box = null;
         try {
             UsuarioDto usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+            /*
+            *   Abrimos un drawer content especifico para cada usuario
+            */
             switch (usuario.getTipoUsuario()) {
                 case "A": {
                     box = FXMLLoader.load(getClass().getResource("/clinicauna/view/drawerContent.fxml"));
@@ -94,39 +69,10 @@ public class InicioController extends Controller {
                     break;
                 }
             }
-            
             drawer.setSidePane(box);
-            
-            HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
-            burgerTask2.setRate(-1);
             drawer.open();
-            hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-                burgerTask2.setRate(burgerTask2.getRate() * -1);
-                burgerTask2.play();
-
-                if (drawer.isShown()) {
-                    drawer.close();
-                } else {
-                    drawer.open();
-                }
-            });
         } catch (IOException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-/*
-    public void SetBorderPane(BorderPane pane) {
-        this.Panel = pane;
-        Listener();
-    }
-
-    public void Listener() {
-        Panel.widthProperty().addListener(x -> {
-            this.drawer.setPrefWidth(Panel.getWidth() - 200);
-        });
-
-        Panel.heightProperty().addListener(v -> {
-
-        });
-    }*/
 }
