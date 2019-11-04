@@ -21,6 +21,7 @@ import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import java.time.LocalDate;
@@ -40,6 +41,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -108,6 +110,12 @@ public class MedicosController extends Controller {
     private Respuesta respEspacio;
     private EspacioService espacioService;
     private AgendaService agendaService;
+    @FXML
+    private JFXRadioButton btninactivo;
+    @FXML
+    private ToggleGroup btn;
+    @FXML
+    private JFXRadioButton btnActivo;
 
     @Override
     public void initialize() {
@@ -173,6 +181,7 @@ public class MedicosController extends Controller {
                     String folio = txtFolio.getText();
                     String carne = txtCarne.getText();
                     String codigo = txtCodigo.getText();
+                    String estado = btnActivo.isSelected() ? "A" : "I";
                     LocalTime inicio1 = timePickerInicio.getValue();
                     LocalTime final1 = timePickerfinal.getValue();
                     Integer espacios = Integer.parseInt(txtEspacio.getText());
@@ -182,7 +191,7 @@ public class MedicosController extends Controller {
                     Long version = medicoDto.getMedVersion() + 1;
                     String inicioJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
                     String finJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(final12);
-                    medicoDto = new MedicoDto(id, codigo, folio, carne, "I", inicioJornada, finJornada, espacios, usuariodto, version);
+                    medicoDto = new MedicoDto(id, codigo, folio, carne, estado, inicioJornada, finJornada, espacios, usuariodto, version);
                     try {
                         /*
                             Si el valor de espacios es diferente al seleccionado (osea si lo editó) y la lista de espacios que 
@@ -190,21 +199,25 @@ public class MedicosController extends Controller {
                          */
                         if ((txtEspacio.getText() == null ? table.getSelectionModel().getSelectedItem().getEspacios().toString() != null
                                 : !txtEspacio.getText().equals(table.getSelectionModel().getSelectedItem().getEspacios().toString())
-                                && !espacioListAux.isEmpty() )) {
+                                && !espacioListAux.isEmpty())) {
                             ms.showModal(Alert.AlertType.ERROR, "Espacios por hora", this.getStage(), "Estas tratando de cambiarle la cantidad de espacios por hora al médico pero el médico ya posee citas asignadas");
                             txtEspacio.setText(table.getSelectionModel().getSelectedItem().getEspacios().toString());
                         } else {
-                            resp = medicoService.guardarMedico(medicoDto);
-                            if (usuario.getIdioma().equals("I")) {
-                                ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
-                            } else {
-                                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            if (Integer.parseInt(txtEspacio.getText()) <= 4) {
+                                resp = medicoService.guardarMedico(medicoDto);
+                                if (usuario.getIdioma().equals("I")) {
+                                    ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                                } else {
+                                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                                }
+                                limpiarValores();
+                                medicos = (ArrayList) medicoService.getMedicos().getResultado("Medicos");
+                                table.getItems().clear();
+                                items = FXCollections.observableArrayList(medicos);
+                                table.setItems(items);
+                            }else{
+                                ms.showModal(Alert.AlertType.ERROR, "Información de Registro", this.getStage(), "La cantidad máxima de espacios es de 4");
                             }
-                            limpiarValores();
-                            medicos = (ArrayList) medicoService.getMedicos().getResultado("Medicos");
-                            table.getItems().clear();
-                            items = FXCollections.observableArrayList(medicos);
-                            table.setItems(items);
                         }
                     } catch (Exception e) {
                         if (usuario.getIdioma().equals("I")) {
@@ -299,14 +312,21 @@ public class MedicosController extends Controller {
         /*
         *   Cargo los datos cuando se seleccionan los datos desde el tableview y limpio el AppContext de Med en el caso de que se haya usado en la
         *   vista de buscar para que no genere problemas
-        */
+         */
         AppContext.getInstance().delete("Med");
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 /*
                     Seteo los datos del médico seleccionado en cada textfield
-                */
+                 */
                 medicoDto = table.getSelectionModel().getSelectedItem();
+                if ("A".equals(medicoDto.getEstado())) {
+                    btnActivo.setSelected(true);
+                    btninactivo.setSelected(false);
+                } else {
+                    btnActivo.setSelected(false);
+                    btninactivo.setSelected(true);
+                }
                 txtCodigo.setText(medicoDto.getCodigo());
                 txtCarne.setText(medicoDto.getCarne());
                 txtEspacio.setText(String.valueOf(medicoDto.getEspacios()));
@@ -317,7 +337,7 @@ public class MedicosController extends Controller {
                 timePickerfinal.setValue(localTimeObj1);
                 /*
                     Guardo todos los espacios que pertenecen al médico en esta lista
-                */
+                 */
                 espacioListAux.clear();
                 agendaList.stream().forEach(x -> {
                     if (x.getAgeMedico().getID().equals(medicoDto.getID())) {
@@ -353,10 +373,17 @@ public class MedicosController extends Controller {
     private void DatosMedico() {
         /*
         *   Cargo los datos cuando se seleccionan desde la vista de Buscar medicos
-        */
+         */
         if (AppContext.getInstance().get("Med") != null) {
             med = (MedicoDto) AppContext.getInstance().get("Med");
             medicoDto = med;
+            if ("A".equals(medicoDto.getEstado())) {
+                btnActivo.setSelected(true);
+                btninactivo.setSelected(false);
+            } else {
+                btnActivo.setSelected(false);
+                btninactivo.setSelected(true);
+            }
             this.txtCarne.setText(med.getCarne());
             this.txtCodigo.setText(med.getCodigo());
             this.txtEspacio.setText(String.valueOf(med.getEspacios()));
