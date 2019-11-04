@@ -116,17 +116,26 @@ public class CitaService {
             }
 
             Cita = (CitaDto) request.readEntity(CitaDto.class);
-            if (usuario.getIdioma().equals("I")) {
-                return new Respuesta(true, "Saved Successfully", request.toString(), "Cita", Cita);
-            } else {
-                return new Respuesta(true, "Guardado exitosamente", request.toString(), "Cita", Cita);
+            if (usuario != null) {
+                if (usuario.getIdioma().equals("I")) {
+                    return new Respuesta(true, "Saved Successfully", request.toString(), "Cita", Cita);
+                } else {
+                    return new Respuesta(true, "Guardado exitosamente", request.toString(), "Cita", Cita);
+                }
+            }else {
+                return null;
             }
+
         } catch (Exception ex) {
             Logger.getLogger(CitaService.class.getName()).log(Level.SEVERE, "Error guardando el Cita.", ex);
-            if (usuario.getIdioma().equals("I")) {
-                return new Respuesta(false, "There was an error saving the Appointment", "guardarCita " + ex.getMessage());
-            } else {
-                return new Respuesta(false, "Error guardando el Cita.", "guardarCita " + ex.getMessage());
+            if (usuario != null) {
+                if (usuario.getIdioma().equals("I")) {
+                    return new Respuesta(false, "There was an error saving the Appointment", "guardarCita " + ex.getMessage());
+                } else {
+                    return new Respuesta(false, "Error guardando el Cita.", "guardarCita " + ex.getMessage());
+                }
+            }else{
+                return null;
             }
         }
     }
