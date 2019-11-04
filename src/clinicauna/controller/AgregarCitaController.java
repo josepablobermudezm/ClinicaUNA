@@ -66,6 +66,8 @@ public class AgregarCitaController extends Controller {
     @FXML
     private ToggleGroup estado;
     @FXML
+    private Label lblEstado;
+    @FXML
     private JFXRadioButton btnProgramada;
     @FXML
     private JFXRadioButton btnAtendida;
@@ -98,20 +100,12 @@ public class AgregarCitaController extends Controller {
     private String estado1;
     private static boolean valor1 = false;
     private static String valor = "";
-    @FXML
-    private Label lblEst;
-    @FXML
-    private JFXButton btnAgregarPac;
-    @FXML
-    private JFXButton btnEditar;
 
     @Override
     public void initialize() {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
-            this.btnAgregarPac.setText(idioma.getProperty("Agregar")+" "+ idioma.getProperty("PacienteB"));
-            this.btnEditar.setText(idioma.getProperty("Editar"));
             this.txtEspacios.setPromptText(idioma.getProperty("Agenda") + " " + idioma.getProperty("Espacios"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
             this.btnAtendida.setText(idioma.getProperty("Atendida"));
@@ -122,7 +116,7 @@ public class AgregarCitaController extends Controller {
             this.btnProgramada.setText(idioma.getProperty("Programada"));
             this.Titulo.setText(idioma.getProperty("Agendar") + " " + idioma.getProperty("ACita"));
             this.ComboPacientes.setPromptText(idioma.getProperty("Pacientes"));
-            this.lblEst.setText(idioma.getProperty("Estado"));
+            this.lblEstado.setText(idioma.getProperty("Estado"));
             this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
             this.txtTelefono.setPromptText(idioma.getProperty("Telefono"));
             this.txtmotivo.setPromptText(idioma.getProperty("Motivo"));
@@ -154,7 +148,6 @@ public class AgregarCitaController extends Controller {
             txtCorreo.setText(espacioDto.getEspCita().getCorreo());
             txtTelefono.setText(espacioDto.getEspCita().getTelefono());
             txtmotivo.setText(espacioDto.getEspCita().getMotivo());
-            txtEspacios.setText(String.valueOf(espacioDto.getEspCita().getEspacios().size()));
             ComboPacientes.setValue(espacioDto.getEspCita().getPaciente().getNombre() + " " + espacioDto.getEspCita().getPaciente().getpApellido() + " " + espacioDto.getEspCita().getPaciente().getsApellido() + " Ced:" + espacioDto.getEspCita().getPaciente().getCedula());
             String paciente = espacioDto.getEspCita().getPaciente().getNombre() + " " + espacioDto.getEspCita().getPaciente().getpApellido() + " " + espacioDto.getEspCita().getPaciente().getsApellido() + " Ced:" + espacioDto.getEspCita().getPaciente().getCedula();
             paciente.chars().forEach(x -> {
@@ -270,20 +263,13 @@ public class AgregarCitaController extends Controller {
                 }
                 limpiarValores();
                 AppContext.getInstance().set("hBox", null);
+                FlowController.getInstance().initialize();
                 this.getStage().close();
             } catch (Exception e) {
-                if (usuario.getIdioma().equals("I")) {
-                    ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the appointment");
-                } else {
-                    ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita..." + e.getMessage());
-                }
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita..." + e.getMessage());
             }
         } else {
-            if (usuario.getIdioma().equals("I")) {
-                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Data to enter is missing");
-            } else {
-                ms.showModal(Alert.AlertType.ERROR, "Información de Guardado", this.getStage(), "Faltan Datos por ingresar");
-            }
+            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
         }
     }
 
@@ -371,20 +357,11 @@ public class AgregarCitaController extends Controller {
             }
         });
         if (val) {
-            if (usuario.getIdioma().equals("I")) {
-                if (new Mensaje().showConfirmation("Appointment spaces", this.getStage(), "There are Available" + String.valueOf(j) + " Spaces, Do you want to add them?")) {
-                    AgregarCita(style);
+            if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
+                AgregarCita(style);
 
-                } else {
-                    limpiarValores();
-                }
             } else {
-                if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
-                    AgregarCita(style);
-
-                } else {
-                    limpiarValores();
-                }
+                limpiarValores();
             }
         } else {
             if (j == espacio) {
@@ -392,20 +369,10 @@ public class AgregarCitaController extends Controller {
 
             } else {
                 if (!val) {
-                    if (usuario.getIdioma().equals("I")) {
-                        if (new Mensaje().showConfirmation("Appointment spaces", this.getStage(), "There are Available" + String.valueOf(j) + " Spaces, Do you want to add them?")) {
-                            AgregarCita(style);
-
-                        } else {
-                            limpiarValores();
-                        }
+                    if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
+                        AgregarCita(style);
                     } else {
-                        if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
-                            AgregarCita(style);
-
-                        } else {
-                            limpiarValores();
-                        }
+                        limpiarValores();
                     }
                 }
             }
@@ -490,7 +457,7 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1);
             espacioDto = new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto);
             resp = service.guardarEspacio(espacioDto);
-            //agendaDto.getEspacioList().add(espacioDto); //GENERA UN LOOP INFINITO; NI IDEA DE PORQUE, HAY QUE VER OTRA FORMA DE ACTUALIZAR
+            //agendaDto.getEspacioList().add(espacioDto); GENERA UN LOOP INFINITO; NI IDEA DE PORQUE, HAY QUE VER OTRA FORMA DE ACTUALIZAR
             vCita.setBackground(Background.EMPTY);
             vCita.setStyle(style);
             vCita.AgregarCita((EspacioDto) resp.getResultado("Espacio"));
@@ -500,33 +467,23 @@ public class AgregarCitaController extends Controller {
         AppContext.getInstance().set("aux", aux);
         AppContext.getInstance().set("CitaDto", citaDto);
 
-        /*correo = new Correos();
+        correo = new Correos();
         paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
         correo.CorreoCitaHilo(this.txtCorreo.getText());
         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
-        AppContext.getInstance().delete("aux");
+
         resp = correo.getResp();
         if (resp.getEstado()) {
-            if (usuario.getIdioma().equals("I")) {
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Mail Delivery", this.getStage(), "Mail sent successfully");
-            } else {
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
-            }
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
         } else {
-            if (usuario.getIdioma().equals("I")) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Mail Delivery", this.getStage(), "There was an error sending the mail");
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
-            }
-        }*/
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+        }
         limpiarValores();
-        //FlowController.getInstance().initialize();
-        //initialize();
+        initialize();
     }
 
     @FXML
-    private void editar(ActionEvent event
-    ) {
+    private void editar(ActionEvent event) {
 
         if (registroCorrecto()) {
             String telefono = txtTelefono.getText();
@@ -543,11 +500,7 @@ public class AgregarCitaController extends Controller {
 
             citaDto = new CitaDto(espacioDto.getEspCita().getID(), version, pacienteDto, motivo, estado1, telefono, correo, correoEnviado);
             resp = citaService.guardarCita(citaDto);
-            if (usuario.getIdioma().equals("I")) {
-                ms.showModal(Alert.AlertType.INFORMATION, "Edition Information", this.getStage(), resp.getMensaje());
-            } else {
-                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
-            }
+            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
             limpiarValores();
             this.getStage().close();
             /*try {
@@ -597,21 +550,13 @@ public class AgregarCitaController extends Controller {
 //                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita..." + e.getMessage());
 //            }
         } else {
-            if (usuario.getIdioma().equals("I")) {
-                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Incomplete Data");
-            } else {
-                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
-            }
+            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
         }
 
     }
 
     @FXML
-    private void agregarPaciente(ActionEvent event
-    ) {
-        /*
-        *   Esto es para que sea más fácil en el caso de que no exista un paciente
-        */
+    private void agregarPaciente(ActionEvent event) {
         FlowController.getInstance().goViewInStage("AgregarPaciente", this.getStage());
     }
 

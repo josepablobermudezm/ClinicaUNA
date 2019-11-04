@@ -51,7 +51,7 @@ public class vistaCita extends HBox {
         /*
             se hace el intercambio de la cita visualmente
         */
-        /*EspacioDto espacio = vCita.getEspacio();
+        EspacioDto espacio = vCita.getEspacio();
         EspacioDto espacio2 = this.getEspacio();
         this.setEspacio(espacio);
         vCita.setEspacio(espacio2);
@@ -66,12 +66,10 @@ public class vistaCita extends HBox {
         vCita.setvBox(vBox);
         vBox = vAux;
         this.getChildren().add(vBox);
-        vCita.getChildren().add(vCita.getvBox());*/
+        vCita.getChildren().add(vCita.getvBox());
         /*
             hacemos el intercambio de la base de datos de cita
         */
-        
-        
         
         /*AgendaDto agenda;
         agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
@@ -83,13 +81,9 @@ public class vistaCita extends HBox {
         vCita.getEspacio().setEspHoraFin(horaFinal);
         this.getEspacio().setEspAgenda(agenda);
         vCita.getEspacio().setEspAgenda(agenda);
-        
         EspacioService espacioService = new EspacioService();
-        
-        espacioService.guardarEspacio(this.getEspacio());*/
-        
-        
-        
+        espacioService.guardarEspacio(this.getEspacio());
+        */
         
         //espacioService.guardarEspacio(vCita.getEspacio());
         /*if (vCita.getEspacio() != null && this.getEspacio() != null) {
