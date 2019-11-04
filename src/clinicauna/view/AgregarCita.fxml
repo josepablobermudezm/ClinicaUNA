@@ -75,7 +75,7 @@
                   <Insets left="365.0" />
                </GridPane.margin>
             </JFXRadioButton>
-            <Label fx:id="lblEst" prefHeight="17.0" prefWidth="47.0" text="Estado:" GridPane.columnIndex="3" />
+            <Label fx:id="lblEstado" prefHeight="17.0" prefWidth="47.0" text="Estado:" GridPane.columnIndex="3" />
          </children>
       </GridPane>
       <GridPane layoutX="7.0" layoutY="338.0" prefHeight="62.0" prefWidth="800.0">
