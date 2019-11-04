@@ -48,12 +48,14 @@ public class DrawerContentControllerMedico extends Controller {
     @FXML
     private void exit(ActionEvent event) {
         FlowController.getInstance().salir();
-         AppContext.getInstance().delete("Pact");
-         AppContext.getInstance().delete("Expediente");
-         AppContext.getInstance().delete("UsuarioActivo");
-         AppContext.getInstance().delete("MedicoDto");
-         AppContext.getInstance().delete("Med");
+        AppContext.getInstance().delete("Pact");
+        AppContext.getInstance().delete("Expediente");
+        AppContext.getInstance().delete("UsuarioActivo");
+        AppContext.getInstance().delete("MedicoDto");
+        AppContext.getInstance().delete("Med");
+        AppContext.getInstance().delete("Medi");
         FlowController.getInstance().goViewInWindowTransparent("LogIn");
+
     }
 
     @Override
