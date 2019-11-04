@@ -11,6 +11,7 @@ import clinicauna.model.ControlDto;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
+import clinicauna.service.CitaService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -118,6 +119,7 @@ public class Correos extends Thread {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
+
             if (us.getIdioma().equals("I")) {
                 resp = new Respuesta(true, "Activation Message Sent Successfully", "");
             } else {
@@ -151,11 +153,11 @@ public class Correos extends Thread {
         agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
         start();
     }
-    
-    public void CorreoCitaHiloRecordatorio(String Destinatario) {
+
+    public void CorreoCitaHiloRecordatorio(String Destinatario, CitaDto cita) {
         this.destinatario = Destinatario;
-        this.caso = "cita";
-        cita = (CitaDto) AppContext.getInstance().get("CitaDto");
+        this.caso = "recordatorio";
+        this.cita = cita;
         medico = (MedicoDto) AppContext.getInstance().get("MedicoDto");
         aux = (List) AppContext.getInstance().get("aux");
         paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
@@ -269,7 +271,7 @@ public class Correos extends Thread {
             }
         }
     }
-    
+
     public void CorreoCitaRecordatorio(String Destinatario) {
         try {
             us = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
@@ -296,12 +298,19 @@ public class Correos extends Thread {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
+            System.out.println("Correo Enviado");
             if (us.getIdioma().equals("I")) {
                 resp = new Respuesta(true, "Mail sent successfully", "");
             } else {
                 resp = new Respuesta(true, "Correo enviado exitosamente.", "");
             }
+            /*
+            Si el correo se envio, guardo el estado de la cita a correo Enviado
+             */
+            cita.setCorreoEnviado("S");
+            new CitaService().guardarCita(cita);
         } catch (MessagingException e) {
+            System.out.println("Correo Fallido");
             if (us.getIdioma().equals("I")) {
                 resp = new Respuesta(false, "Mail was not sent due to a network problem", e.getLocalizedMessage());
             } else {
@@ -382,7 +391,7 @@ public class Correos extends Thread {
                 + "</body>\n"
                 + "</html>";
     }
-    
+
     public String htmlCorreoCita(CitaDto cita) {
 
         return "<!DOCTYPE html>\n"
