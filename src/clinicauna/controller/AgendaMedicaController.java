@@ -12,7 +12,6 @@ import clinicauna.model.MedicoDto;
 import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.AgendaService;
-import clinicauna.service.CitaService;
 import clinicauna.service.EspacioService;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
@@ -95,7 +94,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
     private Label lblMes;
     @FXML
     private Label lblDia;
-    //private Label lblHora;
+    private Label lblHora;
     private MedicoDto medicoDto;
     private MedicoService medicoService;
     private Respuesta resp;
@@ -125,10 +124,41 @@ public class AgendaMedicaController extends Controller implements Initializable 
     @FXML
     private Label lblCancelada;
     private Mensaje ms;
+    @FXML
+    private JFXButton btnBuscar;
+    private boolean combo = true;
+    private boolean valor = true;
 
     @Override
     public void initialize() {
-
+        ms = new Mensaje();
+        usuarioDto = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        if (!usuarioDto.getTipoUsuario().equals("M")) {
+            if (AppContext.getInstance().get("Med") != null) {
+                medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
+            }
+            if (this.DatePicker.getValue() != null) {
+                AppContext.getInstance().delete("MedicoDto");
+                //this.ComboMedico.setDisable(false);
+                this.btnBuscar.setDisable(false);
+            } else {
+                //this.ComboMedico.setDisable(true);
+                this.btnBuscar.setDisable(true);
+            }
+        } else if (usuarioDto.getTipoUsuario().equals("M")) {
+            inicio = false;
+            DatePicker.setValue(LocalDate.now());
+            //ComboMedico.setVisible(false);
+            btnBuscar.setVisible(false);
+            medicoService = new MedicoService();
+            /*resp = medicoService.getMedicos();
+            lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");*/
+            medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
+            AppContext.getInstance().set("MedicoDto", medicoDto);
+        }
+        Inicio();
+        SeleccionarMedico();
+        fecha();
     }
 
     public void Inicio() {
@@ -136,12 +166,15 @@ public class AgendaMedicaController extends Controller implements Initializable 
         resp = medicoService.getMedicos();
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-
         if (usuario.getIdioma().equals("I")) {
+            /*
+            *   En el caso de que el usuario este entrando y utilice el idioma ingles hacemos la traducción
+             */
             this.ComboMedico.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
             this.DatePicker.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
             this.lblAnno.setText(idioma.getProperty("Año"));
             this.lblDia.setText(idioma.getProperty("Dia"));
+            this.lblHora.setText(idioma.getProperty("Hora"));
             this.lblMes.setText(idioma.getProperty("Mes"));
             this.Titulo.setText(idioma.getProperty("Agenda"));
             this.lblProgramada.setText(idioma.getProperty("Programada"));
@@ -149,12 +182,14 @@ public class AgendaMedicaController extends Controller implements Initializable 
             this.lblCancelada.setText(idioma.getProperty("Cancelada"));
             this.lblAtendida.setText(idioma.getProperty("Atendida"));
         }
-
-        lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
+        /*
+        *   Lista del combobox
+         */
+ /*lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
         items = FXCollections.observableArrayList(lista.stream().map(x -> x.getUs().getNombre()
                 + " " + x.getUs().getpApellido() + " " + x.getUs().getsApellido() + " Ced:" + x.getUs().getCedula())
                 .collect(Collectors.toList()));
-        ComboMedico.setItems(items);
+        ComboMedico.setItems(items);*/
     }
 
     private EventHandler<MouseEvent> citasReleased = (event) -> {
@@ -168,7 +203,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             AppContext.getInstance().set("Espacio", hCita.getEspacio());
             FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
             AppContext.getInstance().delete("Cita");
-            Inicio2();
+            Inicio();
         } else {
             ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "No se puede agregar una cita en esta fecha");
         }
@@ -176,16 +211,27 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
     @FXML
     private void Fecha(Event event) {
+        /*
+        *   Método de selección de fecha DatePicker, en el caso de que sea un usuario hacemos ciertas validaciones con el booleano que seteamos en el método de SeleccionarMedico
+         */
         fecha();
         if (usuarioDto.getTipoUsuario().equals("M")) {
             SeleccionarMedico();
         } else {
             inicio = false;
         }
+        if (AppContext.getInstance().get("Med") != null) {
+            valor = false;
+        } else {
+            valor = true;
+        }
     }
 
     public void fecha() {
         try {
+            /*
+            *   Cargamos la fecha en los labels
+             */
             mes = (DatePicker.getValue().getMonth() != null) ? DatePicker.getValue().getMonth().toString() : " ";
             year = (String.valueOf(DatePicker.getValue().getYear()) != null) ? String.valueOf(DatePicker.getValue().getYear()) : " ";
             semana = (String.valueOf(DatePicker.getValue().getDayOfMonth()) != null) ? String.valueOf(DatePicker.getValue().getDayOfMonth()) : " ";
@@ -203,58 +249,64 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
     @FXML
     private void seleccionarMedico(ActionEvent event) {
+        /*
+        *   Validamos que se haya seleccionado un médico y cargamos la vista de nuevo 
+         */
+ /*AppContext.getInstance().delete("Med");
         if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
-            Inicio2();
+            combo = true;
+            initialize();
             SeleccionarMedico();
-        }
+        }*/
     }
 
     public void SeleccionarMedico() {
         if (!inicio) {
             calendarGrid.getChildren().clear();
-            //si el usuario es médico no es necesario buscarlo con los datos del combo box.
-            if (!usuarioDto.getTipoUsuario().equals("M") && AppContext.getInstance().get("MedicoDto") == null) {
-                String medico = ComboMedico.getSelectionModel().getSelectedItem();
-                medico.chars().forEach(x -> {
-                    if (((char) x) == ':') {
-                        cedulaEncontrada = true;
-                    } else if (cedulaEncontrada) {
-                        cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
-                    }
-                });
-                medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
-                inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
-                finJornada = LocalTime.parse(medicoDto.getFinJornada());
-                //Creo las conversiones de las horas del medico con formato
-                LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
-                LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
+            /*
+            *   Es necesario seleccionar un médico si el usuario no es un médico, como lo realizamos mediante un combobox, realizamos un busqueda a 
+            *   partir de la cedula para obtener el medicoDto y utilizarlo posteriormente
+             */
+            if ((!usuarioDto.getTipoUsuario().equals("M") && AppContext.getInstance().get("MedicoDto") == null)) {
+                medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
+                if (valor) {
+                    inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
+                    finJornada = LocalTime.parse(medicoDto.getFinJornada());
+                    //Creo las conversiones de las horas del medico con formato
+                    LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
+                    LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
+                    String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
+                    String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
+                    medicoDto.setInicioJornada(inicioS);
+                    medicoDto.setFinJornada(finS);
+                }
 
-                String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
-                String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
-
-                medicoDto.setInicioJornada(inicioS);
-                medicoDto.setFinJornada(finS);
             }
 
-            /*     LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
-        LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);*/
-            int EspaciosPorHora = medicoDto.getEspacios();
+            int EspaciosPorHora = medicoDto.getEspacios();//cantidad de espacios que posee un médico por hora
             Integer horas = 0;
-            //Calcula la cantidad de espacios por hora que tendra la agenda
+            /*
+            *   Calcula la cantidad de espacios por hora que tendra la agenda, tomamos en cuenta dos tipos de horarios, puede que la hora inicial sea mayor que 
+            *   la hora final y viceversa, ejemplo: HoraInicial:10am HoraFinal:3pm, HoraInicial es antes que HoraFinal entonces hacemos HoraFinal-HoraInicial = 5,
+            *   el otro caso es HoraInicial 10am HoraFinal:3am, en este caso hacemos 24-HoraInicial+HoraFinal = 17 horas
+             */
             if (inicioJornada.isBefore(finJornada)) {
-                horas = -(inicioJornada.getHour() - finJornada.getHour());
-
-            } else {
-                horas = ((24 - inicioJornada.getHour()) + inicioJornada.getHour()) - finJornada.getHour();
+                horas = finJornada.getHour() - inicioJornada.getHour();
+            } else if (inicioJornada.isAfter(finJornada)) {
+                horas = (24) - inicioJornada.getHour() + finJornada.getHour();
             }
-
             int valor = inicioJornada.getHour();
-
+            /*
+            *   Creamos los espacios que van dentro de la agenda depediendo de la cantidad de horas que trabaja el médico
+             */
             for (int i = 0; i < horas; i++) {
                 for (int j = 0; j < EspaciosPorHora; j++) {
                     vistaCita hPane = new vistaCita();
                     hPane.getStyleClass().add("calendar_pane");
                     hPane.setOnMouseReleased(citasReleased);
+                    /*
+                    *   Dependiendo de la cantidad de espacios por hora que se dan entonces hacemos el tamaño del hBox
+                     */
                     hPane.setMinWidth((EspaciosPorHora == 4) ? 250 : (EspaciosPorHora == 3) ? 333 : (EspaciosPorHora == 2) ? 500 : 1000);
                     hPane.setMinHeight(100);
                     Label label = new Label();
@@ -262,18 +314,25 @@ public class AgendaMedicaController extends Controller implements Initializable 
                     if (valor >= 24) {
                         valor = 0;
                     }
-
                     label.setStyle("-fx-text-fill: gray; -fx-font-size : 12pt; -jfx-focus-color: -fx-secondary;");
+                    /*
+                    *   Básicamente estamos escribiendo el formato de las fechas para que se vean bien dependiendo de la duración de la cita
+                     */
                     switch (EspaciosPorHora) {
                         case 1:
+                            /*
+                            *   En este caso solo hay horas completas
+                             */
                             if (valor >= 10) {
                                 label.setText(valor + ":00");
                             } else {
                                 label.setText("0" + valor + ":00");
                             }
-
                             break;
                         case 2:
+                            /*
+                            *   En este caso ya tenemos citas cada treinta minutos
+                             */
                             if (valor >= 10) {
                                 label.setText((j == 0) ? (valor + ":00") : (valor + ":30"));
                             } else {
@@ -282,7 +341,9 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
                             break;
                         case 3:
-
+                            /*
+                            *   En este caso ya tenemos citas cada 20
+                             */
                             if (valor >= 10) {
                                 label.setText((j == 0) ? valor + ":00" : (j == 1) ? valor + ":20" : valor + ":40");
                             } else {
@@ -290,6 +351,9 @@ public class AgendaMedicaController extends Controller implements Initializable 
                             }
                             break;
                         case 4:
+                            /*
+                            *   En este caso ya tenemos citas cada 15
+                             */
                             if (valor >= 10) {
                                 label.setText((j == 0) ? (valor + ":00") : (j == 1) ? (valor + ":15") : (j == 2) ? (valor + ":30") : (j == 3) ? (valor + ":45") : (valor + ":00"));
                             } else {
@@ -301,42 +365,34 @@ public class AgendaMedicaController extends Controller implements Initializable 
                     hPane.getChildren().add(label);
                     hPane.setAlignment(Pos.BASELINE_LEFT);
                     GridPane.setHgrow(hPane, Priority.ALWAYS);
-                    //GridPane.setVgrow(hPane, Priority.ALWAYS);
                     hPane.setStyle("-fx-background-color: #FFFF;");
 
                     //Metodos de Drag and Drop
-                    /*hPane.setOnDragDetected(e -> {
+                    hPane.setOnDragDetected(e -> {
                         Dragboard db = hPane.startDragAndDrop(TransferMode.ANY);
                         ClipboardContent content = new ClipboardContent();
                         WritableImage wi = hPane.snapshot(new SnapshotParameters(), null);
                         WritableImage wii = new WritableImage(wi.getPixelReader(), 0, 0, ((int) wi.getWidth()), ((int) wi.getHeight()));
-
                         content.put(DataFormat.IMAGE, wii);
                         hPane.setCursor(Cursor.CLOSED_HAND);
                         db.setContent(content);
-                     */
-                    //cuando se detecta un drag entonces guardo los datos de ese hBox en appcontext
-                    //hCita2 = (vistaCita) e.getSource();
-                    /*AppContext.getInstance().set("hBox", hCita2);
+                        //cuando se detecta un drag entonces guardo los datos de ese hBox en appcontext
+                        hCita2 = (vistaCita) e.getSource();
+                        AppContext.getInstance().set("hBox", hCita2);
                         AppContext.getInstance().set("Espacio", hCita2.getEspacio());
-                        //FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
-                        AppContext.getInstance().delete("Cita");*/
-                    //guardo la cita que agarra
-                    /*});
+                        AppContext.getInstance().delete("Cita");
+                    });
 
                     hPane.setOnDragOver(f -> {
-                        f.acceptTransferModes(TransferMode.ANY);*/
- /* if(node != null && !this.getItem().getActId().equals(node.getItem().getActId())){
-                }*/
-
- /*});
+                        f.acceptTransferModes(TransferMode.ANY);
+                    });
 
                     hPane.setOnDragDropped(e -> {
                         hCita3 = (vistaCita) e.getSource();
                         if (hCita2 != null && hCita3 != hCita2) {
                             hCita2.intercambiarCita(hCita3);
-                        }*/
- /*EspacioService espacioService = new EspacioService();
+                        }
+                        /*EspacioService espacioService = new EspacioService();
                             if (hCita2.getEspacio() != null) {
                                 Respuesta resp = espacioService.guardarEspacio(hCita2.getEspacio());
                                 System.out.println(resp);
@@ -347,11 +403,10 @@ public class AgendaMedicaController extends Controller implements Initializable 
                                 System.out.println(resp1);
                             }*/
  /*} else {
-
                         }*/
-                    //if (hCita2.getChildren().size() <= 2) {
+                        //if (hCita2.getChildren().size() <= 2) {
 
-                    /* String style = "";
+                        /* String style = "";
                             System.out.println(hCita2.getCorreo());
                             EspacioDto espacio = (EspacioDto) AppContext.getInstance().get("Espacio");
                             hCita3 = (vistaCita) e.getSource();
@@ -381,7 +436,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
                             LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
                             String horaInicio = " ";
                             horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
-
                             LocalTime localTimeObj1 = LocalTime.parse(hCita2.getEspacio().getEspHoraFin());
                             LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObj1);
                             String horaFin = " ";
@@ -390,22 +444,19 @@ public class AgendaMedicaController extends Controller implements Initializable 
                             espacioDto = new EspacioDto(hCita2.getEspacio().getEspId(), horaFin,
                                     horaInicio, hCita2.getEspacio().getEspVersion(), hCita2.getEspacio().getEspCita(), agendaDto);
                             resp = espacioService.guardarEspacio(espacioDto);*/
-                    //}
-                    /*});
+                        //}
+                    });
+
                     hPane.setOnDragDone(e -> {
                         hPane.setCursor(Cursor.OPEN_HAND);
-
-                    });*/
+                    });
                     calendarGrid.add(hPane, j, i);
-
                 }
                 valor++;
             }
             AppContext.getInstance().set("Grid", calendarGrid);
-
-            //Agenda
             /*
-            Si la Agenda del medico con el dia seleccionado no se ha creado, entonces la creamos 
+                Si la Agenda del medico con el dia seleccionado no se ha creado, entonces la creamos 
              */
             resp = new AgendaService().getAgenda(DatePicker.getValue().toString(), medicoDto.getID());
             if (resp.getEstado()) {
@@ -415,7 +466,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 agendaDto = new AgendaDto(null, DatePicker.getValue(), new Long(1), medicoDto);
                 agendaDto = (AgendaDto) new AgendaService().guardarAgenda(agendaDto).getResultado("Agenda");
             }
-
             //Muestra la agenda del medico
             mostrarAgenda();
             cedulaBuscar = "";
@@ -428,18 +478,26 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
     @FXML
     private void Validacion(ActionEvent event) {
+        /*
+        *   Cuando seleccionamos la fecha, verificamos que el DatePicker no sea null, después iniciamos todo de nuevo para que se cargue un día diferente
+         */
         if (this.DatePicker.getValue() != null) {
-            if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
-                Inicio2();
-                Inicio2();
+            if ((AppContext.getInstance().get("Med") != null)) {
+                FlowController.getInstance().initialize();
+                initialize();
             } else {
-                this.ComboMedico.setDisable(false);
+                //this.ComboMedico.setDisable(false);
+                this.btnBuscar.setDisable(false);
             }
         }
     }
 
     void mostrarAgenda() {
         //Cargo las citas de la agenda
+        /*
+        *   Recorremos la lista de espacios de agenda, dentro de esto vamos recorriendo todos los hijos que tiene el calendario y seleccionando el hijo
+        *   primero de el children que tiene que es un Objeto de vistaCita que hereda de hBox lo cual viene siendo la hora, y cargamos la Cita de esa hora
+         */
         agendaDto.getEspacioList().stream().forEach((espacio) -> {
             calendarGrid.getChildren().stream().forEach((vCita) -> {
                 Label hora = (Label) ((vistaCita) vCita).getChildren().get(0);
@@ -483,19 +541,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
         //Carga la vista de las citas 
         vCita.setBackground(Background.EMPTY);
         vCita.setStyle(style);
-        /*
-            se setea formato para la conversión entre cliente y webservice
-         */
-        LocalTime horaF = LocalTime.parse(espacio.getEspHoraFin());
-        LocalTime horaIni = LocalTime.parse(espacio.getEspHoraInicio());
-        LocalDateTime horaCitaInicio = LocalDateTime.of(LocalDate.now(), horaIni);
-        String horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaInicio);
-        LocalDateTime horaCitaFin = LocalDateTime.of(LocalDate.now(), horaF);
-        String horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaFin);
-        espacio.setEspHoraInicio(horaInicio);
-        espacio.setEspHoraFin(horaFin);
-        espacio.setEspAgenda(agendaDto);
-        //System.out.println(espacio.getEspHoraFin() + " hora fin ");
         vCita.AgregarCita(espacio);
         vCita.getChildren().add(vCita.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
     }
@@ -611,33 +656,15 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Inicio2();
     }
 
-    public void Inicio2() {
-        ms = new Mensaje();
-        usuarioDto = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-        if (!usuarioDto.getTipoUsuario().equals("M")) {
-            if (this.DatePicker.getValue() != null) {
-                AppContext.getInstance().delete("MedicoDto");
-                this.ComboMedico.setDisable(false);
-            } else {
-                this.ComboMedico.setDisable(true);
-            }
-            //AppContext.getInstance().delete("MedicoDto");
-        } else if (usuarioDto.getTipoUsuario().equals("M")) {
-            inicio = false;
-            DatePicker.setValue(LocalDate.now());
-            ComboMedico.setVisible(false);
-            medicoService = new MedicoService();
-            resp = medicoService.getMedicos();
-            lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
-            medicoDto = lista.stream().filter(x -> x.getUs().getID().equals(usuarioDto.getID())).findAny().get();
-            AppContext.getInstance().set("MedicoDto", medicoDto);
-        }
-
-        Inicio();
+    @FXML
+    private void Buscar(ActionEvent event) {
+        //ComboMedico.setSelectionModel(null);
+        AppContext.getInstance().delete("Med");
+        FlowController.getInstance().goViewInWindowModal("BuscarMedico", this.getStage(), false);
+        medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
+        initialize();
         SeleccionarMedico();
-        fecha();
     }
 }

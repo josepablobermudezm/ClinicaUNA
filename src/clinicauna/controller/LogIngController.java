@@ -8,10 +8,12 @@ package clinicauna.controller;
 import clinicauna.model.AgendaDto;
 import clinicauna.model.CitaDto;
 import clinicauna.model.EspacioDto;
+import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.AgendaService;
 import clinicauna.service.CitaService;
 import clinicauna.service.EspacioService;
+import clinicauna.service.MedicoService;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;
 import clinicauna.util.Correos;
@@ -20,12 +22,14 @@ import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
+import clinicauna.util.vistaCita;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -78,6 +82,11 @@ public class LogIngController extends Controller implements Initializable {
     private EspacioService espacioService;
     private ArrayList<CitaDto> citas;
     private CitaService citasService;
+    private MedicoService MedicoService;
+    private ArrayList<MedicoDto> medicosList;
+    private Respuesta resp;
+    private MedicoDto medicoDto;
+    private static List<vistaCita> aux = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -169,39 +178,61 @@ public class LogIngController extends Controller implements Initializable {
     private void enviarCorreos() {
         if (agendaList != null && !agendaList.isEmpty()) {
             /*
-        *   Guardo en la lista de citas todas las citas que pertenezcan a la agenda del día de mañana,luego agrego los datos
-        *   que no esten ya repetidos en la lista de citas para evitar enviarle correos a la misma persona por tener varios espacios
+            *   Guardo en la lista de citas todas las citas que pertenezcan a la agenda del día de mañana,luego agrego los datos
+            *   que no esten ya repetidos en la lista de citas para evitar enviarle correos a la misma persona por tener varios espacios
              */
-            agendaList.stream().forEach(agenda -> {
+
+            /*agendaList.stream().forEach(agenda -> {
+                AppContext.getInstance().set("Agenda", agenda);
                 if (agenda.getAgeFecha().isEqual(LocalDate.now().plusDays(1))) {
                     espacioList.stream().forEach(espacio -> {
+                        AppContext.getInstance().set("Espacio", espacio);
+                        if (medicosList.stream().filter(x -> {
+                            return Objects.equals(x.getID(), agenda.getAgeMedico().getID());
+                        }).findAny().isPresent()) {
+                            medicoDto = medicosList.stream().filter(x -> Objects.equals(x.getID(), agenda.getAgeMedico().getID())).findAny().get();
+                            AppContext.getInstance().set("MedicoDto", medicoDto);
+                        }
                         if (!citas.isEmpty()) {
                             //Pregunto si la cita no existe en la lista 
                             if (citas.stream().allMatch(x -> x.getID().equals(espacio.getEspCita().getID()))) {
                                 //Pregunto si el correo no ha sido enviado
                                 if (espacio.getEspCita().getCorreoEnviado().equals("N")) {
                                     citas.add(espacio.getEspCita());
+                                    //Envia los correos por medio de hilos para que no afecten al programa
+                                    Correos correo = new Correos();
+                                    correo.CorreoCitaHiloRecordatorio(espacio.getEspCita().getCorreo());
                                 }
                             }
                         } else {
                             citas.add(espacio.getEspCita());
+                            //Envia los correos por medio de hilos para que no afecten al programa
+                            Correos correo = new Correos();
+                            correo.CorreoCitaHiloRecordatorio(espacio.getEspCita().getCorreo());
                         }
                     });
                 }
             });
-            //Envia los correos por medio de hilos para que no afecten al programa
-            if (!citas.isEmpty()) {
+            citas.stream().forEach(x -> {
+                System.out.println(x.getID());
+            });*/
+
+            /*if (!citas.isEmpty()) {
                 citas.stream().forEach((cita) -> {
                     Correos correo = new Correos();
                     correo.CorreoCitaHiloRecordatorio(cita.getCorreo(), cita);
                 });
-            }
+            }*/
         }
 
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        /*medicoDto = new MedicoDto();
+        MedicoService = new MedicoService();
+        resp = MedicoService.getMedicos();
+        medicosList = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
         agendaService = new AgendaService();
         espacioService = new EspacioService();
         respAgenda = agendaService.getAgendas();
@@ -215,9 +246,9 @@ public class LogIngController extends Controller implements Initializable {
 
         agendaList = ((ArrayList) respAgenda.getResultado("Agendas"));
         citasService = new CitaService();
-        citas = new ArrayList();
+        citas = new ArrayList();*/
 
-        //Envia correos a las citas del dia de manana
+        //Envia correos a las citas del día de mañana
         enviarCorreos();
 
         Formato();

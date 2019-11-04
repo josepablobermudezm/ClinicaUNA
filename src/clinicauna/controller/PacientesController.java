@@ -171,9 +171,6 @@ public class PacientesController extends Controller {
                     String genero1 = (btnHombre.isSelected()) ? "M" : "F";
                     LocalDate fecha = FechaDeNacimiento.getValue();
                     Long version = pacienteDto.getPacVersion() + 1;
-                    //System.out.println(dateTime);
-
-                    //Integer version = table.getSelectionModel().getSelectedItem().getVersion() + 1;
                     pacienteDto = new PacienteDto(id, nombre, papellido, sapellido, cedula, correo, genero1, fecha, version);
                     try {
                         resp = pacienteService.guardarPaciente(pacienteDto);
@@ -348,7 +345,11 @@ public class PacientesController extends Controller {
 
     @FXML
     private void DatosPaciente(MouseEvent event) {
-
+        /*
+        *   Cargo los datos cuando se seleccionan los datos desde el tableview y limpio el AppContext de Paciente en el caso de que se haya usado en la
+        *   vista de buscar para que no genere problemas
+        */
+        AppContext.getInstance().delete("Paciente");
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 pacienteDto = table.getSelectionModel().getSelectedItem();
@@ -359,8 +360,10 @@ public class PacientesController extends Controller {
                 txtCorreo.setText(pacienteDto.getCorreo());
                 if (pacienteDto.getGenero().equals("M")) {
                     btnHombre.setSelected(true);
+                    btnMujer.setSelected(false);
                 } else {
                     btnMujer.setSelected(true);
+                    btnHombre.setSelected(false);
                 }
                 FechaDeNacimiento.setValue(pacienteDto.getFechaNacimiento());
             } else {
@@ -389,13 +392,19 @@ public class PacientesController extends Controller {
 
     @FXML
     private void BuscarPaciente(ActionEvent event) {
+        /*
+        *   Limpio el tableview en el caso de que tenga alguno otro objeto seleccionado
+        */
+        table.getSelectionModel().clearSelection();
         AppContext.getInstance().delete("Paciente");
         FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
         DatosPaciente();
-        
     }
 
     public void DatosPaciente() {
+        /*
+        *   Cargo los datos cuando se seleccionan desde la vista de Buscar pacientes
+        */
         if (AppContext.getInstance().get("Paciente") != null) {
             pac = (PacienteDto) AppContext.getInstance().get("Paciente");
             pacienteDto = pac;
