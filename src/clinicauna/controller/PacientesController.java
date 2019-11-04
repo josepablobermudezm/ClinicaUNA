@@ -119,7 +119,6 @@ public class PacientesController extends Controller {
             this.btnHombre.setText(idioma.getProperty("Masculino"));
             this.btnMujer.setText(idioma.getProperty("Femenino"));
             this.btnLimpiarRegistro1.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
-            this.btnEliminar11.setText(idioma.getProperty("Eliminar"));
             this.COL_CEDULA_PAC.setText("ID");
             this.COL_CORREO_PAC.setText(idioma.getProperty("Correo"));
             this.COL_FECHANACIMIENTO_PAC.setText(idioma.getProperty("Fecha") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Nacimiento"));
