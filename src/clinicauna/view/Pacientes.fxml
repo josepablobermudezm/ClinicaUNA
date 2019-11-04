@@ -84,7 +84,6 @@
                            <children>
                               <JFXButton fx:id="btnBuscar" onAction="#BuscarPaciente" prefHeight="31.0" prefWidth="68.0" style="-fx-cursor: hand;" text="Buscar" />
                               <JFXButton fx:id="btnEditar11" onAction="#editar" style="-fx-cursor: hand;" text="Editar" />
-                              <JFXButton fx:id="btnEliminar11" onAction="#eliminar" style="-fx-cursor: hand;" text="Eliminar" />
                               <JFXButton fx:id="btnLimpiarRegistro1" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
                               <JFXButton fx:id="btnAgregar11" onAction="#agregar" style="-fx-cursor: hand;" text="Agregar" />
                            </children>

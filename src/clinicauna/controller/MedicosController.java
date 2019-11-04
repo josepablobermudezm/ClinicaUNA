@@ -93,8 +93,6 @@ public class MedicosController extends Controller {
     private MedicoService medicoService;
     private ArrayList<MedicoDto> medicos;
     private ObservableList items;
-    @FXML
-    private JFXTextField txtEspacio;
     private MedicoDto medicoDto;
     private Idioma idioma;
     private UsuarioDto usuario;
@@ -147,7 +145,6 @@ public class MedicosController extends Controller {
             this.timePickerfinal.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Jornada"));
             this.txtCarne.setPromptText(idioma.getProperty("Carné"));
             this.txtCodigo.setPromptText(idioma.getProperty("Código"));
-            this.txtEspacio.setPromptText(idioma.getProperty("Espacio") + " " + idioma.getProperty("por") + " " + idioma.getProperty("Hora"));
             this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
             this.Titulo.setText(idioma.getProperty("Mantenimiento") + " " + idioma.getProperty("de") + " " + idioma.getProperty("Medicos"));
         }
@@ -184,7 +181,7 @@ public class MedicosController extends Controller {
                     String estado = btnActivo.isSelected() ? "A" : "I";
                     LocalTime inicio1 = timePickerInicio.getValue();
                     LocalTime final1 = timePickerfinal.getValue();
-                    Integer espacios = Integer.parseInt(txtEspacio.getText());
+                    Integer espacios = medicoDto.getEspacios();
                     LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicio1);
                     LocalDateTime final12 = LocalDateTime.of(LocalDate.now(), final1);
                     UsuarioDto usuariodto = medicoDto.getUs();
@@ -197,28 +194,17 @@ public class MedicosController extends Controller {
                             Si el valor de espacios es diferente al seleccionado (osea si lo editó) y la lista de espacios que 
                             tiene no está vacía, ya que, estaría editando teniendo conflictos con las agendas ya creadas
                          */
-                        if ((txtEspacio.getText() == null ? table.getSelectionModel().getSelectedItem().getEspacios().toString() != null
-                                : !txtEspacio.getText().equals(table.getSelectionModel().getSelectedItem().getEspacios().toString())
-                                && !espacioListAux.isEmpty())) {
-                            ms.showModal(Alert.AlertType.ERROR, "Espacios por hora", this.getStage(), "Estas tratando de cambiarle la cantidad de espacios por hora al médico pero el médico ya posee citas asignadas");
-                            txtEspacio.setText(table.getSelectionModel().getSelectedItem().getEspacios().toString());
+                        resp = medicoService.guardarMedico(medicoDto);
+                        if (usuario.getIdioma().equals("I")) {
+                            ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
                         } else {
-                            if (Integer.parseInt(txtEspacio.getText()) <= 4) {
-                                resp = medicoService.guardarMedico(medicoDto);
-                                if (usuario.getIdioma().equals("I")) {
-                                    ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
-                                } else {
-                                    ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
-                                }
-                                limpiarValores();
-                                medicos = (ArrayList) medicoService.getMedicos().getResultado("Medicos");
-                                table.getItems().clear();
-                                items = FXCollections.observableArrayList(medicos);
-                                table.setItems(items);
-                            }else{
-                                ms.showModal(Alert.AlertType.ERROR, "Información de Registro", this.getStage(), "La cantidad máxima de espacios es de 4");
-                            }
+                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                         }
+                        limpiarValores();
+                        medicos = (ArrayList) medicoService.getMedicos().getResultado("Medicos");
+                        table.getItems().clear();
+                        items = FXCollections.observableArrayList(medicos);
+                        table.setItems(items);
                     } catch (Exception e) {
                         if (usuario.getIdioma().equals("I")) {
                             ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the Doctor");
@@ -288,14 +274,14 @@ public class MedicosController extends Controller {
 
             }
         }
-
     }
 
     void limpiarValores() {
         txtCarne.clear();
         txtCodigo.clear();
-        txtEspacio.clear();
         txtFolio.clear();
+        btnActivo.setSelected(true);
+        btninactivo.setSelected(false);
         timePickerInicio.setValue(null);
         timePickerfinal.setValue(null);
         table.getSelectionModel().clearSelection();
@@ -303,7 +289,7 @@ public class MedicosController extends Controller {
 
     boolean registroCorrecto() {
         return !txtCarne.getText().isEmpty() && !txtCodigo.getText().isEmpty()
-                && !txtFolio.getText().isEmpty() && !txtEspacio.getText().isEmpty()
+                && !txtFolio.getText().isEmpty()
                 && !timePickerInicio.getValue().toString().isEmpty() && !timePickerfinal.getValue().toString().isEmpty();
     }
 
@@ -329,7 +315,7 @@ public class MedicosController extends Controller {
                 }
                 txtCodigo.setText(medicoDto.getCodigo());
                 txtCarne.setText(medicoDto.getCarne());
-                txtEspacio.setText(String.valueOf(medicoDto.getEspacios()));
+                //txtEspacio.setText(String.valueOf(medicoDto.getEspacios()));
                 txtFolio.setText(medicoDto.getFolio());
                 LocalTime localTimeObj = LocalTime.parse(medicoDto.getInicioJornada());
                 timePickerInicio.setValue(localTimeObj);
@@ -356,10 +342,12 @@ public class MedicosController extends Controller {
     private void limpiarRegistro(ActionEvent event) {
         txtCarne.clear();
         txtCodigo.clear();
-        txtEspacio.clear();
+        //txtEspacio.clear();
         txtFolio.clear();
         timePickerInicio.setValue(null);
         timePickerfinal.setValue(null);
+        btnActivo.setSelected(true);
+        btninactivo.setSelected(false);
     }
 
     @FXML
@@ -386,7 +374,7 @@ public class MedicosController extends Controller {
             }
             this.txtCarne.setText(med.getCarne());
             this.txtCodigo.setText(med.getCodigo());
-            this.txtEspacio.setText(String.valueOf(med.getEspacios()));
+            //this.txtEspacio.setText(String.valueOf(med.getEspacios()));
             this.txtFolio.setText(med.getFolio());
             LocalTime localTimeObj = LocalTime.parse(med.getInicioJornada());
             this.timePickerInicio.setValue(localTimeObj);

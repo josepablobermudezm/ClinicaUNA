@@ -97,7 +97,6 @@ public class PacientesController extends Controller {
     private ExpedienteService expedienteService;
     @FXML
     private JFXButton btnEditar11;
-    @FXML
     private JFXButton btnEliminar11;
     @FXML
     private JFXButton btnLimpiarRegistro1;
@@ -212,44 +211,6 @@ public class PacientesController extends Controller {
                 ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patient");
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
-            }
-        }
-
-    }
-
-    @FXML
-    private void eliminar(ActionEvent event) {
-        if (table.getSelectionModel() != null || AppContext.getInstance().get("Pact") != null) {
-            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Pact") != null) {
-               Respuesta r;
-                if (AppContext.getInstance().get("Pact") != null && table.getSelectionModel().getSelectedItem() == null) {
-                     r = pacienteService.eliminarPaciente(pacienteDto.getID());
-                } else {
-                     r = pacienteService.eliminarPaciente(table.getSelectionModel().getSelectedItem().getID());
-                }
-                if (usuario.getIdioma().equals("I")) {
-                    ms.showModal(Alert.AlertType.INFORMATION, "Information", this.getStage(), r.getMensaje());
-                } else {
-                    ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), r.getMensaje());
-                }
-                Respuesta respuesta = pacienteService.getPacientes();
-                items.clear();
-                pacientes = (ArrayList) respuesta.getResultado("Pacientes");
-                items = FXCollections.observableArrayList(pacientes);
-                table.setItems(items);
-                limpiarValores();
-            } else {
-                if (usuario.getIdioma().equals("I")) {
-                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You muest select the patient to delete");
-                } else {
-                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
-                }
-            }
-        } else {
-            if (usuario.getIdioma().equals("I")) {
-                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You muest select the patient");
-            } else {
-                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el paciente");
             }
         }
 
