@@ -48,6 +48,11 @@ public class DrawerContentControllerMedico extends Controller {
     @FXML
     private void exit(ActionEvent event) {
         FlowController.getInstance().salir();
+         AppContext.getInstance().delete("Pact");
+         AppContext.getInstance().delete("Expediente");
+         AppContext.getInstance().delete("UsuarioActivo");
+         AppContext.getInstance().delete("MedicoDto");
+         AppContext.getInstance().delete("Med");
         FlowController.getInstance().goViewInWindowTransparent("LogIn");
     }
 
@@ -60,9 +65,9 @@ public class DrawerContentControllerMedico extends Controller {
             btnAgenda.setText(idioma.getProperty("Agenda"));
             btnExit.setText(idioma.getProperty("Salir"));
             btnExpediente.setText(idioma.getProperty("MedExp") + " " + idioma.getProperty("Expediente"));
-            btnMedicos.setText(idioma.getProperty("Medicos"));
+            //btnMedicos.setText(idioma.getProperty("Medicos"));
             btnReportes.setText(idioma.getProperty("Reportes"));
-            btnUsuarios.setText(idioma.getProperty("Usuarios"));
+            //btnUsuarios.setText(idioma.getProperty("Usuarios"));
             btnPacientes.setText(idioma.getProperty("Pacientes"));
         }
         Image img;
@@ -101,8 +106,6 @@ public class DrawerContentControllerMedico extends Controller {
     private void btnExpediente(ActionEvent event) {
         FlowController.getInstance().initialize();
         FlowController.getInstance().goView("ExpedienteMedico");
-        FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
-
     }
 
     @FXML

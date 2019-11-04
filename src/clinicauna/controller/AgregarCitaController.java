@@ -100,6 +100,10 @@ public class AgregarCitaController extends Controller {
     private String estado1;
     private static boolean valor1 = false;
     private static String valor = "";
+    @FXML
+    private JFXButton btnAgregarPac;
+    @FXML
+    private JFXButton btnEditar;
 
     @Override
     public void initialize() {
@@ -120,6 +124,8 @@ public class AgregarCitaController extends Controller {
             this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
             this.txtTelefono.setPromptText(idioma.getProperty("Telefono"));
             this.txtmotivo.setPromptText(idioma.getProperty("Motivo"));
+            this.btnAgregarPac.setText(idioma.getProperty("Agregar")+" "+idioma.getProperty("PacienteB"));
+            this.btnEditar.setText(idioma.getProperty("Editar"));
         }
         formato();
         pacienteService = new PacienteService();
@@ -128,6 +134,11 @@ public class AgregarCitaController extends Controller {
         citaService = new CitaService();
 
         hBox = (vistaCita) AppContext.getInstance().get("hBox");
+        if(hBox.getEspacio() != null){
+            btnGuardar.setDisable(true);
+        }else{
+            btnGuardar.setDisable(false);
+        }
         grid = (GridPane) AppContext.getInstance().get("Grid");
         medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
         agendaDto = (AgendaDto) AppContext.getInstance().get("Agenda");

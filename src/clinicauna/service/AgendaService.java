@@ -6,6 +6,8 @@
 package clinicauna.service;
 
 import clinicauna.model.AgendaDto;
+import clinicauna.model.UsuarioDto;
+import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
 import java.io.File;
@@ -25,7 +27,7 @@ import javax.ws.rs.core.GenericType;
  * @author Jose Pablo Bermudez
  */
 public class AgendaService {
-
+    private UsuarioDto usuarioDto;
     public Respuesta getAgenda(String fecha, Long id) {
         try {
             Map<String, Object> parametros = new HashMap<>();
@@ -46,6 +48,7 @@ public class AgendaService {
 
     public Respuesta getAgendas(String FechaInicio, String FechaFinal, String folio) {
         try {
+            usuarioDto = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("fechaInicio", FechaInicio);
             parametros.put("fechaFinal", FechaFinal);
@@ -68,7 +71,11 @@ public class AgendaService {
             Files.write(path, bytes);
             
             Runtime.getRuntime().exec("cmd /c start " +archivo);
-            return new Respuesta(true, "Reporte Generado Exitosamente", "");
+            if(usuarioDto.getIdioma().equals("I")){
+                return new Respuesta(true, "Report generated successfully", "");
+            }else{
+                return new Respuesta(true, "Reporte Generado Exitosamente", "");
+            }  
         } catch (IOException ex) {
             Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo Agendas.", ex);
             return new Respuesta(false, "Error obteniendo Agendas.", "getAgendas " + ex.getMessage());

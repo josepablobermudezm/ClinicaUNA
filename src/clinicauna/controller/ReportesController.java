@@ -16,6 +16,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -41,8 +42,6 @@ public class ReportesController extends Controller {
     @FXML
     private Label Titulo;
     @FXML
-    private Label Titulo1;
-    @FXML
     private JFXDatePicker DateFechaInicio;
     @FXML
     private JFXDatePicker DateFechaFin;
@@ -50,8 +49,6 @@ public class ReportesController extends Controller {
     private JFXButton btnGenerarReporteMed;
     @FXML
     private JFXButton btnGenerarReportePac;
-    @FXML
-    private Label Titulo11;
     @FXML
     private TableColumn<MedicoDto, String> ColFolMed;
     @FXML
@@ -73,16 +70,43 @@ public class ReportesController extends Controller {
     private Idioma idioma;
     private UsuarioDto usuario;
     @FXML
-    private JFXTextField txtPaciente;
+    private Label lblTituloPaciente;
     @FXML
-    private JFXTextField txtMedico;
-
+    private JFXTextField txtNombre;
+    @FXML
+    private JFXTextField txtCedula;
+    @FXML
+    private JFXTextField txtApellido;
+    @FXML
+    private Label lblTituloMedico;
+    @FXML
+    private JFXButton btnPorcentajeCitas;
+    @FXML
+    private JFXButton btnLimpiar;
+    @FXML
+    private JFXTextField txtFolio;
+    @FXML
+    private JFXTextField txtCodigo;
+    @FXML
+    private JFXTextField txtCarne;
+    private MedicoService service;
+    private ArrayList<MedicoDto> meds;
+    private ObservableList items;
+    private PacienteService PService;
+    @FXML
+    private TableColumn<MedicoDto, String> col_codigo;
+    @FXML
+    private TableColumn<MedicoDto, String> Col_Carne;
+    private static MedicoDto m;
     @Override
     public void initialize() {
         colPacNombre.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre() + " " + value.getValue().getpApellido() + " " + value.getValue().getsApellido()));
         colCedPaciente.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCedula()));
+
         ColNomMed.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getUs().getNombre() + " " + value.getValue().getUs().getpApellido() + " " + value.getValue().getUs().getsApellido()));
         ColFolMed.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getFolio()));
+        col_codigo.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCodigo()));
+        Col_Carne.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getCarne()));
 
         PacService = new PacienteService();
         medService = new MedicoService();
@@ -97,6 +121,30 @@ public class ReportesController extends Controller {
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
             this.Titulo.setText(idioma.getProperty("Reportes"));
+            this.lblTituloMedico.setText(idioma.getProperty("Medico") + " " + idioma.getProperty("Reporte"));
+            this.lblTituloPaciente.setText(idioma.getProperty("PacienteB") + " " + idioma.getProperty("Reporte"));
+            this.txtApellido.setPromptText(idioma.getProperty("Apellido"));
+            this.txtCarne.setPromptText(idioma.getProperty("Carné"));
+            this.txtCodigo.setPromptText(idioma.getProperty("Código"));
+            this.txtCedula.setPromptText(idioma.getProperty("Cedula"));
+            this.txtNombre.setPromptText(idioma.getProperty("Nombre"));
+            this.ColNomMed.setText(idioma.getProperty("Nombre"));
+            this.Col_Carne.setText(idioma.getProperty("Carné"));
+            this.colCedPaciente.setText(idioma.getProperty("Cedula"));
+            this.colPacNombre.setText(idioma.getProperty("Nombre"));
+            this.btnGenerarReporteMed.setText(idioma.getProperty("Agenda"));
+            this.btnGenerarReportePac.setText(idioma.getProperty("Generar"));
+            this.btnPorcentajeCitas.setText(idioma.getProperty("RPCitas"));
+            this.btnLimpiar.setText("Limpiar" + " " + idioma.getProperty("Registro"));
+            this.DateFechaInicio.setPromptText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Fecha"));
+            this.DateFechaFin.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Fecha"));
+        }
+
+        if ("M".equals(usuario.getTipoUsuario())) {
+            this.tvMedico.setVisible(false);
+            this.txtFolio.setVisible(false);
+            this.txtCodigo.setVisible(false);
+            this.txtCarne.setVisible(false);
         }
 
     }
@@ -116,7 +164,26 @@ public class ReportesController extends Controller {
                         new Mensaje().showModal(Alert.AlertType.ERROR, "Reporte", this.getStage(), resp.getMensaje());
                     }
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.WARNING, "Generacion de Reporte", this.getStage(), "Debes Seleccionar un medico primero para generar un reporte");
+                    if (usuario.getTipoUsuario().equals("M")) {
+                        Respuesta r = medService.getMedicos();
+                        ArrayList<MedicoDto> mds = (ArrayList<MedicoDto>) r.getResultado("Medicos");
+                        
+                        mds.stream().forEach(x->{
+                            if(Objects.equals(x.getUs().getID(), usuario.getID())){
+                                m = x;
+                            }
+                        });
+                        String FechaInicio = DateFechaInicio.getValue().toString();
+                        String FechaFinal = DateFechaFin.getValue().toString();
+                        Respuesta resp = new AgendaService().getAgendas(FechaInicio, FechaFinal, m.getFolio());
+                        if (resp.getEstado()) {
+                            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Reporte", this.getStage(), resp.getMensaje());
+                        } else {
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Reporte", this.getStage(), resp.getMensaje());
+                        }
+                    } else {
+                        new Mensaje().showModal(Alert.AlertType.WARNING, "Generacion de Reporte", this.getStage(), "Debes Seleccionar un medico primero para generar un reporte");
+                    }
                 }
             } else {
                 new Mensaje().showModal(Alert.AlertType.WARNING, "Reporte", this.getStage(), "La fecha fin del reporte no puede estar antes que la de inicio");
@@ -131,7 +198,7 @@ public class ReportesController extends Controller {
     private void GenerarReportePaciente(ActionEvent event) {
         if (tvPaciente.getSelectionModel() != null && tvPaciente.getSelectionModel().getSelectedItem() != null) {
             PacienteDto paciente = tvPaciente.getSelectionModel().getSelectedItem();
-           
+
             Respuesta resp = new PacienteService().getReporteControl(paciente.getCedula());
             if (resp.getEstado()) {
                 new Mensaje().showModal(Alert.AlertType.INFORMATION, "Reporte", this.getStage(), resp.getMensaje());
@@ -144,25 +211,12 @@ public class ReportesController extends Controller {
     }
 
     @FXML
-    private void ReleasedNombrePac(KeyEvent event) {
-    }
-
-    /*
-    Agregar Filtros
-     */
-    @FXML
-    private void filtrarPaciente(ActionEvent event) {
-    }
-
-    @FXML
-    private void filtrarMedico(ActionEvent event) {
-    }
-
-    @FXML
     private void seleccionarPaciente(MouseEvent event) {
         if (tvPaciente.getSelectionModel() != null && tvPaciente.getSelectionModel().getSelectedItem() != null) {
             PacienteDto paciente = tvPaciente.getSelectionModel().getSelectedItem();
-            txtPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
+            txtNombre.setText(paciente.getNombre());
+            txtCedula.setText(paciente.getCedula());
+            txtApellido.setText(paciente.getpApellido() + " " + paciente.getsApellido());
         }
     }
 
@@ -170,19 +224,90 @@ public class ReportesController extends Controller {
     private void limpiarRegistro(ActionEvent event) {
         tvMedico.getSelectionModel().clearSelection();
         tvPaciente.getSelectionModel().clearSelection();
-        txtMedico.clear();
-        txtPaciente.clear();
+        txtFolio.clear();
+        txtCodigo.clear();
+        txtCarne.clear();
+        txtApellido.clear();
+        txtCedula.clear();
+        txtNombre.clear();
     }
 
     @FXML
     private void seleccionarMedico(MouseEvent event) {
         if (tvMedico.getSelectionModel() != null && tvMedico.getSelectionModel().getSelectedItem() != null) {
             MedicoDto medico = tvMedico.getSelectionModel().getSelectedItem();
-            txtMedico.setText(medico.getUs().getNombre() + " " + medico.getUs().getpApellido() + " " + medico.getUs().getsApellido());
+            txtFolio.setText(medico.getFolio());
+            txtCodigo.setText(medico.getCodigo());
+            txtCarne.setText(medico.getCarne());
         }
     }
 
     @FXML
     private void porcentajeCitas(ActionEvent event) {
     }
+
+    @FXML
+    private void ReleasedNombre(KeyEvent event) {
+        BuscarPacientes();
+    }
+
+    @FXML
+    private void ReleasedCedula(KeyEvent event) {
+        BuscarPacientes();
+    }
+
+    @FXML
+    private void ReleasedApellido(KeyEvent event) {
+        BuscarPacientes();
+    }
+
+    @FXML
+    private void ReleasedFolio(KeyEvent event) {
+        BuscarMedicos();
+    }
+
+    @FXML
+    private void ReleasedCodigo(KeyEvent event) {
+        BuscarMedicos();
+    }
+
+    @FXML
+    private void ReleasedCarne(KeyEvent event) {
+        BuscarMedicos();
+    }
+
+    public void BuscarPacientes() {
+        String ced = (!txtCedula.getText().isEmpty()) ? "%" + txtCedula.getText().toUpperCase() + "%" : "%";
+        String nom = (!txtNombre.getText().isEmpty()) ? "%" + txtNombre.getText().toUpperCase() + "%" : "%";
+        String apellido = (!txtApellido.getText().isEmpty()) ? "%" + txtApellido.getText().toUpperCase() + "%" : "%";
+
+        PService = new PacienteService();
+        Respuesta resp = PService.getPacientes(ced, nom, apellido);
+
+        if (resp.getEstado()) {
+            pacientes = (ArrayList<PacienteDto>) resp.getResultado("Pacientes");
+            items = FXCollections.observableArrayList(pacientes);
+            tvPaciente.setItems(items);
+        } else {
+            System.out.println(resp.getMensaje());
+        }
+    }
+
+    public void BuscarMedicos() {
+        String cod = (!txtCodigo.getText().isEmpty()) ? "%" + txtCodigo.getText().toUpperCase() + "%" : "%";
+        String carne = (!txtCarne.getText().isEmpty()) ? "%" + txtCarne.getText().toUpperCase() + "%" : "%";
+        String folio = (!txtFolio.getText().isEmpty()) ? "%" + txtFolio.getText().toUpperCase() + "%" : "%";
+
+        service = new MedicoService();
+        Respuesta resp = service.getMedicos(cod, carne, folio);
+
+        if (resp.getEstado()) {
+            meds = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
+            items = FXCollections.observableArrayList(meds);
+            this.tvMedico.setItems(items);
+        } else {
+            System.out.println(resp.getMensaje());
+        }
+    }
+
 }

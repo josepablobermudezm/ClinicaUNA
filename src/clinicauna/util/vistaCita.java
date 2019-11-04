@@ -71,7 +71,7 @@ public class vistaCita extends HBox {
             hacemos el intercambio de la base de datos de cita
         */
         
-        /*AgendaDto agenda;
+        AgendaDto agenda;
         agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
         String horaInicio = this.getEspacio().getEspHoraInicio();
         String horaFinal = this.getEspacio().getEspHoraFin();
@@ -83,9 +83,9 @@ public class vistaCita extends HBox {
         vCita.getEspacio().setEspAgenda(agenda);
         EspacioService espacioService = new EspacioService();
         espacioService.guardarEspacio(this.getEspacio());
-        */
         
-        //espacioService.guardarEspacio(vCita.getEspacio());
+        
+        espacioService.guardarEspacio(vCita.getEspacio());
         /*if (vCita.getEspacio() != null && this.getEspacio() != null) {
 
             EspacioDto espacioDto3 = new EspacioDto(vCita.getEspacio().getEspId(), vCita.getEspacio().getEspHoraInicio(), vCita.getEspacio().getEspHoraFin(),

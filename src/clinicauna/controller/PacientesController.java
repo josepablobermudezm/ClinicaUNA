@@ -97,7 +97,6 @@ public class PacientesController extends Controller {
     private ExpedienteService expedienteService;
     @FXML
     private JFXButton btnEditar11;
-    @FXML
     private JFXButton btnEliminar11;
     @FXML
     private JFXButton btnLimpiarRegistro1;
@@ -159,8 +158,8 @@ public class PacientesController extends Controller {
 
     @FXML
     private void editar(ActionEvent event) {
-        if (table.getSelectionModel() != null || AppContext.getInstance().get("Paciente") != null) {
-            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Paciente") != null) {
+        if (table.getSelectionModel() != null || AppContext.getInstance().get("Pact") != null) {
+            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Pact") != null) {
                 if (registroCorrecto()) {
                     Long id = pacienteDto.getID();
                     String nombre = txtNombre.getText();
@@ -212,44 +211,6 @@ public class PacientesController extends Controller {
                 ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patient");
             } else {
                 ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
-            }
-        }
-
-    }
-
-    @FXML
-    private void eliminar(ActionEvent event) {
-        if (table.getSelectionModel() != null || AppContext.getInstance().get("Paciente") != null) {
-            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Paciente") != null) {
-               Respuesta r;
-                if (AppContext.getInstance().get("Paciente") != null && table.getSelectionModel().getSelectedItem() == null) {
-                     r = pacienteService.eliminarPaciente(pacienteDto.getID());
-                } else {
-                     r = pacienteService.eliminarPaciente(table.getSelectionModel().getSelectedItem().getID());
-                }
-                if (usuario.getIdioma().equals("I")) {
-                    ms.showModal(Alert.AlertType.INFORMATION, "Information", this.getStage(), r.getMensaje());
-                } else {
-                    ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), r.getMensaje());
-                }
-                Respuesta respuesta = pacienteService.getPacientes();
-                items.clear();
-                pacientes = (ArrayList) respuesta.getResultado("Pacientes");
-                items = FXCollections.observableArrayList(pacientes);
-                table.setItems(items);
-                limpiarValores();
-            } else {
-                if (usuario.getIdioma().equals("I")) {
-                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You muest select the patient to delete");
-                } else {
-                    ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el elemento a eliminar");
-                }
-            }
-        } else {
-            if (usuario.getIdioma().equals("I")) {
-                ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You muest select the patient");
-            } else {
-                ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar el paciente");
             }
         }
 
@@ -349,7 +310,7 @@ public class PacientesController extends Controller {
         *   Cargo los datos cuando se seleccionan los datos desde el tableview y limpio el AppContext de Paciente en el caso de que se haya usado en la
         *   vista de buscar para que no genere problemas
         */
-        AppContext.getInstance().delete("Paciente");
+        AppContext.getInstance().delete("Pact");
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 pacienteDto = table.getSelectionModel().getSelectedItem();
@@ -396,7 +357,7 @@ public class PacientesController extends Controller {
         *   Limpio el tableview en el caso de que tenga alguno otro objeto seleccionado
         */
         table.getSelectionModel().clearSelection();
-        AppContext.getInstance().delete("Paciente");
+        AppContext.getInstance().delete("Pact");
         FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
         DatosPaciente();
     }
@@ -405,8 +366,8 @@ public class PacientesController extends Controller {
         /*
         *   Cargo los datos cuando se seleccionan desde la vista de Buscar pacientes
         */
-        if (AppContext.getInstance().get("Paciente") != null) {
-            pac = (PacienteDto) AppContext.getInstance().get("Paciente");
+        if (AppContext.getInstance().get("Pact") != null) {
+            pac = (PacienteDto) AppContext.getInstance().get("Pact");
             pacienteDto = pac;
             this.txtCedula.setText(pac.getCedula());
             this.txtCorreo.setText(pac.getCorreo());

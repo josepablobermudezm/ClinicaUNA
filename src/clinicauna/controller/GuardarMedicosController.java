@@ -90,11 +90,14 @@ public class GuardarMedicosController extends Controller {
             LocalDateTime final12 = LocalDateTime.of(LocalDate.now(), timePickerfinal.getValue());
             String inicioJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
             String finJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(final12);
-            //LocalDateTime final2 = LocalDateTime.of(LocalDate.now(),final1);
-            Long version = new Long(1);
-            medicoDto = new MedicoDto(null, codigo, folio, carne, "A", inicioJornada, finJornada, espacios, null, version);
-            AppContext.getInstance().set("Medico", medicoDto);
-            this.getStage().close();
+            if (espacios <= 4) {
+                Long version = new Long(1);
+                medicoDto = new MedicoDto(null, codigo, folio, carne, "A", inicioJornada, finJornada, espacios, null, version);
+                AppContext.getInstance().set("Medico", medicoDto);
+                this.getStage().close();
+            }else{
+                new Mensaje().show(Alert.AlertType.WARNING, "Información de Registro", "Cantidad máxima de espacios es 4");
+            }
 
         } else {
             if (usuario.getIdioma().equals("I")) {

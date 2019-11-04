@@ -41,18 +41,24 @@ public class DrawerContentControllerRecepcionista extends Controller {
     private JFXButton btnUsuarios;
     private Idioma idioma;
     private UsuarioDto usuario;
+
     @FXML
     private void exit(ActionEvent event) {
         FlowController.getInstance().salir();
+        AppContext.getInstance().delete("Pact");
+        AppContext.getInstance().delete("Expediente");
+        AppContext.getInstance().delete("UsuarioActivo");
+        AppContext.getInstance().delete("MedicoDto");
+        AppContext.getInstance().delete("Med");
         FlowController.getInstance().goViewInWindowTransparent("LogIn");
     }
 
     @Override
     public void initialize() {
 
-       idioma = (Idioma) AppContext.getInstance().get("idioma");
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-        if (usuario.getIdioma().equals("I")) {
+        if (usuario.getIdioma().equals("I") && !"R".equals(usuario.getTipoUsuario())) {
             btnAgenda.setText(idioma.getProperty("Agenda"));
             btnExit.setText(idioma.getProperty("Salir"));
             btnExpediente.setText(idioma.getProperty("MedExp") + " " + idioma.getProperty("Expediente"));
@@ -60,6 +66,12 @@ public class DrawerContentControllerRecepcionista extends Controller {
             btnReportes.setText(idioma.getProperty("Reportes"));
             btnUsuarios.setText(idioma.getProperty("Usuarios"));
             btnPacientes.setText(idioma.getProperty("Pacientes"));
+        } else {
+            if (usuario.getIdioma().equals("I")) {
+                btnAgenda.setText(idioma.getProperty("Agenda"));
+                btnExit.setText(idioma.getProperty("Salir"));
+                btnPacientes.setText(idioma.getProperty("Pacientes"));
+            }
         }
         Image img;
         try {
@@ -67,7 +79,7 @@ public class DrawerContentControllerRecepcionista extends Controller {
             image.setImage(img);
         } catch (Exception e) {
         }
-        
+
     }
 
     @FXML
@@ -75,7 +87,7 @@ public class DrawerContentControllerRecepcionista extends Controller {
         FlowController.getInstance().initialize();
         FlowController.getInstance().goView("Pacientes");
     }
-    
+
     @FXML
     private void btnAgenda(ActionEvent event) {
         FlowController.getInstance().initialize();

@@ -164,9 +164,9 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         /*
         *   Llamamos a esta vista para que se seleccione un paciente 
          */
-        if (AppContext.getInstance().get("Paciente") == null) {
+        if (AppContext.getInstance().get("Pact") == null) {
             FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
-            if (AppContext.getInstance().get("Paciente") != null) {
+            if (AppContext.getInstance().get("Pact") != null) {
                 DatosPaciente();
             }
         } else {
@@ -186,8 +186,8 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         /*
         * Seteamos todos los datos del expediente en los textfields/radioButton
         */
-        if (AppContext.getInstance().get("Paciente") != null) {
-            paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
+        if (AppContext.getInstance().get("Pact") != null) {
+            paciente = (PacienteDto) AppContext.getInstance().get("Pact");
             //encontramos el expediente que sea igual al id del paciente seleccionado
             expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
             if (expedientes.stream().filter(x -> {
@@ -323,7 +323,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         txtAntecedentesPatologicos.setDisable(true);
         txtOperaciones.setDisable(true);
         txtTratamientos.setDisable(true);
-        AppContext.getInstance().delete("Paciente");
+        AppContext.getInstance().delete("Pact");
         btnGuardar.setDisable(false);
     }
 
