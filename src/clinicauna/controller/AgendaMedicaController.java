@@ -127,7 +127,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
     @FXML
     private JFXButton btnBuscar;
     private boolean combo = true;
-    private boolean valor = true;
 
     @Override
     public void initialize() {
@@ -148,12 +147,12 @@ public class AgendaMedicaController extends Controller implements Initializable 
         } else if (usuarioDto.getTipoUsuario().equals("M")) {
             inicio = false;
             DatePicker.setValue(LocalDate.now());
-            //ComboMedico.setVisible(false);
-            btnBuscar.setVisible(false);
+            ComboMedico.setVisible(false);
+            //btnBuscar.setVisible(false);
             medicoService = new MedicoService();
-            /*resp = medicoService.getMedicos();
-            lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");*/
-            medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
+            resp = medicoService.getMedicos();
+            lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
+            medicoDto = lista.stream().filter(x -> x.getUs().getID().equals(usuarioDto.getID())).findAny().get();
             AppContext.getInstance().set("MedicoDto", medicoDto);
         }
         Inicio();
@@ -185,11 +184,11 @@ public class AgendaMedicaController extends Controller implements Initializable 
         /*
         *   Lista del combobox
          */
- /*lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
+        lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
         items = FXCollections.observableArrayList(lista.stream().map(x -> x.getUs().getNombre()
                 + " " + x.getUs().getpApellido() + " " + x.getUs().getsApellido() + " Ced:" + x.getUs().getCedula())
                 .collect(Collectors.toList()));
-        ComboMedico.setItems(items);*/
+        ComboMedico.setItems(items);
     }
 
     private EventHandler<MouseEvent> citasReleased = (event) -> {
@@ -220,11 +219,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
         } else {
             inicio = false;
         }
-        if (AppContext.getInstance().get("Med") != null) {
-            valor = false;
-        } else {
-            valor = true;
-        }
     }
 
     public void fecha() {
@@ -252,12 +246,12 @@ public class AgendaMedicaController extends Controller implements Initializable 
         /*
         *   Validamos que se haya seleccionado un médico y cargamos la vista de nuevo 
          */
- /*AppContext.getInstance().delete("Med");
+        //AppContext.getInstance().delete("Med");
         if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
-            combo = true;
+            //combo = true;
             initialize();
             SeleccionarMedico();
-        }*/
+        }
     }
 
     public void SeleccionarMedico() {
@@ -267,20 +261,25 @@ public class AgendaMedicaController extends Controller implements Initializable 
             *   Es necesario seleccionar un médico si el usuario no es un médico, como lo realizamos mediante un combobox, realizamos un busqueda a 
             *   partir de la cedula para obtener el medicoDto y utilizarlo posteriormente
              */
-            if ((!usuarioDto.getTipoUsuario().equals("M") && AppContext.getInstance().get("MedicoDto") == null)) {
-                medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
-                if (valor) {
-                    inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
-                    finJornada = LocalTime.parse(medicoDto.getFinJornada());
-                    //Creo las conversiones de las horas del medico con formato
-                    LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
-                    LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
-                    String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
-                    String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
-                    medicoDto.setInicioJornada(inicioS);
-                    medicoDto.setFinJornada(finS);
-                }
-
+        if ((!usuarioDto.getTipoUsuario().equals("M") && AppContext.getInstance().get("MedicoDto") == null)) {
+                String medico = ComboMedico.getSelectionModel().getSelectedItem();
+                medico.chars().forEach(x -> {
+                    if (((char) x) == ':') {
+                        cedulaEncontrada = true;
+                    } else if (cedulaEncontrada) {
+                        cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
+                    }
+                });
+                medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
+                inicioJornada = LocalTime.parse(medicoDto.getInicioJornada());
+                finJornada = LocalTime.parse(medicoDto.getFinJornada());
+                //Creo las conversiones de las horas del medico con formato
+                LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicioJornada);
+                LocalDateTime fin = LocalDateTime.of(LocalDate.now(), finJornada);
+                String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
+                String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
+                medicoDto.setInicioJornada(inicioS);
+                medicoDto.setFinJornada(finS);
             }
 
             int EspaciosPorHora = medicoDto.getEspacios();//cantidad de espacios que posee un médico por hora
@@ -482,12 +481,12 @@ public class AgendaMedicaController extends Controller implements Initializable 
         *   Cuando seleccionamos la fecha, verificamos que el DatePicker no sea null, después iniciamos todo de nuevo para que se cargue un día diferente
          */
         if (this.DatePicker.getValue() != null) {
-            if ((AppContext.getInstance().get("Med") != null)) {
+            if ((ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null)) {
                 FlowController.getInstance().initialize();
                 initialize();
             } else {
-                //this.ComboMedico.setDisable(false);
-                this.btnBuscar.setDisable(false);
+                this.ComboMedico.setDisable(false);
+                //this.btnBuscar.setDisable(false);
             }
         }
     }
@@ -661,10 +660,10 @@ public class AgendaMedicaController extends Controller implements Initializable 
     @FXML
     private void Buscar(ActionEvent event) {
         //ComboMedico.setSelectionModel(null);
-        AppContext.getInstance().delete("Med");
+        /*AppContext.getInstance().delete("Med");
         FlowController.getInstance().goViewInWindowModal("BuscarMedico", this.getStage(), false);
         medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
         initialize();
-        SeleccionarMedico();
+        SeleccionarMedico();*/
     }
 }
