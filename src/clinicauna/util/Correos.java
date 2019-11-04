@@ -16,6 +16,7 @@ import clinicauna.service.CitaService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Stack;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -49,6 +50,7 @@ public class Correos extends Thread {
     private List<vistaCita> aux = new ArrayList<>();
     private ControlDto control;
     private EspacioDto espacio;
+    private Stack <EspacioDto> pila;
 
     @Override
     public void run() {
@@ -156,14 +158,14 @@ public class Correos extends Thread {
         start();
     }
 
-    public void CorreoCitaHiloRecordatorio(String Destinatario) {
+    public void CorreoCitaHiloRecordatorio(String Destinatario , CitaDto cita , Stack<EspacioDto> pila, MedicoDto medicoDto) {
         this.destinatario = Destinatario;
         this.caso = "recordatorio";
         this.cita = cita;
-        medico = (MedicoDto) AppContext.getInstance().get("MedicoDto");
-        paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
-        agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
-        espacio = (EspacioDto) AppContext.getInstance().get("Espacio");
+        this.medico = medicoDto;
+        this.pila = pila;
+        /*System.out.println("PILA "+pila.firstElement().getEspHoraInicio());
+        System.out.println("PILA "+pila.pop().getEspHoraFin());*/
         start();
     }
 
@@ -301,23 +303,11 @@ public class Correos extends Thread {
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
             System.out.println("Correo Enviado");
-            if (us.getIdioma().equals("I")) {
-                resp = new Respuesta(true, "Mail sent successfully", "");
-            } else {
-                resp = new Respuesta(true, "Correo enviado exitosamente.", "");
-            }
-            /*
-            Si el correo se envio, guardo el estado de la cita a correo Enviado
-             */
+            
             cita.setCorreoEnviado("S");
             new CitaService().guardarCita(cita);
         } catch (MessagingException e) {
-            System.out.println("Correo Fallido");
-            if (us.getIdioma().equals("I")) {
-                resp = new Respuesta(false, "Mail was not sent due to a network problem", e.getLocalizedMessage());
-            } else {
-                resp = new Respuesta(false, "No se ha enviado un correo de información de cita debido a un problema de red.", e.getLocalizedMessage());
-            }
+            System.out.println("Correo Fallido "+ e.getMessage());
         }
     }
 
@@ -383,8 +373,8 @@ public class Correos extends Thread {
                 + "				<h2 style=\"color: #3e3e7d; margin: 0 0 7px\">Información de Cita</h2>\n"
                 + "				<p style=\"margin: 2px; font-size: 15px\">\n"
                 + "					Este correo tiene como propósito recordarle que mañana tiene una cita en la clinica: " + "  " + "<br>" + " Información sobre cita: " + "<br>"
-                + "Médico: " /*+ medico.getUs().getNombre() + " " + medico.getUs().getpApellido() + "<br>" + "Fecha: " + agenda.getAgeFecha().toString()*/ /*+ "<br>" + "Hora de inicio: " +espacio.getEspHoraInicio()
-                + "<br>" + "Hora Final:" + espacio.getEspHoraFin() + "<br>" + "Paciente: " + paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido() + "<br>" + "Cédula: " + paciente.getCedula()*/
+                + "Médico: " + medico.getUs().getNombre() + " " + medico.getUs().getpApellido() +  "<br>" + "Hora de inicio: " + pila.firstElement().getEspHoraInicio()
+                + "<br>" + "Hora Final:" + pila.pop().getEspHoraFin() + "<br>"
                 + "                             <p style=\"margin: 2px; font-size: 15px\">\n"
                 + "				<p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">ClínicaUNA 2019</p>\n"
                 + "			</div>\n"
