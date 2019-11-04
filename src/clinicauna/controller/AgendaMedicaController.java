@@ -124,6 +124,8 @@ public class AgendaMedicaController extends Controller implements Initializable 
     @FXML
     private Label lblCancelada;
     private Mensaje ms;
+    @FXML
+    private JFXButton btnBuscar;
 
     @Override
     public void initialize() {
@@ -646,5 +648,9 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    }
+
+    @FXML
+    private void Buscar(ActionEvent event) {
     }
 }
