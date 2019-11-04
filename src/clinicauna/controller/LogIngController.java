@@ -165,36 +165,41 @@ public class LogIngController extends Controller implements Initializable {
             Login();
         }
     }
-    private void enviarCorreos(){
-        /*
+
+    private void enviarCorreos() {
+        if (agendaList != null && !agendaList.isEmpty()) {
+            /*
         *   Guardo en la lista de citas todas las citas que pertenezcan a la agenda del día de mañana,luego agrego los datos
         *   que no esten ya repetidos en la lista de citas para evitar enviarle correos a la misma persona por tener varios espacios
-         */
-        agendaList.stream().forEach(agenda -> {
-            if (agenda.getAgeFecha().isEqual(LocalDate.now().plusDays(1))) {
-                espacioList.stream().forEach(espacio-> {
-                    if(!citas.isEmpty()){
-                        //Pregunto si la cita no existe en la lista 
-                        if(citas.stream().allMatch(x->x.getID().equals(espacio.getEspCita().getID()))){
-                            //Pregunto si el correo no ha sido enviado
-                            if(espacio.getEspCita().getCorreoEnviado().equals("N")){
-                                citas.add(espacio.getEspCita());
+             */
+            agendaList.stream().forEach(agenda -> {
+                if (agenda.getAgeFecha().isEqual(LocalDate.now().plusDays(1))) {
+                    espacioList.stream().forEach(espacio -> {
+                        if (!citas.isEmpty()) {
+                            //Pregunto si la cita no existe en la lista 
+                            if (citas.stream().allMatch(x -> x.getID().equals(espacio.getEspCita().getID()))) {
+                                //Pregunto si el correo no ha sido enviado
+                                if (espacio.getEspCita().getCorreoEnviado().equals("N")) {
+                                    citas.add(espacio.getEspCita());
+                                }
                             }
+                        } else {
+                            citas.add(espacio.getEspCita());
                         }
-                    }else{
-                        citas.add(espacio.getEspCita());
-                    }
+                    });
+                }
+            });
+            //Envia los correos por medio de hilos para que no afecten al programa
+            if (!citas.isEmpty()) {
+                citas.stream().forEach((cita) -> {
+                    Correos correo = new Correos();
+                    correo.CorreoCitaHiloRecordatorio(cita.getCorreo(), cita);
                 });
             }
-        });
-        //Envia los correos por medio de hilos para que no afecten al programa
-        if(!citas.isEmpty()){
-            citas.stream().forEach((cita) -> {
-                Correos correo = new Correos();
-                correo.CorreoCitaHiloRecordatorio(cita.getCorreo(),cita);
-            });
         }
+
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         agendaService = new AgendaService();
@@ -205,10 +210,10 @@ public class LogIngController extends Controller implements Initializable {
         agendaList = ((ArrayList<AgendaDto>) respAgenda.getResultado("Agendas"));
         citasService = new CitaService();
         citas = new ArrayList();
-        
+
         //Envia correos a las citas del dia de manana
         enviarCorreos();
-       
+
         Formato();
         Image imgLogo;
         try {
@@ -255,5 +260,5 @@ public class LogIngController extends Controller implements Initializable {
         } catch (Exception e) {
         }
     }
-    
+
 }
