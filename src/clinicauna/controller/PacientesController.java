@@ -405,8 +405,8 @@ public class PacientesController extends Controller {
         /*
         *   Cargo los datos cuando se seleccionan desde la vista de Buscar pacientes
         */
-        if (AppContext.getInstance().get("Paciente") != null) {
-            pac = (PacienteDto) AppContext.getInstance().get("Paciente");
+        if (AppContext.getInstance().get("Pact") != null) {
+            pac = (PacienteDto) AppContext.getInstance().get("Pact");
             pacienteDto = pac;
             this.txtCedula.setText(pac.getCedula());
             this.txtCorreo.setText(pac.getCorreo());
