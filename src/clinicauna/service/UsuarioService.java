@@ -163,7 +163,7 @@ public class UsuarioService {
                 return new Respuesta(false, request.getError(), "");
             }
             if (usuario.getIdioma().equals("I")) {
-                return new Respuesta(true, "User successfully deleted", "");
+                return new Respuesta(true, "User successfully removed", "");
             } else {
                 return new Respuesta(true, "Usuario eliminado exitosamente", "");
             }

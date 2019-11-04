@@ -139,7 +139,12 @@ public class MedicoService {
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            return new Respuesta(true, "", "");
+            if(usuario.getIdioma().equals("I")){
+                return new Respuesta(true, "Doctor successfully removed", "");
+            }
+            else{
+                return new Respuesta(true, "Doctor eliminado exitosamente", "");
+            }
         } catch (Exception ex) {
             Logger.getLogger(MedicoService.class.getName()).log(Level.SEVERE, "Error eliminando el Medico.", ex);
             if (usuario.getIdioma().equals("I")) {
@@ -147,6 +152,27 @@ public class MedicoService {
             } else {
                 return new Respuesta(false, "Error eliminando el Medico.", "eliminarMedico " + ex.getMessage());
             }
+        }
+    }
+
+    public Respuesta getMedicos(String cod, String carne, String folio) {
+        try {
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("codigo", cod);
+            parametros.put("carne", carne);
+            parametros.put("folio", folio);
+            Request request = new Request("MedicoController/medicos", "/{codigo}/{carne}/{folio}", parametros);
+            request.get();
+
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+            List<MedicoDto> Medicos = (List<MedicoDto>) request.readEntity(new GenericType<List<MedicoDto>>() {
+            });
+            return new Respuesta(true, "", "", "Medicos", Medicos);
+        } catch (Exception ex) {
+            Logger.getLogger(PacienteService.class.getName()).log(Level.SEVERE, "Error obteniendo Medicos.", ex);
+            return new Respuesta(false, "Error obteniendo Medicos.", "getMedicos " + ex.getMessage());
         }
     }
 
