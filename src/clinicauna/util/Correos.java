@@ -8,6 +8,7 @@ package clinicauna.util;
 import clinicauna.model.AgendaDto;
 import clinicauna.model.CitaDto;
 import clinicauna.model.ControlDto;
+import clinicauna.model.EspacioDto;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
@@ -47,6 +48,7 @@ public class Correos extends Thread {
     private PacienteDto paciente;
     private List<vistaCita> aux = new ArrayList<>();
     private ControlDto control;
+    private EspacioDto espacio;
 
     @Override
     public void run() {
@@ -154,14 +156,14 @@ public class Correos extends Thread {
         start();
     }
 
-    public void CorreoCitaHiloRecordatorio(String Destinatario, CitaDto cita) {
+    public void CorreoCitaHiloRecordatorio(String Destinatario) {
         this.destinatario = Destinatario;
         this.caso = "recordatorio";
         this.cita = cita;
         medico = (MedicoDto) AppContext.getInstance().get("MedicoDto");
-        aux = (List) AppContext.getInstance().get("aux");
         paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
         agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
+        espacio = (EspacioDto) AppContext.getInstance().get("Espacio");
         start();
     }
 
@@ -285,7 +287,7 @@ public class Correos extends Thread {
 
             Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
             BodyPart link = new MimeBodyPart();
-            link.setContent(htmlCorreoCitaRecordatorio(cita), "text/html");
+            link.setContent(htmlCorreoCitaRecordatorio(), "text/html");
             MimeMultipart m = new MimeMultipart();
             m.addBodyPart(link);
             MimeMessage mensaje = new MimeMessage(session);
@@ -358,7 +360,7 @@ public class Correos extends Thread {
         }
     }
 
-    public String htmlCorreoCitaRecordatorio(CitaDto cita) {
+    public String htmlCorreoCitaRecordatorio() {
 
         return "<!DOCTYPE html>\n"
                 + "<html lang=\"es\">\n"
@@ -378,8 +380,8 @@ public class Correos extends Thread {
                 + "				<h2 style=\"color: #3e3e7d; margin: 0 0 7px\">Información de Cita</h2>\n"
                 + "				<p style=\"margin: 2px; font-size: 15px\">\n"
                 + "					Este correo tiene como propósito recordarle que mañana tiene una cita en la clinica: " + "  " + "<br>" + " Información sobre cita: " + "<br>"
-                + "Médico: " + medico.getUs().getNombre() + " " + medico.getUs().getpApellido() + "<br>" + "Fecha: " + agenda.getAgeFecha().toString() + "<br>" + "Hora de inicio: " + aux.get(0).getEspacio().getEspHoraInicio()
-                + "<br>" + "Hora Final:" + aux.get(aux.size() - 1).getEspacio().getEspHoraFin() + "<br>" + "Paciente: " + paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido() + "<br>" + "Cédula: " + paciente.getCedula()
+                + "Médico: " /*+ medico.getUs().getNombre() + " " + medico.getUs().getpApellido() + "<br>" + "Fecha: " + agenda.getAgeFecha().toString()*/ /*+ "<br>" + "Hora de inicio: " +espacio.getEspHoraInicio()
+                + "<br>" + "Hora Final:" + espacio.getEspHoraFin() + "<br>" + "Paciente: " + paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido() + "<br>" + "Cédula: " + paciente.getCedula()*/
                 + "                             <p style=\"margin: 2px; font-size: 15px\">\n"
                 + "				<p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">ClínicaUNA 2019</p>\n"
                 + "			</div>\n"
