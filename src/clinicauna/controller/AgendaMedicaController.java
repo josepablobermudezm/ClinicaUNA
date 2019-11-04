@@ -303,7 +303,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                     hPane.setOnMouseReleased(citasReleased);
                     /*
                     *   Dependiendo de la cantidad de espacios por hora que se dan entonces hacemos el tamaño del hBox
-                     */
+                    */
                     hPane.setMinWidth((EspaciosPorHora == 4) ? 250 : (EspaciosPorHora == 3) ? 333 : (EspaciosPorHora == 2) ? 500 : 1000);
                     hPane.setMinHeight(100);
                     Label label = new Label();
