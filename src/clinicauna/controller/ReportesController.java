@@ -2,9 +2,11 @@ package clinicauna.controller;
 
 import clinicauna.model.PacienteDto;
 import clinicauna.model.UsuarioDto;
+import clinicauna.service.AgendaService;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
 import clinicauna.util.Idioma;
+import clinicauna.util.Mensaje;
 import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -19,13 +21,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+
 /**
  * FXML Controller class
+ *
  * @author Jose Pablo Bermudez
  */
 public class ReportesController extends Controller {
@@ -93,6 +98,23 @@ public class ReportesController extends Controller {
 
     @FXML
     private void GenerarReporteMedico(ActionEvent event) {
+        if (DateFechaFin.getValue() != null && DateFechaInicio.getValue() != null) {
+            if (!DateFechaFin.getValue().isBefore(DateFechaInicio.getValue())) {
+                String FechaInicio = DateFechaInicio.getValue().toString();
+                String FechaFinal = DateFechaFin.getValue().toString();
+                Respuesta resp = new AgendaService().getAgendas(FechaInicio, FechaFinal,"123");
+                if(resp.getEstado()){
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Reporte", this.getStage(),resp.getMensaje());
+                }else{
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Reporte", this.getStage(),resp.getMensaje());
+                }
+            } else {
+                new Mensaje().showModal(Alert.AlertType.WARNING, "Reporte", this.getStage(), "La fecha fin del reporte no puede estar antes que la de inicio");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.WARNING, "Reporte", this.getStage(), "Las fechas del reporte no pueden ir vacias");
+        }
+
     }
 
     @FXML
@@ -130,5 +152,4 @@ public class ReportesController extends Controller {
             System.out.println(resp.getMensaje());
         }
     }
-
 }

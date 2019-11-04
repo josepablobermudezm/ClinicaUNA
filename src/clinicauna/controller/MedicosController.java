@@ -6,8 +6,12 @@
 package clinicauna.controller;
 
 import clinicauna.ClinicaUna;
+import clinicauna.model.AgendaDto;
+import clinicauna.model.EspacioDto;
 import clinicauna.model.MedicoDto;
 import clinicauna.model.UsuarioDto;
+import clinicauna.service.AgendaService;
+import clinicauna.service.EspacioService;
 import clinicauna.service.MedicoService;
 import clinicauna.util.AppContext;
 import clinicauna.util.FlowController;
@@ -97,9 +101,27 @@ public class MedicosController extends Controller {
     @FXML
     private TableColumn<MedicoDto, String> COL_NOMBRE_MEDICOS;
     private MedicoDto med;
+    private ArrayList<EspacioDto> espacioListAux;//en esta lista voy a guardar todos los espacios que tenga el médico
+    private ArrayList<AgendaDto> agendaList;
+    private ArrayList<EspacioDto> espacioList;
+    private Respuesta respAgenda;
+    private Respuesta respEspacio;
+    private EspacioService espacioService;
+    private AgendaService agendaService;
 
     @Override
     public void initialize() {
+        /*
+            Lo hago para obtener todos los espacios que existan del médico más adelante
+         */
+        agendaService = new AgendaService();
+        espacioService = new EspacioService();
+        respAgenda = agendaService.getAgendas();
+        respEspacio = espacioService.getEspacios();
+        espacioList = ((ArrayList<EspacioDto>) respEspacio.getResultado("Espacios"));
+        agendaList = ((ArrayList<AgendaDto>) respAgenda.getResultado("Agendas"));
+        espacioListAux = new ArrayList();
+
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
@@ -162,17 +184,28 @@ public class MedicosController extends Controller {
                     String finJornada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(final12);
                     medicoDto = new MedicoDto(id, codigo, folio, carne, "I", inicioJornada, finJornada, espacios, usuariodto, version);
                     try {
-                        resp = medicoService.guardarMedico(medicoDto);
-                        if (usuario.getIdioma().equals("I")) {
-                            ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                        /*
+                            Si el valor de espacios es diferente al seleccionado (osea si lo editó) y la lista de espacios que 
+                            tiene no está vacía, ya que, estaría editando teniendo conflictos con las agendas ya creadas
+                         */
+                        if ((txtEspacio.getText() == null ? table.getSelectionModel().getSelectedItem().getEspacios().toString() != null
+                                : !txtEspacio.getText().equals(table.getSelectionModel().getSelectedItem().getEspacios().toString())
+                                && !espacioListAux.isEmpty() )) {
+                            ms.showModal(Alert.AlertType.ERROR, "Espacios por hora", this.getStage(), "Estas tratando de cambiarle la cantidad de espacios por hora al médico pero el médico ya posee citas asignadas");
+                            txtEspacio.setText(table.getSelectionModel().getSelectedItem().getEspacios().toString());
                         } else {
-                            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            resp = medicoService.guardarMedico(medicoDto);
+                            if (usuario.getIdioma().equals("I")) {
+                                ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
+                            } else {
+                                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                            }
+                            limpiarValores();
+                            medicos = (ArrayList) medicoService.getMedicos().getResultado("Medicos");
+                            table.getItems().clear();
+                            items = FXCollections.observableArrayList(medicos);
+                            table.setItems(items);
                         }
-                        limpiarValores();
-                        medicos = (ArrayList) medicoService.getMedicos().getResultado("Medicos");
-                        table.getItems().clear();
-                        items = FXCollections.observableArrayList(medicos);
-                        table.setItems(items);
                     } catch (Exception e) {
                         if (usuario.getIdioma().equals("I")) {
                             ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was an error saving the Doctor");
@@ -265,6 +298,9 @@ public class MedicosController extends Controller {
     private void DatosMedico(MouseEvent event) {
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
+                /*
+                    Seteo los datos del médico seleccionado en cada textfield
+                 */
                 medicoDto = table.getSelectionModel().getSelectedItem();
                 txtCodigo.setText(medicoDto.getCodigo());
                 txtCarne.setText(medicoDto.getCarne());
@@ -274,6 +310,19 @@ public class MedicosController extends Controller {
                 timePickerInicio.setValue(localTimeObj);
                 LocalTime localTimeObj1 = LocalTime.parse(medicoDto.getFinJornada());
                 timePickerfinal.setValue(localTimeObj1);
+                /*
+                    guardo todos los espacios que pertenecen al médico en esta lista
+                 */
+                espacioListAux.clear();
+                agendaList.stream().forEach(x -> {
+                    if (x.getAgeMedico().getID().equals(medicoDto.getID())) {
+                        espacioList.stream().forEach(y -> {
+                            if (y.getEspAgenda().getAgeId().equals(x.getAgeId())) {
+                                espacioListAux.add(y);
+                            }
+                        });
+                    }
+                });
             }
         }
     }

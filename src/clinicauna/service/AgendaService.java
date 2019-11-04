@@ -9,6 +9,11 @@ import clinicauna.model.AgendaDto;
 import clinicauna.report.ReportManager;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +26,7 @@ import javax.ws.rs.core.GenericType;
  * @author Jose Pablo Bermudez
  */
 public class AgendaService {
-    
+
     public Respuesta getAgenda(String fecha, Long id) {
         try {
             Map<String, Object> parametros = new HashMap<>();
@@ -39,22 +44,33 @@ public class AgendaService {
             return new Respuesta(false, "Error obteniendo el Agenda.", "getAgenda " + ex.getMessage());
         }
     }
-    
-    
-    public Respuesta getAgendas(String FechaInicio, String FechaFinal) {
+
+    public Respuesta getAgendas(String FechaInicio, String FechaFinal, String folio) {
         try {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("fechaInicio", FechaInicio);
             parametros.put("fechaFinal", FechaFinal);
-            Request request = new Request("AgendaController/agendas", "/{fechaInicio}/{fechaFinal}", parametros);
+            parametros.put("folio", folio);
+            Request request = new Request("AgendaController/agendas", "/{fechaInicio}/{fechaFinal}/{folio}", parametros);
             request.get();
 
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            ReportManager reporte = (ReportManager) request.readEntity(ReportManager.class);
-            return new Respuesta(true, "", "", "Reporte", reporte);
-        } catch (Exception ex) {
+            byte[] byteArray;
+
+            File archivo = new File("reportes\\ReporteAgenda.pdf");
+
+            byte[] bytes = (byte[]) request.readEntity(byte[].class);
+            
+            System.out.println(archivo.getAbsolutePath());
+            
+            Path path = Paths.get(archivo.getAbsolutePath());
+            Files.write(path, bytes);
+            
+            Runtime.getRuntime().exec("cmd /c start " +archivo);
+            return new Respuesta(true, "", "");
+        } catch (IOException ex) {
             Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo Agendas.", ex);
             return new Respuesta(false, "Error obteniendo Agendas.", "getAgendas " + ex.getMessage());
         }
@@ -86,13 +102,17 @@ public class AgendaService {
 
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
+
             }
 
-            Agenda = (AgendaDto) request.readEntity(AgendaDto.class);
+            Agenda = (AgendaDto) request.readEntity(AgendaDto.class
+            );
 
             return new Respuesta(true, "", "", "Agenda", Agenda);
+
         } catch (Exception ex) {
-            Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error guardando el Agenda.", ex);
+            Logger.getLogger(AgendaService.class
+                    .getName()).log(Level.SEVERE, "Error guardando el Agenda.", ex);
             return new Respuesta(false, "Error guardando el Agenda.", "guardarAgenda " + ex.getMessage());
         }
     }
@@ -113,5 +133,4 @@ public class AgendaService {
             return new Respuesta(false, "Error eliminando el Agenda.", "eliminarAgenda " + ex.getMessage());
         }
     }*/
-    
 }

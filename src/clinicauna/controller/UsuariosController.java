@@ -288,6 +288,13 @@ public class UsuariosController extends Controller {
         if (registroCorrecto()) {
 
             String tipoUsuario = (btnAdministrador.isSelected()) ? "A" : (btnMedico.isSelected()) ? "M" : "R";
+            /*
+                Si el tipo de usuario es un médico tenemos que abrir la ventana de médicos para que le agregue la información necesaria
+            */
+            if(tipoUsuario.equals("M")){
+                FlowController.getInstance().goViewInWindowModal("GuardarMedicos", this.getStage(), false);
+            }
+            //validarmos que se haya creado correctamente el médico
             if ((tipoUsuario.equals("M") && AppContext.getInstance().get("Medico") != null) || !tipoUsuario.equals("M")) {
                 String idioma = (btnEspanol.isSelected()) ? "E" : "I";
 
@@ -323,7 +330,7 @@ public class UsuariosController extends Controller {
                         }
 
                         Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
-                        //Envia correo de activacion
+                        //Envia correo de activación
                         Correos mail = new Correos();
                         mail.mensajeActivacionHilo(nombreusuario, correo, resp2.getMensaje());
                         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
@@ -419,7 +426,7 @@ public class UsuariosController extends Controller {
 
     @FXML
     private void crearMedico(ActionEvent event) {
-        FlowController.getInstance().goViewInWindowModal("GuardarMedicos", this.getStage(), false);
+        
     }
 
     @FXML
