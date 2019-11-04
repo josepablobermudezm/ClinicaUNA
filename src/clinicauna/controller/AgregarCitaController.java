@@ -100,12 +100,18 @@ public class AgregarCitaController extends Controller {
     private static String valor = "";
     @FXML
     private Label lblEst;
+    @FXML
+    private JFXButton btnAgregarPac;
+    @FXML
+    private JFXButton btnEditar;
 
     @Override
     public void initialize() {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
+            this.btnAgregarPac.setText(idioma.getProperty("Agregar")+" "+ idioma.getProperty("PacienteB"));
+            this.btnEditar.setText(idioma.getProperty("Editar"));
             this.txtEspacios.setPromptText(idioma.getProperty("Agenda") + " " + idioma.getProperty("Espacios"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
             this.btnAtendida.setText(idioma.getProperty("Atendida"));

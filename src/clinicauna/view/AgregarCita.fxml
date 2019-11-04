@@ -98,9 +98,9 @@
                </padding>
                <children>
                   <JFXButton fx:id="btnCancelar" onAction="#cancela" style="-fx-cursor: hand;" text="Cancelar" />
-                  <JFXButton onAction="#agregarPaciente" style="-fx-cursor: Hand;" text="Agregar Paciente" />
+                  <JFXButton fx:id="btnAgregarPac" onAction="#agregarPaciente" style="-fx-cursor: Hand;" text="Agregar Paciente" />
                   <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
-                  <JFXButton onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />
+                  <JFXButton fx:id="btnEditar" onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />
                   <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Guardar" />
                </children>
                <opaqueInsets>

@@ -94,13 +94,21 @@ public class Correos extends Thread {
 
             Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
             BodyPart link = new MimeBodyPart(); // Aqui se declara lo que será nuestro archivo adjunto
-            link.setContent(activarUsuario(usuario, url), "text/html");
+            if (us.getIdioma().equals("I")) {
+                link.setContent(activarUsuarioIngles(usuario, url), "text/html");
+            } else {
+                link.setContent(activarUsuario(usuario, url), "text/html");
+            }
             MimeMultipart m = new MimeMultipart();
             m.addBodyPart(link);
             MimeMessage mensaje = new MimeMessage(session);
             mensaje.setFrom(new InternetAddress("clinica.una.cr@gmail.com"));// Aqui se define el usuario que enviará el correo
             mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(Destinatario));// Destinatario
-            mensaje.setSubject("Mensaje de Activación");// Aqui podemos escribir el asunto que necesitemos en el correo
+            if (us.getIdioma().equals("I")) {
+                mensaje.setSubject("Activation Message");
+            } else {
+                mensaje.setSubject("Mensaje de Activación");
+            }
             mensaje.setContent(m); // aqui seteamos nuestro archivo
             // Aqui se conecta con nuestro usuario y contraseña se procede a enviar y se cierra la conexión
             Transport t = session.getTransport("smtp");
@@ -162,13 +170,22 @@ public class Correos extends Thread {
 
             Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
             BodyPart link = new MimeBodyPart();
-            link.setContent(htmlCorreoControl(medico), "text/html");
+            if (us.getIdioma().equals("I")) {
+                link.setContent(htmlCorreoControlIngles(medico), "text/html");
+            } else {
+                link.setContent(htmlCorreoControl(medico), "text/html");
+            }
+
             MimeMultipart m = new MimeMultipart();
             m.addBodyPart(link);
             MimeMessage mensaje = new MimeMessage(session);
             mensaje.setFrom(new InternetAddress("clinica.una.cr@gmail.com"));// Aqui se define el usuario que enviará el correo
             mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(Destinatario));// Destinatario
-            mensaje.setSubject("Información de Cita");// Aqui podemos escribir el asunto que necesitemos en el correo
+            if (us.getIdioma().equals("I")) {
+                mensaje.setSubject("Appointment Information");
+            } else {
+                mensaje.setSubject("Información de Cita");
+            }
             mensaje.setContent(m); // aqui seteamos nuestro archivo
             // Aqui se conecta con nuestro usuario y contraseña se procede a enviar y se cierra la conexión
             Transport t = session.getTransport("smtp");
@@ -204,13 +221,21 @@ public class Correos extends Thread {
 
             Session session = Session.getDefaultInstance(prop, null); // se inicia sesión con las propiedades
             BodyPart link = new MimeBodyPart();
-            link.setContent(htmlCorreoCita(cita), "text/html");
+            if (us.getIdioma().equals("I")) {
+                link.setContent(htmlCorreoCitaIngles(cita), "text/html");
+            } else {
+                link.setContent(htmlCorreoCita(cita), "text/html");
+            }
             MimeMultipart m = new MimeMultipart();
             m.addBodyPart(link);
             MimeMessage mensaje = new MimeMessage(session);
             mensaje.setFrom(new InternetAddress("clinica.una.cr@gmail.com"));// Aqui se define el usuario que enviará el correo
             mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(Destinatario));// Destinatario
-            mensaje.setSubject("Información de Cita");// Aqui podemos escribir el asunto que necesitemos en el correo
+            if (us.getIdioma().equals("I")) {
+                mensaje.setSubject("Appointment Information");
+            } else {
+                mensaje.setSubject("Información de Cita");
+            }
             mensaje.setContent(m); // aqui seteamos nuestro archivo
             // Aqui se conecta con nuestro usuario y contraseña se procede a enviar y se cierra la conexión
             Transport t = session.getTransport("smtp");
@@ -414,4 +439,115 @@ public class Correos extends Thread {
                 + "</body>\n"
                 + "</html>";
     }
+
+    private String activarUsuarioIngles(String usuario, String url) {
+        usuario = usuario.toUpperCase();
+        return "<!DOCTYPE html>\n"
+                + "<html lang=\"es\">\n"
+                + "<head>\n"
+                + "	<meta charset=\"utf-8\">\n"
+                + "	<title>holi</title>\n"
+                + "</head>\n"
+                + "<body style=\"background-color: white \">\n"
+                + "\n"
+                + "<!--Copia desde aquí-->\n"
+                + "<table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n"
+                + "	<tr>\n"
+                + "		<td style=\"background-color: white\">\n"
+                + " <div id=\"imagenLogo\" style=\"width: 150px; heigth: 150px;  padding: 11px 23px\">"
+                + "<img width=\"150px\" style=\"display:block; margin: 1.5% 3%;\" \" src=\"https://i.postimg.cc/P5p8msw5/logo.png\" heigth=\"150px\"></div>\n"
+                + "			<div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n"
+                + "				<h2 style=\"color: #3e3e7d; margin: 0 0 7px; text-align: center\">Activation Message</h2>\n"
+                + "				<p style=\"color: #500050; margin: 2px; font-size: 20px; font-weight: bold\">\n"
+                + "					" + usuario + ": </p>\n"
+                + "                             <p style=\"margin: 2px; font-size: 15px\">"
+                + "                                     To complete your registration at Clínica UNA, you need to activate the user belonging to this email. If it's not you, ignore this message.</p>"
+                + "				<ul style=\"font-size: 15px;  margin: 10px 0\">\n"
+                + "					<li>If you have activated your user, you can use all the features that allow the use of the application.</li>\n"
+                + "				</ul>\n"
+                + "				<div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n"
+                + "				</div>\n"
+                + "				<div style=\"width: 100%; text-align: center\">\n"
+                + "					<a style=\"text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db\" href=\"" + url + "\">Activar Usuario</a>\n"
+                + "				</div>\n"
+                + "				<p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">ClínicaUNA 2019</p>\n"
+                + "			</div>\n"
+                + "		</td>\n"
+                + "	</tr>\n"
+                + "</table>\n"
+                + "<!--hasta aquí-->\n"
+                + "\n"
+                + "</body>\n"
+                + "</html>";
+    }
+
+    private String htmlCorreoControlIngles(MedicoDto medico) {
+
+        return "<!DOCTYPE html>\n"
+                + "<html lang=\"es\">\n"
+                + "<head>\n"
+                + "	<meta charset=\"utf-8\">\n"
+                + "	<title>holi</title>\n"
+                + "</head>\n"
+                + "<body style=\"background-color: white \">\n"
+                + "\n"
+                + "<!--Copia desde aquí-->\n"
+                + "<table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n"
+                + "	<tr>\n"
+                + "		<td style=\"background-color: white\">\n"
+                + " <div id=\"imagenLogo\" style=\"width: 150px; heigth: 150px;  padding: 11px 23px\">"
+                + "<img width=\"150px\" style=\"display:block; margin: 1.5% 3%;\" \" src=\"https://i.postimg.cc/P5p8msw5/logo.png\" heigth=\"150px\"></div>\n"
+                + "			<div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n"
+                + "				<h2 style=\"color: #3e3e7d; margin: 0 0 7px\">Appointment Information</h2>\n"
+                + "				<p style=\"margin: 2px; font-size: 15px\">\n"
+                + "					Appointment Control: " + "  " + "<br>" + " Control Information: " + "<br>"
+                + "Doctor: " + medico.getUs().getNombre() + " " + medico.getUs().getpApellido() + "<br>" + "Date: " + control.getCntFecha().toString() + "<br>" + "Start time: " + control.getCntHora()
+                + "<br>" + "Reason for the appointment: " + control.getCntRazonConsulta() + "<br>" + "Care plan: " + control.getCntPlanAtencion()
+                + "<br>" + "Observations: " + control.getCntObservaciones() + "<br>" + "Physical exam: " + control.getCntExamenFisico()
+                + "<br>" + "Treatment: " + control.getCntTratamiento()
+                + "                             <p style=\"margin: 2px; font-size: 15px\">\n"
+                + "				<p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">ClínicaUNA 2019</p>\n"
+                + "			</div>\n"
+                + "		</td>\n"
+                + "	</tr>\n"
+                + "</table>\n"
+                + "<!--hasta aquí-->\n"
+                + "\n"
+                + "</body>\n"
+                + "</html>";
+    }
+
+    private String htmlCorreoCitaIngles(CitaDto cita) {
+        return "<!DOCTYPE html>\n"
+                + "<html lang=\"es\">\n"
+                + "<head>\n"
+                + "	<meta charset=\"utf-8\">\n"
+                + "	<title>holi</title>\n"
+                + "</head>\n"
+                + "<body style=\"background-color: white \">\n"
+                + "\n"
+                + "<!--Copia desde aquí-->\n"
+                + "<table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n"
+                + "	<tr>\n"
+                + "		<td style=\"background-color: white\">\n"
+                + " <div id=\"imagenLogo\" style=\"width: 150px; heigth: 150px;  padding: 11px 23px\">"
+                + "<img width=\"150px\" style=\"display:block; margin: 1.5% 3%;\" \" src=\"https://i.postimg.cc/P5p8msw5/logo.png\" heigth=\"150px\"></div>\n"
+                + "			<div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n"
+                + "				<h2 style=\"color: #3e3e7d; margin: 0 0 7px\">Appointment Information</h2>\n"
+                + "				<p style=\"margin: 2px; font-size: 15px\">\n"
+                + "					Your appointment has been registered successfully: " + "  " + "<br>" + "Appointment Information: " + "<br>"
+                + "Doctor: " + medico.getUs().getNombre() + " " + medico.getUs().getpApellido() + "<br>" + "Date: " + agenda.getAgeFecha().toString() + "<br>" + "Start time: " + aux.get(0).getEspacio().getEspHoraInicio()
+                + "<br>" + "End Time:" + aux.get(aux.size() - 1).getEspacio().getEspHoraFin() + "<br>" + "Patient: " + paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido() + "<br>" + "ID: " + paciente.getCedula()
+                + "                             <p style=\"margin: 2px; font-size: 15px\">\n"
+                + "				<p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">ClínicaUNA 2019</p>\n"
+                + "			</div>\n"
+                + "		</td>\n"
+                + "	</tr>\n"
+                + "</table>\n"
+                + "<!--hasta aquí-->\n"
+                + "\n"
+                + "</body>\n"
+                + "</html>";
+    }
+
 }
