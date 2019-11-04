@@ -52,7 +52,9 @@ public class CambiarContrasennaController extends Controller {
 
     @Override
     public void initialize() {
-
+        /*
+        * para que se seleccione una imagen random para el fondo del inicio de sesión
+        */
         int valorEntero = (int) Math.floor(Math.random() * (3 - 1 + 1) + 1);
         if (valorEntero == 1) {
             Image imgFondo;

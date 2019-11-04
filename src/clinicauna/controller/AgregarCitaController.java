@@ -484,7 +484,7 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1);
             espacioDto = new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto);
             resp = service.guardarEspacio(espacioDto);
-            //agendaDto.getEspacioList().add(espacioDto); GENERA UN LOOP INFINITO; NI IDEA DE PORQUE, HAY QUE VER OTRA FORMA DE ACTUALIZAR
+            //agendaDto.getEspacioList().add(espacioDto); //GENERA UN LOOP INFINITO; NI IDEA DE PORQUE, HAY QUE VER OTRA FORMA DE ACTUALIZAR
             vCita.setBackground(Background.EMPTY);
             vCita.setStyle(style);
             vCita.AgregarCita((EspacioDto) resp.getResultado("Espacio"));
@@ -494,7 +494,7 @@ public class AgregarCitaController extends Controller {
         AppContext.getInstance().set("aux", aux);
         AppContext.getInstance().set("CitaDto", citaDto);
 
-        correo = new Correos();
+        /*correo = new Correos();
         paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
         correo.CorreoCitaHilo(this.txtCorreo.getText());
         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
@@ -512,9 +512,9 @@ public class AgregarCitaController extends Controller {
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
             }
-        }
+        }*/
         limpiarValores();
-        FlowController.getInstance().initialize();
+        //FlowController.getInstance().initialize();
         //initialize();
     }
 
@@ -603,6 +603,9 @@ public class AgregarCitaController extends Controller {
     @FXML
     private void agregarPaciente(ActionEvent event
     ) {
+        /*
+        *   Esto es para que sea más fácil en el caso de que no exista un paciente
+        */
         FlowController.getInstance().goViewInStage("AgregarPaciente", this.getStage());
     }
 
