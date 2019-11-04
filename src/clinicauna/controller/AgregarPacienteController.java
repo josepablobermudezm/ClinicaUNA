@@ -64,6 +64,12 @@ public class AgregarPacienteController extends Controller {
     private Respuesta resp;
     private Idioma idioma;
     private UsuarioDto usuario;
+    @FXML
+    private JFXButton btnVolver;
+    @FXML
+    private JFXButton btnLimpiar;
+    @FXML
+    private JFXButton btnGuardar;
 
     /**
      * Initializes the controller class.
@@ -73,6 +79,9 @@ public class AgregarPacienteController extends Controller {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
+            this.btnGuardar.setText(idioma.getProperty("Guardar"));
+            this.btnVolver.setText(idioma.getProperty("Volver"));
+            this.btnLimpiar.setText(idioma.getProperty("Limpiar")+" "+ idioma.getProperty("Registro"));
             this.lblGenero.setText(idioma.getProperty("Genero"));
             this.btnHombre1.setText(idioma.getProperty("Masculino"));
             this.btnMujer1.setText(idioma.getProperty("Femenino"));

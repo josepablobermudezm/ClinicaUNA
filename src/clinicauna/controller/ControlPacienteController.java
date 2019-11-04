@@ -363,6 +363,7 @@ public class ControlPacienteController extends Controller implements Initializab
     }
 
     private void limpiarRegistro() {
+        btnGuardar.setDisable(false);
         txtAnotaciones.clear();
         txtExamenFisico.clear();
         txtFrecuenciaCardiaca.clear();
@@ -404,21 +405,26 @@ public class ControlPacienteController extends Controller implements Initializab
     private void DatosControl(MouseEvent event) {
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
-                controlDto = table.getSelectionModel().getSelectedItem();
-                txtAnotaciones.setText(controlDto.getCntAnotacionEnfermeria());
-                txtExamenFisico.setText(controlDto.getCntExamenFisico());
-                txtFrecuenciaCardiaca.setText(controlDto.getCntFrecuenciaCardiaca().toString());
-                txtObservaciones.setText(controlDto.getCntObservaciones());
-                txtPeso.setText(controlDto.getCntPeso().toString());
-                txtPlanAtencion.setText(controlDto.getCntPlanAtencion());
-                txtPresion.setText(controlDto.getCntPresion().toString());
-                txtRazonConsulta.setText(controlDto.getCntRazonConsulta());
-                txtTalla.setText(controlDto.getCntTalla().toString());
-                txtTemperatura.setText(controlDto.getCntTemperatura().toString());
-                txtTratamiento.setText(controlDto.getCntTratamiento());
-                Fecha.setValue(controlDto.getCntFecha());
-                LocalTime localTimeObj1 = LocalTime.parse(controlDto.getCntHora());
-                Hora.setValue(localTimeObj1);
+                if (ComboMedico.getValue() != null) {
+                    btnGuardar.setDisable(true);
+                    controlDto = table.getSelectionModel().getSelectedItem();
+                    txtAnotaciones.setText(controlDto.getCntAnotacionEnfermeria());
+                    txtExamenFisico.setText(controlDto.getCntExamenFisico());
+                    txtFrecuenciaCardiaca.setText(controlDto.getCntFrecuenciaCardiaca().toString());
+                    txtObservaciones.setText(controlDto.getCntObservaciones());
+                    txtPeso.setText(controlDto.getCntPeso().toString());
+                    txtPlanAtencion.setText(controlDto.getCntPlanAtencion());
+                    txtPresion.setText(controlDto.getCntPresion().toString());
+                    txtRazonConsulta.setText(controlDto.getCntRazonConsulta());
+                    txtTalla.setText(controlDto.getCntTalla().toString());
+                    txtTemperatura.setText(controlDto.getCntTemperatura().toString());
+                    txtTratamiento.setText(controlDto.getCntTratamiento());
+                    Fecha.setValue(controlDto.getCntFecha());
+                    LocalTime localTimeObj1 = LocalTime.parse(controlDto.getCntHora());
+                    Hora.setValue(localTimeObj1);
+                }else{
+                    ms.showModal(Alert.AlertType.ERROR, "Error cargando el controls", this.getStage(), "Debe de seleccionar un médico");
+                }
             }
         }
     }

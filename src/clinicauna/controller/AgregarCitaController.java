@@ -100,12 +100,18 @@ public class AgregarCitaController extends Controller {
     private static String valor = "";
     @FXML
     private Label lblEst;
+    @FXML
+    private JFXButton btnAgregarPac;
+    @FXML
+    private JFXButton btnEditar;
 
     @Override
     public void initialize() {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
+            this.btnAgregarPac.setText(idioma.getProperty("Agregar")+" "+ idioma.getProperty("PacienteB"));
+            this.btnEditar.setText(idioma.getProperty("Editar"));
             this.txtEspacios.setPromptText(idioma.getProperty("Agenda") + " " + idioma.getProperty("Espacios"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
             this.btnAtendida.setText(idioma.getProperty("Atendida"));
@@ -484,7 +490,7 @@ public class AgregarCitaController extends Controller {
             Long version = new Long(1);
             espacioDto = new EspacioDto(null, horaFin, horaInicio, version, citaDto, agendaDto);
             resp = service.guardarEspacio(espacioDto);
-            //agendaDto.getEspacioList().add(espacioDto); GENERA UN LOOP INFINITO; NI IDEA DE PORQUE, HAY QUE VER OTRA FORMA DE ACTUALIZAR
+            //agendaDto.getEspacioList().add(espacioDto); //GENERA UN LOOP INFINITO; NI IDEA DE PORQUE, HAY QUE VER OTRA FORMA DE ACTUALIZAR
             vCita.setBackground(Background.EMPTY);
             vCita.setStyle(style);
             vCita.AgregarCita((EspacioDto) resp.getResultado("Espacio"));
@@ -494,7 +500,7 @@ public class AgregarCitaController extends Controller {
         AppContext.getInstance().set("aux", aux);
         AppContext.getInstance().set("CitaDto", citaDto);
 
-        correo = new Correos();
+        /*correo = new Correos();
         paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
         correo.CorreoCitaHilo(this.txtCorreo.getText());
         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
@@ -512,9 +518,9 @@ public class AgregarCitaController extends Controller {
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
             }
-        }
+        }*/
         limpiarValores();
-        FlowController.getInstance().initialize();
+        //FlowController.getInstance().initialize();
         //initialize();
     }
 
@@ -603,6 +609,9 @@ public class AgregarCitaController extends Controller {
     @FXML
     private void agregarPaciente(ActionEvent event
     ) {
+        /*
+        *   Esto es para que sea más fácil en el caso de que no exista un paciente
+        */
         FlowController.getInstance().goViewInStage("AgregarPaciente", this.getStage());
     }
 

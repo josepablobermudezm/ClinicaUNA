@@ -109,8 +109,9 @@ public class UsuariosController extends Controller {
     private MedicoService medicoService;
     private UsuarioDto usuario;
     private Idioma idioma;
+    private UsuarioDto us;
     @FXML
-    private ImageView omg;
+    private JFXButton btnBuscar;
 
     @Override
     public void initialize() {
@@ -121,6 +122,7 @@ public class UsuariosController extends Controller {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
+            this.btnBuscar.setText(idioma.getProperty("Buscar"));
             this.btnEditar1.setText(idioma.getProperty("Editar"));
             this.btnEliminar1.setText(idioma.getProperty("Eliminar"));
             this.btnAdministrador.setText(idioma.getProperty("Administrador"));
@@ -162,12 +164,13 @@ public class UsuariosController extends Controller {
         COL_ESTADO_USUARIO.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEstado().equals("A") ? "Activo" : "Inactivo"));
         items = FXCollections.observableArrayList(usuarios);
         table.setItems(items);
+
     }
 
     @FXML
     private void editar(ActionEvent event) {
-        if (table.getSelectionModel() != null) {
-            if (table.getSelectionModel().getSelectedItem() != null) {
+        if (table.getSelectionModel() != null || AppContext.getInstance().get("Us") != null) {
+            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Us") != null) {
                 if (registroCorrecto()) {
                     Long id = usuarioDto.getID();
                     String nombre = txtNombre.getText();
@@ -231,11 +234,18 @@ public class UsuariosController extends Controller {
     @FXML
     private void eliminar(ActionEvent event) {
 
-        if (table.getSelectionModel() != null) {
-            if (table.getSelectionModel().getSelectedItem() != null) {
-                resp = usuarioService.eliminarUsuario(table.getSelectionModel().getSelectedItem().getID());
-                ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), resp.getMensaje());
-
+        if (table.getSelectionModel() != null || AppContext.getInstance().get("Us") != null) {
+            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Us") != null) {
+                if (AppContext.getInstance().get("Us") != null && table.getSelectionModel().getSelectedItem() == null) {
+                    resp = usuarioService.eliminarUsuario(usuarioDto.getID());
+                } else {
+                    resp = usuarioService.eliminarUsuario(table.getSelectionModel().getSelectedItem().getID());
+                }
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Information", this.getStage(), resp.getMensaje());
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), resp.getMensaje());
+                }
                 Respuesta respuesta = usuarioService.getUsuarios();
                 items.clear();
                 usuarios = (ArrayList) respuesta.getResultado("Usuarios");
@@ -278,6 +288,13 @@ public class UsuariosController extends Controller {
         if (registroCorrecto()) {
 
             String tipoUsuario = (btnAdministrador.isSelected()) ? "A" : (btnMedico.isSelected()) ? "M" : "R";
+            /*
+                Si el tipo de usuario es un médico tenemos que abrir la ventana de médicos para que le agregue la información necesaria
+            */
+            if(tipoUsuario.equals("M")){
+                FlowController.getInstance().goViewInWindowModal("GuardarMedicos", this.getStage(), false);
+            }
+            //validarmos que se haya creado correctamente el médico
             if ((tipoUsuario.equals("M") && AppContext.getInstance().get("Medico") != null) || !tipoUsuario.equals("M")) {
                 String idioma = (btnEspanol.isSelected()) ? "E" : "I";
 
@@ -313,7 +330,7 @@ public class UsuariosController extends Controller {
                         }
 
                         Respuesta resp2 = usuarioService.activarUsuario(usuarioDto.getContrasennaTemp());
-                        //Envia correo de activacion
+                        //Envia correo de activación
                         Correos mail = new Correos();
                         mail.mensajeActivacionHilo(nombreusuario, correo, resp2.getMensaje());
                         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
@@ -409,7 +426,27 @@ public class UsuariosController extends Controller {
 
     @FXML
     private void crearMedico(ActionEvent event) {
-        FlowController.getInstance().goViewInWindowModal("GuardarMedicos", this.getStage(), false);
+        
     }
 
+    @FXML
+    private void BuscarUsuarios(ActionEvent event) {
+        AppContext.getInstance().delete("Us");
+        FlowController.getInstance().goViewInWindowModal("BuscarUsuario", this.getStage(), false);
+        DatosUsuario();
+    }
+
+    public void DatosUsuario() {
+        if (AppContext.getInstance().get("Us") != null) {
+            us = (UsuarioDto) AppContext.getInstance().get("Us");
+            usuarioDto = us;
+            this.txtCedula.setText(us.getCedula());
+            this.txtClave.setText(us.getContrasenna());
+            this.txtCorreo.setText(us.getCorreo());
+            this.txtNombre.setText(us.getNombre());
+            this.txtNombreUsuario.setText(us.getNombreUsuario());
+            this.txtPApellido.setText(us.getpApellido());
+            this.txtSApellido.setText(us.getsApellido());
+        }
+    }
 }

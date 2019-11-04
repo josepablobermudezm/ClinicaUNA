@@ -5,10 +5,16 @@
  */
 package clinicauna.controller;
 
+import clinicauna.model.AgendaDto;
+import clinicauna.model.CitaDto;
+import clinicauna.model.EspacioDto;
 import clinicauna.model.UsuarioDto;
 import clinicauna.service.AgendaService;
+import clinicauna.service.CitaService;
+import clinicauna.service.EspacioService;
 import clinicauna.service.UsuarioService;
 import clinicauna.util.AppContext;
+import clinicauna.util.Correos;
 import clinicauna.util.FlowController;
 import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
@@ -17,10 +23,16 @@ import clinicauna.util.Respuesta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,7 +46,7 @@ import javafx.scene.layout.VBox;
  *
  * @author Carlos
  */
-public class LogIngController extends Controller {
+public class LogIngController extends Controller implements Initializable {
 
     @FXML
     private ImageView imvFondo;
@@ -56,65 +68,22 @@ public class LogIngController extends Controller {
     private JFXButton button2;
     @FXML
     private AnchorPane root1;
-    private AgendaService agenda;
+    private AgendaService agendaService;
     private Respuesta r;
+    private ArrayList<EspacioDto> espacioListAux;//en esta lista voy a guardar todos los espacios que tenga el médico
+    private ArrayList<AgendaDto> agendaList;
+    private ArrayList<EspacioDto> espacioList;
+    private Respuesta respAgenda;
+    private Respuesta respEspacio;
+    private EspacioService espacioService;
+    private ArrayList<CitaDto> citas;
+    private CitaService citasService;
+
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(){
-            
-        //2019-10-06/2019-10-19    
-       /* agenda = new AgendaService();
-        r = agenda.getAgendas("2019-10-06", "2019-10-19");
-        ReportManager reporte = (ReportManager) r.getResultado("Reporte");
-        reporte.getJv().setVisible(true);*/
-        Formato();
-        Image imgLogo;
-        try {
-            imgLogo = new Image("/clinicauna/resources/logo.png");
-            omg.setImage(imgLogo);
-        } catch (Exception e) {
-        }
-        int valorEntero = (int) Math.floor(Math.random() * (3 - 1 + 1) + 1);
-        if (valorEntero == 1) {
-            Image imgFondo;
-            try {
-                imgFondo = new Image("/clinicauna/resources/fondo.jpg");
-                imvFondo.setImage(imgFondo);
-            } catch (Exception e) {
-            }
-        } else if (valorEntero == 2) {
-            Image imgFondo;
-            try {
-                imgFondo = new Image("/clinicauna/resources/e.jpg");
-                imvFondo.setImage(imgFondo);
-            } catch (Exception e) {
-            }
-        } else if (valorEntero == 3) {
-            Image imgFondo;
-            try {
-                imgFondo = new Image("/clinicauna/resources/fondo2.jpg");
-                imvFondo.setImage(imgFondo);
-            } catch (Exception e) {
-            }
-        }
-
-        Image omg1;
-        try {
-            omg1 = new Image("/clinicauna/resources/key (1).png");
-            imgPassword.setImage(omg1);
-        } catch (Exception e) {
-
-        }
-
-        Image omg2;
-        try {
-            omg2 = new Image("/clinicauna/resources/user (3).png");
-            imguser.setImage(omg2);
-        } catch (Exception e) {
-        }
-
+    public void initialize() {
     }
 
     @FXML
@@ -148,7 +117,10 @@ public class LogIngController extends Controller {
                     if (usuario.getEstado().equals("A") && usuario.getContrasennaTemp() != null && contrasena.equals(usuario.getContrasennaTemp())) {
                         FlowController.getInstance().initialize();
                         FlowController.getInstance().goViewInStage("cambiarContrasenna", this.getStage());
-                    } else if (usuario.getEstado().equals("A")) {
+                    } else if (usuario.getEstado().equals("A")) {//que el usuario este activo
+                        /*
+                        * Envío correo de recordatorio en el caso de que la cita sea mañana
+                         */
                         FlowController.getInstance().initialize();
                         FlowController.getInstance().goMain();
                         this.getStage().close();
@@ -194,4 +166,93 @@ public class LogIngController extends Controller {
         }
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        agendaService = new AgendaService();
+        espacioService = new EspacioService();
+        respAgenda = agendaService.getAgendas();
+        respEspacio = espacioService.getEspacios();
+        espacioList = ((ArrayList<EspacioDto>) respEspacio.getResultado("Espacios"));
+        agendaList = ((ArrayList<AgendaDto>) respAgenda.getResultado("Agendas"));
+        citasService = new CitaService();
+        citas = new ArrayList();
+        /*
+        *   Guardo en la lista de citas todas las citas que pertenezcan a la agenda del día de mañana,luego agrego los datos
+        *   que no esten ya repetidos en la lista de citas para evitar enviarle correos a la misma persona por tener varios espacios
+         */
+        agendaList.stream().forEach(x -> {
+            if (x.getAgeFecha().equals(LocalDate.now().plusDays(1))) {
+                espacioList.stream().forEach(y -> {
+                    if (!citas.stream().filter(w -> {
+                        return Objects.equals(w.getID(), y.getEspCita().getID());
+                    }).findAny().isPresent()) {
+                        citas.add(y.getEspCita());
+                    }
+                });
+            }
+        });
+        /*
+        *   En el caso de que no le haya enviado el correo anteriormente entonces le envía el correo
+         */
+        citas.stream().forEach(x -> {
+            if (x.getCorreoEnviado().equals("N")) {
+                /*Correos mail = new Correos();
+                mail.CorreoCitaHiloRecordatorio(x.getCorreo());
+                FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
+                r = mail.getResp();*/
+                /*if (r.getEstado()) {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Recuperando contraseña", this.getStage(), "Se envió una contraseña temporal a este correo");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Recuperando contraseña", this.getStage(), r.getMensaje());
+                }*/
+                //x.setCorreoEnviado("S");
+                //citasService.guardarCita(x);
+            }
+        });
+        Formato();
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/clinicauna/resources/logo.png");
+            omg.setImage(imgLogo);
+        } catch (Exception e) {
+        }
+        int valorEntero = (int) Math.floor(Math.random() * (3 - 1 + 1) + 1);
+        if (valorEntero == 1) {
+            Image imgFondo;
+            try {
+                imgFondo = new Image("/clinicauna/resources/fondo.jpg");
+                imvFondo.setImage(imgFondo);
+            } catch (Exception e) {
+            }
+        } else if (valorEntero == 2) {
+            Image imgFondo;
+            try {
+                imgFondo = new Image("/clinicauna/resources/e.jpg");
+                imvFondo.setImage(imgFondo);
+            } catch (Exception e) {
+            }
+        } else if (valorEntero == 3) {
+            Image imgFondo;
+            try {
+                imgFondo = new Image("/clinicauna/resources/fondo2.jpg");
+                imvFondo.setImage(imgFondo);
+            } catch (Exception e) {
+            }
+        }
+
+        Image omg1;
+        try {
+            omg1 = new Image("/clinicauna/resources/key (1).png");
+            imgPassword.setImage(omg1);
+        } catch (Exception e) {
+
+        }
+
+        Image omg2;
+        try {
+            omg2 = new Image("/clinicauna/resources/user (3).png");
+            imguser.setImage(omg2);
+        } catch (Exception e) {
+        }
+    }
 }

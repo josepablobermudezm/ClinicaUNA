@@ -85,7 +85,7 @@ public class PacienteService {
             });
             return new Respuesta(true, "", "", "Pacientes", Pacientes);
         } catch (Exception ex) {
-            Logger.getLogger(PacienteService.class.getName()).log(Level.SEVERE, "Error obteniendo Usuarios.", ex);
+            Logger.getLogger(PacienteService.class.getName()).log(Level.SEVERE, "Error obteniendo Pacientes.", ex);
             return new Respuesta(false, "Error obteniendo Pacientes.", "getPacientes " + ex.getMessage());
         }
     }
@@ -145,7 +145,11 @@ public class PacienteService {
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            return new Respuesta(true, "", "");
+            if (usuario.getIdioma().equals("I")) {
+                return new Respuesta(true, "Patient successfully removed", "");
+            } else {
+                return new Respuesta(true, "Paciente eliminado exitosamente", "");
+            }
         } catch (Exception ex) {
             Logger.getLogger(PacienteService.class.getName()).log(Level.SEVERE, "Error eliminando el Paciente.", ex);
             if (usuario.getIdioma().equals("I")) {

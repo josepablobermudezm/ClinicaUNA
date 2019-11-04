@@ -11,6 +11,7 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.service.ExpedienteService;
 import clinicauna.service.PacienteService;
 import clinicauna.util.AppContext;
+import clinicauna.util.FlowController;
 import clinicauna.util.Formato;
 import clinicauna.util.Idioma;
 import clinicauna.util.Mensaje;
@@ -55,7 +56,7 @@ public class PacientesController extends Controller {
     private JFXTextField txtCorreo;
     @FXML
     private ToggleGroup genero;
-    private JFXTextField txtFiltroEmpleado;
+    @FXML
     private JFXButton btnBuscar;
     @FXML
     private JFXDatePicker FechaDeNacimiento;
@@ -102,6 +103,7 @@ public class PacientesController extends Controller {
     private JFXButton btnLimpiarRegistro1;
     @FXML
     private JFXButton btnAgregar11;
+    private PacienteDto pac;
 
     @Override
     public void initialize() {
@@ -112,6 +114,7 @@ public class PacientesController extends Controller {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
+            this.btnBuscar.setText(idioma.getProperty("Buscar"));
             this.btnEditar11.setText(idioma.getProperty("Editar"));
             this.btnAgregar11.setText(idioma.getProperty("Agregar"));
             this.btnHombre.setText(idioma.getProperty("Masculino"));
@@ -156,8 +159,8 @@ public class PacientesController extends Controller {
 
     @FXML
     private void editar(ActionEvent event) {
-        if (table.getSelectionModel() != null) {
-            if (table.getSelectionModel().getSelectedItem() != null) {
+        if (table.getSelectionModel() != null || AppContext.getInstance().get("Paciente") != null) {
+            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Paciente") != null) {
                 if (registroCorrecto()) {
                     Long id = pacienteDto.getID();
                     String nombre = txtNombre.getText();
@@ -219,11 +222,19 @@ public class PacientesController extends Controller {
 
     @FXML
     private void eliminar(ActionEvent event) {
-        if (table.getSelectionModel() != null) {
-            if (table.getSelectionModel().getSelectedItem() != null) {
-                Respuesta r = pacienteService.eliminarPaciente(table.getSelectionModel().getSelectedItem().getID());
-                ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), r.getMensaje());
-
+        if (table.getSelectionModel() != null || AppContext.getInstance().get("Paciente") != null) {
+            if (table.getSelectionModel().getSelectedItem() != null || AppContext.getInstance().get("Paciente") != null) {
+               Respuesta r;
+                if (AppContext.getInstance().get("Paciente") != null && table.getSelectionModel().getSelectedItem() == null) {
+                     r = pacienteService.eliminarPaciente(pacienteDto.getID());
+                } else {
+                     r = pacienteService.eliminarPaciente(table.getSelectionModel().getSelectedItem().getID());
+                }
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Information", this.getStage(), r.getMensaje());
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), r.getMensaje());
+                }
                 Respuesta respuesta = pacienteService.getPacientes();
                 items.clear();
                 pacientes = (ArrayList) respuesta.getResultado("Pacientes");
@@ -354,7 +365,7 @@ public class PacientesController extends Controller {
                 FechaDeNacimiento.setValue(pacienteDto.getFechaNacimiento());
             } else {
                 if (usuario.getIdioma().equals("I")) {
-                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patiente");
+                    ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the patient");
                 } else {
                     ms.showModal(Alert.AlertType.WARNING, "Información", this.getStage(), "Debes seleccionar un paciente");
                 }
@@ -374,5 +385,32 @@ public class PacientesController extends Controller {
         this.txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(50));
         this.txtPApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
         this.txtSApellido.setTextFormatter(Formato.getInstance().letrasFormat(50));
+    }
+
+    @FXML
+    private void BuscarPaciente(ActionEvent event) {
+        AppContext.getInstance().delete("Paciente");
+        FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
+        DatosPaciente();
+        
+    }
+
+    public void DatosPaciente() {
+        if (AppContext.getInstance().get("Paciente") != null) {
+            pac = (PacienteDto) AppContext.getInstance().get("Paciente");
+            pacienteDto = pac;
+            this.txtCedula.setText(pac.getCedula());
+            this.txtCorreo.setText(pac.getCorreo());
+            this.FechaDeNacimiento.setValue(pac.getFechaNacimiento());
+            this.txtNombre.setText(pac.getNombre());
+            this.txtPApellido.setText(pac.getpApellido());
+            this.txtSApellido.setText(pac.getsApellido());
+            if(pac.getGenero().equals("M")){
+                this.btnHombre.setSelected(true);
+            }
+            else{
+                this.btnMujer.setSelected(true);
+            }
+        }
     }
 }

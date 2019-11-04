@@ -19,6 +19,7 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -127,10 +128,6 @@ public class ExpedienteMedicoController extends Controller implements Initializa
     }
 
     public void inicio() {
-        /*this.txtTratamientos.setDisable(true);
-        this.txtAlergias.setDisable(true);
-        this.txtAntecedentesPatologicos.setDisable(true);
-        this.txtOperaciones.setDisable(true);*/
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
@@ -164,17 +161,40 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         ms = new Mensaje();
         resp = expedienteService.getExpedientes();
         expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
-        FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
-        if (AppContext.getInstance().get("Paciente") != null) {
+        /*
+        *   Llamamos a esta vista para que se seleccione un paciente 
+         */
+        if (AppContext.getInstance().get("Paciente") == null) {
+            FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
+            if (AppContext.getInstance().get("Paciente") != null) {
+                DatosPaciente();
+            }
+        } else {
             DatosPaciente();
+        }
+        /*
+        * Para que no pueda guardar repetidos
+        */
+        if(AppContext.getInstance().get("Expediente") != null){
+            btnGuardar.setDisable(true);
+        }else{
+            btnGuardar.setDisable(false);
         }
     }
 
     private void DatosPaciente() {
+        /*
+        * Seteamos todos los datos del expediente en los textfields/radioButton
+        */
         if (AppContext.getInstance().get("Paciente") != null) {
             paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
-            if (expedientes.stream().filter(x -> x.getPaciente().getID() == paciente.getID()).findAny().isPresent()) {
-                expedienteDto = expedientes.stream().filter(x -> x.getPaciente().getID() == paciente.getID()).findAny().get();
+            //encontramos el expediente que sea igual al id del paciente seleccionado
+            expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
+            if (expedientes.stream().filter(x -> {
+                return Objects.equals(x.getPaciente().getID(), paciente.getID());
+            }).findAny().isPresent()) {
+                expedienteDto = expedientes.stream().filter(x -> Objects.equals(x.getPaciente().getID(), paciente.getID())).findAny().get();
+                AppContext.getInstance().set("Expediente", expedienteDto);
                 txtAlergias.setText((expedienteDto.getAlergias() != null) ? expedienteDto.getAlergias() : "");
                 txtAntecedentesPatologicos.setText((expedienteDto.getAntecedentesPatologicos() != null) ? expedienteDto.getAntecedentesPatologicos() : "");
                 txtOperaciones.setText((expedienteDto.getOperaciones() != null) ? expedienteDto.getOperaciones() : "");
@@ -218,18 +238,19 @@ public class ExpedienteMedicoController extends Controller implements Initializa
                     ms.showModal(Alert.AlertType.WARNING, "Patient Search", this.getStage(), "The selected patient does not have a medical record");
                     valor = true;
                 } else {
+                    btnGuardar.setDisable(false);
                     ms.showModal(Alert.AlertType.WARNING, "Busqueda de paciente", this.getStage(), "El paciente seleccionado no tiene un expediente");
                     valor = true;
                 }
 
             }
+            //seteamos el nombre del paciente
             lblNomPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
         }
     }
 
     @FXML
     private void editar(ActionEvent event) {
-
         if (registroCorrecto()) {
             String antecedentes = txtAntecedentesPatologicos.getText();
             String tratamientos = txtTratamientos.getText();
@@ -280,6 +301,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
     @FXML
     private void limpiarRegistro(ActionEvent event) {
         Limpiar();
+        this.lblNomPaciente.setText(" ");
     }
 
     private void Limpiar() {
@@ -297,9 +319,12 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         this.btnSiOperaciones.setSelected(false);
         this.btnSiTratamientos.setSelected(false);
         this.btnAntecedenteSi.setSelected(false);
-        this.lblPaciente.setText(" ");
-        //this.lblPaciente.setText(null);
+        txtAlergias.setDisable(true);
+        txtAntecedentesPatologicos.setDisable(true);
+        txtOperaciones.setDisable(true);
+        txtTratamientos.setDisable(true);
         AppContext.getInstance().delete("Paciente");
+        btnGuardar.setDisable(false);
     }
 
     boolean registroCorrecto() {
@@ -334,7 +359,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
                 && (btnNoHospitalizaciones.isSelected() || btnSiHospitalizaciones.isSelected())
                 && (btnNoOperaciones.isSelected() || btnSiOperaciones.isSelected())
                 && (btnNoTratamientos.isSelected() || btnSiTratamientos.isSelected())
-                && Value1 && Value2 && Value3 && Value4;
+                && Value1 && Value2 && Value3 && Value4 && paciente != null;
     }
 
     @FXML
@@ -403,7 +428,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
                                 ms.showModal(Alert.AlertType.INFORMATION, "Informacion de guardado", this.getStage(), resp.getMensaje());
                             }
                             Limpiar();
-                            this.lblNomPaciente.setText(null);
+                            this.lblNomPaciente.setText(" ");
                         } else {
                             if (usuario.getIdioma().equals("I")) {
                                 ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
@@ -450,6 +475,9 @@ public class ExpedienteMedicoController extends Controller implements Initializa
     public void BuscarPaciente() {
         FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
         DatosPaciente();
+        /*
+        *    si no existe ningun expediente, setea los fields en disabled
+        */
         if (valor) {
             this.txtTratamientos.setDisable(true);
             this.txtAlergias.setDisable(true);

@@ -108,8 +108,8 @@ public class ExamenesController extends Controller {
 
     @FXML
     private void cancela(ActionEvent event) {
-        AppContext.getInstance().set("Paciente", pacienteDto);
-        FlowController.getInstance().goView("ExpedienteMedico");
+        FlowController.getInstance().initialize();
+        this.getStage().close();
     }
 
     @FXML
