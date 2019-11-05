@@ -78,7 +78,7 @@ public class EvolucionHistoricaController extends Controller {
     }
 
     public void LlenarGrafico() {
-        paciente = (PacienteDto) AppContext.getInstance().get("Paciente");
+        paciente = (PacienteDto) AppContext.getInstance().get("Pact");
         lblPaciente.setText(paciente.getNombre() + " " + paciente.getpApellido() + " " + paciente.getsApellido());
         expediente = (ExpedienteDto) AppContext.getInstance().get("Expediente");
         controles.stream().filter(x -> x.getCntExpediente().getExpID().equals(expediente.getExpID())).forEach(s -> {
