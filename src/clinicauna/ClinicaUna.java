@@ -22,15 +22,11 @@ public class ClinicaUna extends Application {
     public void start(Stage stage) throws Exception {
         stage.setTitle("Clinica UNA");
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
-        
+        stage.setMinHeight(700);
+        stage.setMinWidth(1050);
         FlowController.getInstance().InitializeFlow(stage, null);
-        
-        
         FlowController.getInstance().goViewInWindowTransparent("LogIn"); 
-        
     }
-
-    
 
     public static void main(String[] args) {
         launch(args);

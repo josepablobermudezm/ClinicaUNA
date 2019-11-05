@@ -503,6 +503,8 @@ public class AgendaMedicaController extends Controller implements Initializable 
         //Carga la vista de las citas 
         vCita.setBackground(Background.EMPTY);
         vCita.setStyle(style);
+        
+        //espacio.setEspAgenda(agendaDto);
         vCita.AgregarCita(espacio);
         vCita.getChildren().add(vCita.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
     }
