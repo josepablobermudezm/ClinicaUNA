@@ -265,7 +265,7 @@ public class LogIngController extends Controller implements Initializable {
 
         citasService = new CitaService();
         citas = new ArrayList();
-
+        
         //Envia correos a las citas del día de mañana
         enviarCorreos();
 
@@ -315,5 +315,4 @@ public class LogIngController extends Controller implements Initializable {
         } catch (Exception e) {
         }
     }
-
 }
