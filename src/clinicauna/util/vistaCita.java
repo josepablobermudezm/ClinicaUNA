@@ -55,7 +55,7 @@ public class vistaCita extends HBox {
     public void intercambiarCita(vistaCita vCita) {
         /*
             se hace el intercambio de la cita visualmente
-        */
+         */
         EspacioDto espacio = vCita.getEspacio();
         EspacioDto espacio2 = this.getEspacio();
         this.setEspacio(espacio);
@@ -66,7 +66,6 @@ public class vistaCita extends HBox {
         vCita.setStyle(getStyle());
         this.setStyle(style);
 
-        
         VBox vAux = vCita.getvBox();
         vCita.setvBox(vBox);
         vBox = vAux;
@@ -74,8 +73,8 @@ public class vistaCita extends HBox {
         vCita.getChildren().add(vCita.getvBox());
         /*
             hacemos el intercambio de la base de datos de cita
-        */
-        
+         */
+
         AgendaDto agenda;
         agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
         String horaInicio = this.getEspacio().getEspHoraInicio();
@@ -86,36 +85,64 @@ public class vistaCita extends HBox {
         vCita.getEspacio().setEspHoraFin(horaFinal);
         //Ponemos esto null ya que, se genera un bucle infinito
         agenda.setEspacioList(null);
-        
+
         this.getEspacio().setEspAgenda(agenda);
         vCita.getEspacio().setEspAgenda(agenda);
-        
+
         System.out.println(this.getEspacio().getEspHoraInicio() + " inicio this.get");
-        System.out.println(vCita.getEspacio().getEspHoraInicio() + " inicio vcita" );
-        
+        System.out.println(vCita.getEspacio().getEspHoraInicio() + " inicio vcita");
+
         EspacioService espacioService = new EspacioService();
-        LocalTime horaF = LocalTime.parse(this.getEspacio().getEspHoraFin());
+        /*LocalTime horaF = LocalTime.parse(this.getEspacio().getEspHoraFin());
         LocalTime horaIni = LocalTime.parse(this.getEspacio().getEspHoraInicio());
         LocalDateTime horaCitaInicio = LocalDateTime.of(LocalDate.now(), horaIni);
         String horaInicio1 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaInicio);
         LocalDateTime horaCitaFin = LocalDateTime.of(LocalDate.now(), horaF);
         String horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaFin);
         this.getEspacio().setEspHoraInicio(horaInicio1);
-        this.getEspacio().setEspHoraFin(horaFin);
+        this.getEspacio().setEspHoraFin(horaFin);*/
 
+        LocalTime localTimeObj = LocalTime.parse(this.getEspacio().getEspHoraInicio());
+        LocalTime localTimeObje = LocalTime.parse(this.getEspacio().getEspHoraFin());
+        String horaInicio1 = " ";
+        String horaFin = " ";
+
+        LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
+        horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+
+        LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
+        horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
+
+        this.getEspacio().setEspHoraFin(horaFin);
+        this.getEspacio().setEspHoraInicio(horaInicio);
+        
+        LocalTime localTimeObj1 = LocalTime.parse(vCita.getEspacio().getEspHoraInicio());
+        LocalTime localTimeObje1 = LocalTime.parse(vCita.getEspacio().getEspHoraFin());
+        String horaInicio11 = " ";
+        String horaFin1 = " ";
+
+        LocalDateTime horaCitaLocal11 = LocalDateTime.of(LocalDate.now(), localTimeObj1);
+        horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+
+        LocalDateTime horaCitaLocal111 = LocalDateTime.of(LocalDate.now(), localTimeObje1);
+        horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
+
+        vCita.getEspacio().setEspHoraFin(horaFin);
+        vCita.getEspacio().setEspHoraInicio(horaInicio);
+        
         System.out.println(this.getEspacio().getEspHoraInicio() + " inicio this.get");
-        System.out.println(this.getEspacio().getEspHoraFin()+ " fin vcita" );
-        
+        System.out.println(this.getEspacio().getEspHoraFin() + " fin vcita");
+
         espacioService.guardarEspacio(this.getEspacio());
-        
-        LocalTime horaF1 = LocalTime.parse(vCita.getEspacio().getEspHoraFin());
+
+        /*LocalTime horaF1 = LocalTime.parse(vCita.getEspacio().getEspHoraFin());
         LocalTime horaIni1 = LocalTime.parse(vCita.getEspacio().getEspHoraInicio());
         LocalDateTime horaCitaInicio1 = LocalDateTime.of(LocalDate.now(), horaIni1);
         String horaInicio2 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaInicio1);
         LocalDateTime horaCitaFin1 = LocalDateTime.of(LocalDate.now(), horaF1);
         String horaFin1 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaFin);
         vCita.getEspacio().setEspHoraInicio(horaInicio2);
-        vCita.getEspacio().setEspHoraFin(horaFin1);
+        vCita.getEspacio().setEspHoraFin(horaFin1);*/
         espacioService.guardarEspacio(vCita.getEspacio());
         /*if (vCita.getEspacio() != null && this.getEspacio() != null) {
 
