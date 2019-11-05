@@ -30,8 +30,8 @@
                   <VBox spacing="25.0">
                      <children>
                         <JFXTextField fx:id="txtNombre" labelFloat="true" onKeyReleased="#ReleasedNombre" opacity="0.5" prefHeight="25.0" prefWidth="375.0" promptText="Nombre" />
-                        <JFXTextField fx:id="txtCedula" onKeyReleased="#ReleasedCedula" opacity="0.46" promptText="Cédula" />
-                        <JFXTextField fx:id="txtApellido" onKeyReleased="#ReleasedApellido" opacity="0.46" promptText="Apellido" />
+                        <JFXTextField fx:id="txtCedula" labelFloat="true" onKeyReleased="#ReleasedCedula" opacity="0.46" promptText="Cédula" />
+                        <JFXTextField fx:id="txtApellido" labelFloat="true" onKeyReleased="#ReleasedApellido" opacity="0.46" promptText="Apellido" />
                         <JFXButton fx:id="btnGenerarReportePac" alignment="CENTER" onAction="#GenerarReportePaciente" prefHeight="31.0" prefWidth="132.0" style="-fx-cursor: hand;" text="Generar Reporte" />
                      </children>
                   </VBox>
@@ -83,8 +83,8 @@
                   <VBox prefHeight="119.0" prefWidth="375.0" spacing="25.0">
                      <children>
                         <JFXTextField fx:id="txtFolio" labelFloat="true" onKeyReleased="#ReleasedFolio" opacity="0.55" prefHeight="25.0" prefWidth="375.0" promptText="Folio" />
-                        <JFXTextField fx:id="txtCodigo" onKeyReleased="#ReleasedCodigo" opacity="0.5" promptText="Codigo" />
-                        <JFXTextField fx:id="txtCarne" onKeyReleased="#ReleasedCarne" opacity="0.5" promptText="Carné" />
+                        <JFXTextField fx:id="txtCodigo" labelFloat="true" onKeyReleased="#ReleasedCodigo" opacity="0.5" promptText="Codigo" />
+                        <JFXTextField fx:id="txtCarne" labelFloat="true" onKeyReleased="#ReleasedCarne" opacity="0.5" promptText="Carné" />
                      </children>
                   </VBox>
                   <VBox prefHeight="205.0" prefWidth="575.0" spacing="20.0">
