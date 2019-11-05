@@ -124,7 +124,7 @@ public class AgregarCitaController extends Controller {
             this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
             this.txtTelefono.setPromptText(idioma.getProperty("Telefono"));
             this.txtmotivo.setPromptText(idioma.getProperty("Motivo"));
-            this.btnAgregarPac.setText(idioma.getProperty("Agregar")+" "+idioma.getProperty("PacienteB"));
+            this.btnAgregarPac.setText(idioma.getProperty("Agregar") + " " + idioma.getProperty("PacienteB"));
             this.btnEditar.setText(idioma.getProperty("Editar"));
         }
         formato();
@@ -134,9 +134,9 @@ public class AgregarCitaController extends Controller {
         citaService = new CitaService();
 
         hBox = (vistaCita) AppContext.getInstance().get("hBox");
-        if(hBox.getEspacio() != null){
+        if (hBox.getEspacio() != null) {
             btnGuardar.setDisable(true);
-        }else{
+        } else {
             btnGuardar.setDisable(false);
         }
         grid = (GridPane) AppContext.getInstance().get("Grid");
@@ -234,7 +234,6 @@ public class AgregarCitaController extends Controller {
     private void guardar(ActionEvent event) {
 
         if (registroCorrecto()) {
-
             String telefono = txtTelefono.getText();
             String correo = txtCorreo.getText();
             String motivo = txtmotivo.getText();
@@ -367,19 +366,17 @@ public class AgregarCitaController extends Controller {
                 }
             }
         });
-        if (val) {
+        if (val && j != 0) {
             if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
                 AgregarCita(style);
-
             } else {
                 limpiarValores();
             }
         } else {
             if (j == espacio) {
                 AgregarCita(style);
-
             } else {
-                if (!val) {
+                if (!val && j != 0) {
                     if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
                         AgregarCita(style);
                     } else {

@@ -5,6 +5,7 @@
  */
 package clinicauna.util;
 
+import clinicauna.model.UsuarioDto;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
@@ -22,11 +23,12 @@ public class hiloCorreo {
     private Label label;
     public static boolean finalizado = false;
     private Stage stage;
+    private UsuarioDto usuarioActivo;
+    private Idioma idioma;
 
     public hiloCorreo(Label label, Stage stage) {
         this.label = label;
         this.stage = stage;
-
     }
 
     TimerTask task = new TimerTask() {
@@ -36,19 +38,31 @@ public class hiloCorreo {
 
                 switch (tic) {
                     case 1:
-                        label.setText("Enviando Correos.");
+                        if (usuarioActivo != null && usuarioActivo.getIdioma().equals("I")) {
+                            label.setText("Sending emails.");
+                        } else {
+                            label.setText("Enviando Correos.");
+                        }
                         tic++;
                         break;
                     case 2:
-                        label.setText("Enviando Correos..");
+                        if (usuarioActivo != null && usuarioActivo.getIdioma().equals("I")) {
+                            label.setText("Sending emails..");
+                        } else {
+                            label.setText("Enviando Correos..");
+                        }
                         tic++;
                         break;
                     case 3:
-                        label.setText("Enviando Correos...");
+                        if (usuarioActivo != null && usuarioActivo.getIdioma().equals("I")) {
+                            label.setText("Sending emails...");
+                        } else {
+                            label.setText("Enviando Correos...");
+                        }
                         tic = 1;
                         break;
                 }
-                
+
                 if (finalizado) {
                     timer.cancel();
                     task.cancel();
@@ -61,6 +75,8 @@ public class hiloCorreo {
     };
 
     public void correrHilo() {
+        usuarioActivo = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        idioma = (Idioma) AppContext.getInstance().get("idioma");
         timer.schedule(task, 10, 1000);
     }
 }

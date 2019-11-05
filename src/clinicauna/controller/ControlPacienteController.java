@@ -314,6 +314,7 @@ public class ControlPacienteController extends Controller implements Initializab
             correo.CorreoControlHilo(pacienteDto.getCorreo());
             FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
             resp = correo.getResp();
+            System.out.println(resp);
             if (resp.getEstado()) {
                 if (usuarioActivo.getIdioma().equals("I")) {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "Mail sent successfully");

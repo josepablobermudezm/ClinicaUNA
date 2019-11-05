@@ -42,6 +42,7 @@ public class VistaCargandoController extends Controller {
         }
         FlowController.getInstance().initialize();
         if (this.getStage() != null) {
+            
             hiloCorreo hilo = new hiloCorreo(lblCorreos, this.stage);
             hilo.correrHilo();
         }
