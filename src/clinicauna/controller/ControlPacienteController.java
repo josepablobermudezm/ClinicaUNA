@@ -153,8 +153,7 @@ public class ControlPacienteController extends Controller implements Initializab
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         controles2 = new ArrayList();
         expedienteDto = (ExpedienteDto) AppContext.getInstance().get("Expediente");
-        pacienteDto = (PacienteDto) AppContext.getInstance().get("Paciente");
-        System.out.println("Paciente " + pacienteDto);
+        pacienteDto = (PacienteDto) AppContext.getInstance().get("Pact");
         controlService = new ControlService();
         controlDto = new ControlDto();
         ms = new Mensaje();
@@ -311,6 +310,7 @@ public class ControlPacienteController extends Controller implements Initializab
             controlDto = new ControlDto(null, fecha, hora, presion, frecuenciaCardiaca, peso, talla, temperatura, imc, anotaciones, razon, planAtencion, observaciones, Examen, tratamiento, version, expedienteDto);
             AppContext.getInstance().set("Control", controlDto);
             Correos correo = new Correos();
+
             correo.CorreoControlHilo(pacienteDto.getCorreo());
             FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
             resp = correo.getResp();
