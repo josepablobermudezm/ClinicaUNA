@@ -210,7 +210,6 @@ public class LogIngController extends Controller implements Initializable {
             //Envia los correos por medio de hilos para que no afecten al programa
             if (!citas.isEmpty()) {
                 citas.stream().forEach((cita) -> {
-                    System.out.println("Cita " + cita.getID());
                     Stack<EspacioDto> pila = new Stack();
                     espacioList.stream().forEach(espacio -> {
                         if (espacio.getEspCita().getID().equals(cita.getID())) {
@@ -256,8 +255,6 @@ public class LogIngController extends Controller implements Initializable {
         if (respEspacio.getEstado()) {
             espacioList = ((ArrayList) respEspacio.getResultado("Espacios"));
         } else {
-            System.out.println(respEspacio.getMensajeInterno());
-            System.out.println(respEspacio.getMensaje());
         }
         if (respAgenda.getEstado()) {
             agendaList = ((ArrayList) respAgenda.getResultado("Agendas"));

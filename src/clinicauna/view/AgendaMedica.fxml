@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -28,26 +28,32 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="73.0" prefWidth="1030.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="75.0" prefWidth="477.0" spacing="25.0">
+                  <VBox alignment="CENTER" prefHeight="85.0" prefWidth="620.0" spacing="25.0">
                      <children>
-                        <JFXDatePicker fx:id="DatePicker" defaultColor="#4059a9" onAction="#Validacion" onHiding="#Fecha" prefHeight="25.0" prefWidth="208.0" promptText="Seleccionar Fecha">
+                        <JFXDatePicker fx:id="DatePicker" defaultColor="#4059a9" onAction="#Validacion" onHiding="#Fecha" prefHeight="29.0" prefWidth="243.0" promptText="Seleccionar Fecha">
                            <VBox.margin>
-                              <Insets left="-75.0" />
+                              <Insets left="-200.0" />
                            </VBox.margin></JFXDatePicker>
-                        <HBox prefHeight="31.0" prefWidth="279.0" spacing="55.0">
+                        <HBox prefHeight="31.0" prefWidth="485.0" spacing="10.0">
                            <children>
-                              <JFXComboBox fx:id="ComboMedico" onAction="#seleccionarMedico" prefHeight="31.0" prefWidth="205.0" promptText="Seleccionar un Medico">
+                              <Label fx:id="lblSeleccioneMedico" prefHeight="21.0" prefWidth="150.0" text="Seleccione un médico:">
                                  <HBox.margin>
-                                    <Insets left="30.0" />
+                                    <Insets left="35.0" top="5.0" />
                                  </HBox.margin>
-                              </JFXComboBox>
+                              </Label>
+                              <JFXButton fx:id="btnBuscar" onAction="#Buscar" prefHeight="31.0" prefWidth="66.0" style="-fx-cursor: hand;" text="Buscar" />
+                              <Label fx:id="lblNombreMedico" prefHeight="21.0" prefWidth="220.0">
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </Label>
                            </children>
                         </HBox>
                      </children>
                   </VBox>
                   <HBox alignment="BOTTOM_RIGHT" prefHeight="75.0" prefWidth="655.0" spacing="10.0">
                      <HBox.margin>
-                        <Insets left="200.0" />
+                        <Insets />
                      </HBox.margin>
                      <children>
                         <Label fx:id="lblAnno" styleClass="lbl" text="Año:">

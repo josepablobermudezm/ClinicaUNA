@@ -153,7 +153,7 @@ public class Correos extends Thread {
         cita = (CitaDto) AppContext.getInstance().get("CitaDto");
         medico = (MedicoDto) AppContext.getInstance().get("MedicoDto");
         aux = (List) AppContext.getInstance().get("aux");
-        paciente = (PacienteDto) AppContext.getInstance().get("PacienteDto");
+        paciente = (PacienteDto) AppContext.getInstance().get("Pact");
         agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
         start();
     }
@@ -164,8 +164,6 @@ public class Correos extends Thread {
         this.cita = cita;
         this.medico = medicoDto;
         this.pila = pila;
-        /*System.out.println("PILA "+pila.firstElement().getEspHoraInicio());
-        System.out.println("PILA "+pila.pop().getEspHoraFin());*/
         start();
     }
 
@@ -302,12 +300,10 @@ public class Correos extends Thread {
             t.connect("clinica.una.cr@gmail.com", "gxowaetyiexzenux");
             t.sendMessage(mensaje, mensaje.getAllRecipients());
             t.close();
-            System.out.println("Correo Enviado");
             
             cita.setCorreoEnviado("S");
             new CitaService().guardarCita(cita);
         } catch (MessagingException e) {
-            System.out.println("Correo Fallido "+ e.getMessage());
         }
     }
 

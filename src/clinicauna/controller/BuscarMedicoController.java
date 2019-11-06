@@ -100,6 +100,7 @@ public class BuscarMedicoController extends Controller {
         this.Col_Folio.setCellValueFactory(value-> new SimpleStringProperty(value.getValue().getFolio()));
         Buscar();
     }
+    
      public void Buscar(){
         String cod = (!txtCodigo.getText().isEmpty()) ? "%" + txtCodigo.getText().toUpperCase() + "%" : "%";
         String carne = (!txtCarne.getText().isEmpty()) ? "%" + txtCarne.getText().toUpperCase() + "%" : "%";
