@@ -151,7 +151,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
         } else if (usuarioDto.getTipoUsuario().equals("M")) {
             inicio = false;
             DatePicker.setValue(LocalDate.now());
-            ComboMedico.setVisible(false);
+            //ComboMedico.setVisible(false);
             btnBuscar.setVisible(false);
             medicoService = new MedicoService();
             resp = medicoService.getMedicos();
@@ -160,8 +160,8 @@ public class AgendaMedicaController extends Controller implements Initializable 
             AppContext.getInstance().set("MedicoDto", medicoDto);
         }
         Inicio();
-        SeleccionarMedico();
         fecha();
+        SeleccionarMedico();
     }
 
     public void Inicio() {
@@ -173,7 +173,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             /*
             *   En el caso de que el usuario este entrando y utilice el idioma ingles hacemos la traducción
              */
-            this.ComboMedico.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
+            //this.ComboMedico.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
             this.DatePicker.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
             this.lblAnno.setText(idioma.getProperty("Año"));
             this.lblDia.setText(idioma.getProperty("Dia"));
@@ -423,6 +423,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 agendaDto = new AgendaDto(null, DatePicker.getValue(), new Long(1), medicoDto);
                 agendaDto = (AgendaDto) new AgendaService().guardarAgenda(agendaDto).getResultado("Agenda");
             }
+            System.out.println(agendaDto.getAgeFecha());
             //Muestra la agenda del medico
             mostrarAgenda();
             AppContext.getInstance().set("Agenda", agendaDto);
@@ -556,6 +557,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
     private void Buscar(ActionEvent event) {
         FlowController.getInstance().goViewInWindowModal("BuscarMedico", this.getStage(), false);
         medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
+        medicoDtoAux = null;
         initialize();
         SeleccionarMedico();
     }
