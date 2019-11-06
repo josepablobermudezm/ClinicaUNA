@@ -221,7 +221,7 @@ public class AgregarCitaController extends Controller {
             }
             //Obtengo el primer el Hbox que contiene el Label con la hora
             citaDto = new CitaDto(null, version, pacienteDto, motivo, estado1, telefono, correo, "N");
-            //try {
+            try {
                 switch (estado1) {
                     case "AT": {
                         String style = "-fx-background-color: #fad655; ";
@@ -252,7 +252,6 @@ public class AgregarCitaController extends Controller {
                 FlowController.getInstance().initialize();
                 this.getStage().close();
 
-                try{
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita " + e.getMessage());
             }
