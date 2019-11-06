@@ -10,6 +10,11 @@ import clinicauna.model.UsuarioDto;
 import clinicauna.util.AppContext;
 import clinicauna.util.Request;
 import clinicauna.util.Respuesta;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,5 +159,71 @@ public class MedicoService {
             return new Respuesta(false, "Error obteniendo Medicos.", "getMedicos " + ex.getMessage());
         }
     }
+    public Respuesta getRepPorcentajeCitasMedicas() {
+        try {
+            usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+            Request request = new Request("MedicoController/reporteMedicos");
+            request.get();
+
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+            
+            File carpeta = new File("C:\\reporte\\");
+            carpeta.mkdir();
+            //Guardo el pdf en el archivo
+            File archivo = new File("C:\\reporte\\Reporte%Medicos.pdf");
+            
+            byte[] bytes = (byte[]) request.readEntity(byte[].class);
+            
+            Path path = Paths.get(archivo.getAbsolutePath());
+            Files.write(path, bytes);
+            
+            Runtime.getRuntime().exec("cmd /c start " +archivo);
+            if(usuario.getIdioma().equals("I")){
+                return new Respuesta(true, "Report generated successfully", "");
+            }else{
+                return new Respuesta(true, "Reporte Generado Exitosamente", "");
+            }  
+        } catch (IOException ex) {
+            Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo Agendas.", ex);
+            return new Respuesta(false, "Error obteniendo Agendas.", "getAgendas " + ex.getMessage());
+        }
+    }
+
+    public Respuesta getReportePorcentajeMedico(String folio) {
+         try {
+            usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("cedula", folio);
+            Request request = new Request("MedicoController/reporteMedico","/{folio}", parametros);
+            request.get();
+
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+            
+            File carpeta = new File("C:\\reporte\\");
+            carpeta.mkdir();
+            //Guardo el pdf en el archivo
+            File archivo = new File("C:\\reporte\\Reporte%Medico.pdf");
+            
+            byte[] bytes = (byte[]) request.readEntity(byte[].class);
+            
+            Path path = Paths.get(archivo.getAbsolutePath());
+            Files.write(path, bytes);
+            
+            Runtime.getRuntime().exec("cmd /c start " +archivo);
+            if(usuario.getIdioma().equals("I")){
+                return new Respuesta(true, "Report generated successfully", "");
+            }else{
+                return new Respuesta(true, "Reporte Generado Exitosamente", "");
+            }  
+        } catch (IOException ex) {
+            Logger.getLogger(AgendaService.class.getName()).log(Level.SEVERE, "Error obteniendo Agendas.", ex);
+            return new Respuesta(false, "Error obteniendo Agendas.", "getAgendas " + ex.getMessage());
+        }
+    }
+
 
 }

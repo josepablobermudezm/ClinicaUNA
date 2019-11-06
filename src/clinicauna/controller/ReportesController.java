@@ -64,7 +64,7 @@ public class ReportesController extends Controller {
     private PacienteService PacService;
     private MedicoService medService;
     private ArrayList<PacienteDto> pacientes;
-    private ArrayList<PacienteDto> medicos;
+    private ArrayList<MedicoDto> medicos;
     private ObservableList itemsMedico;
     private ObservableList itemsPaciente;
     private Idioma idioma;
@@ -97,7 +97,8 @@ public class ReportesController extends Controller {
     private TableColumn<MedicoDto, String> col_codigo;
     @FXML
     private TableColumn<MedicoDto, String> Col_Carne;
-    private static MedicoDto m;
+    private MedicoDto medico;
+    
     @Override
     public void initialize() {
         colPacNombre.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre() + " " + value.getValue().getpApellido() + " " + value.getValue().getsApellido()));
@@ -141,6 +142,7 @@ public class ReportesController extends Controller {
         }
 
         if ("M".equals(usuario.getTipoUsuario())) {
+            this.medico = medicos.stream().filter(x->x.getUs().getID().equals(usuario.getID())).findAny().get();
             this.tvMedico.setVisible(false);
             this.txtFolio.setVisible(false);
             this.txtCodigo.setVisible(false);
@@ -170,12 +172,12 @@ public class ReportesController extends Controller {
                         
                         mds.stream().forEach(x->{
                             if(Objects.equals(x.getUs().getID(), usuario.getID())){
-                                m = x;
+                                medico = x;
                             }
                         });
                         String FechaInicio = DateFechaInicio.getValue().toString();
                         String FechaFinal = DateFechaFin.getValue().toString();
-                        Respuesta resp = new AgendaService().getAgendas(FechaInicio, FechaFinal, m.getFolio());
+                        Respuesta resp = new AgendaService().getAgendas(FechaInicio, FechaFinal, medico.getFolio());
                         if (resp.getEstado()) {
                             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Reporte", this.getStage(), resp.getMensaje());
                         } else {
@@ -235,7 +237,7 @@ public class ReportesController extends Controller {
     @FXML
     private void seleccionarMedico(MouseEvent event) {
         if (tvMedico.getSelectionModel() != null && tvMedico.getSelectionModel().getSelectedItem() != null) {
-            MedicoDto medico = tvMedico.getSelectionModel().getSelectedItem();
+            medico = tvMedico.getSelectionModel().getSelectedItem();
             txtFolio.setText(medico.getFolio());
             txtCodigo.setText(medico.getCodigo());
             txtCarne.setText(medico.getCarne());
@@ -244,6 +246,24 @@ public class ReportesController extends Controller {
 
     @FXML
     private void porcentajeCitas(ActionEvent event) {
+        Respuesta resp;
+        Mensaje mensaje = new Mensaje();
+        //Si el usuario es un medico entonces genero el reporte solo de el
+        if(!usuario.getTipoUsuario().equals("M")){
+            resp = medService.getRepPorcentajeCitasMedicas();
+            if(resp.getEstado()){
+                mensaje.showModal(Alert.AlertType.INFORMATION,"Reporte",this.getStage(),resp.getMensaje());
+            }else{
+                  mensaje.showModal(Alert.AlertType.ERROR,"Reporte",this.getStage(),resp.getMensaje());
+            }
+        }else{//Genero el reporte para todos los medicos en general
+            resp = medService.getReportePorcentajeMedico(medico.getFolio());
+            if(resp.getEstado()){
+                mensaje.showModal(Alert.AlertType.INFORMATION,"Reporte",this.getStage(),"Reporte generado exi");
+            }else{
+                mensaje.showModal(Alert.AlertType.ERROR,"Reporte",this.getStage(),resp.getMensaje());
+            }
+        }
     }
 
     @FXML
