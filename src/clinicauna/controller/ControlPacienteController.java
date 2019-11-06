@@ -109,8 +109,6 @@ public class ControlPacienteController extends Controller implements Initializab
     private MedicoService medicoService;
     private ArrayList<MedicoDto> lista;
     @FXML
-    private JFXComboBox<String> ComboMedico;
-    @FXML
     private Label lblMedico;
     private UsuarioDto usuarioActivo;
     private Idioma idioma;
@@ -118,6 +116,8 @@ public class ControlPacienteController extends Controller implements Initializab
     private Label lblPacienteA;
     @FXML
     private JFXButton btnVolver;
+    @FXML
+    private JFXButton btnBuscarMedico;
 
     @Override
     public void initialize() {
@@ -128,7 +128,6 @@ public class ControlPacienteController extends Controller implements Initializab
             this.COL_HORA_CONTROL.setText(idioma.getProperty("Hora"));
             this.lblMedico.setText(idioma.getProperty("MedicoA"));
             this.lblPacienteA.setText(idioma.getProperty("Paciente"));
-            this.ComboMedico.setPromptText(idioma.getProperty("Seleccione") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
             this.Titulo.setText(idioma.getProperty("PacienteA") + " " + "Control");
             this.txtPeso.setPromptText(idioma.getProperty("Peso"));
             this.txtPresion.setPromptText(idioma.getProperty("Presion"));
@@ -170,7 +169,7 @@ public class ControlPacienteController extends Controller implements Initializab
         lblPaciente.setText(expedienteDto.getPaciente().getNombre() + " " + expedienteDto.getPaciente().getpApellido() + " " + expedienteDto.getPaciente().getsApellido());
         if (usuario.getTipoUsuario().equals("M")) {
             lblMedico.setVisible(false);
-            ComboMedico.setVisible(false);
+            lblMedico.setVisible(true);
             medicoService = new MedicoService();
             resp = medicoService.getMedicos();
             lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
@@ -192,14 +191,6 @@ public class ControlPacienteController extends Controller implements Initializab
             Hora.setDisable(true);
             medicoService = new MedicoService();
             resp = medicoService.getMedicos();
-            lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
-            items = FXCollections.observableArrayList(lista.stream().map(x -> x.getUs().getNombre()
-                    + " " + x.getUs().getpApellido() + " " + x.getUs().getsApellido() + " Ced:" + x.getUs().getCedula())
-                    .collect(Collectors.toList()));
-            ComboMedico.setItems(items);
-            //medicoDto = lista.stream().filter(x -> x.getUs().getID().equals(usuario.getID())).findAny().get();
-            //AppContext.getInstance().set("MedicoDto", medicoDto);
-            //ms.showModal(Alert.AlertType.INFORMATION, "Información", this.getStage(), "Debe de seleccinar un médico para poder continuar");
         }
     }
 
@@ -314,7 +305,6 @@ public class ControlPacienteController extends Controller implements Initializab
             correo.CorreoControlHilo(pacienteDto.getCorreo());
             FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
             resp = correo.getResp();
-            System.out.println(resp);
             if (resp.getEstado()) {
                 if (usuarioActivo.getIdioma().equals("I")) {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "Mail sent successfully");
@@ -378,6 +368,7 @@ public class ControlPacienteController extends Controller implements Initializab
         txtTratamiento.clear();
         Fecha.setValue(null);
         Hora.setValue(null);
+        //AppContext.getInstance().delete("Med");
     }
 
     boolean RegistroCorrecto() {
@@ -385,7 +376,7 @@ public class ControlPacienteController extends Controller implements Initializab
                 && !txtObservaciones.getText().isEmpty() && !txtPeso.getText().isEmpty()
                 && !txtPlanAtencion.getText().isEmpty() && !txtPresion.getText().isEmpty() && !txtRazonConsulta.getText().isEmpty()
                 && !txtTalla.getText().isEmpty() && !txtTemperatura.getText().isEmpty() && !txtTratamiento.getText().isEmpty()
-                && Fecha.getValue() != null && Hora.getValue() != null;
+                && Fecha.getValue() != null && Hora.getValue() != null && AppContext.getInstance().get("Med") != null;
     }
 
     public void Formato() {
@@ -404,9 +395,12 @@ public class ControlPacienteController extends Controller implements Initializab
 
     @FXML
     private void DatosControl(MouseEvent event) {
+        /*
+         *  Cargamos los datos en los textfield y textarea desde los datos del controlDto del tableview
+        */
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
-                if (ComboMedico.getValue() != null) {
+                if (AppContext.getInstance().get("Med") != null) {
                     btnGuardar.setDisable(true);
                     controlDto = table.getSelectionModel().getSelectedItem();
                     txtAnotaciones.setText(controlDto.getCntAnotacionEnfermeria());
@@ -423,55 +417,55 @@ public class ControlPacienteController extends Controller implements Initializab
                     Fecha.setValue(controlDto.getCntFecha());
                     LocalTime localTimeObj1 = LocalTime.parse(controlDto.getCntHora());
                     Hora.setValue(localTimeObj1);
-                }else{
+                } else {
                     ms.showModal(Alert.AlertType.ERROR, "Error cargando el controls", this.getStage(), "Debe de seleccionar un médico");
                 }
             }
         }
     }
-    private static boolean cedulaEncontrada = false;
-    private static String cedulaBuscar = "";
 
-    @FXML
+    /*
+    private static boolean cedulaEncontrada = false;
+    private static String cedulaBuscar = "";*/
+
     private void seleccionarMedico(ActionEvent event) {
         SeleccionarMedico();
     }
 
     public void SeleccionarMedico() {
-        if (ComboMedico.getSelectionModel() != null && ComboMedico.getSelectionModel().getSelectedItem() != null) {
-            //buscamos el médico a partir de su cédula
-            String medico = ComboMedico.getSelectionModel().getSelectedItem();
-            medico.chars().forEach(x -> {
-                if (((char) x) == ':') {
-                    cedulaEncontrada = true;
-                } else if (cedulaEncontrada) {
-                    cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
-                }
-            });
-            //Revisar condicion
-            medicoDto = lista.stream().filter(x -> x.getUs().getCedula().equals(cedulaBuscar)).findAny().get();
-            txtAnotaciones.setDisable(false);
-            txtExamenFisico.setDisable(false);
-            txtFrecuenciaCardiaca.setDisable(false);
-            txtObservaciones.setDisable(false);
-            txtPeso.setDisable(false);
-            txtPlanAtencion.setDisable(false);
-            txtPresion.setDisable(false);
-            txtRazonConsulta.setDisable(false);
-            txtTalla.setDisable(false);
-            txtTemperatura.setDisable(false);
-            txtTratamiento.setDisable(false);
-            Fecha.setDisable(false);
-            Hora.setDisable(false);
-            cedulaBuscar = "";
-            cedulaEncontrada = false;
-            System.out.println(medicoDto);
-            AppContext.getInstance().set("MedicoDto", medicoDto);
-        }
+
+        medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
+        txtAnotaciones.setDisable(false);
+        txtExamenFisico.setDisable(false);
+        txtFrecuenciaCardiaca.setDisable(false);
+        txtObservaciones.setDisable(false);
+        txtPeso.setDisable(false);
+        txtPlanAtencion.setDisable(false);
+        txtPresion.setDisable(false);
+        txtRazonConsulta.setDisable(false);
+        txtTalla.setDisable(false);
+        txtTemperatura.setDisable(false);
+        txtTratamiento.setDisable(false);
+        Fecha.setDisable(false);
+        Hora.setDisable(false);
+        /*cedulaBuscar = "";
+            cedulaEncontrada = false;*/
+        System.out.println(medicoDto);
+        AppContext.getInstance().set("MedicoDto", medicoDto);
+        // }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    @FXML
+    private void buscarMedico(ActionEvent event) {
+        FlowController.getInstance().goViewInWindowModal("BuscarMedico", this.getStage(), false);
+        if (AppContext.getInstance().get("Med") != null) {
+            medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
+            SeleccionarMedico();
+        }
     }
 }
