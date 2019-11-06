@@ -160,7 +160,9 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         expedienteService = new ExpedienteService();
         ms = new Mensaje();
         resp = expedienteService.getExpedientes();
+
         expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
+
         /*
         *   Llamamos a esta vista para que se seleccione un paciente 
          */
@@ -174,21 +176,23 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         }
         /*
         * Para que no pueda guardar repetidos
-        */
-        if(AppContext.getInstance().get("Expediente") != null){
+         */
+        if (AppContext.getInstance().get("Expediente") != null) {
             btnGuardar.setDisable(true);
-        }else{
+        } else {
             btnGuardar.setDisable(false);
         }
     }
 
     private void DatosPaciente() {
         /*
-        * Seteamos todos los datos del expediente en los textfields/radioButton
-        */
+         *  Seteamos todos los datos del expediente en los textfields/radioButton
+         */
         if (AppContext.getInstance().get("Pact") != null) {
             paciente = (PacienteDto) AppContext.getInstance().get("Pact");
             //encontramos el expediente que sea igual al id del paciente seleccionado
+            expedienteService = new ExpedienteService();
+            resp = expedienteService.getExpedientes();
             expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
             if (expedientes.stream().filter(x -> {
                 return Objects.equals(x.getPaciente().getID(), paciente.getID());
@@ -323,7 +327,6 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         txtAntecedentesPatologicos.setDisable(true);
         txtOperaciones.setDisable(true);
         txtTratamientos.setDisable(true);
-        AppContext.getInstance().delete("Pact");
         btnGuardar.setDisable(false);
     }
 
@@ -474,10 +477,13 @@ public class ExpedienteMedicoController extends Controller implements Initializa
 
     public void BuscarPaciente() {
         FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
-        DatosPaciente();
+        if (AppContext.getInstance().get("Pact") != null) {
+            pacienteDto = (PacienteDto) AppContext.getInstance().get("Pact");
+            DatosPaciente();
+        }
         /*
-        *    si no existe ningun expediente, setea los fields en disabled
-        */
+         *    si no existe ningun expediente, setea los fields en disabled
+         */
         if (valor) {
             this.txtTratamientos.setDisable(true);
             this.txtAlergias.setDisable(true);

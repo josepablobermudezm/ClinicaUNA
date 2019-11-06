@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -35,12 +34,12 @@
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="lblMedico" text="Médico a realizar control:">
+                  <Label fx:id="lblMedico" text="Selecciona un médico:">
                      <HBox.margin>
                         <Insets left="150.0" />
                      </HBox.margin>
                   </Label>
-                  <JFXComboBox fx:id="ComboMedico" onAction="#seleccionarMedico" prefHeight="31.0" prefWidth="206.0" promptText="Seleccionar un Medico" />
+                  <JFXButton fx:id="btnBuscarMedico" onAction="#buscarMedico" text="Buscar Médico" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="232.0" prefWidth="1030.0">
