@@ -55,7 +55,6 @@ public class AgregarCitaController extends Controller {
     private JFXTextField txtTelefono;
     @FXML
     private JFXTextField txtCorreo;
-    @FXML
     private JFXComboBox<String> ComboPacientes;
     @FXML
     private JFXButton btnGuardar;
@@ -222,7 +221,7 @@ public class AgregarCitaController extends Controller {
             }
             //Obtengo el primer el Hbox que contiene el Label con la hora
             citaDto = new CitaDto(null, version, pacienteDto, motivo, estado1, telefono, correo, "N");
-            try {
+            //try {
                 switch (estado1) {
                     case "AT": {
                         String style = "-fx-background-color: #fad655; ";
@@ -253,6 +252,7 @@ public class AgregarCitaController extends Controller {
                 FlowController.getInstance().initialize();
                 this.getStage().close();
 
+                try{
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita " + e.getMessage());
             }
@@ -264,24 +264,6 @@ public class AgregarCitaController extends Controller {
     private static boolean cedulaEncontrada = false;
     private static String cedulaBuscar = "";
 
-    @FXML
-    private void seleccionarPaciente(ActionEvent event) {
-        //este método lo que hace es buscar el nombre a partir de la cédula
-        /*if (ComboPacientes.getSelectionModel() != null && ComboPacientes.getSelectionModel().getSelectedItem() != null) {
-            String paciente = ComboPacientes.getSelectionModel().getSelectedItem();
-            paciente.chars().forEach(x -> {
-                if (((char) x) == ':') {
-                    cedulaEncontrada = true;
-                } else if (cedulaEncontrada) {
-                    cedulaBuscar = cedulaBuscar.concat(Character.toString((char) x));
-                }
-            });
-            //pacienteDto = lista.stream().filter(x -> x.getCedula().equals(cedulaBuscar)).findAny().get();
-            AppContext.getInstance().set("PacienteDto", pacienteDto);
-            cedulaBuscar = "";
-            cedulaEncontrada = false;
-        }*/
-    }
 
     void limpiarValores() {
         txtCorreo.clear();

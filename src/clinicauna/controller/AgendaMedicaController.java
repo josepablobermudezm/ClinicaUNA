@@ -139,7 +139,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
         if (!usuarioDto.getTipoUsuario().equals("M")) {
             if (AppContext.getInstance().get("Med") != null) {
                 medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
-                lblNombreMedico.setText("     Medico: " + medicoDto.getUs().getNombre()+ " "
+                lblNombreMedico.setText("     Medico: " + medicoDto.getUs().getNombre() + " "
                         + medicoDto.getUs().getpApellido() + " " + medicoDto.getUs().getsApellido());
             }
             if (this.DatePicker.getValue() != null) {
@@ -194,7 +194,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
          */
         if (DatePicker.getValue().isAfter(LocalDate.now()) || DatePicker.getValue().isEqual(LocalDate.now())) {
             if (medicoDto.getEstado().equals("A")) {
-                if(AppContext.getInstance().get("Med") != null){
+                if (AppContext.getInstance().get("Med") != null) {
                     AppContext.getInstance().set("MedicoDto", medicoDto);
                 }
                 hCita = (vistaCita) event.getSource();
@@ -556,9 +556,11 @@ public class AgendaMedicaController extends Controller implements Initializable 
     @FXML
     private void Buscar(ActionEvent event) {
         FlowController.getInstance().goViewInWindowModal("BuscarMedico", this.getStage(), false);
-        medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
-        medicoDtoAux = null;
-        initialize();
-        SeleccionarMedico();
+        if (AppContext.getInstance().get("Med") != null) {
+            medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
+            medicoDtoAux = null;
+            initialize();
+            SeleccionarMedico();
+        }
     }
 }
