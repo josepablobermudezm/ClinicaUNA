@@ -38,27 +38,30 @@ public class hiloCorreo {
 
                 switch (tic) {
                     case 1:
-                        if (usuarioActivo != null && usuarioActivo.getIdioma().equals("I")) {
+                        label.setText("Enviando Correos.");
+                        /*if (usuarioActivo != null && usuarioActivo.getIdioma().equals("I")) {
                             label.setText("Sending emails.");
                         } else {
                             label.setText("Enviando Correos.");
-                        }
+                        }*/
                         tic++;
                         break;
                     case 2:
-                        if (usuarioActivo != null && usuarioActivo.getIdioma().equals("I")) {
+                        label.setText("Enviando Correos..");
+                        /*if (usuarioActivo != null && usuarioActivo.getIdioma().equals("I")) {
                             label.setText("Sending emails..");
                         } else {
                             label.setText("Enviando Correos..");
-                        }
+                        }*/
                         tic++;
                         break;
                     case 3:
-                        if (usuarioActivo != null && usuarioActivo.getIdioma().equals("I")) {
+                        label.setText("Enviando Correos...");
+                        /*if (usuarioActivo != null && usuarioActivo.getIdioma().equals("I")) {
                             label.setText("Sending emails...");
                         } else {
                             label.setText("Enviando Correos...");
-                        }
+                        }*/
                         tic = 1;
                         break;
                 }

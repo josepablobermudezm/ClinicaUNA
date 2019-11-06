@@ -260,10 +260,6 @@ public class AgregarCitaController extends Controller {
         }
     }
 
-    private static boolean cedulaEncontrada = false;
-    private static String cedulaBuscar = "";
-
-
     void limpiarValores() {
         txtCorreo.clear();
         txtTelefono.clear();
