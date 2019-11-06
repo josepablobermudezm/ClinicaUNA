@@ -555,12 +555,15 @@ public class AgendaMedicaController extends Controller implements Initializable 
 
     @FXML
     private void Buscar(ActionEvent event) {
+        AppContext.getInstance().delete("Med");
         FlowController.getInstance().goViewInWindowModal("BuscarMedico", this.getStage(), false);
         if (AppContext.getInstance().get("Med") != null) {
             medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
             medicoDtoAux = null;
             initialize();
             SeleccionarMedico();
+        }else{
+            AppContext.getInstance().set("Med",medicoDto);
         }
     }
 }

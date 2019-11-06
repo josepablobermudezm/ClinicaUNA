@@ -248,7 +248,7 @@ public class AgregarCitaController extends Controller {
                 }
 
                 limpiarValores();
-                AppContext.getInstance().set("hBox", null);
+                AppContext.getInstance().delete("hBox");
                 FlowController.getInstance().initialize();
                 this.getStage().close();
 
