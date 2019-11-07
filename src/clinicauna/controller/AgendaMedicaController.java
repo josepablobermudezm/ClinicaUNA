@@ -190,7 +190,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
              */
             //this.DatePicker.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
             this.btnBuscar.setText(idioma.getProperty("Buscar"));
-            this.lblSeleccioneMedico.setText(idioma.getProperty("Seleccione") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
+            this.lblSeleccioneMedico.setText(idioma.getProperty("Ch") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
             this.lblAnno.setText(idioma.getProperty("Año"));
             this.lblDia.setText(idioma.getProperty("Dia"));
             this.lblMes.setText(idioma.getProperty("Mes"));
@@ -199,6 +199,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             this.lblAusente.setText(idioma.getProperty("Ausente"));
             this.lblCancelada.setText(idioma.getProperty("Cancelada"));
             this.lblAtendida.setText(idioma.getProperty("Atendida"));
+            this.DatePicker.setPromptText(idioma.getProperty("Ch") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
         }
     }
 
@@ -226,6 +227,12 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 }
             } else {
                 ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "No se puede agregar una cita en esta fecha");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Medical Appointment", this.getStage(), "The doctor is inactive");
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "El médico se encuentra inactivo");
+                }
+
             }
         } else {
             if (medicoDto != null) {

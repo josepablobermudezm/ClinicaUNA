@@ -79,6 +79,7 @@ public class AgregarPacienteController extends Controller {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
+            this.FechaDeNacimiento.setPromptText(idioma.getProperty("Fecha")+" "+idioma.getProperty("de")+" "+ idioma.getProperty("Nacimiento"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
             this.btnVolver.setText(idioma.getProperty("Volver"));
             this.btnLimpiar.setText(idioma.getProperty("Limpiar")+" "+ idioma.getProperty("Registro"));
