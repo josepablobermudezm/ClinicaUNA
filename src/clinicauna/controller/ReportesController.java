@@ -98,7 +98,7 @@ public class ReportesController extends Controller {
     @FXML
     private TableColumn<MedicoDto, String> Col_Carne;
     private MedicoDto medico;
-    
+
     @Override
     public void initialize() {
         colPacNombre.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNombre() + " " + value.getValue().getpApellido() + " " + value.getValue().getsApellido()));
@@ -136,13 +136,13 @@ public class ReportesController extends Controller {
             this.btnGenerarReporteMed.setText(idioma.getProperty("Agenda"));
             this.btnGenerarReportePac.setText(idioma.getProperty("Generar"));
             this.btnPorcentajeCitas.setText(idioma.getProperty("RPCitas"));
-            this.btnLimpiar.setText(idioma.getProperty("Limpiar")+ " " + idioma.getProperty("Registro"));
+            this.btnLimpiar.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
             this.DateFechaInicio.setPromptText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Fecha"));
             this.DateFechaFin.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Fecha"));
         }
 
         if ("M".equals(usuario.getTipoUsuario())) {
-            this.medico = medicos.stream().filter(x->x.getUs().getID().equals(usuario.getID())).findAny().get();
+            this.medico = medicos.stream().filter(x -> x.getUs().getID().equals(usuario.getID())).findAny().get();
             this.tvMedico.setVisible(false);
             this.txtFolio.setVisible(false);
             this.txtCodigo.setVisible(false);
@@ -169,9 +169,9 @@ public class ReportesController extends Controller {
                     if (usuario.getTipoUsuario().equals("M")) {
                         Respuesta r = medService.getMedicos();
                         ArrayList<MedicoDto> mds = (ArrayList<MedicoDto>) r.getResultado("Medicos");
-                        
-                        mds.stream().forEach(x->{
-                            if(Objects.equals(x.getUs().getID(), usuario.getID())){
+
+                        mds.stream().forEach(x -> {
+                            if (Objects.equals(x.getUs().getID(), usuario.getID())) {
                                 medico = x;
                             }
                         });
@@ -249,19 +249,32 @@ public class ReportesController extends Controller {
         Respuesta resp;
         Mensaje mensaje = new Mensaje();
         //Si el usuario es un medico entonces genero el reporte solo de el
-        if(!usuario.getTipoUsuario().equals("M")){
+        if (!usuario.getTipoUsuario().equals("M")) {
             resp = medService.getRepPorcentajeCitasMedicas();
-            if(resp.getEstado()){
-                mensaje.showModal(Alert.AlertType.INFORMATION,"Reporte",this.getStage(),resp.getMensaje());
-            }else{
-                  mensaje.showModal(Alert.AlertType.ERROR,"Reporte",this.getStage(),resp.getMensaje());
+            if (resp.getEstado()) {
+                if (usuario.getIdioma().equals("I")) {
+                    mensaje.showModal(Alert.AlertType.INFORMATION, "Report", this.getStage(), resp.getMensaje());
+                } else {
+                    mensaje.showModal(Alert.AlertType.INFORMATION, "Reporte", this.getStage(), resp.getMensaje());
+                }
+            } else {
+                if (usuario.getIdioma().equals("I")) {
+                    mensaje.showModal(Alert.AlertType.ERROR, "Report", this.getStage(), resp.getMensaje());
+                } else {
+                    mensaje.showModal(Alert.AlertType.ERROR, "Reporte", this.getStage(), resp.getMensaje());
+                }
+
             }
-        }else{//Genero el reporte para todos los medicos en general
+        } else {//Genero el reporte para todos los medicos en general
             resp = medService.getReportePorcentajeMedico(medico.getFolio());
-            if(resp.getEstado()){
-                mensaje.showModal(Alert.AlertType.INFORMATION,"Reporte",this.getStage(),"Reporte generado exitosamente");
-            }else{
-                mensaje.showModal(Alert.AlertType.ERROR,"Reporte",this.getStage(),resp.getMensaje());
+            if (resp.getEstado()) {
+                if (usuario.getIdioma().equals("I")) {
+                    mensaje.showModal(Alert.AlertType.INFORMATION, "Report", this.getStage(), "Report Generate successfully");
+                } else {
+                    mensaje.showModal(Alert.AlertType.INFORMATION, "Reporte", this.getStage(), "Reporte generado exitosamente");
+                }
+            } else {
+                mensaje.showModal(Alert.AlertType.ERROR, "Reporte", this.getStage(), resp.getMensaje());
             }
         }
     }
