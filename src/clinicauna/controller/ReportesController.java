@@ -260,7 +260,7 @@ public class ReportesController extends Controller {
             System.out.println("Medico "+  medico);
             resp = medService.getReportePorcentajeMedico(medico.getFolio());
             if(resp.getEstado()){
-                mensaje.showModal(Alert.AlertType.INFORMATION,"Reporte",this.getStage(),"Reporte generado exi");
+                mensaje.showModal(Alert.AlertType.INFORMATION,"Reporte",this.getStage(),"Reporte generado exitosamente");
             }else{
                 mensaje.showModal(Alert.AlertType.ERROR,"Reporte",this.getStage(),resp.getMensaje());
             }

@@ -178,6 +178,7 @@ public class ControlPacienteController extends Controller implements Initializab
             lista = (ArrayList<MedicoDto>) resp.getResultado("Medicos");
             medicoDto = lista.stream().filter(x -> x.getUs().getID().equals(usuario.getID())).findAny().get();
             AppContext.getInstance().set("MedicoDto", medicoDto);
+            btnBuscarMedico.setDisable(true);
         } else if (usuario.getTipoUsuario().equals("A")) {
             txtAnotaciones.setDisable(true);
             txtExamenFisico.setDisable(true);
@@ -308,19 +309,28 @@ public class ControlPacienteController extends Controller implements Initializab
             correo.CorreoControlHilo(pacienteDto.getCorreo());
             FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
             resp = correo.getResp();
-            if (resp.getEstado()) {
-                if (usuarioActivo.getIdioma().equals("I")) {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "Mail sent successfully");
+            try {
+                if (resp.getEstado()) {
+                    if (usuarioActivo.getIdioma().equals("I")) {
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "Mail sent successfully");
+                    } else {
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+                    }
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+                    if (usuarioActivo.getIdioma().equals("I")) {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Send Mail", this.getStage(), "There was an error sending the mail");
+                    } else {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+                    }
                 }
-            } else {
+            } catch (Exception e) {
                 if (usuarioActivo.getIdioma().equals("I")) {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Send Mail", this.getStage(), "There was an error sending the mail");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
                 }
             }
+            
             resp = controlService.guardarControl(controlDto);
             if (resp.getEstado()) {
                 if (usuarioActivo.getIdioma().equals("I")) {
@@ -381,7 +391,7 @@ public class ControlPacienteController extends Controller implements Initializab
                 && !txtObservaciones.getText().isEmpty() && !txtPeso.getText().isEmpty()
                 && !txtPlanAtencion.getText().isEmpty() && !txtPresion.getText().isEmpty() && !txtRazonConsulta.getText().isEmpty()
                 && !txtTalla.getText().isEmpty() && !txtTemperatura.getText().isEmpty() && !txtTratamiento.getText().isEmpty()
-                && Fecha.getValue() != null && Hora.getValue() != null && AppContext.getInstance().get("Med") != null;
+                && Fecha.getValue() != null && Hora.getValue() != null && (AppContext.getInstance().get("Med") != null || AppContext.getInstance().get("MedicoDto") != null);
     }
 
     public void Formato() {
@@ -402,7 +412,7 @@ public class ControlPacienteController extends Controller implements Initializab
     private void DatosControl(MouseEvent event) {
         /*
          *  Cargamos los datos en los textfield y textarea desde los datos del controlDto del tableview
-        */
+         */
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
                 if (AppContext.getInstance().get("Med") != null) {
@@ -432,7 +442,6 @@ public class ControlPacienteController extends Controller implements Initializab
     /*
     private static boolean cedulaEncontrada = false;
     private static String cedulaBuscar = "";*/
-
     private void seleccionarMedico(ActionEvent event) {
         SeleccionarMedico();
     }
