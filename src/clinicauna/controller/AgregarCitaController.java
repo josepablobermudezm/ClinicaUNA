@@ -221,40 +221,40 @@ public class AgregarCitaController extends Controller {
             }
             //Obtengo el primer el Hbox que contiene el Label con la hora
             citaDto = new CitaDto(null, version, pacienteDto, motivo, estado1, telefono, correo, "N");
-            try {
-                switch (estado1) {
-                    case "AT": {
-                        String style = "-fx-background-color: #fad655; ";
-                        ValidarEspacios(style);
-                        break;
-                    }
-                    case "CA": {
-                        String style = "-fx-background-color: #fa7a7a;";
-                        ValidarEspacios(style);
-                        break;
-                    }
-                    case "PR": {
-                        String style = "-fx-background-color: #8cff8c;";
-                        ValidarEspacios(style);
-                        break;
-                    }
-                    case "AU": {
-                        String style = "-fx-background-color: #bdbdbd;";
-                        ValidarEspacios(style);
-                        break;
-                    }
-                    default:
-                        break;
+
+            switch (estado1) {
+                case "AT": {
+                    String style = "-fx-background-color: #fad655; ";
+                    ValidarEspacios(style);
+                    break;
                 }
+                case "CA": {
+                    String style = "-fx-background-color: #fa7a7a;";
+                    ValidarEspacios(style);
+                    break;
+                }
+                case "PR": {
+                    String style = "-fx-background-color: #8cff8c;";
+                    ValidarEspacios(style);
+                    break;
+                }
+                case "AU": {
+                    String style = "-fx-background-color: #bdbdbd;";
+                    ValidarEspacios(style);
+                    break;
+                }
+                default:
+                    break;
+            }
 
-                limpiarValores();
-                AppContext.getInstance().delete("hBox");
-                FlowController.getInstance().initialize();
-                this.getStage().close();
-
+            limpiarValores();
+            AppContext.getInstance().delete("hBox");
+            FlowController.getInstance().initialize();
+            this.getStage().close();
+            /*try {
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita " + e.getMessage());
-            }
+            }*/
         } else {
             ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
         }

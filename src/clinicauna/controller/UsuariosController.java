@@ -182,10 +182,9 @@ public class UsuariosController extends Controller {
                     String idioma = (btnEspanol.isSelected()) ? "E" : "I";
                     String nombreusuario = txtNombreUsuario.getText();
                     Long version = usuarioDto.getUsVersion() + 1;
-                    String estado = usuarioDto.getEstado();
-                    String clave = usuarioDto.getContrasenna();
+                    String clave = txtClave.getText();
 
-                    usuarioDto = new UsuarioDto(id, nombre, papellido, estado, sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
+                    usuarioDto = new UsuarioDto(id, nombre, papellido, "I", sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
                     try {
                         resp = usuarioService.guardarUsuario(usuarioDto);
                         if (usuario.getIdioma().equals("I")) {
@@ -291,7 +290,7 @@ public class UsuariosController extends Controller {
             String tipoUsuario = (btnAdministrador.isSelected()) ? "A" : (btnMedico.isSelected()) ? "M" : "R";
             /*
                 Si el tipo de usuario es un médico tenemos que abrir la ventana de médicos para que le agregue la información necesaria
-            */
+             */
             if (tipoUsuario.equals("M")) {
                 FlowController.getInstance().goViewInWindowModal("GuardarMedicos", this.getStage(), false);
             }
@@ -335,6 +334,7 @@ public class UsuariosController extends Controller {
                         mail.mensajeActivacionHilo(nombreusuario, correo, resp2.getMensaje());
                         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
                         resp = mail.getResp();
+
                         if (resp.getEstado()) {
                             if (usuario.getIdioma().equals("I")) {
                                 ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
@@ -347,6 +347,9 @@ public class UsuariosController extends Controller {
                             items = FXCollections.observableArrayList(usuarios);
                             table.setItems(items);
                         } else {
+                            /*
+                             *  En el caso que el correo falle, eliminamos el usuario, ya que, no se puede activar
+                             */
                             usuarioService.eliminarUsuario(usuarioDto.getID());
                             if (usuario.getIdioma().equals("I")) {
                                 ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
@@ -363,10 +366,12 @@ public class UsuariosController extends Controller {
                     }
 
                 } catch (Exception e) {
+                    //Si hay un error al momento de enviar un correo entonces se elimina el usuario 
+                    usuarioService.eliminarUsuario(usuarioDto.getID());
                     if (usuario.getIdioma().equals("I")) {
-                        ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
+                        ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "There was a problem saving the user");
                     } else {
-                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
+                        ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un problema guardando el usuario");
                     }
                 }
             } else {
@@ -376,7 +381,13 @@ public class UsuariosController extends Controller {
                     ms.showModal(Alert.AlertType.WARNING, "Informacion de guardado", this.getStage(), "No se ha creado un médico para este usuario, debes crearlo para poder guardar.");
                 }
             }
-        }
+        }else {
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.WARNING, "Saved Information", this.getStage(), "Data missing");
+                } else {
+                    ms.showModal(Alert.AlertType.WARNING, "Informacion de guardado", this.getStage(), "Faltan datos en el registro");
+                }
+            }
     }
 
     public void Formato() {
@@ -401,7 +412,7 @@ public class UsuariosController extends Controller {
         /*
         *   Cargo los datos cuando se seleccionan los datos desde el tableview y limpio el AppContext de Us en el caso de que se haya usado en la
         *   vista de buscar para que no genere problemas
-        */
+         */
         AppContext.getInstance().delete("Us");
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
@@ -449,9 +460,10 @@ public class UsuariosController extends Controller {
     public void DatosUsuario() {
         /*
         *   Cargo los datos cuando se seleccionan desde la vista de Buscar usuarios
-        */
+         */
         if (AppContext.getInstance().get("Us") != null) {
             us = (UsuarioDto) AppContext.getInstance().get("Us");
+            btnAgregar1.setDisable(true);
             usuarioDto = us;
             this.txtCedula.setText(us.getCedula());
             this.txtClave.setText(us.getContrasenna());
@@ -460,11 +472,7 @@ public class UsuariosController extends Controller {
             this.txtNombreUsuario.setText(us.getNombreUsuario());
             this.txtPApellido.setText(us.getpApellido());
             this.txtSApellido.setText(us.getsApellido());
-            if (us.getIdioma().equals("E")) {
-                btnEspanol.setSelected(true);
-            } else {
-                btnIngles.setSelected(true);
-            }
+            btnEspanol.setSelected(us.getIdioma().equals("E"));
             switch (us.getTipoUsuario()) {
                 case "A":
                     btnAdministrador.setSelected(true);

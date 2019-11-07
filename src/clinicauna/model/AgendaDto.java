@@ -7,6 +7,7 @@ package clinicauna.model;
 
 import clinicauna.util.LocalDateAdapter;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -77,6 +78,9 @@ public class AgendaDto {
     }
 
     public List<EspacioDto> getEspacioList() {
+        /*if(espacioList == null){
+            espacioList = new ArrayList();
+        }*/
         return espacioList;
     }
 

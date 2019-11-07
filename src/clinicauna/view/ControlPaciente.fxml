@@ -34,12 +34,12 @@
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="lblMedico" text="Selecciona un médico:">
+                  <Label fx:id="lblMedico" text="Médico:">
                      <HBox.margin>
                         <Insets left="150.0" />
                      </HBox.margin>
                   </Label>
-                  <JFXButton fx:id="btnBuscarMedico" onAction="#buscarMedico" text="Buscar Médico" />
+                  <Label fx:id="lblMedicoNombre" prefHeight="21.0" prefWidth="160.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="232.0" prefWidth="1030.0">
@@ -107,6 +107,7 @@
                </padding>
                <children>
                   <JFXButton fx:id="btnVolver" onAction="#cancela" style="-fx-cursor: Hand;" text="Volver" />
+                  <JFXButton fx:id="btnBuscarMedico" onAction="#buscarMedico" style="-fx-cursor: Hand;" text="Buscar Médico" />
                   <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
                   <JFXButton fx:id="btnEditar" onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />
                   <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Agregar" />

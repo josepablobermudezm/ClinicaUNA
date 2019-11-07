@@ -118,6 +118,8 @@ public class ControlPacienteController extends Controller implements Initializab
     private JFXButton btnVolver;
     @FXML
     private JFXButton btnBuscarMedico;
+    @FXML
+    private Label lblMedicoNombre;
 
     @Override
     public void initialize() {
@@ -148,6 +150,7 @@ public class ControlPacienteController extends Controller implements Initializab
             this.btnVolver.setText(idioma.getProperty("Volver"));
 
         }
+        lblMedico.setVisible(false);
         ms = new Mensaje();
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         controles2 = new ArrayList();
@@ -368,6 +371,8 @@ public class ControlPacienteController extends Controller implements Initializab
         txtTratamiento.clear();
         Fecha.setValue(null);
         Hora.setValue(null);
+        //lblMedico.setVisible(false);
+        //lblMedicoNombre.setText(" ");
         //AppContext.getInstance().delete("Med");
     }
 
@@ -448,11 +453,7 @@ public class ControlPacienteController extends Controller implements Initializab
         txtTratamiento.setDisable(false);
         Fecha.setDisable(false);
         Hora.setDisable(false);
-        /*cedulaBuscar = "";
-            cedulaEncontrada = false;*/
-        System.out.println(medicoDto);
         AppContext.getInstance().set("MedicoDto", medicoDto);
-        // }
     }
 
     @Override
@@ -466,6 +467,8 @@ public class ControlPacienteController extends Controller implements Initializab
         if (AppContext.getInstance().get("Med") != null) {
             medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
             SeleccionarMedico();
+            lblMedico.setVisible(true);
+            lblMedicoNombre.setText(medicoDto.getUs().getNombre() + " " + medicoDto.getUs().getpApellido() + " " + medicoDto.getUs().getsApellido());
         }
     }
 }

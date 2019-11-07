@@ -78,8 +78,8 @@ public class hiloCorreo {
     };
 
     public void correrHilo() {
-        usuarioActivo = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
-        idioma = (Idioma) AppContext.getInstance().get("idioma");
+       /* usuarioActivo = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
+        idioma = (Idioma) AppContext.getInstance().get("idioma");*/
         timer.schedule(task, 10, 1000);
     }
 }
