@@ -91,7 +91,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
     private Label lblMes;
     @FXML
     private Label lblDia;
-    private Label lblHora;
     private MedicoDto medicoDto;
     private MedicoService medicoService;
     private Respuesta resp;
@@ -182,9 +181,10 @@ public class AgendaMedicaController extends Controller implements Initializable 
              *   En el caso de que el usuario este entrando y utilice el idioma ingles hacemos la traducción
              */
             //this.DatePicker.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
+            this.btnBuscar.setText(idioma.getProperty("Buscar"));
+            this.lblSeleccioneMedico.setText(idioma.getProperty("Seleccione")+" "+idioma.getProperty("un")+" "+idioma.getProperty("Medico"));
             this.lblAnno.setText(idioma.getProperty("Año"));
             this.lblDia.setText(idioma.getProperty("Dia"));
-            this.lblHora.setText(idioma.getProperty("Hora"));
             this.lblMes.setText(idioma.getProperty("Mes"));
             this.Titulo.setText(idioma.getProperty("Agenda"));
             this.lblProgramada.setText(idioma.getProperty("Programada"));

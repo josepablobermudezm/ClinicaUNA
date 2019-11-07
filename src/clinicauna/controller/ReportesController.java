@@ -136,7 +136,7 @@ public class ReportesController extends Controller {
             this.btnGenerarReporteMed.setText(idioma.getProperty("Agenda"));
             this.btnGenerarReportePac.setText(idioma.getProperty("Generar"));
             this.btnPorcentajeCitas.setText(idioma.getProperty("RPCitas"));
-            this.btnLimpiar.setText("Limpiar" + " " + idioma.getProperty("Registro"));
+            this.btnLimpiar.setText(idioma.getProperty("Limpiar")+ " " + idioma.getProperty("Registro"));
             this.DateFechaInicio.setPromptText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Fecha"));
             this.DateFechaFin.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Fecha"));
         }

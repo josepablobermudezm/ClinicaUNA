@@ -113,6 +113,7 @@ public class AgregarCitaController extends Controller {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
+            this.btnSeleccionPaciente.setText(idioma.getProperty("Seleccione")+" "+ idioma.getProperty("un")+" "+ idioma.getProperty("PacienteB"));
             this.txtEspacios.setPromptText(idioma.getProperty("Agenda") + " " + idioma.getProperty("Espacios"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
             this.btnAtendida.setText(idioma.getProperty("Atendida"));
@@ -122,7 +123,6 @@ public class AgregarCitaController extends Controller {
             this.btnLimpiarRegistro.setText(idioma.getProperty("Limpiar") + " " + idioma.getProperty("Registro"));
             this.btnProgramada.setText(idioma.getProperty("Programada"));
             this.Titulo.setText(idioma.getProperty("Agendar") + " " + idioma.getProperty("ACita"));
-            this.ComboPacientes.setPromptText(idioma.getProperty("Pacientes"));
             this.lblEstado.setText(idioma.getProperty("Estado"));
             this.txtCorreo.setPromptText(idioma.getProperty("Correo"));
             this.txtTelefono.setPromptText(idioma.getProperty("Telefono"));
