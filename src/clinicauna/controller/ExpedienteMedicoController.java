@@ -164,10 +164,10 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
 
         /*
-        *   Llamamos a esta vista para que se seleccione un paciente 
+         *   Llamamos a esta vista para que se seleccione un paciente 
          */
         if (AppContext.getInstance().get("Pact") == null) {
-            FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
+            FlowController.getInstance().goViewInWindowModal("BuscarPaciente",FlowController.getInstance().getMainStage(), false);
             if (AppContext.getInstance().get("Pact") != null) {
                 DatosPaciente();
             }
@@ -175,7 +175,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
             DatosPaciente();
         }
         /*
-        * Para que no pueda guardar repetidos
+         * Para que no pueda guardar repetidos
          */
         if (AppContext.getInstance().get("Expediente") != null) {
             btnGuardar.setDisable(true);

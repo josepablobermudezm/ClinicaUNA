@@ -136,7 +136,7 @@ public class ReportesController extends Controller {
             this.btnGenerarReporteMed.setText(idioma.getProperty("Agenda"));
             this.btnGenerarReportePac.setText(idioma.getProperty("Generar"));
             this.btnPorcentajeCitas.setText(idioma.getProperty("RPCitas"));
-            this.btnLimpiar.setText("Limpiar" + " " + idioma.getProperty("Registro"));
+            this.btnLimpiar.setText(idioma.getProperty("Limpiar")+ " " + idioma.getProperty("Registro"));
             this.DateFechaInicio.setPromptText(idioma.getProperty("Inicio") + " " + idioma.getProperty("Fecha"));
             this.DateFechaFin.setPromptText(idioma.getProperty("Final") + " " + idioma.getProperty("Fecha"));
         }
@@ -259,7 +259,7 @@ public class ReportesController extends Controller {
         }else{//Genero el reporte para todos los medicos en general
             resp = medService.getReportePorcentajeMedico(medico.getFolio());
             if(resp.getEstado()){
-                mensaje.showModal(Alert.AlertType.INFORMATION,"Reporte",this.getStage(),"Reporte generado exi");
+                mensaje.showModal(Alert.AlertType.INFORMATION,"Reporte",this.getStage(),"Reporte generado exitosamente");
             }else{
                 mensaje.showModal(Alert.AlertType.ERROR,"Reporte",this.getStage(),resp.getMensaje());
             }

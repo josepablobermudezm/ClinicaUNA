@@ -66,7 +66,6 @@ public class ExamenesController extends Controller {
     private JFXTextField txtNombreExamen;
     @FXML
     private JFXButton btnCancelar;
-    @FXML
     private JFXButton btnEliminar;
     private UsuarioDto usuario;
     private Idioma idioma;
@@ -88,6 +87,7 @@ public class ExamenesController extends Controller {
             this.txtNombreExamen.setPromptText(idioma.getProperty("Examen") + " " + idioma.getProperty("Nombre"));
             this.Fecha.setPromptText(idioma.getProperty("Fecha"));
         }
+        btnGuardar.setDisable(false);
         examenes2 = new ArrayList();
         expedienteDto = (ExpedienteDto) AppContext.getInstance().get("Expediente");
         pacienteDto = (PacienteDto) AppContext.getInstance().get("Paciente");
@@ -115,10 +115,6 @@ public class ExamenesController extends Controller {
     @FXML
     private void limpiarRegistro(ActionEvent event) {
         limpiarRegistro();
-    }
-
-    @FXML
-    private void Eliminar(ActionEvent event) {
     }
 
     @FXML
@@ -229,6 +225,7 @@ public class ExamenesController extends Controller {
     private void datos(MouseEvent event) {
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
+                btnGuardar.setDisable(true);
                 examenDto = table.getSelectionModel().getSelectedItem();
                 txtAnotaciones.setText(examenDto.getAnotaciones());
                 txtNombreExamen.setText(examenDto.getNombreExamen());
@@ -244,6 +241,7 @@ public class ExamenesController extends Controller {
     private void limpiarRegistro() {
         txtAnotaciones.clear();
         txtNombreExamen.clear();
+        btnGuardar.setDisable(false);
         Fecha.setValue(null);
     }
 

@@ -31,7 +31,6 @@
          <children>
             <JFXButton fx:id="btnCancelar" onAction="#cancela" style="-fx-cursor: Hand;" text="Cancelar" />
             <JFXButton fx:id="btnLimpiarRegistro" onAction="#limpiarRegistro" style="-fx-cursor: hand;" text="Limpiar Registro" />
-            <JFXButton fx:id="btnEliminar" onAction="#Eliminar" style="-fx-cursor: Hand;" text="Eliminar" />
             <JFXButton fx:id="btnEditar" onAction="#editar" style="-fx-cursor: Hand;" text="Editar" />
             <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-cursor: hand;" text="Agregar" />
          </children>

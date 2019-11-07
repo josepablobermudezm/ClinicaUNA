@@ -98,7 +98,7 @@ public class AntecedentesController extends Controller {
         antecedentesList.stream().filter(x -> x.getAntExpediente().getExpID().equals(expediente.getExpID())).forEach(x -> {
             antecedentesList2.add(x);
         });
-
+        btnGuardar.setDisable(false);
         //antecedentesList = expediente.getAntecedentes();
         COL_PARENTESCO_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntParentesco()));
         COL_ENFERMEDAD_ANT.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAntEnfermedad()));
@@ -115,9 +115,7 @@ public class AntecedentesController extends Controller {
 
     @FXML
     private void limpiarRegistro(ActionEvent event) {
-        txtEnfermedad.clear();
-        txtParentesco.clear();
-        table.getSelectionModel().clearSelection();
+        limpiarValores();
     }
 
     boolean RegistroCorrecto() {
@@ -222,6 +220,7 @@ public class AntecedentesController extends Controller {
     private void limpiarValores() {
         txtEnfermedad.clear();
         txtParentesco.clear();
+        btnGuardar.setDisable(false);
         table.getSelectionModel().clearSelection();
     }
 
@@ -272,6 +271,7 @@ public class AntecedentesController extends Controller {
     private void datos(MouseEvent event) {
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
+                btnGuardar.setDisable(true);
                 antecedenteDto = table.getSelectionModel().getSelectedItem();
                 txtEnfermedad.setText(antecedenteDto.getAntEnfermedad());
                 txtParentesco.setText(antecedenteDto.getAntParentesco());
