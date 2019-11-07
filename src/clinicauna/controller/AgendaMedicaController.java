@@ -207,25 +207,44 @@ public class AgendaMedicaController extends Controller implements Initializable 
          *    Valido que no pueda editar o guardar ninguna cita a menos que sea de un día igual o mayor que el día de hoy,
          *    no se debería de poder guardar citas en días anteriores, no tiene sentido
          */
-        if (DatePicker.getValue().isAfter(LocalDate.now()) || DatePicker.getValue().isEqual(LocalDate.now())) {
-            if (medicoDto.getEstado().equals("A")) {
-                if (AppContext.getInstance().get("Med") != null) {
-                    AppContext.getInstance().set("MedicoDto", medicoDto);
+        if (DatePicker.getValue() != null) {
+            if (DatePicker.getValue().isAfter(LocalDate.now()) || DatePicker.getValue().isEqual(LocalDate.now())) {
+                if (medicoDto.getEstado().equals("A")) {
+                    if (AppContext.getInstance().get("Med") != null) {
+                        AppContext.getInstance().set("MedicoDto", medicoDto);
+                    }
+                    hCita = (vistaCita) event.getSource();
+                    AppContext.getInstance().set("hBox", hCita);
+                    AppContext.getInstance().set("Espacio", hCita.getEspacio());
+                    FlowController.getInstance().initialize();
+                    FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
+                    AppContext.getInstance().delete("Cita");
+                    //FlowController.getInstance().initialize();
+                    initialize();
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "El médico se encuentra inactivo");
                 }
-                hCita = (vistaCita) event.getSource();
-                AppContext.getInstance().set("hBox", hCita);
-                AppContext.getInstance().set("Espacio", hCita.getEspacio());
-                FlowController.getInstance().initialize();
-                FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
-                AppContext.getInstance().delete("Cita");
-                //FlowController.getInstance().initialize();
-                initialize();
             } else {
-                ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "El médico se encuentra inactivo");
+                ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "No se puede agregar una cita en esta fecha");
             }
-
         } else {
-            ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "No se puede agregar una cita en esta fecha");
+            if (medicoDto != null) {
+                if (medicoDto.getEstado().equals("A")) {
+                    if (AppContext.getInstance().get("Med") != null) {
+                        AppContext.getInstance().set("MedicoDto", medicoDto);
+                    }
+                    hCita = (vistaCita) event.getSource();
+                    AppContext.getInstance().set("hBox", hCita);
+                    AppContext.getInstance().set("Espacio", hCita.getEspacio());
+                    FlowController.getInstance().initialize();
+                    FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
+                    AppContext.getInstance().delete("Cita");
+                    //FlowController.getInstance().initialize();
+                    initialize();
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "El médico se encuentra inactivo");
+                }
+            }
         }
     };
 
@@ -250,7 +269,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             /*
              *   Cargamos la fecha en los labels
              */
-            mes = (DatePicker.getValue().getMonth() != null) ? String.valueOf(DatePicker.getValue().getMonthValue())  : " ";
+            mes = (DatePicker.getValue().getMonth() != null) ? String.valueOf(DatePicker.getValue().getMonthValue()) : " ";
             year = (String.valueOf(DatePicker.getValue().getYear()) != null) ? String.valueOf(DatePicker.getValue().getYear()) : " ";
             semana = (String.valueOf(DatePicker.getValue().getDayOfMonth()) != null) ? String.valueOf(DatePicker.getValue().getDayOfMonth()) : " ";
             labelmes.setText(mes);
@@ -435,7 +454,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 // System.out.println("no hola");
                 agendaDto = (AgendaDto) resp.getResultado("Agenda");
             } else {
-                System.out.println("hola");
                 //Creo la agenda 
                 if (AppContext.getInstance().get("Med") != null) {
                     medicoDto = (MedicoDto) AppContext.getInstance().get("Med");
@@ -443,7 +461,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 //System.out.println("TIME "+ DatePicker.getValue());
 
                 agendaDto = new AgendaDto(null, DatePicker.getValue(), new Long(1), medicoDto);
-                System.out.println(agendaDto.getAgeFecha());
                 agendaDto = (AgendaDto) new AgendaService().guardarAgenda(agendaDto).getResultado("Agenda");
             }
             //Muestra la agenda del medico
@@ -475,7 +492,6 @@ public class AgendaMedicaController extends Controller implements Initializable 
          *   Recorremos la lista de espacios de agenda, dentro de esto vamos recorriendo todos los hijos que tiene el calendario y seleccionando el hijo
          *   primero de el children que tiene que es un Objeto de vistaCita que hereda de hBox lo cual viene siendo la hora, y cargamos la Cita de esa hora
          */
-        System.out.println("AGENDA " + agendaDto);
         agendaDto.getEspacioList().stream().forEach((espacio) -> {
             if (calendarGrid != null && calendarGrid.getChildren() != null) {
                 calendarGrid.getChildren().stream().forEach((vCita) -> {
@@ -521,7 +537,18 @@ public class AgendaMedicaController extends Controller implements Initializable 
         //Carga la vista de las citas 
         vCita.setBackground(Background.EMPTY);
         vCita.setStyle(style);
+
+        LocalTime horaF1 = LocalTime.parse(espacio.getEspHoraFin());
+        LocalTime horaIni1 = LocalTime.parse(espacio.getEspHoraInicio());
+        LocalDateTime horaCitaInicio1 = LocalDateTime.of(LocalDate.now(), horaIni1);
+        String horaInicio2 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaInicio1);
+        LocalDateTime horaCitaFin1 = LocalDateTime.of(LocalDate.now(), horaF1);
+        String horaFin1 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaFin1);
+
+        espacio.setEspHoraInicio(horaInicio2);
+        espacio.setEspHoraFin(horaFin1);
         vCita.AgregarCita(espacio);
+
         vCita.getChildren().add(vCita.get((medicoDto.getEspacios() == 2) ? 450 : (medicoDto.getEspacios() == 1) ? 950 : (medicoDto.getEspacios() == 3) ? 280 : 200));
     }
 

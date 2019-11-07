@@ -1,5 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+
+* To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -8,6 +9,7 @@ package clinicauna.util;
 import clinicauna.model.AgendaDto;
 import clinicauna.model.CitaDto;
 import clinicauna.model.EspacioDto;
+import clinicauna.model.MedicoDto;
 import clinicauna.service.EspacioService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,108 +56,145 @@ public class vistaCita extends HBox {
 
     public void intercambiarCita(vistaCita vCita) {
         /*
-            se hace el intercambio de la cita visualmente
-         */
-        EspacioDto espacio = vCita.getEspacio();
-        EspacioDto espacio2 = this.getEspacio();
-        this.setEspacio(espacio);
-        vCita.setEspacio(espacio2);
-        this.getChildren().remove(vBox);
-        vCita.getChildren().remove(vCita.getvBox());
-        String style = vCita.getStyle();
-        vCita.setStyle(getStyle());
-        this.setStyle(style);
-
-        VBox vAux = vCita.getvBox();
-        vCita.setvBox(vBox);
-        vBox = vAux;
-        this.getChildren().add(vBox);
-        vCita.getChildren().add(vCita.getvBox());
-        /*
-            hacemos el intercambio de la base de datos de cita
+         *  se hace el intercambio de la cita visualmente
          */
 
-        AgendaDto agenda;
-        agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
-        String horaInicio = this.getEspacio().getEspHoraInicio();
-        String horaFinal = this.getEspacio().getEspHoraFin();
-        this.getEspacio().setEspHoraFin(vCita.getEspacio().getEspHoraFin());
-        this.getEspacio().setEspHoraInicio(vCita.getEspacio().getEspHoraInicio());
-        vCita.getEspacio().setEspHoraInicio(horaInicio);
-        vCita.getEspacio().setEspHoraFin(horaFinal);
-        //Ponemos esto null ya que, se genera un bucle infinito
-        agenda.setEspacioList(null);
+ /*
+         *  Tomamos en cuenta varios casos, que ambos sean diferente de null o que solo uno de ellos sea null
+         */
+        if (vCita.getEspacio() != null && this.getEspacio() != null) {
+            EspacioDto espacio = vCita.getEspacio();
+            EspacioDto espacio2 = this.getEspacio();
+            this.setEspacio(espacio);
+            vCita.setEspacio(espacio2);
+            this.getChildren().remove(vBox);
+            vCita.getChildren().remove(vCita.getvBox());
+            String style = vCita.getStyle();
+            vCita.setStyle(getStyle());
+            this.setStyle(style);
 
-        this.getEspacio().setEspAgenda(agenda);
-        vCita.getEspacio().setEspAgenda(agenda);
+            VBox vAux = vCita.getvBox();
+            vCita.setvBox(vBox);
+            vBox = vAux;
+            this.getChildren().add(vBox);
+            vCita.getChildren().add(vCita.getvBox());
+            /*
+             *  hacemos el intercambio de la base de datos de cita
+             */
 
-        System.out.println(this.getEspacio().getEspHoraInicio() + " inicio this.get");
-        System.out.println(vCita.getEspacio().getEspHoraInicio() + " inicio vcita");
+            AgendaDto agenda;
+            agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
+            agenda.setAgeMedico((MedicoDto) AppContext.getInstance().get("Med"));
 
-        EspacioService espacioService = new EspacioService();
-        /*LocalTime horaF = LocalTime.parse(this.getEspacio().getEspHoraFin());
-        LocalTime horaIni = LocalTime.parse(this.getEspacio().getEspHoraInicio());
-        LocalDateTime horaCitaInicio = LocalDateTime.of(LocalDate.now(), horaIni);
-        String horaInicio1 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaInicio);
-        LocalDateTime horaCitaFin = LocalDateTime.of(LocalDate.now(), horaF);
-        String horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaFin);
-        this.getEspacio().setEspHoraInicio(horaInicio1);
-        this.getEspacio().setEspHoraFin(horaFin);*/
+            String horaInicio = this.getEspacio().getEspHoraInicio();
+            String horaFinal = this.getEspacio().getEspHoraFin();
+            this.getEspacio().setEspHoraFin(vCita.getEspacio().getEspHoraFin());
+            this.getEspacio().setEspHoraInicio(vCita.getEspacio().getEspHoraInicio());
+            vCita.getEspacio().setEspHoraInicio(horaInicio);
+            vCita.getEspacio().setEspHoraFin(horaFinal);
 
-        LocalTime localTimeObj = LocalTime.parse(this.getEspacio().getEspHoraInicio());
-        LocalTime localTimeObje = LocalTime.parse(this.getEspacio().getEspHoraFin());
-        String horaInicio1 = " ";
-        String horaFin = " ";
+            agenda.setEspacioList(null);
 
-        LocalDateTime horaCitaLocal = LocalDateTime.of(LocalDate.now(), localTimeObj);
-        horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+            this.getEspacio().setEspAgenda(agenda);
+            vCita.getEspacio().setEspAgenda(agenda);
 
-        LocalDateTime horaCitaLocal1 = LocalDateTime.of(LocalDate.now(), localTimeObje);
-        horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
+            EspacioService espacioService = new EspacioService();
+            espacioService.guardarEspacio(vCita.getEspacio());
+            espacioService.guardarEspacio(this.getEspacio());
+        } else if (vCita.getEspacio() != null && this.getEspacio() == null) {
+            EspacioDto espacio = vCita.getEspacio();
+            EspacioDto espacio2 = this.getEspacio();
+            this.setEspacio(espacio);
+            vCita.setEspacio(espacio2);
+            this.getChildren().remove(vBox);
+            vCita.getChildren().remove(vCita.getvBox());
+            String style = vCita.getStyle();
+            vCita.setStyle(getStyle());
+            this.setStyle(style);
 
-        this.getEspacio().setEspHoraFin(horaFin);
-        this.getEspacio().setEspHoraInicio(horaInicio);
-        
-        LocalTime localTimeObj1 = LocalTime.parse(vCita.getEspacio().getEspHoraInicio());
-        LocalTime localTimeObje1 = LocalTime.parse(vCita.getEspacio().getEspHoraFin());
-        String horaInicio11 = " ";
-        String horaFin1 = " ";
+            VBox vAux = vCita.getvBox();
+            vCita.setvBox(vBox);
+            vBox = vAux;
+            this.getChildren().add(vBox);
+            vCita.getChildren().add(vCita.getvBox());
+            /*EspacioDto espacio = vCita.getEspacio();
+            EspacioDto espacio2 = this.getEspacio();
 
-        LocalDateTime horaCitaLocal11 = LocalDateTime.of(LocalDate.now(), localTimeObj1);
-        horaInicio = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal);
+            Label label = (Label) this.getChildren().get(0);
+            LocalTime inicio = LocalTime.parse(label.getText());
+            AgendaDto agenda;
+            agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
 
-        LocalDateTime horaCitaLocal111 = LocalDateTime.of(LocalDate.now(), localTimeObje1);
-        horaFin = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaLocal1);
+            /*
+             *  Chequemos la cantidad de espacios que tiene el médico
+             
+            LocalTime final1 = (agenda.getAgeMedico().getEspacios() != 1) ? (inicio.withMinute((agenda.getAgeMedico().getEspacios() == 4) ? inicio.getMinute() + 15
+                    : (agenda.getAgeMedico().getEspacios() == 3) ? inicio.getMinute() + 20 : inicio.getMinute() + 30)) : inicio.withHour(inicio.getHour() + 1);
 
-        vCita.getEspacio().setEspHoraFin(horaFin);
-        vCita.getEspacio().setEspHoraInicio(horaInicio);
-        
-        System.out.println(this.getEspacio().getEspHoraInicio() + " inicio this.get");
-        System.out.println(this.getEspacio().getEspHoraFin() + " fin vcita");
+            //Creo las conversiones de las horas del medico con formato
+            LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicio);
+            LocalDateTime fin = LocalDateTime.of(LocalDate.now(), final1);
+            String inicioS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(inicio12);
+            String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
+            vCita.getEspacio().setEspHoraInicio(inicioS);
+            vCita.getEspacio().setEspHoraFin(finS);
 
-        espacioService.guardarEspacio(this.getEspacio());
+            /*
+             *  Está parte es visual   
+             
+            this.setEspacio(espacio);
+            vCita.setEspacio(espacio2);
+            this.getChildren().remove(vBox);
+            vCita.getChildren().remove(vCita.getvBox());
+            String style = vCita.getStyle();
+            vCita.setStyle(getStyle());
+            this.setStyle(style);
 
-        /*LocalTime horaF1 = LocalTime.parse(vCita.getEspacio().getEspHoraFin());
-        LocalTime horaIni1 = LocalTime.parse(vCita.getEspacio().getEspHoraInicio());
-        LocalDateTime horaCitaInicio1 = LocalDateTime.of(LocalDate.now(), horaIni1);
-        String horaInicio2 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaInicio1);
-        LocalDateTime horaCitaFin1 = LocalDateTime.of(LocalDate.now(), horaF1);
-        String horaFin1 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(horaCitaFin);
-        vCita.getEspacio().setEspHoraInicio(horaInicio2);
-        vCita.getEspacio().setEspHoraFin(horaFin1);*/
-        espacioService.guardarEspacio(vCita.getEspacio());
-        /*if (vCita.getEspacio() != null && this.getEspacio() != null) {
+            VBox vAux = vCita.getvBox();
+            vCita.setvBox(vBox);
+            vBox = vAux;
+            this.getChildren().add(vBox);
+            vCita.getChildren().add(vCita.getvBox());
+            /*
+             *  hacemos el intercambio de la base de datos de cita
+             
 
-            EspacioDto espacioDto3 = new EspacioDto(vCita.getEspacio().getEspId(), vCita.getEspacio().getEspHoraInicio(), vCita.getEspacio().getEspHoraFin(),
-                    vCita.getEspacio().getEspVersion() + 1, this.getEspacio().getEspCita(), vCita.getEspacio().getEspAgenda());
+            agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
+            agenda.setAgeMedico((MedicoDto) AppContext.getInstance().get("Med"));
 
-            espacioService.guardarEspacio(espacioDto3);
+            String horaInicio = this.getEspacio().getEspHoraInicio();
+            String horaFinal = this.getEspacio().getEspHoraFin();
+            this.getEspacio().setEspHoraFin(vCita.getEspacio().getEspHoraFin());
+            this.getEspacio().setEspHoraInicio(vCita.getEspacio().getEspHoraInicio());
+            //vCita.getEspacio().setEspHoraInicio(horaInicio);
+            //vCita.getEspacio().setEspHoraFin(horaFinal);
 
-            EspacioDto espacioDto2 = new EspacioDto(this.getEspacio().getEspId(), this.getEspacio().getEspHoraInicio(), this.getEspacio().getEspHoraFin(),
-                    this.getEspacio().getEspVersion() + 1, vCita.getEspacio().getEspCita(), this.getEspacio().getEspAgenda());
+            agenda.setEspacioList(null);
 
-            espacioService.guardarEspacio(espacioDto2);
-        }*/
+            this.getEspacio().setEspAgenda(agenda);
+            vCita.getEspacio().setEspAgenda(agenda);
+
+            EspacioService espacioService = new EspacioService();
+            espacioService.guardarEspacio(this.getEspacio());
+        */
+        } else if (vCita.getEspacio() == null && this.getEspacio() != null) {
+            EspacioDto espacio = vCita.getEspacio();
+            EspacioDto espacio2 = this.getEspacio();
+            this.setEspacio(espacio);
+            vCita.setEspacio(espacio2);
+            this.getChildren().remove(vBox);
+            vCita.getChildren().remove(vCita.getvBox());
+            String style = vCita.getStyle();
+            vCita.setStyle(getStyle());
+            this.setStyle(style);
+
+            VBox vAux = vCita.getvBox();
+            vCita.setvBox(vBox);
+            vBox = vAux;
+            this.getChildren().add(vBox);
+            vCita.getChildren().add(vCita.getvBox());
+            //espacioService.guardarEspacio(vCita.getEspacio());
+        }
     }
 
     public VBox get(double Width) {
