@@ -11,8 +11,8 @@
    <children>
       <Label fx:id="lblTitulo" layoutX="61.0" layoutY="16.0" prefHeight="30.0" prefWidth="294.0" styleClass="lbl" stylesheets="@newCascadeStyleSheet.css" text="Evolución Histórica del Paciente:" />
       <Label fx:id="lblPaciente" layoutX="363.0" layoutY="16.0" prefHeight="30.0" prefWidth="318.0" styleClass="lbl" stylesheets="@newCascadeStyleSheet.css" />
-      <JFXButton fx:id="btnVolver" layoutX="557.0" layoutY="439.0" onAction="#Volver" style="-fx-cursor: Hand;" stylesheets="@newCascadeStyleSheet.css" text="Volver" />
-      <LineChart fx:id="Grafico" layoutX="14.0" layoutY="61.0" prefHeight="393.0" prefWidth="643.0" stylesheets="@newCascadeStyleSheet.css">
+      <JFXButton fx:id="btnVolver" layoutX="585.0" layoutY="452.0" onAction="#Volver" style="-fx-cursor: Hand;" stylesheets="@newCascadeStyleSheet.css" text="Volver" />
+      <LineChart fx:id="Grafico" layoutX="19.0" layoutY="49.0" prefHeight="393.0" prefWidth="643.0" stylesheets="@newCascadeStyleSheet.css">
         <xAxis>
           <CategoryAxis fx:id="CAxis" prefHeight="17.0" prefWidth="534.0" side="BOTTOM" tickLabelFill="#21b2b5" />
         </xAxis>
