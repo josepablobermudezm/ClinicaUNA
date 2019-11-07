@@ -168,6 +168,7 @@ public class FlowController {
         controller.initialize();
         controller.setStage(stage);
         stage.getScene().setRoot(loader.getRoot());
+        stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
     }
 
     public void goViewInWindow(String viewName) {
@@ -197,7 +198,7 @@ public class FlowController {
         Controller controller = loader.getController();
         controller.initialize();
         Stage stage = new Stage();
-
+        stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         stage.setResizable(resizable);
         stage.setOnHidden((WindowEvent event) -> {
             controller.getStage().getScene().setRoot(new Pane());
