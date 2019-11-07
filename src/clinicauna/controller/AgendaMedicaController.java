@@ -475,7 +475,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             AppContext.getInstance().set("Agenda", agendaDto);
             AppContext.getInstance().set("Med", medicoDto);
         } catch (Exception e) {
-            ms.show(Alert.AlertType.INFORMATION, "BRO", " no funca");
+         //   ms.show(Alert.AlertType.INFORMATION, "BRO", " no funca");
         }
 
     }
