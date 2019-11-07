@@ -87,7 +87,7 @@ public class BuscarMedicoController extends Controller {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if(usuario.getIdioma().equals("I")){
-            this.Titulo.setText(idioma.getProperty("Seleccione")+" "+idioma.getProperty("un")+" "+idioma.getProperty("Medico"));
+            this.Titulo.setText(idioma.getProperty("Ch")+" "+idioma.getProperty("un")+" "+idioma.getProperty("Medico"));
             this.Col_Codigo.setText(idioma.getProperty("Código"));
             this.Col_Carne.setText(idioma.getProperty("Carné"));
             this.Col_Nom.setText(idioma.getProperty("Nombre"));

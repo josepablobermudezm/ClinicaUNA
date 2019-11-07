@@ -113,7 +113,8 @@ public class AgregarCitaController extends Controller {
         idioma = (Idioma) AppContext.getInstance().get("idioma");
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
-            this.btnSeleccionPaciente.setText(idioma.getProperty("Seleccione")+" "+ idioma.getProperty("un")+" "+ idioma.getProperty("PacienteB"));
+            this.btnSeleccionPaciente.setText(idioma.getProperty("Seleccione") + " " + idioma.getProperty("un") + " " + idioma.getProperty("PacienteB"));
+            this.txtPaciente.setPromptText(idioma.getProperty("Ch")+" "+idioma.getProperty("un")+" "+ idioma.getProperty("PacienteB") );
             this.txtEspacios.setPromptText(idioma.getProperty("Agenda") + " " + idioma.getProperty("Espacios"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
             this.btnAtendida.setText(idioma.getProperty("Atendida"));
@@ -256,7 +257,11 @@ public class AgregarCitaController extends Controller {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita " + e.getMessage());
             }*/
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Incomplete Data");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
+            }
         }
     }
 
@@ -323,20 +328,37 @@ public class AgregarCitaController extends Controller {
             }
         });
         if (val && j != 0) {
-            if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
-                AgregarCita(style);
+            if (usuario.getIdioma().equals("I")) {
+                if (new Mensaje().showConfirmation("Appointment Spaces", this.getStage(), "There are available " + String.valueOf(j) + " Spaces, Do you wish to add them?")) {
+                    AgregarCita(style);
+                } else {
+                    limpiarValores();
+                }
             } else {
-                limpiarValores();
+                if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
+                    AgregarCita(style);
+                } else {
+                    limpiarValores();
+                }
             }
+
         } else {
             if (j == espacio) {
                 AgregarCita(style);
             } else {
                 if (!val && j != 0) {
-                    if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
-                        AgregarCita(style);
+                    if (usuario.getIdioma().equals("I")) {
+                        if (new Mensaje().showConfirmation("Appointment Spaces", this.getStage(), "There are available " + String.valueOf(j) + " Spaces, Do you wish to add them?")) {
+                            AgregarCita(style);
+                        } else {
+                            limpiarValores();
+                        }
                     } else {
-                        limpiarValores();
+                        if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
+                            AgregarCita(style);
+                        } else {
+                            limpiarValores();
+                        }
                     }
                 }
             }
@@ -435,9 +457,18 @@ public class AgregarCitaController extends Controller {
         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
         resp = correo.getResp();
         if (resp.getEstado()) {
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+            if (usuario.getIdioma().equals("I")) {
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "Mail sent successfuly");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+            }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+            if (usuario.getIdioma().equals("I")) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Send Mail", this.getStage(), "There was an error sending the mail");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+
+            }
         }
         limpiarValores();
         initialize();
@@ -463,11 +494,19 @@ public class AgregarCitaController extends Controller {
             String correoEnviado = espacioDto.getEspCita().getCorreoEnviado();
             citaDto = new CitaDto(espacioDto.getEspCita().getID(), version, pacienteDto, motivo, estado1, telefono, correo, correoEnviado);
             resp = citaService.guardarCita(citaDto);
-            ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.INFORMATION, "Edition Information", this.getStage(), resp.getMensaje());
+            } else {
+                ms.showModal(Alert.AlertType.INFORMATION, "Informacion de Edición", this.getStage(), resp.getMensaje());
+            }
             limpiarValores();
             this.getStage().close();
         } else {
-            ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), "Incomplete Data");
+            } else {
+                ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Faltan datos por ingresar");
+            }
         }
 
     }
