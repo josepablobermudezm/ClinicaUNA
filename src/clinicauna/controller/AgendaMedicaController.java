@@ -144,6 +144,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 this.btnBuscar.setDisable(true);
             }
         } else if (usuarioDto.getTipoUsuario().equals("M")) {
+            lblSeleccioneMedico.setVisible(false);
             inicio = false;
             //DatePicker.setValue(LocalDate.now());
             btnBuscar.setVisible(false);
@@ -161,10 +162,17 @@ public class AgendaMedicaController extends Controller implements Initializable 
             String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
             medicoDto.setInicioJornada(inicioS);
             medicoDto.setFinJornada(finS);
-            
+
             AppContext.getInstance().set("Medi", medicoDto);
 
             AppContext.getInstance().set("MedicoDto", medicoDto);
+
+            mes = String.valueOf(LocalDate.now().getMonthValue());
+            year = String.valueOf(LocalDate.now().getYear());
+            semana = String.valueOf(LocalDate.now().getDayOfMonth());
+            labelmes.setText(mes);
+            labelyear.setText(year);
+            labelSemana.setText(semana);
         }
         Inicio();
         fecha();
@@ -182,7 +190,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
              */
             //this.DatePicker.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
             this.btnBuscar.setText(idioma.getProperty("Buscar"));
-            this.lblSeleccioneMedico.setText(idioma.getProperty("Seleccione")+" "+idioma.getProperty("un")+" "+idioma.getProperty("Medico"));
+            this.lblSeleccioneMedico.setText(idioma.getProperty("Seleccione") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
             this.lblAnno.setText(idioma.getProperty("Año"));
             this.lblDia.setText(idioma.getProperty("Dia"));
             this.lblMes.setText(idioma.getProperty("Mes"));
@@ -208,6 +216,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 hCita = (vistaCita) event.getSource();
                 AppContext.getInstance().set("hBox", hCita);
                 AppContext.getInstance().set("Espacio", hCita.getEspacio());
+                FlowController.getInstance().initialize();
                 FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
                 AppContext.getInstance().delete("Cita");
                 //FlowController.getInstance().initialize();
@@ -242,7 +251,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             /*
              *   Cargamos la fecha en los labels
              */
-            mes = (DatePicker.getValue().getMonth() != null) ? DatePicker.getValue().getMonth().toString() : " ";
+            mes = (DatePicker.getValue().getMonth() != null) ? String.valueOf(DatePicker.getValue().getMonthValue())  : " ";
             year = (String.valueOf(DatePicker.getValue().getYear()) != null) ? String.valueOf(DatePicker.getValue().getYear()) : " ";
             semana = (String.valueOf(DatePicker.getValue().getDayOfMonth()) != null) ? String.valueOf(DatePicker.getValue().getDayOfMonth()) : " ";
             labelmes.setText(mes);
