@@ -255,6 +255,15 @@ public class FlowController {
         this.loaders.clear();
     }
 
+    public static Stage getMainStage() {
+        return mainStage;
+    }
+
+    public static void setMainStage(Stage mainStage) {
+        FlowController.mainStage = mainStage;
+    }
+    
+
     public void salir() {
         this.mainStage.close();
     }
