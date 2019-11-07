@@ -199,7 +199,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             this.lblAusente.setText(idioma.getProperty("Ausente"));
             this.lblCancelada.setText(idioma.getProperty("Cancelada"));
             this.lblAtendida.setText(idioma.getProperty("Atendida"));
-            this.DatePicker.setPromptText(idioma.getProperty("Seleccione")+" "+idioma.getProperty("un")+" "+ idioma.getProperty("Fecha"));
+            this.DatePicker.setPromptText(idioma.getProperty("Seleccione") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
         }
     }
 
@@ -222,11 +222,20 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 //FlowController.getInstance().initialize();
                 initialize();
             } else {
-                ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "El médico se encuentra inactivo");
+                if (usuario.getIdioma().equals("I")) {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Medical Appointment", this.getStage(), "The doctor is inactive");
+                } else {
+                    ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "El médico se encuentra inactivo");
+                }
             }
 
         } else {
-            ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "No se puede agregar una cita en esta fecha");
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.INFORMATION, "Medical Appointment", this.getStage(), "You cannot add an appointment on this date");
+            } else {
+                ms.showModal(Alert.AlertType.INFORMATION, "Creación de una Cita", this.getStage(), "No se puede agregar una cita en esta fecha");
+
+            }
         }
     };
 
@@ -251,7 +260,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             /*
              *   Cargamos la fecha en los labels
              */
-            mes = (DatePicker.getValue().getMonth() != null) ? String.valueOf(DatePicker.getValue().getMonthValue())  : " ";
+            mes = (DatePicker.getValue().getMonth() != null) ? String.valueOf(DatePicker.getValue().getMonthValue()) : " ";
             year = (String.valueOf(DatePicker.getValue().getYear()) != null) ? String.valueOf(DatePicker.getValue().getYear()) : " ";
             semana = (String.valueOf(DatePicker.getValue().getDayOfMonth()) != null) ? String.valueOf(DatePicker.getValue().getDayOfMonth()) : " ";
             labelmes.setText(mes);
