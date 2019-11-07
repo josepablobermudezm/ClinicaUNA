@@ -167,7 +167,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
          *   Llamamos a esta vista para que se seleccione un paciente 
          */
         if (AppContext.getInstance().get("Pact") == null) {
-            FlowController.getInstance().goViewInWindowModal("BuscarPaciente", this.getStage(), false);
+            FlowController.getInstance().goViewInWindowModal("BuscarPaciente",FlowController.getInstance().getMainStage(), false);
             if (AppContext.getInstance().get("Pact") != null) {
                 DatosPaciente();
             }
@@ -511,7 +511,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
     private void evolucion(ActionEvent event) {
         if (expedienteDto != null) {
             AppContext.getInstance().set("Expediente", expedienteDto);
-            FlowController.getInstance().goViewInWindowModal("evolucionHistorica", this.getStage(), false);
+            FlowController.getInstance().goViewInWindowModal("BuscarPaciente",FlowController.getInstance().getMainStage(), false);
         } else {
             if (usuario.getIdioma().equals("I")) {
                 ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the medical record");
