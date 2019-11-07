@@ -199,7 +199,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
             this.lblAusente.setText(idioma.getProperty("Ausente"));
             this.lblCancelada.setText(idioma.getProperty("Cancelada"));
             this.lblAtendida.setText(idioma.getProperty("Atendida"));
-            this.DatePicker.setPromptText(idioma.getProperty("Seleccione") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
+            this.DatePicker.setPromptText(idioma.getProperty("Ch") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
         }
     }
 
