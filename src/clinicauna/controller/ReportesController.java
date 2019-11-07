@@ -184,14 +184,26 @@ public class ReportesController extends Controller {
                             new Mensaje().showModal(Alert.AlertType.ERROR, "Reporte", this.getStage(), resp.getMensaje());
                         }
                     } else {
-                        new Mensaje().showModal(Alert.AlertType.WARNING, "Generacion de Reporte", this.getStage(), "Debes Seleccionar un medico primero para generar un reporte");
+                        if (usuario.getIdioma().equals("I")) {
+                            new Mensaje().showModal(Alert.AlertType.WARNING, "Doctor Report", this.getStage(), "You have to choose a doctor to generate the report");
+                        } else {
+                            new Mensaje().showModal(Alert.AlertType.WARNING, "Generacion de Reporte", this.getStage(), "Debes Seleccionar un paciente primero para generar un reporte");
+                        }
                     }
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.WARNING, "Reporte", this.getStage(), "La fecha fin del reporte no puede estar antes que la de inicio");
+                if (usuario.getIdioma().equals("I")) {
+                    new Mensaje().showModal(Alert.AlertType.WARNING, "Report", this.getStage(), "The end date of the report cannot be before the start date");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.WARNING, "Reporte", this.getStage(), "La fecha fin del reporte no puede estar antes que la de inicio");
+                }
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.WARNING, "Reporte", this.getStage(), "Las fechas del reporte no pueden ir vacias");
+            if (usuario.getIdioma().equals("I")) {
+                new Mensaje().showModal(Alert.AlertType.WARNING, "Report", this.getStage(), "The dates of the report cannot be empty");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.WARNING, "Reporte", this.getStage(), "Las fechas del reporte no pueden ir vacias");
+            }
         }
 
     }
@@ -208,7 +220,11 @@ public class ReportesController extends Controller {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Reporte", this.getStage(), resp.getMensaje());
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.WARNING, "Generacion de Reporte", this.getStage(), "Debes Seleccionar un paciente primero para generar un reporte");
+            if (usuario.getIdioma().equals("I")) {
+                new Mensaje().showModal(Alert.AlertType.WARNING, "Patient Report", this.getStage(), "You have to choose a patient to generate the report");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.WARNING, "Generacion de Reporte", this.getStage(), "Debes Seleccionar un paciente primero para generar un reporte");
+            }
         }
     }
 
