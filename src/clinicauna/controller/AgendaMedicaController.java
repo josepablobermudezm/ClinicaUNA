@@ -215,6 +215,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
                 hCita = (vistaCita) event.getSource();
                 AppContext.getInstance().set("hBox", hCita);
                 AppContext.getInstance().set("Espacio", hCita.getEspacio());
+                FlowController.getInstance().initialize();
                 FlowController.getInstance().goViewInWindowModal("AgregarCita", this.stage, false);
                 AppContext.getInstance().delete("Cita");
                 //FlowController.getInstance().initialize();

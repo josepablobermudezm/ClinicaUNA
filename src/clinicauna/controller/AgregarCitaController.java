@@ -313,6 +313,7 @@ public class AgregarCitaController extends Controller {
                 i++;
                 if (i <= espacio && !bandera) {
                     if (((vistaCita) l).getEspacio() == null) {
+                        //Anade la vista cita para luego poder ser editado y guardado
                         aux.add((vistaCita) l);
                         j++;
                     } else {
@@ -322,6 +323,7 @@ public class AgregarCitaController extends Controller {
                 }
             }
         });
+        
         if (val && j != 0) {
             if (new Mensaje().showConfirmation("Espacios de Cita", this.getStage(), "Hay disponibles " + String.valueOf(j) + " Espacios ¿Deseas agregarlos?")) {
                 AgregarCita(style);
