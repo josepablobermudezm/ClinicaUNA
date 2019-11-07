@@ -24,6 +24,7 @@ public class ClinicaUna extends Application {
         stage.getIcons().add(new Image("/clinicauna/resources/pharmacy.png"));
         stage.setMinHeight(700);
         stage.setMinWidth(1050);
+        stage.setResizable(false);
         FlowController.getInstance().InitializeFlow(stage, null);
         FlowController.getInstance().goViewInWindowTransparent("LogIn"); 
     }

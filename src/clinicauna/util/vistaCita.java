@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -65,7 +67,9 @@ public class vistaCita extends HBox {
         AgendaDto agenda;
         agenda = (AgendaDto) AppContext.getInstance().get("Agenda");
         agenda.setAgeMedico((MedicoDto) AppContext.getInstance().get("Med"));
+        List<EspacioDto> espaciosAgenda = agenda.getEspacioList();
         agenda.setEspacioList(null);
+
         if (vCita.getEspacio() != null && this.getEspacio() != null) {
             EspacioDto espacio = vCita.getEspacio();
             EspacioDto espacio2 = this.getEspacio();
@@ -106,17 +110,36 @@ public class vistaCita extends HBox {
             espacio.setEspAgenda(agenda);
             this.getEspacio().setEspAgenda(agenda);
             vCita.getEspacio().setEspAgenda(agenda);
-            
-            Label hora = (Label)this.getChildren().get(0);
+
+            Label hora = (Label) this.getChildren().get(0);
             LocalTime inicio = LocalTime.parse(hora.getText());
             /*
              *  Chequemos la cantidad de espacios que tiene el médico
              *
              */
-            
-             LocalTime final1 = (agenda.getAgeMedico().getEspacios() != 1) ? (inicio.withMinute((agenda.getAgeMedico().getEspacios() == 4) ? inicio.getMinute() + 15
-                    : (agenda.getAgeMedico().getEspacios() == 3) ? inicio.getMinute() + 20 : inicio.getMinute() + 30)) : inicio.withHour(inicio.getHour() + 1);
+            LocalTime final1 = null;
 
+            if (agenda.getAgeMedico().getEspacios() == 1) {
+                final1 = inicio.withHour(inicio.getHour() + 1);
+            } else if (agenda.getAgeMedico().getEspacios() == 2) {
+                if ((inicio.getMinute() + 30) >= 60) {
+                    final1 = inicio.withMinute(0).withHour(inicio.getHour() + 1);
+                } else {
+                    final1 = inicio.withMinute(30);
+                }
+            } else if (agenda.getAgeMedico().getEspacios() == 3) {
+                if ((inicio.getMinute() + 20) >= 60) {
+                    final1 = inicio.withMinute(0).withHour(inicio.getHour() + 1);
+                } else {
+                    final1 = inicio.withMinute(20);
+                }
+            } else if (agenda.getAgeMedico().getEspacios() == 4) {
+                if ((inicio.getMinute() + 15) >= 60) {
+                    final1 = inicio.withHour(0).withHour(inicio.getHour() + 1);
+                } else {
+                    final1 = inicio.withMinute(15);
+                }
+            }
             //Creo las conversiones de las horas del medico con formato
             LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicio);
             LocalDateTime fin = LocalDateTime.of(LocalDate.now(), final1);
@@ -124,7 +147,7 @@ public class vistaCita extends HBox {
             String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
             espacio.setEspHoraInicio(inicioS);
             espacio.setEspHoraFin(finS);
-            
+
             this.setEspacio(espacio);
             vCita.setEspacio(espacio2);
             this.getChildren().remove(vBox);
@@ -143,16 +166,37 @@ public class vistaCita extends HBox {
             EspacioDto espacio = vCita.getEspacio();
             EspacioDto espacio2 = this.getEspacio();
             espacio2.setEspAgenda(agenda);
-            
-            Label hora = (Label)vCita.getChildren().get(0);
+
+            Label hora = (Label) vCita.getChildren().get(0);
             LocalTime inicio = LocalTime.parse(hora.getText());
             /*
              *  Chequemos la cantidad de espacios que tiene el médico
              *
              */
-            
-             LocalTime final1 = (agenda.getAgeMedico().getEspacios() != 1) ? (inicio.withMinute((agenda.getAgeMedico().getEspacios() == 4) ? inicio.getMinute() + 15
-                    : (agenda.getAgeMedico().getEspacios() == 3) ? inicio.getMinute() + 20 : inicio.getMinute() + 30)) : inicio.withHour(inicio.getHour() + 1);
+
+            LocalTime final1 = null;
+
+            if (agenda.getAgeMedico().getEspacios() == 1) {
+                final1 = inicio.withHour(inicio.getHour() + 1);
+            } else if (agenda.getAgeMedico().getEspacios() == 2) {
+                if ((inicio.getMinute() + 30) >= 60) {
+                    final1 = inicio.withMinute(0).withHour(inicio.getHour() + 1);
+                } else {
+                    final1 = inicio.withMinute(30);
+                }
+            } else if (agenda.getAgeMedico().getEspacios() == 3) {
+                if ((inicio.getMinute() + 20) >= 60) {
+                    final1 = inicio.withMinute(0).withHour(inicio.getHour() + 1);
+                } else {
+                    final1 = inicio.withMinute(20);
+                }
+            } else if (agenda.getAgeMedico().getEspacios() == 4) {
+                if ((inicio.getMinute() + 15) >= 60) {
+                    final1 = inicio.withHour(0).withHour(inicio.getHour() + 1);
+                } else {
+                    final1 = inicio.withMinute(15);
+                }
+            }
 
             //Creo las conversiones de las horas del medico con formato
             LocalDateTime inicio12 = LocalDateTime.of(LocalDate.now(), inicio);
@@ -161,7 +205,7 @@ public class vistaCita extends HBox {
             String finS = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH).format(fin);
             espacio2.setEspHoraInicio(inicioS);
             espacio2.setEspHoraFin(finS);
-            
+
             this.setEspacio(espacio);
             vCita.setEspacio(espacio2);
             this.getChildren().remove(vBox);
@@ -177,6 +221,10 @@ public class vistaCita extends HBox {
             vCita.getChildren().add(vCita.getvBox());
             new EspacioService().guardarEspacio(vCita.getEspacio());
         }
+
+        agenda.setEspacioList(espaciosAgenda);
+        AppContext.getInstance().set("Agenda", agenda);
+
     }
 
     public VBox get(double Width) {

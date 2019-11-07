@@ -114,7 +114,7 @@ public class AgregarCitaController extends Controller {
         usuario = (UsuarioDto) AppContext.getInstance().get("UsuarioActivo");
         if (usuario.getIdioma().equals("I")) {
             this.btnSeleccionPaciente.setText(idioma.getProperty("Seleccione") + " " + idioma.getProperty("un") + " " + idioma.getProperty("PacienteB"));
-            this.txtPaciente.setPromptText(idioma.getProperty("Ch")+" "+idioma.getProperty("un")+" "+ idioma.getProperty("PacienteB") );
+            this.txtPaciente.setPromptText(idioma.getProperty("Ch") + " " + idioma.getProperty("un") + " " + idioma.getProperty("PacienteB"));
             this.txtEspacios.setPromptText(idioma.getProperty("Agenda") + " " + idioma.getProperty("Espacios"));
             this.btnGuardar.setText(idioma.getProperty("Guardar"));
             this.btnAtendida.setText(idioma.getProperty("Atendida"));
@@ -139,9 +139,11 @@ public class AgregarCitaController extends Controller {
 
         hBox = (vistaCita) AppContext.getInstance().get("hBox");
         if (hBox.getEspacio() != null) {
+            btnEditar.setDisable(false);
             btnGuardar.setDisable(true);
         } else {
             btnGuardar.setDisable(false);
+            btnEditar.setDisable(true);
         }
         grid = (GridPane) AppContext.getInstance().get("Grid");
         medicoDto = (MedicoDto) AppContext.getInstance().get("MedicoDto");
@@ -173,7 +175,6 @@ public class AgregarCitaController extends Controller {
             //conversión de string a localTime
             LocalTime isoTime = LocalTime.parse(label.getText() + ":00",
                     DateTimeFormatter.ISO_LOCAL_TIME);
-            System.out.println(isoTime);
             if (espacioDto.getEspCita().getEstado().equals("CA")) {
                 if (((agendaDto.getAgeFecha().isEqual(LocalDate.now()) && isoTime.isAfter(LocalTime.now()))
                         || (agendaDto.getAgeFecha().isAfter(LocalDate.now()) && isoTime.isAfter(LocalTime.now())))) {
@@ -191,7 +192,6 @@ public class AgregarCitaController extends Controller {
                     btnAusente.setDisable(true);
                     System.out.println("hora ilegal");
                 }
-                System.out.println("está cancelada");
             }
         } else {
             //es la primera vez que la selecciona por lo tanto no debe de poder elegir otro tipo de estado
@@ -328,7 +328,7 @@ public class AgregarCitaController extends Controller {
                 }
             }
         });
-        
+
         if (val && j != 0) {
             if (usuario.getIdioma().equals("I")) {
                 if (new Mensaje().showConfirmation("Appointment Spaces", this.getStage(), "There are available " + String.valueOf(j) + " Spaces, Do you wish to add them?")) {
@@ -458,20 +458,28 @@ public class AgregarCitaController extends Controller {
         correo.CorreoCitaHilo(this.txtCorreo.getText());
         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
         resp = correo.getResp();
-        if (resp.getEstado()) {
-            if (usuario.getIdioma().equals("I")) {
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "Mail sent successfuly");
+        if (resp != null) {
+            if (resp.getEstado()) {
+                if (usuario.getIdioma().equals("I")) {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Send Mail", this.getStage(), "Mail sent successfuly");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+                }
             } else {
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Envío de Correo", this.getStage(), "Correo enviado exitosamente");
+                if (usuario.getIdioma().equals("I")) {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Send Mail", this.getStage(), "There was an error sending the mail");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
+                }
             }
         } else {
             if (usuario.getIdioma().equals("I")) {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Send Mail", this.getStage(), "There was an error sending the mail");
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Envío de Correo", this.getStage(), "Hubo un error al enviar el correo");
-
             }
         }
+
         limpiarValores();
         initialize();
     }
