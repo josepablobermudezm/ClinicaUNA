@@ -190,7 +190,7 @@ public class AgendaMedicaController extends Controller implements Initializable 
              */
             //this.DatePicker.setPromptText(idioma.getProperty("Seleccionar") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Fecha"));
             this.btnBuscar.setText(idioma.getProperty("Buscar"));
-            this.lblSeleccioneMedico.setText(idioma.getProperty("Seleccione") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
+            this.lblSeleccioneMedico.setText(idioma.getProperty("Ch") + " " + idioma.getProperty("un") + " " + idioma.getProperty("Medico"));
             this.lblAnno.setText(idioma.getProperty("Año"));
             this.lblDia.setText(idioma.getProperty("Dia"));
             this.lblMes.setText(idioma.getProperty("Mes"));
