@@ -183,8 +183,9 @@ public class UsuariosController extends Controller {
                     String nombreusuario = txtNombreUsuario.getText();
                     Long version = usuarioDto.getUsVersion() + 1;
                     String clave = txtClave.getText();
+                    String estado = usuarioDto.getEstado();
 
-                    usuarioDto = new UsuarioDto(id, nombre, papellido, "I", sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
+                    usuarioDto = new UsuarioDto(id, nombre, papellido,estado, sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
                     try {
                         resp = usuarioService.guardarUsuario(usuarioDto);
                         if (usuario.getIdioma().equals("I")) {
@@ -280,6 +281,7 @@ public class UsuariosController extends Controller {
         btnEspanol.setSelected(true);
         txtClave.clear();
         AppContext.getInstance().delete("Us");
+        btnAgregar1.setDisable(false);
     }
 
     @FXML
@@ -416,6 +418,7 @@ public class UsuariosController extends Controller {
         AppContext.getInstance().delete("Us");
         if (table.getSelectionModel() != null) {
             if (table.getSelectionModel().getSelectedItem() != null) {
+                btnAgregar1.setDisable(true);
                 usuarioDto = table.getSelectionModel().getSelectedItem();
                 txtNombre.setText(usuarioDto.getNombre());
                 txtPApellido.setText(usuarioDto.getpApellido());

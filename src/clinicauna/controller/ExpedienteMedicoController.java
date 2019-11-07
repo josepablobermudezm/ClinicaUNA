@@ -511,7 +511,7 @@ public class ExpedienteMedicoController extends Controller implements Initializa
     private void evolucion(ActionEvent event) {
         if (expedienteDto != null) {
             AppContext.getInstance().set("Expediente", expedienteDto);
-            FlowController.getInstance().goViewInWindowModal("BuscarPaciente",FlowController.getInstance().getMainStage(), false);
+            FlowController.getInstance().goViewInWindowModal("evolucionHistorica", this.getStage(), false);
         } else {
             if (usuario.getIdioma().equals("I")) {
                 ms.showModal(Alert.AlertType.WARNING, "Information", this.getStage(), "You must select the medical record");
