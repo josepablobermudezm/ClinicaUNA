@@ -59,7 +59,9 @@ public class AgendaService {
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            
+           /*
+            Genera la carpeta
+            */ 
             File carpeta = new File("C:\\reporte\\");
             carpeta.mkdir();
             //Guardo el pdf en el archivo

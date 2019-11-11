@@ -251,7 +251,9 @@ public class AgregarCitaController extends Controller {
             limpiarValores();
             AppContext.getInstance().delete("hBox");
             FlowController.getInstance().initialize();
+            AppContext.getInstance().delete("Pact");
             this.getStage().close();
+            
             /*try {
             } catch (Exception e) {
                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), "Hubo un error al momento de guardar la cita " + e.getMessage());
@@ -295,7 +297,9 @@ public class AgregarCitaController extends Controller {
         FlowController.getInstance().initialize();
         limpiarValores();
         AppContext.getInstance().delete("Espacio");
+        AppContext.getInstance().delete("Pact");
         this.getStage().close();
+        
     }
 
     private void formato() {

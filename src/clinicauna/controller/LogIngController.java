@@ -131,9 +131,6 @@ public class LogIngController extends Controller implements Initializable {
                         FlowController.getInstance().initialize();
                         FlowController.getInstance().goViewInStage("cambiarContrasenna", this.getStage());
                     } else if (usuario.getEstado().equals("A")) {//que el usuario este activo
-                        /*
-                        * Envío correo de recordatorio en el caso de que la cita sea mañana
-                         */
                         FlowController.getInstance().initialize();
                         FlowController.getInstance().goMain();
                         this.getStage().close();

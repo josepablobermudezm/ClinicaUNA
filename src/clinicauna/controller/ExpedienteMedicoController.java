@@ -162,7 +162,6 @@ public class ExpedienteMedicoController extends Controller implements Initializa
         resp = expedienteService.getExpedientes();
 
         expedientes = (ArrayList<ExpedienteDto>) resp.getResultado("Expedientes");
-
         /*
          *   Llamamos a esta vista para que se seleccione un paciente 
          */
@@ -237,7 +236,9 @@ public class ExpedienteMedicoController extends Controller implements Initializa
                     txtAntecedentesPatologicos.setDisable(false);
                 }
                 valor = false;
+                btnGuardar.setDisable(true);
             } else {
+                btnEditar1.setDisable(true);
                 if (usuario.getIdioma().equals("I")) {
                     ms.showModal(Alert.AlertType.WARNING, "Patient Search", this.getStage(), "The selected patient does not have a medical record");
                     valor = true;
@@ -309,6 +310,8 @@ public class ExpedienteMedicoController extends Controller implements Initializa
     }
 
     private void Limpiar() {
+        btnEditar1.setDisable(false);
+        btnGuardar.setDisable(false);
         this.txtAlergias.clear();
         this.txtOperaciones.clear();
         this.txtTratamientos.clear();

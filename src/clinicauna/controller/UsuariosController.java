@@ -185,7 +185,7 @@ public class UsuariosController extends Controller {
                     String clave = txtClave.getText();
                     String estado = usuarioDto.getEstado();
 
-                    usuarioDto = new UsuarioDto(id, nombre, papellido,estado, sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
+                    usuarioDto = new UsuarioDto(id, nombre, papellido, estado, sapellido, cedula, correo, nombreusuario, null, clave, tipoUsuario, idioma, version);
                     try {
                         resp = usuarioService.guardarUsuario(usuarioDto);
                         if (usuario.getIdioma().equals("I")) {
@@ -336,7 +336,7 @@ public class UsuariosController extends Controller {
                         mail.mensajeActivacionHilo(nombreusuario, correo, resp2.getMensaje());
                         FlowController.getInstance().goViewInWindowModalCorreo("VistaCargando", this.getStage(), false);
                         resp = mail.getResp();
-
+                        System.out.println("resp" +resp);
                         if (resp.getEstado()) {
                             if (usuario.getIdioma().equals("I")) {
                                 ms.showModal(Alert.AlertType.INFORMATION, "Saved Information", this.getStage(), resp.getMensaje());
@@ -358,7 +358,7 @@ public class UsuariosController extends Controller {
                             } else {
                                 ms.showModal(Alert.AlertType.ERROR, "Informacion de guardado", this.getStage(), resp.getMensaje());
                             }
-                        }
+                        }  
                     } else {
                         if (usuario.getIdioma().equals("I")) {
                             ms.showModal(Alert.AlertType.ERROR, "Saved Information", this.getStage(), resp.getMensaje());
@@ -383,13 +383,13 @@ public class UsuariosController extends Controller {
                     ms.showModal(Alert.AlertType.WARNING, "Informacion de guardado", this.getStage(), "No se ha creado un médico para este usuario, debes crearlo para poder guardar.");
                 }
             }
-        }else {
-                if (usuario.getIdioma().equals("I")) {
-                    ms.showModal(Alert.AlertType.WARNING, "Saved Information", this.getStage(), "Data missing");
-                } else {
-                    ms.showModal(Alert.AlertType.WARNING, "Informacion de guardado", this.getStage(), "Faltan datos en el registro");
-                }
+        } else {
+            if (usuario.getIdioma().equals("I")) {
+                ms.showModal(Alert.AlertType.WARNING, "Saved Information", this.getStage(), "Data missing");
+            } else {
+                ms.showModal(Alert.AlertType.WARNING, "Informacion de guardado", this.getStage(), "Faltan datos en el registro");
             }
+        }
     }
 
     public void Formato() {
